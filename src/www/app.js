@@ -1,8 +1,16 @@
-document.write("All the action is in the console");
+document.write("All the action is in the console...");
 
 import WebMidiHelper from './web-midi-helper';
 import transport from './transport';
 import midiUtilities from './midi-utilities';
+
+// render our main template/html
+var template = require("./templates/main.html");
+var templateDiv = document.createElement('div');
+document.body.appendChild(templateDiv);
+document.addEventListener("DOMContentLoaded", function() {
+   templateDiv.innerHTML = template;
+});
 
 
 const requestedPortName = "IAC Driver Logic MIDI In";
@@ -16,7 +24,7 @@ function startMetronome() {
          metronomeNote: midiUtilities.drumMap.stick,
          metronomeOn: true
       });
-      transport.start();
+      // transport.start();
    }
 }
 
