@@ -3,6 +3,10 @@
 transport.start();
 // set BPM
 transport.setBeatsPerMinute(100);
+// add/remove patterns to play
+transport.setPattern({ pat1: window.hats });
+transport.setPattern({ pat2: window.bassline });
+transport.setPattern({ pat2: undefined });
 // stop
 transport.stop();
 </pre>
