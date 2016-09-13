@@ -3,14 +3,6 @@
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
-var mapHitsToNotes = function(hitPattern, noteValue) {
-   return _.map(hitPattern, function(noteEvent) {
-      return _.extend({ 
-         note: noteValue
-      }, noteEvent);
-   });
-};
-
 class NotePattern {
    constructor(options) {
       options = options || {};
@@ -30,13 +22,6 @@ class NotePattern {
       // console.log(renderRange);
 
       var patternNotes = this.notes || [];
-
-      // map drum patterns to standard note patterns
-      // patternNotes = patternNotes.concat(mapHitsToNotes(pattern.kick, midiUtilities.drumMap.kick));
-      // patternNotes = patternNotes.concat(mapHitsToNotes(pattern.hat, midiUtilities.drumMap.hat));
-      // patternNotes = patternNotes.concat(mapHitsToNotes(pattern.clap, midiUtilities.drumMap.clap));
-      // patternNotes = patternNotes.concat(mapHitsToNotes(pattern.snare, midiUtilities.drumMap.snare));
-      // patternNotes = patternNotes.concat(mapHitsToNotes(pattern.stick, midiUtilities.drumMap.stick));
 
       // get the notes that happen this render buffer
       var notes = _.filter(patternNotes, _.partial(function(noteEvent, patternDuration) {
