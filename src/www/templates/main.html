@@ -6,8 +6,8 @@ transport.setBeatsPerMinute(100);
 // set patterns to play
 transport.setPattern({ beat: window.beat, bassline: window.bassline, lead: window.lead });
 // enable/disable patterns
-window.beat.playing = true;
-window.beat.playing = false;
+window.beat.triggered = true;
+window.beat.triggered = false;
 // stop
 transport.stop();
 </pre>

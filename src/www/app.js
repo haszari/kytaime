@@ -97,6 +97,12 @@ window.lead = new NotePattern({
    ]
 });
 
+transport.setPattern({ 
+   beat: window.beat, 
+   bassline: window.bassline, 
+   lead: window.lead 
+});
+
 window.transport = transport;
 window.midiOutPort = midiOutPort;
 
