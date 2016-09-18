@@ -42,6 +42,8 @@ class NotePattern {
       if (!this.playing && !this.triggered) 
          return;
 
+      var patternDuration = this.duration;
+
       // start and end of render range in pattern-beats
       var renderStart = (renderRange.start.beat % this.duration);
       var renderEnd = (renderRange.end.beat % this.duration);
@@ -55,7 +57,7 @@ class NotePattern {
          // this is a cheaty test for "is 0 within render range"
          // in future I'll want "is 0 or other valid drop start pos in render range" 
          // so will need a isWithinRange thing
-         if (renderStart > renderEnd) {
+         if (valueInWrappedBeatRange(0, renderStart, renderEnd, patternDuration)) {
             unmuteStart = 0;
             this.playing = true; // strictly, this becomes true part way through..
          }
@@ -63,7 +65,7 @@ class NotePattern {
       
       // see if we are going to undrop (% duration) this render buffer
       if (this.playing && !this.triggered) {
-         if (renderStart > renderEnd) {
+         if (valueInWrappedBeatRange(0, renderStart, renderEnd, patternDuration)) {
             unmuteEnd = 0;
             this.playing = false;
          }
@@ -75,7 +77,6 @@ class NotePattern {
       }
 
       var notes = this.notes || [];
-      var patternDuration = this.duration;
 
       // get the notes that happen this render buffer
       notes = _.filter(notes, function(noteEvent) {
