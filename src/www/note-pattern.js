@@ -3,7 +3,7 @@ import _ from 'lodash';
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
-function valueInModBeatRange(value, renderStart, renderEnd) {
+function valueInWrappedBeatRange(value, renderStart, renderEnd, patternDuration) {
    // standard case, end is after start
    var inRange = (
       (value >= renderStart) && 
@@ -12,8 +12,8 @@ function valueInModBeatRange(value, renderStart, renderEnd) {
    // loop case, end is before start because of loop
    if ((renderEnd < renderStart) && !inRange) {
       inRange = (
-         ( (noteEvent.start >= 0) && (noteEvent.start < renderEnd) ) ||
-         ( (noteEvent.start >= renderStart) && (noteEvent.start < patternDuration) )
+         ( (value >= 0) && (value < renderEnd) ) ||
+         ( (value >= renderStart) && (value < patternDuration) )
       );
    }
    return inRange;
@@ -31,8 +31,8 @@ class NotePattern {
          { start: 3, duration: 1, note: 42, velocity: 100 }
       ];
 
-      this.playing = false;
-      this.triggered = false;
+      this.playing = true;
+      this.triggered = true;
    }
 
    transportRender(renderRange, beatsPerMinute, midiOutPort) {
@@ -75,43 +75,12 @@ class NotePattern {
       }
 
       var notes = this.notes || [];
-
-      // filter out the notes that are before we are dropped (or after we are cut)
-      // ahem, exact same logic as filtering the notes to play for the renderbuffer below
-      // factor this logic into a function
-      notes = _.filter(notes, _.partial(function(noteEvent, patternDuration) {
-         var inRange = (
-            (noteEvent.start >= unmuteStart) && 
-            (noteEvent.start < unmuteEnd)
-         );
-         // account for crossing loop boundary
-         if ((unmuteEnd < unmuteStart) && !inRange) {
-            inRange = (
-               ( (noteEvent.start >= 0) && (noteEvent.start < unmuteEnd) ) ||
-               ( (noteEvent.start >= unmuteStart) && (noteEvent.start < patternDuration) )
-            );
-         }
-         return inRange;
-      }, _, this.duration));
+      var patternDuration = this.duration;
 
       // get the notes that happen this render buffer
-      notes = _.filter(notes, _.partial(function(noteEvent, patternDuration) {
-         var inRange = (
-            (noteEvent.start >= renderStart) && 
-            (noteEvent.start < renderEnd)
-         );
-
-         // account for crossing loop boundary
-         if ((renderEnd < renderStart) && !inRange) {
-            inRange = (
-               ( (noteEvent.start >= 0) && (noteEvent.start < renderEnd) ) ||
-               ( (noteEvent.start >= renderStart) && (noteEvent.start < patternDuration) )
-            );
-         }
-
-         // console.log(noteEvent.start, inRange);
-         return inRange;
-      }, _, this.duration));
+      notes = _.filter(notes, function(noteEvent) {
+         return valueInWrappedBeatRange(noteEvent.start, unmuteStart, unmuteEnd, patternDuration);
+      });
 
       // play em
       _.each(notes, _.partial(function(noteEvent, patternDuration, patternChannel) {
