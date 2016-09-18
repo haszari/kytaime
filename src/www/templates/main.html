@@ -3,11 +3,11 @@
 transport.start();
 // set BPM
 transport.setBeatsPerMinute(100);
-// add/remove patterns to play
-transport.setPattern({ pat1: window.beat });
-transport.setPattern({ pat2: window.bassline });
-transport.setPattern({ pat3: window.lead });
-transport.setPattern({ pat2: undefined });
+// set patterns to play
+transport.setPattern({ beat: window.beat, bassline: window.bassline, lead: window.lead });
+// enable/disable patterns
+window.beat.playing = true;
+window.beat.playing = false;
 // stop
 transport.stop();
 </pre>

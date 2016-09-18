@@ -14,30 +14,36 @@ class NotePattern {
          { start: 2, duration: 1, note: 42, velocity: 100 },
          { start: 3, duration: 1, note: 42, velocity: 100 }
       ];
+
+      this.playing = false;
+      // this.triggered = false;
    }
 
    transportRender(renderRange, beatsPerMinute, midiOutPort) {
       if (!midiOutPort)
          return;
-      // console.log(renderRange);
 
+      if (!this.playing) 
+         return;
+      
       var patternNotes = this.notes || [];
+
+      // start and end of render range in beats
+      const renderStart = (renderRange.start.beat % this.duration);
+      const renderEnd = (renderRange.end.beat % this.duration);
 
       // get the notes that happen this render buffer
       var notes = _.filter(patternNotes, _.partial(function(noteEvent, patternDuration) {
-         var loopStart = (renderRange.start.beat % patternDuration);
-         var loopEnd = (renderRange.end.beat % patternDuration);
-
          var inRange = (
-            (noteEvent.start >= loopStart) && 
-            (noteEvent.start < loopEnd)
+            (noteEvent.start >= renderStart) && 
+            (noteEvent.start < renderEnd)
          );
 
          // account for crossing loop boundary
-         if ((loopEnd < loopStart) && !inRange) {
+         if ((renderEnd < renderStart) && !inRange) {
             inRange = (
-               ( (noteEvent.start >= 0) && (noteEvent.start < loopEnd) ) ||
-               ( (noteEvent.start >= loopStart) && (noteEvent.start < patternDuration) )
+               ( (noteEvent.start >= 0) && (noteEvent.start < renderEnd) ) ||
+               ( (noteEvent.start >= renderStart) && (noteEvent.start < patternDuration) )
             );
          }
 
@@ -47,17 +53,10 @@ class NotePattern {
 
       // play em
       _.each(notes, _.partial(function(noteEvent, patternDuration, patternChannel) {
-         var loopStart = (renderRange.start.beat % patternDuration);
-         var loopEnd = (renderRange.end.beat % patternDuration);
-         // console.log({
-         //    loopStart: loopStart,
-         //    loopEnd: loopEnd
-         // })
-
-         var beatOffset = noteEvent.start - loopStart;
+         var beatOffset = noteEvent.start - renderStart;
 
          // account for crossing loop boundary
-         if ((loopEnd < loopStart) && (noteEvent.start < loopStart)) {
+         if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
             beatOffset += patternDuration;
          }
 
