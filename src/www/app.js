@@ -57,7 +57,8 @@ window.bassline = new NotePattern({
       { start: 4.55, duration: 1, note: 36, velocity: 100 },
       { start: 6, duration: 1, note: 47, velocity: 90 },
       { start: 7.59, duration: 0.5, note: 48, velocity: 80 },
-   ]
+   ],
+   endBeats: [ 0, 7.5 ]
 });
 
 // custom beat pattern
@@ -81,7 +82,8 @@ window.beat = new NotePattern({
       { start: 3 + snarePull, duration: 1, note: midiUtilities.drumMap.clap, velocity: 100 },
 
       { start: 3, duration: 1, note: midiUtilities.drumMap.stick, velocity: 110 },
-   ]
+   ],
+   startBeats: [ 0, 1 + snarePull, 3 + snarePull ]   
 });
 
 // custom lead pattern
@@ -94,7 +96,9 @@ window.lead = new NotePattern({
       { start: 8, duration: 7, note: 48, velocity: 50 },
       { start: 12 + halfOff, duration: 0.5, note: 46, velocity: 60 },
       { start: 15 + halfOff, duration: 0.5, note: 43, velocity: 60 },
-   ]
+   ],
+   startBeats: [ 0, 12 ],   
+   endBeats: [ 12 ]
 });
 
 transport.setPattern({ 

@@ -31,6 +31,9 @@ class NotePattern {
          { start: 3, duration: 1, note: 42, velocity: 100 }
       ];
 
+      this.startBeats = options.startBeats || [ 0 ];
+      this.endBeats = options.endBeats || [ 0 ];
+
       this.playing = true;
       this.triggered = true;
    }
@@ -54,19 +57,22 @@ class NotePattern {
 
       // see if we are going to drop (% duration) this render buffer
       if (!this.playing && this.triggered) {
-         // this is a cheaty test for "is 0 within render range"
-         // in future I'll want "is 0 or other valid drop start pos in render range" 
-         // so will need a isWithinRange thing
-         if (valueInWrappedBeatRange(0, renderStart, renderEnd, patternDuration)) {
-            unmuteStart = 0;
+         var triggerStart = _.find(this.startBeats, function(startBeat) {
+            return valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
+         });
+         if (!_.isUndefined(triggerStart)) {
+            unmuteStart = triggerStart;
             this.playing = true; // strictly, this becomes true part way through..
          }
       }
       
       // see if we are going to undrop (% duration) this render buffer
       if (this.playing && !this.triggered) {
-         if (valueInWrappedBeatRange(0, renderStart, renderEnd, patternDuration)) {
-            unmuteEnd = 0;
+         var triggerEnd = _.find(this.endBeats, function(beat) {
+            return valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
+         });
+         if (!_.isUndefined(triggerEnd)) {
+            unmuteEnd = triggerEnd;
             this.playing = false;
          }
       }
