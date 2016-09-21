@@ -31,3 +31,11 @@ module.exports.renderNote = function(options) {
       options.timestamp + options.duration 
    );
 };
+
+module.exports.renderController = function(options) {
+   // options: port, channel, controller, value, timestamp
+   options.port.send(
+      [0xB0 + options.channel, options.controller, options.value], 
+      options.timestamp
+   );
+};

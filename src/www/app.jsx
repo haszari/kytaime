@@ -1,8 +1,10 @@
 import WebMidiHelper from './web-midi-helper';
 import transport from './transport';
 import midiUtilities from './midi-utilities';
-import NotePattern from './note-pattern';
 import importMidiFile from './import-midi-file';
+
+import NotePattern from './note-pattern';
+import AutomationPattern from './automation-pattern';
 
 // render our main template/html
 var template = require("./templates/main.html");
@@ -100,10 +102,13 @@ window.lead = new NotePattern({
    endBeats: [ 12 ]
 });
 
+window.automation = new AutomationPattern();
+
 transport.setPattern({ 
    beat: window.beat, 
    bassline: window.bassline, 
-   lead: window.lead 
+   lead: window.lead,
+   cc: window.automation
 });
 
 function onFileSelected(input) {
