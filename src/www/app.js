@@ -110,11 +110,13 @@ function onFileSelected(input) {
    var reader = new FileReader();
    reader.readAsArrayBuffer(input.files[0]);
    reader.onloadend = function(event) {
-      window.importedMidiFile = importMidiFile(event.target.result);
+      var importedMidiFile = importMidiFile(event.target.result);
+      var lastNote = _.maxBy(importedMidiFile.notes, 'start');
+      var duration = Math.pow(2, Math.ceil(Math.sqrt(lastNote.start)));
       window.imported = new NotePattern({
-         duration: 4, // tbc
+         duration: duration,
          channel: midiUtilities.channelMap.stab,
-         notes: window.importedMidiFile.notes
+         notes: importedMidiFile.notes
       });  
    }
 }
