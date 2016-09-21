@@ -3,6 +3,15 @@ import _ from 'lodash';
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
+const ccTimeResolution = 0.05; // beats
+function ceilBeats(beats) {
+   return Math.ceil(beats / ccTimeResolution) * ccTimeResolution;  
+}
+function floorBeats(beats) {
+   return Math.floor(beats / ccTimeResolution) * ccTimeResolution;  
+}
+
+
 class AutomationPattern {
    constructor(options) {
       options = options || {};
@@ -33,41 +42,44 @@ class AutomationPattern {
       var renderStart = (renderRange.start.beat % this.duration);
       var renderEnd = (renderRange.end.beat % this.duration);
 
-      // let's just render one point for each transportRender (for now!)
-      var renderMiddle = ((renderEnd - renderStart) / 2) + renderStart;
+      for (
+         var renderMiddle = ceilBeats(renderStart); 
+         renderMiddle <= floorBeats(renderEnd); 
+         renderMiddle += ccTimeResolution) {
+      
+         var sortedPoints = _.sortBy(this.points, 'start');
 
-      var sortedPoints = _.sortBy(this.points, 'start');
+         var firstPointIndex = _.findIndex(sortedPoints, point => {
+            return (point.start <= renderMiddle);
+         });
+         var lastPointIndex = _.findIndex(sortedPoints, point => {
+            return (point.start >= renderMiddle);
+         });
 
-      var firstPointIndex = _.findIndex(sortedPoints, point => {
-         return (point.start <= renderMiddle);
-      });
-      var lastPointIndex = _.findIndex(sortedPoints, point => {
-         return (point.start >= renderMiddle);
-      });
+         if ((firstPointIndex != -1) && (lastPointIndex != -1)) {
+            var firstPoint = sortedPoints[firstPointIndex];
+            var lastPoint = sortedPoints[lastPointIndex];
+            var at = firstPoint.start, bt = lastPoint.start;
+            var deltaBeats = bt - at;
+            var av = firstPoint.value, bv = lastPoint.value;
+            var timestamp = bpmUtilities.beatsToMs(beatsPerMinute, renderMiddle - renderStart); 
+            var interpRemainBeats = deltaBeats - (renderMiddle - at);
+            var nextPart = interpRemainBeats / deltaBeats;
+            nextPart = 1 - nextPart;
+            var value = av + nextPart * (bv - av);
+            var automation = {
+               port: midiOutPort, 
 
-      if ((firstPointIndex != -1) && (lastPointIndex != -1)) {
-         var firstPoint = sortedPoints[firstPointIndex];
-         var lastPoint = sortedPoints[lastPointIndex];
-         var at = firstPoint.start, bt = lastPoint.start;
-         var deltaBeats = bt - at;
-         var av = firstPoint.value, bv = lastPoint.value;
-         var timestamp = (renderRange.end.time - renderRange.start.time) / 2;
-         var interpRemainBeats = deltaBeats - (renderMiddle - at);
-         var nextPart = interpRemainBeats / deltaBeats;
-         nextPart = 1 - nextPart;
-         var value = av + nextPart * (bv - av);
-         var automation = {
-            port: midiOutPort, 
+               channel: 0, // tbc
 
-            channel: 0, // tbc
+               controller: 1, // tbc
+               value: Math.round(value), 
 
-            controller: 1, // tbc
-            value: value, 
-
-            timestamp: renderRange.start.time + timestamp
-         };
-         midiUtilities.renderController(automation);
-         console.log(timestamp, value);
+               timestamp: renderRange.start.time + timestamp
+            };
+            midiUtilities.renderController(automation);
+            console.log(timestamp, value);
+         }
       }
 
 
