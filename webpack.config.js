@@ -2,7 +2,7 @@
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-   entry: "./src/www/app.js",
+   entry: "./src/www/app.jsx",
    output: {
       path: __dirname + "/dist/www",
       filename: "bundle.js"
@@ -11,12 +11,12 @@ module.exports = {
    module: {
       loaders: [
          { 
-            test: /\.js$/, 
+            test: /\.jsx?$/, 
             exclude: /node_modules/, 
             loader: "babel",
             query: {
-               presets: ['es2015']
-            }
+               presets: ['es2015', 'react']
+            },
          },
          { 
             test: /\.css$/, 

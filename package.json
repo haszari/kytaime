@@ -10,11 +10,14 @@
     "start": "export NODE_ENV=development; node src/server/server.js"
   },
   "dependencies": {
+    "babel-preset-react": "^6.11.1",
     "express": "^4.14.0",
     "html-webpack-plugin": "^2.22.0",
     "lodash": "^4.15.0",
     "midievents": "^1.0.1",
-    "midifile": "^1.0.4"
+    "midifile": "^1.0.4",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
