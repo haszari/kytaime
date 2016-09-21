@@ -1,9 +1,8 @@
-document.write("All the action is in the console...");
-
 import WebMidiHelper from './web-midi-helper';
 import transport from './transport';
 import midiUtilities from './midi-utilities';
 import NotePattern from './note-pattern';
+import importMidiFile from './import-midi-file';
 
 // render our main template/html
 var template = require("./templates/main.html");
@@ -107,6 +106,20 @@ transport.setPattern({
    lead: window.lead 
 });
 
+function onFileSelected(input) {
+   var reader = new FileReader();
+   reader.readAsArrayBuffer(input.files[0]);
+   reader.onloadend = function(event) {
+      window.importedMidiFile = importMidiFile(event.target.result);
+      window.imported = new NotePattern({
+         duration: 4, // tbc
+         channel: midiUtilities.channelMap.stab,
+         notes: window.importedMidiFile.notes
+      });  
+   }
+}
+
+window.onFileSelected = onFileSelected;
 window.transport = transport;
 window.midiOutPort = midiOutPort;
 

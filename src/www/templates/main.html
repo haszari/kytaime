@@ -1,3 +1,4 @@
+<div>All the action is in the console...</div>
 <pre>
 // start
 transport.start();
@@ -10,4 +11,12 @@ window.beat.triggered = true;
 window.beat.triggered = false;
 // stop
 transport.stop();
+</pre>
+
+<div>Import a midi file. </div>
+<input type="file" onchange="onFileSelected(this)" accept="audio/x-midi" />
+<pre>
+// Then you have a new pattern to trigger
+transport.setPattern({ whatevs: window.imported });
+window.imported.triggered = true;
 </pre>
