@@ -17,9 +17,10 @@ class AutomationPattern {
       options = options || {};
       this.duration = options.duration || 4;
       this.channel = options.channel || 0;
-      this.points = options.notes || [
-         { start: 0, controller: 0, value: 0 },
-         { start: 4, controller: 0, value: 127 }
+      this.controller = options.controller || 0;
+      this.points = options.points || [
+         { start: 0, value: 0 },
+         { start: 4, value: 127 }
       ];
 
       // this.startBeats = options.startBeats || [ 0 ];
@@ -29,15 +30,7 @@ class AutomationPattern {
       this.triggered = true;
    }
 
-   transportRender(renderRange, beatsPerMinute, midiOutPort) {
-      if (!midiOutPort)
-         return;
-
-      if (!this.playing && !this.triggered) 
-         return;
-
-      var patternDuration = this.duration;
-
+   renderSingleCC(ccPoints, renderRange, beatsPerMinute, midiOutPort) {
       // start and end of render range in pattern-beats
       var renderStart = (renderRange.start.beat % this.duration);
       var renderEnd = (renderRange.end.beat % this.duration);
@@ -47,9 +40,9 @@ class AutomationPattern {
          renderMiddle <= floorBeats(renderEnd); 
          renderMiddle += ccTimeResolution) {
       
-         var sortedPoints = _.sortBy(this.points, 'start');
+         var sortedPoints = _.sortBy(ccPoints, 'start');
 
-         var firstPointIndex = _.findIndex(sortedPoints, point => {
+         var firstPointIndex = _.findLastIndex(sortedPoints, point => {
             return (point.start <= renderMiddle);
          });
          var lastPointIndex = _.findIndex(sortedPoints, point => {
@@ -70,20 +63,27 @@ class AutomationPattern {
             var automation = {
                port: midiOutPort, 
 
-               channel: 0, // tbc
+               channel: this.channel,
 
-               controller: 1, // tbc
+               controller: this.controller,
                value: Math.round(value), 
 
                timestamp: renderRange.start.time + timestamp
             };
             midiUtilities.renderController(automation);
-            console.log(timestamp, value);
+            // console.log(timestamp, value);
          }
       }
+   }
 
+   transportRender(renderRange, beatsPerMinute, midiOutPort) {
+      if (!midiOutPort)
+         return;
 
-      
+      if (!this.playing && !this.triggered) 
+         return;
+
+      this.renderSingleCC(this.points, renderRange, beatsPerMinute, midiOutPort);      
    }
 };
 
