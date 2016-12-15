@@ -17,7 +17,9 @@
     "midievents": "^1.0.1",
     "midifile": "^1.0.4",
     "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0"
   },
   "devDependencies": {
     "babel-cli": "^6.6.5",
