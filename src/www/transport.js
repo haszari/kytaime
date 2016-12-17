@@ -1,14 +1,17 @@
-
-var midiOutPort = null;
-var metronomeChannel = 0;
-var metronomeNote = 37;
-var metronomeOn = true;
-
 var WorkerSetInterval = require('worker!./worker-setInterval')
 
 import midiUtilities from './midi-utilities';
 import _ from 'lodash'; 
 import * as bpmUtilities from './bpm-utilities';
+
+import store from './stores/store';
+import { transportCurrentBeat } from './actions';
+
+
+var midiOutPort = null;
+var metronomeChannel = 0;
+var metronomeNote = 37;
+var metronomeOn = true;
 
 // dictionary of name: pattern
 var patterns = {};
@@ -21,6 +24,20 @@ var renderOverlap = renderInterval * 0.2;
 var beatsPerMinute = 120;
 var setBeatsPerMinute = function(newBpm) {
    beatsPerMinute = newBpm;
+};
+
+var updateUI = function(renderRange) {
+   // this loop and timestamp calc is duplicated around here - should factor it out
+   for (var beat=Math.ceil(renderRange.start.beat); beat<renderRange.end.beat; beat++) {
+      var beatOffset = beat - renderRange.start.beat;
+      var timestamp = bpmUtilities.beatsToMs(beatsPerMinute, beatOffset);
+
+      // dispatch UI update
+      // (this "callback on beat x" is generally useful)
+      setTimeout(() => {
+         store.dispatch(transportCurrentBeat(beat));
+      }, timestamp);
+   }
 };
 
 var renderMetronome = function(renderRange) {
@@ -77,6 +94,8 @@ var updateTransport = function() {
          beat: state.lastRenderEndBeat + bpmUtilities.msToBeats(beatsPerMinute, chunkMs)
       }
    };
+
+   updateUI(renderRange);
 
    // render click(s)
    if (metronomeOn)

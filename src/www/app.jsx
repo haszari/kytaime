@@ -34,19 +34,24 @@ document.addEventListener("DOMContentLoaded", function() {
 import React from 'react';
 import {render} from 'react-dom';
 
-// no app state yet, so no redux (we'll see..)
+import { Provider } from 'react-redux'
+
 // import { createStore } from 'redux'
 // import kytaimeApp from './reducers'
 // let store = createStore(kytaimeApp)
+import store from './stores/store'
 
-import Transport from './components/transport.jsx';
+
+import TickingTransport from './components/ticking-transport.jsx';
 
 class App extends React.Component {
    render () {
       return (
-         <div className="app">
+         <div>
             <p> Hello Kytaime!</p>
-            <Transport />
+            <Provider store={store}>
+               <TickingTransport />
+            </Provider>
          </div>
       );
    }

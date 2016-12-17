@@ -21,12 +21,16 @@ transport.setPattern({
 window.transport = transport;
 // window.midiOutPort = midiOutPort;
 
+
 class Transport extends React.Component {
+   // todo document prop types - beatNumber is int
+
    constructor(props) {
       super(props);
       this.state = {
          readyToPlay: false,
-         isPlaying: false
+         isPlaying: false,
+         beatNumber: ''
       };
       this.handlePlay = this.handlePlay.bind(this);
       this.handleStop = this.handleStop.bind(this);
@@ -69,12 +73,17 @@ class Transport extends React.Component {
    }
 
    handlePlay() {
-      this.setState({isPlaying: true});
+      this.setState({
+         isPlaying: true
+      });
       transport.start();
    }
 
    handleStop() {
-      this.setState({isPlaying: false});
+      this.setState({
+         isPlaying: false
+
+      });
       transport.stop();
    }
 
@@ -85,7 +94,10 @@ class Transport extends React.Component {
       // (could also use setState with function arg)
       const onClick = this.state.isPlaying ? this.handleStop : this.handlePlay;
       return ( 
-         <button onClick={onClick}  disabled={!this.state.readyToPlay}>{buttonText}</button>
+         <div>
+            <div>{this.props.beatNumber}</div>
+            <button onClick={onClick}  disabled={!this.state.readyToPlay}>{buttonText}</button>
+         </div>
       )
    }
 }
