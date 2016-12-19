@@ -35,7 +35,7 @@ function App() {
                </div>
             </section>
 
-
+            {/* pattern lines - each line goes to a channel */}
             <section id="patternLines">
                <div className="row expanded align-middle patternRow patternRow-a">
                   <div className="">
