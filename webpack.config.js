@@ -1,5 +1,8 @@
 
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
+
+var path = require('path');
 
 module.exports = {
    entry: "./src/www/app.jsx",
@@ -32,6 +35,16 @@ module.exports = {
          }
       ]
    },
+   sassLoader: {
+      includePaths: [path.resolve(__dirname, "./node_modules/foundation-sites/scss")]
+   },
    // this helps generate an html file for our generated bundle filename
-   plugins: [new HtmlWebpackPlugin()]
+   plugins: [
+      new HtmlWebpackPlugin({
+         template: 'src/www/index.html'
+      }),
+      new CopyWebpackPlugin([
+         { from: 'src/www/styles/fontello-kytaime-icons', to: 'styles/fontello-kytaime-icons' },
+      ]) 
+   ]
 };

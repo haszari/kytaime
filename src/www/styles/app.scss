@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono');
+
+@import "./utility.scss";
+
+@import "~foundation-sites/scss/foundation";
+
+// override these so our toolbar has the icons hard up against the corners
+// might be better to simply override the gutter on the toolbar specifically
+$grid-column-gutter: (
+   small: 0px,
+   medium: 0px,
+);
+
+// import foundation with flex grid (our css assumes this!)
+@include foundation-everything(true);
+
+
+body {
+   font-family: 'Roboto Mono', monospace;
+   font-weight: 400;
+   font-size: 24px;
+   color: black;
+   background-color: #f4f2f2;
+}
+
+.toolbar {
+	font-size: 150%;
+   color: white;
+   background-color: #343232;
+}
+
+#patternLines .patternRow {
+   border-top: 1px solid #eee;
+}
+
+#patternLines .pattern {
+   width: 80px;
+   height: 80px;
+   margin: 10px 0 10px 10px;
+}
+
+.patternLine-addPattern {
+   width: 36px;
+   text-align: center;
+   border-radius: 123px;
+   background-color: #b1aaaa;
+   color: white;
+   font-weight: bold;
+   margin-left: 30px;
+}
+
+.patternLine-channel {
+   width: 36px;
+   text-align: center;
+   border-radius: 123px;
+   background-color: #b1aaaa;
+   color: white;
+   font-weight: bold;
+   text-align: center;
+   vertical-align: middle;
+   margin-right: 8px;
+}
+
+// can have some fun spacing HSL colours out for channel themes
+// (should write a program for this!)
+
+$pattern-a-hue: 22;
+$pattern-color-increment: 110; // 22 is 360 / 16 channels
+$pattern-background-lightness: 97%;
+$pattern-off-lightness: 82%;
+$pattern-on-lightness: 50%;
+
+#patternLines .patternRow-a {
+   background-color: hsl($pattern-a-hue, 90%, $pattern-background-lightness);
+}
+#patternLines .patternRow-a .pattern {
+   background-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
+}
+#patternLines .patternRow-a .pattern.playing {
+   background-color: hsl($pattern-a-hue, 90%, $pattern-on-lightness);
+}
+$pattern-b-hue: $pattern-a-hue + $pattern-color-increment;
+
+#patternLines .patternRow-b {
+   background-color: hsl($pattern-b-hue, 90%, $pattern-background-lightness);
+}
+#patternLines .patternRow-b .pattern {
+   background-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
+}
+#patternLines .patternRow-b .pattern.playing {
+   background-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
+}
+$pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
+
+#patternLines .patternRow-c {
+   background-color: hsl($pattern-c-hue, 90%, $pattern-background-lightness);
+}
+#patternLines .patternRow-c .pattern {
+   background-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
+}
