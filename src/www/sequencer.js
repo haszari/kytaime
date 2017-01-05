@@ -153,6 +153,13 @@ var stopTempoClock = function() {
    };
 };
 
+var togglePlay = function() {
+   if (!state.isPlaying)
+      startTempoClock();
+   else
+      stopTempoClock();
+}
+
 var isPlaying = function() {
    return state.isPlaying;
 };
@@ -163,6 +170,7 @@ var setPattern = function(patternDictionary) {
 
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;
+module.exports.togglePlay = togglePlay;
 module.exports.isPlaying = isPlaying;
 module.exports.setBeatsPerMinute = setBeatsPerMinute;
 module.exports.setOptions = setOptions;

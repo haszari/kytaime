@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 
 import store from './stores/store';
 
-import TickingTransport from './components/container/ticking-transport.jsx';
+import SequencerApp from './components/container/sequencer-app.jsx';
 
 function App() {
    return (
@@ -17,7 +17,7 @@ function App() {
          {/* Provider likes to wrap a single element */}
          <div>
 
-            <TickingTransport />
+            <SequencerApp />
 
             {/* main top toolbar - import/export menu, transport, loop status */}
             <section className="toolbar noSelect">

@@ -2,8 +2,17 @@
 
 import { combineReducers } from 'redux'
 
-import { TRANSPORT_CURRENT_BEAT } from './action-types';
+import { TRANSPORT_CURRENT_BEAT, TRANSPORT_READY_TO_PLAY } from './action-types';
 
+
+function transportReadyToPlay(state = false, action) {
+   switch (action.type) {
+      case TRANSPORT_READY_TO_PLAY: 
+         return action.readyToPlay
+      default:
+         return state;
+   }
+} 
 
 function transportCurrentBeat(state = 0, action) {
    switch (action.type) {
@@ -15,6 +24,8 @@ function transportCurrentBeat(state = 0, action) {
 } 
 
 const kytaimeApp = combineReducers({
+   // durr looks like these need to be in a subobject transport: { canPlay, currentBeat }
+   transportReadyToPlay,
    transportCurrentBeat
 });
 
