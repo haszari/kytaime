@@ -1,6 +1,8 @@
 var WorkerSetInterval = require('worker!./lib/worker-setInterval')
 
 import _ from 'lodash'; 
+
+import WebMidiHelper from './lib/web-midi-helper';
 import midiUtilities from './lib/midi-utilities';
 import * as bpmUtilities from './lib/bpm-utilities';
 
@@ -169,6 +171,45 @@ var isPlaying = function() {
 var setPattern = function(patternDictionary) {
    patterns = _.extend(patterns, patternDictionary);
 };
+
+
+const requestedPortName = "IAC Driver Bus 1";
+
+function initialiseTransport() {
+   setOptions({
+      port: midiOutPort,
+      metronomeChannel: midiUtilities.channelMap.drums,
+      metronomeNote: midiUtilities.drumMap.stick,
+      metronomeOn: false
+   });
+   // transport.start();
+}
+
+WebMidiHelper.openMidiOut({
+   deviceName: requestedPortName, // default
+   callback: function(info) {
+      if (info.port) {
+         midiOutPort = info.port;
+         console.log("Using " + midiOutPort.name);
+
+         initialiseTransport();
+
+         store.dispatch(transportPlayState("stopped"));
+      }
+   }.bind(this)
+});
+
+// default patterns
+import {beat, bassline, lead, filter, send} from './lib/example-patterns';
+
+setPattern({ 
+   beat: beat, 
+   bassline: bassline, 
+   lead: lead,
+   filter: filter,
+   send: send
+});
+
 
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;
