@@ -5,8 +5,8 @@ import Toolbar from '../presentation/toolbar.jsx';
 
 const mapStateToProps = (state, ownProps) => {
    return {
-      playState: state.transportPlayState,
-      beatNumber: state.transportCurrentBeat,
+      playState: state.transport.playState,
+      beatNumber: state.transport.beatNumber,
       onPlayClick: () => {
          sequencer.togglePlay();
       }
