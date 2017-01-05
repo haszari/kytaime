@@ -31,6 +31,6 @@ const Toolbar = ({playState, beatNumber, onPlayClick}) => {
 Toolbar.propTypes = {
   playState: PropTypes.string.isRequired,
   beatNumber: PropTypes.number.isRequired,
-  onClick: PropTypes.func.isRequired
+  onPlayClick: PropTypes.func.isRequired
 }
 export default Toolbar;
