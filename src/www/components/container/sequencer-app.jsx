@@ -8,7 +8,7 @@ const requestedPortName = "IAC Driver Bus 1";
 import {beat, bassline, lead, filter, send} from '../../lib/example-patterns';
 
 import store from '../../stores/store';
-import { transportReadyToPlay } from '../../stores/actions';
+import { transportPlayState } from '../../stores/actions';
 
 
 
@@ -46,28 +46,21 @@ WebMidiHelper.openMidiOut({
 
          initialiseTransport();
 
-         store.dispatch(transportReadyToPlay(true));
+         store.dispatch(transportPlayState("stopped"));
       }
    }.bind(this)
 });
 
 
 import { connect } from 'react-redux';
-// import transportCurrentBeat from '../../stores/actions';
-import PlayButton from '../presentation/play-button.jsx';
+import Toolbar from '../presentation/toolbar.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
    return {
-      readyToPlay: state.transportReadyToPlay,
+      playState: state.transportPlayState,
       beatNumber: state.transportCurrentBeat,
-
-      // these guys directly pull state out of sequencer (app state)
-      // (rather than redux/store)
-      // this seems slightly wrong .. ? 
-      // I think it's ok, we'll see ...
-      isPlaying: sequencer.isPlaying(),
-      onClick: () => {
+      onPlayClick: () => {
          sequencer.togglePlay();
       }
    }
@@ -86,6 +79,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const SequencerApp = connect(
    mapStateToProps,
    mapDispatchToProps
-)(PlayButton);
+)(Toolbar);
 
 export default SequencerApp;

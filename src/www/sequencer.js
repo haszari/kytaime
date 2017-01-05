@@ -5,7 +5,7 @@ import midiUtilities from './lib/midi-utilities';
 import * as bpmUtilities from './lib/bpm-utilities';
 
 import store from './stores/store';
-import { transportCurrentBeat } from './stores/actions';
+import { transportCurrentBeat, transportPlayState } from './stores/actions';
 
 
 var midiOutPort = null;
@@ -139,6 +139,7 @@ var startTempoClock = function() {
       interval: renderInterval,
       message: "updateMetronome"
    });
+   store.dispatch(transportPlayState("playing"));
 };
 
 var stopTempoClock = function() {
@@ -151,6 +152,7 @@ var stopTempoClock = function() {
       lastRenderEndTime: 0,
       intervalId: null
    };
+   store.dispatch(transportPlayState("stopped"));
 };
 
 var togglePlay = function() {

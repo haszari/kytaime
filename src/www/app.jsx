@@ -19,24 +19,6 @@ function App() {
 
             <SequencerApp />
 
-            {/* main top toolbar - import/export menu, transport, loop status */}
-            <section className="toolbar noSelect">
-               <div className="row expanded">
-                  <div className="shrink columns">
-                     <div className="icon-menu"></div>
-                  </div>
-                  <div className="small columns text-center">
-                     <div className="row align-center">
-                        <div className="">3</div>
-                        <div className="">/32</div>
-                     </div>
-                  </div>
-                  <div className="shrink columns text-right">
-                     <div className="icon-play"></div>
-                  </div>
-               </div>
-            </section>
-
             {/* pattern lines - each line goes to a channel */}
             <section id="patternLines">
                <div className="row expanded align-middle patternRow patternRow-a">
