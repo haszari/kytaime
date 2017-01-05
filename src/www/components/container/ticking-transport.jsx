@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
-import transportCurrentBeat from '../actions';
-import Transport from './transport.jsx';
+import transportCurrentBeat from '../../stores/actions';
+import Transport from '../presentation/transport.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {

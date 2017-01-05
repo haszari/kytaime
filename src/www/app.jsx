@@ -9,13 +9,15 @@ import { Provider } from 'react-redux'
 
 import store from './stores/store';
 
-import TickingTransport from './components/ticking-transport.jsx';
+import TickingTransport from './components/container/ticking-transport.jsx';
 
 function App() {
    return (
       <Provider store={store}>
          {/* Provider likes to wrap a single element */}
          <div>
+
+            <TickingTransport />
 
             {/* main top toolbar - import/export menu, transport, loop status */}
             <section className="toolbar noSelect">

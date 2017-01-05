@@ -5,7 +5,7 @@ import _ from 'lodash';
 import * as bpmUtilities from './bpm-utilities';
 
 import store from './stores/store';
-import { transportCurrentBeat } from './actions';
+import { transportCurrentBeat } from './stores/actions';
 
 
 var midiOutPort = null;

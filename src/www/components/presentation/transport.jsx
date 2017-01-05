@@ -1,13 +1,13 @@
 import React from 'react';
 
-import WebMidiHelper from '../web-midi-helper';
-import transport from '../transport';
-import midiUtilities from '../midi-utilities';
+import WebMidiHelper from '../../web-midi-helper';
+import transport from '../../transport';
+import midiUtilities from '../../midi-utilities';
 
 
 const requestedPortName = "IAC Driver Logic MIDI In";
 
-import {beat, bassline, lead, filter, send} from '../example-patterns';
+import {beat, bassline, lead, filter, send} from '../../example-patterns';
 
 
 transport.setPattern({ 
