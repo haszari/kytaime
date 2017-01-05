@@ -2,7 +2,7 @@
 
 import { combineReducers } from 'redux'
 
-import { TRANSPORT_CURRENT_BEAT, TRANSPORT_PLAYSTATE } from './action-types';
+import { TRANSPORT_CURRENT_BEAT, TRANSPORT_PLAYSTATE, ADD_PATTERN, TOGGLE_PATTERN } from './action-types';
 
 
 const transport = (state = { playState: '', beatNumber: 0 }, action) => {
@@ -18,11 +18,45 @@ const transport = (state = { playState: '', beatNumber: 0 }, action) => {
       default:
          return state;
    }
+}
 
+
+const pattern = (state = {}, action) => {
+  switch (action.type) {
+    case ADD_PATTERN:
+      return {
+        id: action.id, 
+        playState: 'idle'
+      }
+    case TOGGLE_PATTERN:
+      if (state.id !== action.id) {
+        return state;
+      }
+
+      return Object.assign({}, state, {
+        triggered: !state.triggered
+      });
+
+    default:
+      return state
+  }
+}
+
+const patterns = (state = [], action) => {
+   switch (action.type) {
+      case ADD_PATTERN:
+         return [
+            ...state,
+            pattern(undefined, action)
+         ];
+      default:
+         return state;
+   }
 }
 
 const kytaimeApp = combineReducers({
-   transport
+   transport,
+   patterns
 });
 
 export default kytaimeApp;

@@ -8,8 +8,10 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux'
 
 import store from './stores/store';
+import { addPattern } from './stores/actions';
 
 import SequencerApp from './components/container/sequencer-app.jsx';
+import SequenceGrid from './components/container/pattern-grid.jsx';
 
 function App() {
    return (
@@ -17,24 +19,13 @@ function App() {
          {/* Provider likes to wrap a single element */}
          <div>
 
-            <SequencerApp />
+            {/* ahem, this is toolbar */} 
+            <SequencerApp /> 
 
-            {/* pattern lines - each line goes to a channel */}
+            {/* FAKE  pattern lines - each line goes to a channel */}
             <section id="patternLines">
-               <div className="row expanded align-middle patternRow patternRow-a">
-                  <div className="">
-                     <div className="pattern playing"></div>
-                  </div>
-                  <div className="">
-                     <div className="pattern"></div>
-                  </div>
-                  <div className="small columns">
-                     <div className="patternLine-addPattern">+</div>
-                  </div>
-                  <div className="">
-                     <div className="patternLine-channel">1</div>
-                  </div>
-               </div>
+
+               <SequenceGrid />
 
                <div className="row expanded align-middle patternRow patternRow-b">
                   <div className="shrink columns">
@@ -67,6 +58,10 @@ document.body.appendChild(appDiv);
 
 render(<App/>, appDiv);
 
+/// test adding some patterns
+store.dispatch(addPattern());
+store.dispatch(addPattern());
+store.dispatch(addPattern());
 
 
 

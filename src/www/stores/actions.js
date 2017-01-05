@@ -1,12 +1,18 @@
 
 
 
-import { TRANSPORT_CURRENT_BEAT, TRANSPORT_PLAYSTATE } from './action-types';
+import * as actionTypes from './action-types';
 
 export function transportPlayState(playState) {
-   return { type: TRANSPORT_PLAYSTATE, playState: playState };
+   return { type: actionTypes.TRANSPORT_PLAYSTATE, playState: playState };
 }
 
 export function transportCurrentBeat(beatNumber) {
-   return { type: TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
+   return { type: actionTypes.TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
 }
+
+let nextPatternId = 0;
+export function addPattern() {
+   return { type: actionTypes.ADD_PATTERN, id: nextPatternId++ };
+}
+
