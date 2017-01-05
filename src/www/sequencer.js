@@ -1,8 +1,8 @@
-var WorkerSetInterval = require('worker!./worker-setInterval')
+var WorkerSetInterval = require('worker!./lib/worker-setInterval')
 
-import midiUtilities from './midi-utilities';
 import _ from 'lodash'; 
-import * as bpmUtilities from './bpm-utilities';
+import midiUtilities from './lib/midi-utilities';
+import * as bpmUtilities from './lib/bpm-utilities';
 
 import store from './stores/store';
 import { transportCurrentBeat } from './stores/actions';

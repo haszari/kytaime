@@ -1,16 +1,16 @@
 import React from 'react';
 
-import WebMidiHelper from '../../web-midi-helper';
-import transport from '../../transport';
-import midiUtilities from '../../midi-utilities';
+import WebMidiHelper from '../../lib/web-midi-helper';
+import sequencer from '../../sequencer';
+import midiUtilities from '../../lib/midi-utilities';
 
 
 const requestedPortName = "IAC Driver Logic MIDI In";
 
-import {beat, bassline, lead, filter, send} from '../../example-patterns';
+import {beat, bassline, lead, filter, send} from '../../lib/example-patterns';
 
 
-transport.setPattern({ 
+sequencer.setPattern({ 
    beat: beat, 
    bassline: bassline, 
    lead: lead,
@@ -18,7 +18,7 @@ transport.setPattern({
    send: send
 });
 
-window.transport = transport;
+window.sequencer = sequencer;
 // window.midiOutPort = midiOutPort;
 
 
@@ -40,8 +40,8 @@ class Transport extends React.Component {
       let midiOutPort = null;
 
       function initialiseTransport() {
-         if (transport) {
-            transport.setOptions({
+         if (sequencer) {
+            sequencer.setOptions({
                port: midiOutPort,
                metronomeChannel: midiUtilities.channelMap.drums,
                metronomeNote: midiUtilities.drumMap.stick,
@@ -76,7 +76,7 @@ class Transport extends React.Component {
       this.setState({
          isPlaying: true
       });
-      transport.start();
+      sequencer.start();
    }
 
    handleStop() {
@@ -84,7 +84,7 @@ class Transport extends React.Component {
          isPlaying: false
 
       });
-      transport.stop();
+      sequencer.stop();
    }
 
    render () {
