@@ -3,7 +3,7 @@ import sequencer from '../../sequencer';
 import midiUtilities from '../../lib/midi-utilities';
 
 
-const requestedPortName = "IAC Driver Logic MIDI In";
+const requestedPortName = "IAC Driver Bus 1";
 
 import {beat, bassline, lead, filter, send} from '../../lib/example-patterns';
 
