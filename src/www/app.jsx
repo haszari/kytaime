@@ -8,7 +8,7 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux'
 
 import store from './stores/store';
-import { addPattern } from './stores/actions';
+import * as actions from './stores/actions';
 
 import SequencerApp from './components/container/sequencer-app.jsx';
 import SequenceGrid from './components/container/pattern-grid.jsx';
@@ -59,10 +59,11 @@ document.body.appendChild(appDiv);
 render(<App/>, appDiv);
 
 /// test adding some patterns
-store.dispatch(addPattern());
-store.dispatch(addPattern());
-store.dispatch(addPattern());
+store.dispatch(actions.addPattern());
+store.dispatch(actions.addPattern());
+store.dispatch(actions.addPattern());
 
+store.dispatch(actions.togglePatternTrigger({ id: 1 }));
 
 
 

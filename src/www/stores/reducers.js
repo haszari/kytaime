@@ -2,16 +2,16 @@
 
 import { combineReducers } from 'redux'
 
-import { TRANSPORT_CURRENT_BEAT, TRANSPORT_PLAYSTATE, ADD_PATTERN, TOGGLE_PATTERN } from './action-types';
+import * as actionTypes from './action-types';
 
 
 const transport = (state = { playState: '', beatNumber: 0 }, action) => {
    switch (action.type) {
-      case TRANSPORT_PLAYSTATE: 
+      case actionTypes.TRANSPORT_PLAYSTATE: 
          return Object.assign({}, state, {
             playState: action.playState
          });
-      case TRANSPORT_CURRENT_BEAT: 
+      case actionTypes.TRANSPORT_CURRENT_BEAT: 
          return Object.assign({}, state, {
             beatNumber: action.beatNumber
          });
@@ -23,19 +23,20 @@ const transport = (state = { playState: '', beatNumber: 0 }, action) => {
 
 const pattern = (state = {}, action) => {
   switch (action.type) {
-    case ADD_PATTERN:
+    case actionTypes.ADD_PATTERN:
       return {
         id: action.id, 
-        playState: 'idle'
+        triggered: false
       }
-    case TOGGLE_PATTERN:
+    case actionTypes.TOGGLE_PATTERN_TRIGGER:
       if (state.id !== action.id) {
         return state;
       }
 
-      return Object.assign({}, state, {
+      let newState = Object.assign({}, state, {
         triggered: !state.triggered
       });
+      return newState;
 
     default:
       return state
@@ -44,11 +45,15 @@ const pattern = (state = {}, action) => {
 
 const patterns = (state = [], action) => {
    switch (action.type) {
-      case ADD_PATTERN:
+      case actionTypes.ADD_PATTERN:
          return [
             ...state,
             pattern(undefined, action)
          ];
+      case actionTypes.TOGGLE_PATTERN_TRIGGER:
+         return state.map(p => {
+            return pattern(p, action);
+         });
       default:
          return state;
    }

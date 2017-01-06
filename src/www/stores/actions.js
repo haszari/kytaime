@@ -16,3 +16,7 @@ export function addPattern() {
    return { type: actionTypes.ADD_PATTERN, id: nextPatternId++ };
 }
 
+export function togglePatternTrigger(pattern) {
+   return { type: actionTypes.TOGGLE_PATTERN_TRIGGER, id: pattern.id };
+}
+

@@ -1,13 +1,26 @@
 import React, { PropTypes } from 'react';
 
 
-const Toolbar = ({ patterns }) => {
+const PatternCell = ({triggered, playing}) => {
+   let classes = ["pattern"];
+   if (triggered) 
+      classes.push("triggered");
+   if (playing) 
+      classes.push("playing");
+
+   return (
+      <div className="">
+         <div className={classes.join(" ")}></div>
+      </div>
+   );               
+}
+
+
+const PatternGridLine = ({ patterns }) => {
    return ( 
       <div className="row expanded align-middle patternRow patternRow-a">
-         {patterns.map(pattern => 
-            <div className="">
-               <div className="pattern"></div>
-            </div>
+         {patterns.map((pattern) => 
+            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={false} />
          )}
 
          <div className="small columns">
@@ -20,8 +33,8 @@ const Toolbar = ({ patterns }) => {
    );
 }
 
-Toolbar.propTypes = {
+PatternGridLine.propTypes = {
    patterns: PropTypes.array.isRequired,
 }
 
-export default Toolbar;
+export default PatternGridLine;
