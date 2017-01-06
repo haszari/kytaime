@@ -34,16 +34,18 @@ class NotePattern {
       this.startBeats = options.startBeats || [ 0 ];
       this.endBeats = options.endBeats || [ 0 ];
 
-      this.playing = true;
-      this.triggered = true;
+      // this.playing = true;
+      // this.triggered = true;
    }
 
-   transportRender(renderRange, beatsPerMinute, midiOutPort) {
-      if (!midiOutPort)
-         return;
+   transportRender(renderRange, beatsPerMinute, midiOutPort, triggered, playing) {
+      let isPlaying = playing;
 
-      if (!this.playing && !this.triggered) 
-         return;
+      if (!midiOutPort)
+         return isPlaying;
+
+      if (!playing && !triggered) 
+         return isPlaying;
 
       var patternDuration = this.duration;
 
@@ -56,30 +58,30 @@ class NotePattern {
       var unmuteEnd = renderEnd;
 
       // see if we are going to drop (% duration) this render buffer
-      if (!this.playing && this.triggered) {
+      if (!playing && triggered) {
          var triggerStart = _.find(this.startBeats, function(startBeat) {
             return valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
          });
          if (!_.isUndefined(triggerStart)) {
             unmuteStart = triggerStart;
-            this.playing = true; // strictly, this becomes true part way through..
+            isPlaying = true; // strictly, this becomes true part way through..
          }
       }
       
       // see if we are going to undrop (% duration) this render buffer
-      if (this.playing && !this.triggered) {
+      if (playing && !triggered) {
          var triggerEnd = _.find(this.endBeats, function(beat) {
             return valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
          });
          if (!_.isUndefined(triggerEnd)) {
             unmuteEnd = triggerEnd;
-            this.playing = false;
+            isPlaying = false;
          }
       }
 
       // trigger not happening yet
-      if (!this.playing) {
-         return;
+      if (!isPlaying) {
+         return isPlaying;
       }
 
       var notes = this.notes || [];
@@ -114,6 +116,7 @@ class NotePattern {
          midiUtilities.renderNote(note);
       }, _, this.duration, this.channel));
 
+      return isPlaying;
    }
 };
 

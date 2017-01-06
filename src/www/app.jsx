@@ -7,6 +7,8 @@ import {render} from 'react-dom';
 
 import { Provider } from 'react-redux'
 
+import sequencer from './sequencer';
+
 import store from './stores/store';
 import * as actions from './stores/actions';
 
@@ -58,14 +60,25 @@ document.body.appendChild(appDiv);
 
 render(<App/>, appDiv);
 
-/// test adding some patterns
-store.dispatch(actions.addPattern());
-store.dispatch(actions.addPattern());
-store.dispatch(actions.addPattern());
 
-store.dispatch(actions.togglePatternTrigger({ id: 1 }));
 
-store.dispatch(actions.patternPlayState({ id: 2, playing: true }));
+import {beat, bassline, lead, filter, send} from './lib/example-patterns';
+
+sequencer.setPattern({ 
+   beat: beat, 
+   bassline: bassline, 
+   lead: lead,
+   filter: filter,
+   send: send
+});
+
+store.dispatch(actions.addPattern({ id: 'beat' }));
+store.dispatch(actions.addPattern({ id: 'bassline' }));
+store.dispatch(actions.addPattern({ id: 'lead' }));
+
+store.dispatch(actions.togglePatternTrigger({ id: 'bassline' }));
+
+store.dispatch(actions.patternPlayState({ id: 'beat', playing: true }));
 
 
 

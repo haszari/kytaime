@@ -7,7 +7,7 @@ import midiUtilities from './lib/midi-utilities';
 import * as bpmUtilities from './lib/bpm-utilities';
 
 import store from './stores/store';
-import { transportCurrentBeat, transportPlayState } from './stores/actions';
+import * as actions from './stores/actions';
 
 
 var midiOutPort = null;
@@ -37,7 +37,7 @@ var updateUI = function(renderRange) {
       // dispatch UI update
       // (this "callback on beat x" is generally useful)
       setTimeout(() => {
-         store.dispatch(transportCurrentBeat(beat));
+         store.dispatch(actions.transportCurrentBeat(beat));
       }, timestamp);
    }
 };
@@ -64,9 +64,9 @@ var renderMetronome = function(renderRange) {
       midiUtilities.renderNote(note);
    }
 };
-var renderPattern = function(renderRange, pattern) {
+var renderPattern = function(renderRange, pattern, triggered, playing) {
    if (pattern && pattern.transportRender) {
-      pattern.transportRender(renderRange, beatsPerMinute, midiOutPort);
+      
    }
 };
 
@@ -104,7 +104,16 @@ var updateTransport = function() {
       renderMetronome(renderRange);
 
    // render patterns
-   _.each(patterns, renderPattern.bind(null, renderRange));
+   let appState = store.getState();
+   _.each(patterns, (pattern, patternId) => {
+      let patternState = _.find(appState.patterns, { id: patternId });
+      let isStillPlaying = false;
+      if (patternState && pattern && pattern.transportRender) {
+         isStillPlaying = pattern.transportRender(renderRange, beatsPerMinute, midiOutPort, patternState.triggered, patternState.playing);
+         if (isStillPlaying != patternState.playing)
+            store.dispatch(actions.patternPlayState({ id: patternId, playing: isStillPlaying }));
+      }
+   });
 
    // update state
    state.lastRenderEndBeat = renderRange.end.beat;
@@ -141,7 +150,7 @@ var startTempoClock = function() {
       interval: renderInterval,
       message: "updateMetronome"
    });
-   store.dispatch(transportPlayState("playing"));
+   store.dispatch(actions.transportPlayState("playing"));
 };
 
 var stopTempoClock = function() {
@@ -154,7 +163,7 @@ var stopTempoClock = function() {
       lastRenderEndTime: 0,
       intervalId: null
    };
-   store.dispatch(transportPlayState("stopped"));
+   store.dispatch(actions.transportPlayState("stopped"));
 };
 
 var togglePlay = function() {
@@ -194,22 +203,10 @@ WebMidiHelper.openMidiOut({
 
          initialiseTransport();
 
-         store.dispatch(transportPlayState("stopped"));
+         store.dispatch(actions.transportPlayState("stopped"));
       }
    }.bind(this)
 });
-
-// default patterns
-import {beat, bassline, lead, filter, send} from './lib/example-patterns';
-
-setPattern({ 
-   beat: beat, 
-   bassline: bassline, 
-   lead: lead,
-   filter: filter,
-   send: send
-});
-
 
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;

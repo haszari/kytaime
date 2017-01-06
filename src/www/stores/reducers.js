@@ -25,8 +25,9 @@ const pattern = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.ADD_PATTERN:
       return {
-        id: action.id, 
-        triggered: false
+         id: action.id, 
+         triggered: true,
+         playing: false
       }
 
     case actionTypes.TOGGLE_PATTERN_TRIGGER:
