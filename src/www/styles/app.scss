@@ -74,7 +74,6 @@ $pattern-on-lightness: 50%;
 
 #patternLines .patternRow-a {
    background-color: hsl($pattern-a-hue, 90%, $pattern-background-lightness);
-   border-color: hsl($pattern-a-hue, 90%, $pattern-background-lightness);
 }
 #patternLines .patternRow-a .pattern {
    background-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
@@ -91,7 +90,6 @@ $pattern-b-hue: $pattern-a-hue + $pattern-color-increment;
 
 #patternLines .patternRow-b {
    background-color: hsl($pattern-b-hue, 90%, $pattern-background-lightness);
-   border-color: hsl($pattern-b-hue, 90%, $pattern-background-lightness);
 }
 #patternLines .patternRow-b .pattern {
    background-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
@@ -104,7 +102,6 @@ $pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
 
 #patternLines .patternRow-c {
    background-color: hsl($pattern-c-hue, 90%, $pattern-background-lightness);
-   border-color: hsl($pattern-c-hue, 90%, $pattern-background-lightness);
 }
 #patternLines .patternRow-c .pattern {
    background-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
