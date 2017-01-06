@@ -15,6 +15,11 @@ const PatternCell = ({triggered, playing, onClick}) => {
    );               
 }
 
+PatternCell.propTypes = {
+   triggered: PropTypes.bool.isRequired,
+   playing: PropTypes.bool.isRequired,
+   onClick: PropTypes.func.isRequired
+}
 
 const PatternGridLine = ({ patterns, onPatternClick }) => {
    return ( 
@@ -35,6 +40,7 @@ const PatternGridLine = ({ patterns, onPatternClick }) => {
 
 PatternGridLine.propTypes = {
    patterns: PropTypes.array.isRequired,
+   onPatternClick: PropTypes.func.isRequired
 }
 
 export default PatternGridLine;
