@@ -109,7 +109,12 @@ var updateTransport = function() {
       let patternState = _.find(appState.patterns, { id: patternId });
       let isStillPlaying = false;
       if (patternState && pattern && pattern.transportRender) {
-         isStillPlaying = pattern.transportRender(renderRange, beatsPerMinute, midiOutPort, patternState.triggered, patternState.playing);
+         isStillPlaying = pattern.transportRender(
+            renderRange, beatsPerMinute, midiOutPort, 
+            patternState.channel, 
+            patternState.triggered, 
+            patternState.playing
+         );
          if (isStillPlaying != patternState.playing)
             store.dispatch(actions.patternPlayState({ id: patternId, playing: isStillPlaying }));
       }

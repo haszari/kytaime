@@ -23,7 +23,6 @@ class NotePattern {
    constructor(options) {
       options = options || {};
       this.duration = options.duration || 4;
-      this.channel = options.channel || 0;
       this.notes = options.notes || [
          { start: 0, duration: 1, note: 42, velocity: 100 },
          { start: 1, duration: 1, note: 42, velocity: 100 },
@@ -33,12 +32,9 @@ class NotePattern {
 
       this.startBeats = options.startBeats || [ 0 ];
       this.endBeats = options.endBeats || [ 0 ];
-
-      // this.playing = true;
-      // this.triggered = true;
    }
 
-   transportRender(renderRange, beatsPerMinute, midiOutPort, triggered, playing) {
+   transportRender(renderRange, beatsPerMinute, midiOutPort, channel, triggered, playing) {
       let isPlaying = playing;
 
       if (!midiOutPort)
@@ -104,7 +100,7 @@ class NotePattern {
          var note = { 
             port: midiOutPort, 
 
-            channel: patternChannel,
+            channel: patternChannel - 1,
             note: noteEvent.note,
 
             velocity: noteEvent.velocity, 
@@ -114,7 +110,7 @@ class NotePattern {
          // console.log(note.timestamp);
 
          midiUtilities.renderNote(note);
-      }, _, this.duration, this.channel));
+      }, _, this.duration, channel));
 
       return isPlaying;
    }

@@ -7,7 +7,7 @@ export const hats = new NotePattern();
 
 export const kick = new NotePattern({
    duration: 4,
-   channel: midiUtilities.channelMap.drums,
+   // channel: midiUtilities.channelMap.drums,
    notes: [
       { start: 0, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
       { start: 1, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
@@ -19,7 +19,7 @@ export const kick = new NotePattern({
 // custom bass pattern
 export const bassline = new NotePattern({
    duration: 8,
-   channel: midiUtilities.channelMap.bass,
+   // channel: midiUtilities.channelMap.bass,
    notes: [
       { start: 0, duration: 1, note: 36, velocity: 100 },
       { start: 1.5, duration: 1, note: 36, velocity: 100 },
@@ -37,7 +37,7 @@ var halfOff = 0.64;
 var snarePull = -0.02;
 export const beat = new NotePattern({
    duration: 4,
-   channel: midiUtilities.channelMap.drums,
+   // channel: midiUtilities.channelMap.drums,
    notes: [
       { start: 0, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
       { start: 1, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
@@ -60,7 +60,7 @@ export const beat = new NotePattern({
 // custom lead pattern
 export const lead = new NotePattern({
    duration: 16,
-   channel: midiUtilities.channelMap.saw,
+   // channel: midiUtilities.channelMap.saw,
    notes: [
       { start: 0, duration: 7, note: 36, velocity: 50 },
       { start: 4, duration: 7, note: 42, velocity: 50 },
