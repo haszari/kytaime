@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 
 
-const PatternCell = ({triggered, playing}) => {
+const PatternCell = ({triggered, playing, onClick}) => {
    let classes = ["pattern"];
    if (triggered) 
       classes.push("triggered");
@@ -9,18 +9,18 @@ const PatternCell = ({triggered, playing}) => {
       classes.push("playing");
 
    return (
-      <div className="">
+      <div className="" onClick={onClick} >
          <div className={classes.join(" ")}></div>
       </div>
    );               
 }
 
 
-const PatternGridLine = ({ patterns }) => {
+const PatternGridLine = ({ patterns, onPatternClick }) => {
    return ( 
       <div className="row expanded align-middle patternRow patternRow-a">
          {patterns.map((pattern) => 
-            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={false} />
+            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={false} onClick={() => onPatternClick(pattern.id) } />
          )}
 
          <div className="small columns">

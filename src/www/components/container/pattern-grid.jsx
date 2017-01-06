@@ -1,6 +1,10 @@
-import sequencer from '../../sequencer';
 import { connect } from 'react-redux';
+
+import sequencer from '../../sequencer';
+
 import PatternGridLine from '../presentation/pattern-grid-line.jsx';
+
+import * as actions from '../../stores/actions';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -11,7 +15,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-
+      onPatternClick: (id) => {
+         dispatch(actions.togglePatternTrigger({id: id}))
+      }
    }
 }
 
