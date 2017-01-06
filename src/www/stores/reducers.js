@@ -25,7 +25,8 @@ const pattern = (state = {}, action) => {
   switch (action.type) {
     case actionTypes.ADD_PATTERN:
       return {
-         id: action.id, 
+         id: action.id,
+         channel: action.channel,  
          triggered: true,
          playing: false
       }

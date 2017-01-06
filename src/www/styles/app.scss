@@ -65,6 +65,8 @@ body {
 
 // can have some fun spacing HSL colours out for channel themes
 // (should write a program for this!)
+// well should just move all this into component as inline styles
+// aaand will do that when we want more than 3 channels!
 
 $pattern-a-hue: 22;
 $pattern-color-increment: 110; // 22 is 360 / 16 channels
@@ -99,6 +101,9 @@ $pattern-b-hue: $pattern-a-hue + $pattern-color-increment;
 #patternLines .patternRow-b .pattern.playing {
    background-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
 }
+#patternLines .patternRow-b .pattern.triggered {
+   border-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
+}
 
 $pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
 
@@ -111,4 +116,7 @@ $pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
 }
 #patternLines .patternRow-c .pattern.playing {
    background-color: hsl($pattern-c-hue, 90%, $pattern-on-lightness);
+}
+#patternLines .patternRow-c .pattern.triggered {
+   border-color: hsl($pattern-c-hue, 90%, $pattern-on-lightness);
 }

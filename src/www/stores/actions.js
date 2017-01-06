@@ -12,7 +12,7 @@ export function transportCurrentBeat(beatNumber) {
 }
 
 export function addPattern(pattern) {
-   return { type: actionTypes.ADD_PATTERN, id: pattern.id };
+   return { type: actionTypes.ADD_PATTERN, id: pattern.id, channel: pattern.channel };
 }
 
 export function togglePatternTrigger(pattern) {

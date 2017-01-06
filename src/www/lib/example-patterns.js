@@ -5,6 +5,17 @@ import midiUtilities from './midi-utilities';
 // default pattern is 4 x hats
 export const hats = new NotePattern();
 
+export const kick = new NotePattern({
+   duration: 4,
+   channel: midiUtilities.channelMap.drums,
+   notes: [
+      { start: 0, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
+      { start: 1, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
+      { start: 2, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
+      { start: 3, duration: 1, note: midiUtilities.drumMap.kick, velocity: 100 },
+   ]
+});
+
 // custom bass pattern
 export const bassline = new NotePattern({
    duration: 8,

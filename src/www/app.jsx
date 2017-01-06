@@ -13,7 +13,7 @@ import store from './stores/store';
 import * as actions from './stores/actions';
 
 import Toolbar from './components/container/toolbar.jsx';
-import PatternGrid from './components/container/pattern-grid.jsx';
+import PatternGridLine from './components/container/pattern-grid-line.jsx';
 
 function App() {
    return (
@@ -25,28 +25,18 @@ function App() {
 
             <section id="patternLines">
 
-               <PatternGrid />
+               <PatternGridLine channel={1} />
 
-               <div className="row expanded align-middle patternRow patternRow-b">
-                  <div className="shrink columns">
-                     <div className="pattern"></div>
-                  </div>
-                  <div className="shrink columns">
-                     <div className="pattern playing"></div>
-                  </div>
-                  <div className="shrink columns">
-                     <div className="pattern"></div>
-                  </div>
-                  <div className="shrink columns">
-                     <div className="pattern"></div>
-                  </div>
-               </div>
+               <PatternGridLine channel={2} />
 
-               <div className="row expanded align-middle patternRow patternRow-c">
-                  <div className="shrink columns">
-                     <div className="pattern"></div>
-                  </div>
-               </div>
+               <PatternGridLine channel={3} />
+
+               <PatternGridLine channel={4} />
+
+               <PatternGridLine channel={5} />
+
+               <PatternGridLine channel={6} />
+
             </section>
          </div>
       </Provider>
@@ -60,19 +50,23 @@ render(<App/>, appDiv);
 
 
 
-import {beat, bassline, lead, filter, send} from './lib/example-patterns';
+import {hats, kick, beat, bassline, lead, filter, send} from './lib/example-patterns';
 
 sequencer.setPattern({ 
+   kick: kick, 
    beat: beat, 
+   hats: hats, 
    bassline: bassline, 
    lead: lead,
    filter: filter,
    send: send
 });
 
-store.dispatch(actions.addPattern({ id: 'beat' }));
-store.dispatch(actions.addPattern({ id: 'bassline' }));
-store.dispatch(actions.addPattern({ id: 'lead' }));
+store.dispatch(actions.addPattern({ id: 'kick', channel: 1 }));
+store.dispatch(actions.addPattern({ id: 'beat', channel: 1 }));
+store.dispatch(actions.addPattern({ id: 'hats', channel: 1 }));
+store.dispatch(actions.addPattern({ id: 'bassline', channel: 2 }));
+store.dispatch(actions.addPattern({ id: 'lead', channel: 3 }));
 
 store.dispatch(actions.togglePatternTrigger({ id: 'bassline' }));
 
