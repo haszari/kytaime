@@ -28,16 +28,24 @@ const pattern = (state = {}, action) => {
         id: action.id, 
         triggered: false
       }
+
     case actionTypes.TOGGLE_PATTERN_TRIGGER:
       if (state.id !== action.id) {
         return state;
       }
 
-      let newState = Object.assign({}, state, {
+      return Object.assign({}, state, {
         triggered: !state.triggered
       });
-      return newState;
 
+    case actionTypes.PATTERN_PLAYSTATE:
+      if (state.id !== action.id) {
+        return state;
+      }
+
+      return Object.assign({}, state, {
+        playing: action.playing
+      });
     default:
       return state
   }
@@ -51,6 +59,7 @@ const patterns = (state = [], action) => {
             pattern(undefined, action)
          ];
       case actionTypes.TOGGLE_PATTERN_TRIGGER:
+      case actionTypes.PATTERN_PLAYSTATE:
          return state.map(p => {
             return pattern(p, action);
          });

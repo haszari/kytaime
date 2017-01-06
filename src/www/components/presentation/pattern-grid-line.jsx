@@ -20,7 +20,7 @@ const PatternGridLine = ({ patterns, onPatternClick }) => {
    return ( 
       <div className="row expanded align-middle patternRow patternRow-a">
          {patterns.map((pattern) => 
-            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={false} onClick={() => onPatternClick(pattern.id) } />
+            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} onClick={() => onPatternClick(pattern.id) } />
          )}
 
          <div className="small columns">

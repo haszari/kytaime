@@ -65,6 +65,8 @@ store.dispatch(actions.addPattern());
 
 store.dispatch(actions.togglePatternTrigger({ id: 1 }));
 
+store.dispatch(actions.patternPlayState({ id: 2, playing: true }));
+
 
 
 

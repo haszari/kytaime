@@ -77,6 +77,7 @@ $pattern-on-lightness: 50%;
 }
 #patternLines .patternRow-a .pattern {
    background-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
+   border-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
 }
 #patternLines .patternRow-a .pattern.playing {
    background-color: hsl($pattern-a-hue, 90%, $pattern-on-lightness);
@@ -93,6 +94,7 @@ $pattern-b-hue: $pattern-a-hue + $pattern-color-increment;
 }
 #patternLines .patternRow-b .pattern {
    background-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
+   border-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
 }
 #patternLines .patternRow-b .pattern.playing {
    background-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
@@ -105,4 +107,8 @@ $pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
 }
 #patternLines .patternRow-c .pattern {
    background-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
+   border-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
+}
+#patternLines .patternRow-c .pattern.playing {
+   background-color: hsl($pattern-c-hue, 90%, $pattern-on-lightness);
 }

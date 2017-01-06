@@ -20,3 +20,7 @@ export function togglePatternTrigger(pattern) {
    return { type: actionTypes.TOGGLE_PATTERN_TRIGGER, id: pattern.id };
 }
 
+export function patternPlayState(pattern) {
+   return { type: actionTypes.PATTERN_PLAYSTATE, id: pattern.id, playing: pattern.playing };
+}
+
