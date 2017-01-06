@@ -12,8 +12,8 @@ import sequencer from './sequencer';
 import store from './stores/store';
 import * as actions from './stores/actions';
 
-import SequencerApp from './components/container/sequencer-app.jsx';
-import SequenceGrid from './components/container/pattern-grid.jsx';
+import Toolbar from './components/container/toolbar.jsx';
+import PatternGrid from './components/container/pattern-grid.jsx';
 
 function App() {
    return (
@@ -21,13 +21,11 @@ function App() {
          {/* Provider likes to wrap a single element */}
          <div>
 
-            {/* ahem, this is toolbar */} 
-            <SequencerApp /> 
+            <Toolbar /> 
 
-            {/* FAKE  pattern lines - each line goes to a channel */}
             <section id="patternLines">
 
-               <SequenceGrid />
+               <PatternGrid />
 
                <div className="row expanded align-middle patternRow patternRow-b">
                   <div className="shrink columns">

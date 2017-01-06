@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import sequencer from '../../sequencer';
 
-import PatternGridLine from '../presentation/pattern-grid-line.jsx';
+import PatternGridLine from '../presentation/pattern-grid.jsx';
 
 import * as actions from '../../stores/actions';
 
