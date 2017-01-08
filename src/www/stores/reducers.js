@@ -22,39 +22,40 @@ const transport = (state = { playState: '', beatNumber: 0 }, action) => {
 
 
 const pattern = (state = {}, action) => {
-  switch (action.type) {
-    case actionTypes.ADD_PATTERN:
-      return {
-         id: action.id,
-         channel: action.channel,  
-         notes: action.notes || [],
-         duration: action.duration || 4,
-         startBeats: action.startBeats || [ 0 ],
-         endBeats: action.endBeats || [ 0 ],
-         triggered: true,
-         playing: false
-      }
+   switch (action.type) {
+      case actionTypes.ADD_PATTERN:
+         return {
+            id: action.id,
+            channel: action.channel,  
+            notes: action.notes || [],
+            duration: action.duration || 4,
+            startBeats: action.startBeats || [ 0 ],
+            endBeats: action.endBeats || [ 0 ],
+            triggered: true,
+            playing: false
+         }
 
-    case actionTypes.TOGGLE_PATTERN_TRIGGER:
-      if (state.id !== action.id) {
-        return state;
-      }
+      case actionTypes.TOGGLE_PATTERN_TRIGGER:
+         if (state.id !== action.id) {
+           return state;
+         }
 
-      return Object.assign({}, state, {
-        triggered: !state.triggered
-      });
+         return Object.assign({}, state, {
+           triggered: !state.triggered
+         });
 
-    case actionTypes.PATTERN_PLAYSTATE:
-      if (state.id !== action.id) {
-        return state;
-      }
+      case actionTypes.PATTERN_PLAYSTATE:
+         if (state.id !== action.id) {
+           return state;
+         }
 
-      return Object.assign({}, state, {
-        playing: action.playing
-      });
-    default:
-      return state
-  }
+         return Object.assign({}, state, {
+           playing: action.playing
+         });
+
+      default:
+         return state;
+   }
 }
 
 const patterns = (state = [], action) => {
@@ -69,6 +70,10 @@ const patterns = (state = [], action) => {
          return state.map(p => {
             return pattern(p, action);
          });
+
+      case actionTypes.REMOVE_PATTERN:
+         return state.filter(pattern => pattern.id !== action.id);
+
       default:
          return state;
    }

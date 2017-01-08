@@ -23,8 +23,11 @@ hiddenPatternImportButton.setAttribute('type', 'file');
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      onPatternClick: (id) => {
-         dispatch(actions.togglePatternTrigger({id: id}))
+      onPatternClick: (event, id) => {
+         if (event.metaKey)
+            dispatch(actions.removePattern({id: id}));
+         else
+            dispatch(actions.togglePatternTrigger({id: id}));
       },
       onRowMetaClick: (channel) => {
          console.log(`we'd like to import a pattern into channel line ${channel}`);

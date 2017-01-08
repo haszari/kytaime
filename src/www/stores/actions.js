@@ -32,3 +32,6 @@ export function patternPlayState(pattern) {
    return { type: actionTypes.PATTERN_PLAYSTATE, id: pattern.id, playing: pattern.playing };
 }
 
+export function removePattern({ id }) {
+   return { type: actionTypes.REMOVE_PATTERN, id: id };
+}

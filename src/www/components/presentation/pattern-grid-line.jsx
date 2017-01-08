@@ -46,7 +46,7 @@ const PatternGridLine = ({ patterns, onPatternClick, onRowMetaClick, channel }) 
                key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} 
                onClick={ (e) => {
                   e.stopPropagation();
-                  onPatternClick(pattern.id);
+                  onPatternClick(e, pattern.id);
                } }
             />
          )}
