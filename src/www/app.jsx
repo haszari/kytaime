@@ -12,8 +12,8 @@ import sequencer from './sequencer';
 import store from './stores/store';
 import * as actions from './stores/actions';
 
-import Toolbar from './components/container/toolbar.jsx';
-import PatternGridLine from './components/container/pattern-grid-line.jsx';
+import Toolbar from './components/container/toolbar.js';
+import PatternGridLine from './components/container/pattern-grid-line.js';
 
 function App() {
    return (

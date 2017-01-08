@@ -21,7 +21,7 @@ PatternCell.propTypes = {
    onClick: PropTypes.func.isRequired
 }
 
-const PatternGridLine = ({ patterns, onPatternClick, channel }) => {
+const PatternGridLine = ({ patterns, onPatternClick, onRowMetaClick, channel }) => {
    // here's a good reason to use inline styles.. come back to that
    let rowColourClass = "patternRow-" + String.fromCharCode('a'.charCodeAt(0) + channel-1);
    let classes = "row expanded align-middle patternRow " + rowColourClass;
@@ -39,9 +39,16 @@ const PatternGridLine = ({ patterns, onPatternClick, channel }) => {
    );
 
    return ( 
-      <div className={classes}>
+      <div className={classes} 
+         onClick={(e) => { if (e.metaKey) onRowMetaClick(channel); } } >
          {patterns.map((pattern) => 
-            <PatternCell key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} onClick={() => onPatternClick(pattern.id) } />
+            <PatternCell 
+               key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} 
+               onClick={ (e) => {
+                  e.stopPropagation();
+                  onPatternClick(pattern.id);
+               } }
+            />
          )}
       </div>
    );
@@ -50,7 +57,8 @@ const PatternGridLine = ({ patterns, onPatternClick, channel }) => {
 PatternGridLine.propTypes = {
    channel: PropTypes.number.isRequired,
    patterns: PropTypes.array.isRequired,
-   onPatternClick: PropTypes.func.isRequired
+   onPatternClick: PropTypes.func.isRequired,
+   onRowMetaClick: PropTypes.func.isRequired,
 }
 
 

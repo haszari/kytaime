@@ -18,6 +18,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
    return {
       onPatternClick: (id) => {
          dispatch(actions.togglePatternTrigger({id: id}))
+      },
+      onRowMetaClick: (channel) => {
+         console.log(`we'd like to import a pattern into channel line ${channel}`);
+         //dispatch(actions.togglePatternTrigger({id: id}))
       }
    }
 }
