@@ -26,18 +26,23 @@ const PatternGridLine = ({ patterns, onPatternClick, channel }) => {
    let rowColourClass = "patternRow-" + String.fromCharCode('a'.charCodeAt(0) + channel-1);
    let classes = "row expanded align-middle patternRow " + rowColourClass;
 
+   // we're not using these bits anymore - minimalist
+   let addCellButton = (  
+      <div className="">
+         <div className="patternLine-addPattern">+</div>
+      </div>
+   );
+   let channelNumberIndicator = (  
+      <div className="columns">
+         <div className="patternLine-channel">{channel}</div>
+      </div>
+   );
+
    return ( 
       <div className={classes}>
          {patterns.map((pattern) => 
             <PatternCell key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} onClick={() => onPatternClick(pattern.id) } />
          )}
-
-         <div className="small columns">
-            <div className="patternLine-addPattern">+</div>
-         </div>
-         <div className="">
-            <div className="patternLine-channel">{channel}</div>
-         </div>
       </div>
    );
 }
