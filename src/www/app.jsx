@@ -68,31 +68,3 @@ importPattern(1, beat);
 importPattern(2, bassline);
 importPattern(3, lead);
 importPattern(3, filter);
-
-
-
-
-// file import is temporarily broken
-
-// import importMidiFile from './import-midi-file';
-
-// function onFileSelected(input) {
-//    var reader = new FileReader();
-//    reader.readAsArrayBuffer(input.files[0]);
-//    reader.onloadend = function(event) {
-//       var importedMidiFile = importMidiFile(event.target.result);
-//       var lastNote = _.maxBy(importedMidiFile.notes, 'start');
-//       var duration = Math.pow(2, Math.ceil(Math.sqrt(lastNote.start)));
-//       window.imported = new NotePattern({
-//          duration: duration,
-//          channel: midiUtilities.channelMap.stab,
-//          notes: importedMidiFile.notes
-//       });  
-//    }
-// }
-
-// window.onFileSelected = onFileSelected;
-
-
-//console.log(midiUtilities);
-
