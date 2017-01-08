@@ -50,8 +50,6 @@ render(<App/>, appDiv);
 
 
 
-import {hats, kick, beat, bassline, lead, filter, send} from './lib/example-patterns';
-
 let importPattern = (channel, patternObject) => {
    store.dispatch(actions.addPattern({ 
       channel: channel,
@@ -62,9 +60,11 @@ let importPattern = (channel, patternObject) => {
    }));
 }
 
-importPattern(1, kick);
-importPattern(1, hats);
-importPattern(1, beat);
-importPattern(2, bassline);
-importPattern(3, lead);
-importPattern(3, filter);
+// import {hats, kick, beat, bassline, lead, filter, send} from './lib/example-patterns';
+
+// importPattern(1, kick);
+// importPattern(1, hats);
+// importPattern(1, beat);
+// importPattern(2, bassline);
+// importPattern(3, lead);
+// importPattern(3, filter);
