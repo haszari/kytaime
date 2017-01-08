@@ -27,6 +27,10 @@ const pattern = (state = {}, action) => {
       return {
          id: action.id,
          channel: action.channel,  
+         notes: action.notes || [],
+         duration: action.duration || 4,
+         startBeats: action.startBeats || [ 0 ],
+         endBeats: action.endBeats || [ 0 ],
          triggered: true,
          playing: false
       }

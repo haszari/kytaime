@@ -52,25 +52,22 @@ render(<App/>, appDiv);
 
 import {hats, kick, beat, bassline, lead, filter, send} from './lib/example-patterns';
 
-sequencer.setPattern({ 
-   kick: kick, 
-   beat: beat, 
-   hats: hats, 
-   bassline: bassline, 
-   lead: lead,
-   filter: filter,
-   send: send
-});
+let importPattern = (channel, patternObject) => {
+   store.dispatch(actions.addPattern({ 
+      channel: channel,
+      duration: patternObject.duration,
+      notes: patternObject.notes,
+      startBeats: patternObject.startBeats,
+      endBeats: patternObject.endBeats
+   }));
+}
 
-store.dispatch(actions.addPattern({ id: 'kick', channel: 1 }));
-store.dispatch(actions.addPattern({ id: 'beat', channel: 1 }));
-store.dispatch(actions.addPattern({ id: 'hats', channel: 1 }));
-store.dispatch(actions.addPattern({ id: 'bassline', channel: 2 }));
-store.dispatch(actions.addPattern({ id: 'lead', channel: 3 }));
-
-store.dispatch(actions.togglePatternTrigger({ id: 'bassline' }));
-
-store.dispatch(actions.patternPlayState({ id: 'beat', playing: true }));
+importPattern(1, kick);
+importPattern(1, hats);
+importPattern(1, beat);
+importPattern(2, bassline);
+importPattern(3, lead);
+importPattern(3, filter);
 
 
 

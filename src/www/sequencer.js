@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import WebMidiHelper from './lib/web-midi-helper';
 import midiUtilities from './lib/midi-utilities';
+import renderNotePattern from './lib/render-note-pattern';
 import * as bpmUtilities from './lib/bpm-utilities';
 
 import store from './stores/store';
@@ -64,11 +65,6 @@ var renderMetronome = function(renderRange) {
       midiUtilities.renderNote(note);
    }
 };
-var renderPattern = function(renderRange, pattern, triggered, playing) {
-   if (pattern && pattern.transportRender) {
-      
-   }
-};
 
 var state = {
    isPlaying: false,
@@ -105,19 +101,20 @@ var updateTransport = function() {
 
    // render patterns
    let appState = store.getState();
-   _.each(patterns, (pattern, patternId) => {
-      let patternState = _.find(appState.patterns, { id: patternId });
+   _.each(appState.patterns, (pattern) => {
+      let patternId = pattern.id;
       let isStillPlaying = false;
-      if (patternState && pattern && pattern.transportRender) {
-         isStillPlaying = pattern.transportRender(
+      if (_.isArray(pattern.notes)) {         
+         isStillPlaying = renderNotePattern(
             renderRange, beatsPerMinute, midiOutPort, 
-            patternState.channel, 
-            patternState.triggered, 
-            patternState.playing
+            pattern,
+            pattern.channel, 
+            pattern.triggered, 
+            pattern.playing
          );
-         if (isStillPlaying != patternState.playing)
-            store.dispatch(actions.patternPlayState({ id: patternId, playing: isStillPlaying }));
       }
+      if (isStillPlaying != pattern.playing)
+         store.dispatch(actions.patternPlayState({ id: patternId, playing: isStillPlaying }));
    });
 
    // update state
@@ -212,6 +209,7 @@ WebMidiHelper.openMidiOut({
       }
    }.bind(this)
 });
+
 
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;

@@ -11,8 +11,17 @@ export function transportCurrentBeat(beatNumber) {
    return { type: actionTypes.TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
 }
 
-export function addPattern(pattern) {
-   return { type: actionTypes.ADD_PATTERN, id: pattern.id, channel: pattern.channel };
+let nextPatternId = 1;
+export function addPattern({channel, notes, duration, startBeats, endBeats}) {
+   return { 
+      type: actionTypes.ADD_PATTERN, 
+      id: nextPatternId++, 
+      channel: channel,
+      notes: notes,
+      duration: duration,
+      startBeats: startBeats,
+      endBeats: endBeats
+   };
 }
 
 export function togglePatternTrigger(pattern) {
