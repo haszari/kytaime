@@ -5,6 +5,18 @@ import { combineReducers } from 'redux'
 import * as actionTypes from './action-types';
 
 
+const userinterface = (state = { editMode: false }, action) => {
+   switch (action.type) {
+      case actionTypes.UI_TOGGLE_EDITMODE: 
+         return Object.assign({}, state, {
+            editMode: !state.editMode
+         });
+      default:
+         return state;
+   }
+}
+
+
 const transport = (state = { playState: '', beatNumber: 0 }, action) => {
    switch (action.type) {
       case actionTypes.TRANSPORT_PLAYSTATE: 
@@ -80,6 +92,7 @@ const patterns = (state = [], action) => {
 }
 
 const kytaimeApp = combineReducers({
+   userinterface,
    transport,
    patterns
 });

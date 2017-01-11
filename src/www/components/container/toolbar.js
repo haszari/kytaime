@@ -1,5 +1,10 @@
 import sequencer from '../../sequencer';
+
 import { connect } from 'react-redux';
+
+import store from '../../stores/store';
+import * as actions from '../../stores/actions';
+
 import Toolbar from '../presentation/toolbar.jsx';
 
 
@@ -9,16 +14,16 @@ const mapStateToProps = (state, ownProps) => {
       beatNumber: state.transport.beatNumber,
       onPlayClick: () => {
          sequencer.togglePlay();
-      }
+      },
+      editMode: state.userinterface.editMode
    }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      // we'll hook up toggle play here??
-      // onBeatTick: () => {
-      //    dispatch(transportCurrentBeat(ownProps.beatNumber + 1))
-      // }
+      onToggleEditMode: () => {
+         dispatch(actions.uiToggleEditMode())
+      }
    }
 }
 

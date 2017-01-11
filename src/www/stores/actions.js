@@ -1,7 +1,13 @@
 
 
-
 import * as actionTypes from './action-types';
+
+
+export function uiToggleEditMode() {
+   return { type: actionTypes.UI_TOGGLE_EDITMODE }
+}
+
+
 
 export function transportPlayState(playState) {
    return { type: actionTypes.TRANSPORT_PLAYSTATE, playState: playState };
@@ -10,6 +16,8 @@ export function transportPlayState(playState) {
 export function transportCurrentBeat(beatNumber) {
    return { type: actionTypes.TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
 }
+
+
 
 let nextPatternId = 1;
 export function addPattern({channel, notes, duration, startBeats, endBeats}) {

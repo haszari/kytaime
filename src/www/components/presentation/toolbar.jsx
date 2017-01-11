@@ -1,18 +1,24 @@
 import React, { PropTypes } from 'react';
 
+import colours from '../../styles/colours';
 
-const Toolbar = ({playState, beatNumber, onPlayClick}) => {
+
+const Toolbar = ({playState, beatNumber, onPlayClick, onToggleEditMode, editMode}) => {
    let playButtonIconClass = '';
    if (playState == "playing")
       playButtonIconClass = 'icon-stop';
    else if (playState == "stopped")
        playButtonIconClass = 'icon-play';
+   let editButtonStyle = {};
+   if (editMode)
+      editButtonStyle = { color: colours.enabledButtonForeground };
   
    return ( 
       <section className="toolbar noSelect">
          <div className="row expanded">
             <div className="shrink columns">
-               <div className="icon-menu"></div>
+               <div className="icon-pencil" style={editButtonStyle} 
+                  onClick={onToggleEditMode}></div>
             </div>
             <div className="small columns text-center">
                <div className="row align-center">
@@ -31,6 +37,8 @@ const Toolbar = ({playState, beatNumber, onPlayClick}) => {
 Toolbar.propTypes = {
   playState: PropTypes.string.isRequired,
   beatNumber: PropTypes.number.isRequired,
-  onPlayClick: PropTypes.func.isRequired
+  onPlayClick: PropTypes.func.isRequired,
+  onToggleEditMode: PropTypes.func.isRequired,
+  editMode: PropTypes.bool.isRequired
 }
 export default Toolbar;
