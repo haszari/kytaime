@@ -29,6 +29,18 @@
       "css": "pencil",
       "code": 59394,
       "src": "fontawesome"
+    },
+    {
+      "uid": "bbfb51903f40597f0b70fd75bc7b5cac",
+      "css": "trash",
+      "code": 61944,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "44e04715aecbca7f266a17d5a7863c68",
+      "css": "plus",
+      "code": 59395,
+      "src": "fontawesome"
     }
   ]
 }

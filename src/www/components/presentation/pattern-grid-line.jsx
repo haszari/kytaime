@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
 
 
-const PatternCell = ({triggered, playing, onClick}) => {
-   let classes = ["pattern"];
+const PatternCell = ({triggered, playing, onClick, iconClass}) => {
+   let classes = ["row", "pattern", "text-center align-middle"];
    if (triggered) 
       classes.push("triggered");
    if (playing) 
       classes.push("playing");
 
    return (
-      <div className="" onClick={onClick} >
-         <div className={classes.join(" ")}></div>
+      <div className={classes.join(" ")} onClick={onClick} >
+         <div className={iconClass + " columns"}></div>
       </div>
    );               
 }
@@ -21,17 +21,29 @@ PatternCell.propTypes = {
    onClick: PropTypes.func.isRequired
 }
 
-const PatternGridLine = ({ patterns, onPatternClick, onRowMetaClick, channel }) => {
+const PatternGridLine = ({ 
+   patterns, channel, editMode,
+   onPatternClick, onRowImportPatternClick, onRemovePatternClick }) => {
    // here's a good reason to use inline styles.. come back to that
    let rowColourClass = "patternRow-" + String.fromCharCode('a'.charCodeAt(0) + channel-1);
    let classes = "row expanded align-middle patternRow " + rowColourClass;
 
-   // we're not using these bits anymore - minimalist
-   let addCellButton = (  
-      <div className="">
-         <div className="patternLine-addPattern">+</div>
+   let importPatternButton = !editMode ? undefined : (  
+      <div className="row pattern text-center align-middle" 
+         onClick={(e) => { onRowImportPatternClick(channel); }}>
+         <div className="columns icon-plus"></div>
       </div>
    );
+
+   let patternCellClickHandler = function(id) {
+      if (editMode) {
+         onRemovePatternClick(id);
+      }
+      else
+         onPatternClick(id);
+   }
+
+   // we're not using this anymore - minimalist
    let channelNumberIndicator = (  
       <div className="columns">
          <div className="patternLine-channel">{channel}</div>
@@ -39,17 +51,17 @@ const PatternGridLine = ({ patterns, onPatternClick, onRowMetaClick, channel }) 
    );
 
    return ( 
-      <div className={classes} 
-         onClick={(e) => { if (e.metaKey) onRowMetaClick(channel); } } >
+      <div className={classes} >
          {patterns.map((pattern) => 
             <PatternCell 
                key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} 
-               onClick={ (e) => {
-                  e.stopPropagation();
-                  onPatternClick(e, pattern.id);
+               iconClass={ editMode ? "icon-trash" : undefined }
+               onClick={ () => {
+                  patternCellClickHandler(pattern.id);
                } }
             />
          )}
+         {importPatternButton}
       </div>
    );
 }
@@ -57,8 +69,9 @@ const PatternGridLine = ({ patterns, onPatternClick, onRowMetaClick, channel }) 
 PatternGridLine.propTypes = {
    channel: PropTypes.number.isRequired,
    patterns: PropTypes.array.isRequired,
+   editMode: PropTypes.bool.isRequired,
    onPatternClick: PropTypes.func.isRequired,
-   onRowMetaClick: PropTypes.func.isRequired,
+   onRowImportPatternClick: PropTypes.func.isRequired,
 }
 
 

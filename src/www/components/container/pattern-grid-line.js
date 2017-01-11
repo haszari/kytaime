@@ -14,7 +14,8 @@ import * as actions from '../../stores/actions';
 const mapStateToProps = (state, ownProps) => {
    return {
       channel: ownProps.channel,
-      patterns: state.patterns.filter(p => p.channel == ownProps.channel)
+      patterns: state.patterns.filter(p => p.channel == ownProps.channel),
+      editMode: state.userinterface.editMode
    }
 }
 
@@ -23,15 +24,13 @@ hiddenPatternImportButton.setAttribute('type', 'file');
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      onPatternClick: (event, id) => {
-         if (event.metaKey)
-            dispatch(actions.removePattern({id: id}));
-         else
-            dispatch(actions.togglePatternTrigger({id: id}));
+      onRemovePatternClick: (id) => {
+         dispatch(actions.removePattern({id: id}));
       },
-      onRowMetaClick: (channel) => {
-         console.log(`we'd like to import a pattern into channel line ${channel}`);
-
+      onPatternClick: (id) => {
+         dispatch(actions.togglePatternTrigger({id: id}));
+      },
+      onRowImportPatternClick: (channel) => {
          // resetting event handler here so we can capture channel
          hiddenPatternImportButton.onchange = () => {
             var reader = new FileReader();
