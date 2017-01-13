@@ -5,6 +5,45 @@ import { combineReducers } from 'redux'
 import * as actionTypes from './action-types';
 
 
+const patternrow = (state = {}, action) => {
+   switch (action.type) {
+      case actionTypes.PATTERNGRID_SET_ROW_MIDICHANNEL:
+         return Object.assign({}, state, {
+           midiChannel: action.midiChannel
+         });
+      default:
+         return state;
+   }
+}
+
+const makepatternrows = (count) => {
+   return Array(count).fill({
+      midiChannel: 1
+   });
+}
+
+const patterngrid = (state = [], action) => {
+   switch (action.type) {
+      case actionTypes.PATTERNGRID_SET_NUM_ROWS:
+         if (state.length > action.numRows)
+            return state.slice(0, action.numRows);
+         else 
+            return [
+               ...state,
+               ...makepatternrows(action.numRows - state.length)
+            ];
+      case actionTypes.PATTERNGRID_SET_ROW_MIDICHANNEL:
+         state = [
+            ...state.slice(0, action.rowIndex),
+            patternrow(state[action.rowIndex], action),
+            ...state.slice(action.rowIndex + 1)
+         ]
+      default:
+         return state;
+   }
+}
+
+
 const userinterface = (state = { editMode: false }, action) => {
    switch (action.type) {
       case actionTypes.UI_TOGGLE_EDITMODE: 
@@ -93,6 +132,7 @@ const patterns = (state = [], action) => {
 
 const kytaimeApp = combineReducers({
    userinterface,
+   patterngrid,
    transport,
    patterns
 });

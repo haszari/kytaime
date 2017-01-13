@@ -8,7 +8,6 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux'
 
 import sequencer from './sequencer';
-window.sequencer = sequencer;
 
 import store from './stores/store';
 import * as actions from './stores/actions';
@@ -47,7 +46,18 @@ function App() {
 var appDiv = document.createElement('div');
 document.body.appendChild(appDiv);
 
+// initial state 
+store.dispatch(actions.setGridNumRows(6));
+
 render(<App/>, appDiv);
+
+// budgo ui
+window.sequencer = sequencer;
+window.ui = { 
+   setGridRows: (numRows) => {
+      store.dispatch(actions.setGridNumRows(numRows));
+   }
+}
 
 
 

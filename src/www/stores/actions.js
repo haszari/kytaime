@@ -3,6 +3,17 @@
 import * as actionTypes from './action-types';
 
 
+
+export function setGridNumRows(numRows) {
+   return { type: actionTypes.PATTERNGRID_SET_NUM_ROWS, numRows: numRows }
+}
+
+export function setGridRowMidiChannel({ rowIndex, midiChannel }) {
+   return { type: actionTypes.PATTERNGRID_SET_ROW_MIDICHANNEL, rowIndex: rowIndex, midiChannel: midiChannel }
+}
+
+
+
 export function uiToggleEditMode() {
    return { type: actionTypes.UI_TOGGLE_EDITMODE }
 }
