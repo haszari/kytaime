@@ -8,6 +8,7 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux'
 
 import sequencer from './sequencer';
+window.sequencer = sequencer;
 
 import store from './stores/store';
 import * as actions from './stores/actions';
