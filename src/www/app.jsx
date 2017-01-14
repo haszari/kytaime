@@ -13,31 +13,15 @@ import store from './stores/store';
 import * as actions from './stores/actions';
 
 import Toolbar from './components/container/toolbar.js';
-import PatternGridLine from './components/container/pattern-grid-line.js';
+import PatternGrid from './components/container/pattern-grid.js';
 
 function App() {
    return (
       <Provider store={store}>
          {/* Provider likes to wrap a single element */}
          <div>
-
             <Toolbar /> 
-
-            <section id="patternLines">
-
-               <PatternGridLine channel={1} />
-
-               <PatternGridLine channel={2} />
-
-               <PatternGridLine channel={3} />
-
-               <PatternGridLine channel={4} />
-
-               <PatternGridLine channel={5} />
-
-               <PatternGridLine channel={6} />
-
-            </section>
+            <PatternGrid />
          </div>
       </Provider>
    );

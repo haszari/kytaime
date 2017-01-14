@@ -2,8 +2,6 @@ import { connect } from 'react-redux';
 
 import importMidiFile from '../../lib/import-midi-file';
 
-import sequencer from '../../sequencer';
-
 import PatternGridLine from '../presentation/pattern-grid-line.jsx';
 
 import store from '../../stores/store';
@@ -53,9 +51,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 
-const PatternGrid = connect(
+const PatternGridLine_Container = connect(
    mapStateToProps,
    mapDispatchToProps
 )(PatternGridLine);
 
-export default PatternGrid;
+export default PatternGridLine_Container;
