@@ -3,33 +3,21 @@ import React, { PropTypes } from 'react';
 import PatternGridLine from '../container/pattern-grid-line.js';
 
 
-const PatternGrid = ({ }) => {
+const PatternGrid = ({ patternGridLines }) => {
 
    return ( 
       <section id="patternLines">
 
-         <PatternGridLine channel={1} />
-
-         <PatternGridLine channel={2} />
-
-         <PatternGridLine channel={3} />
-
-         <PatternGridLine channel={4} />
-
-         <PatternGridLine channel={5} />
-
-         <PatternGridLine channel={6} />
+         {patternGridLines.map((line, index) => 
+            <PatternGridLine key={index} channel={line.midiChannel} />
+         )}
 
       </section>
    )
 }
 
 PatternGrid.propTypes = {
-   // channel: PropTypes.number.isRequired,
-   // patterns: PropTypes.array.isRequired,
-   // editMode: PropTypes.bool.isRequired,
-   // onPatternClick: PropTypes.func.isRequired,
-   // onRowImportPatternClick: PropTypes.func.isRequired,
+   patternGridLines: PropTypes.array.isRequired,
 }
 
 

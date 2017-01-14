@@ -9,9 +9,7 @@ import * as actions from '../../stores/actions';
 
 const mapStateToProps = (state, ownProps) => {
    return {
-      // channel: ownProps.channel,
-      // patterns: state.patterns.filter(p => p.channel == ownProps.channel),
-      // editMode: state.userinterface.editMode
+      patternGridLines: state.patterngrid
    }
 }
 
