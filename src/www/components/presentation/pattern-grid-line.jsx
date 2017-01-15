@@ -109,7 +109,7 @@ const PatternGridLine = ({
    // we're not using this anymore - minimalist
    let channelNumberIndicator = (  
       <div className="columns">
-         <div className="patternLine-channel">{channel}</div>
+         <div className="patternLine-channel float-right">{channel}</div>
       </div>
    );
 
