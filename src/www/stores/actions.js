@@ -31,11 +31,11 @@ export function transportCurrentBeat(beatNumber) {
 
 
 let nextPatternId = 1;
-export function addPattern({channel, notes, duration, startBeats, endBeats}) {
+export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {
    return { 
       type: actionTypes.ADD_PATTERN, 
       id: nextPatternId++, 
-      channel: channel,
+      rowIndex: rowIndex,
       notes: notes,
       duration: duration,
       startBeats: startBeats,
@@ -51,6 +51,6 @@ export function patternPlayState(pattern) {
    return { type: actionTypes.PATTERN_PLAYSTATE, id: pattern.id, playing: pattern.playing };
 }
 
-export function removePattern({ id }) {
-   return { type: actionTypes.REMOVE_PATTERN, id: id };
+export function removePattern({ rowIndex, id }) {
+   return { type: actionTypes.REMOVE_PATTERN, id: id, rowIndex: rowIndex };
 }

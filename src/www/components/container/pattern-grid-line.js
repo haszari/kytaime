@@ -7,12 +7,15 @@ import PatternGridLine from '../presentation/pattern-grid-line.jsx';
 import store from '../../stores/store';
 import * as actions from '../../stores/actions';
 
+import _ from 'lodash'; 
 
 
 const mapStateToProps = (state, ownProps) => {
+   let patternsForThisRow = state.patterngrid[ownProps.rowIndex].patterns.map(
+      (patternId) => _.find(state.patterns, { id: patternId })
+   );
    return {
-      channel: ownProps.channel,
-      patterns: state.patterns.filter(p => p.channel == ownProps.channel),
+      patterns: patternsForThisRow,
       editMode: state.userinterface.editMode
    }
 }
@@ -22,14 +25,13 @@ hiddenPatternImportButton.setAttribute('type', 'file');
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      onRemovePatternClick: (id) => {
-         dispatch(actions.removePattern({id: id}));
+      onRemovePatternClick: ({rowIndex, id}) => {
+         dispatch(actions.removePattern({rowIndex, id}));
       },
       onPatternClick: (id) => {
          dispatch(actions.togglePatternTrigger({id: id}));
       },
-      onRowImportPatternClick: (channel) => {
-         // resetting event handler here so we can capture channel
+      onRowImportPatternClick: (rowIndex) => {
          hiddenPatternImportButton.onchange = () => {
             var reader = new FileReader();
             reader.readAsArrayBuffer(hiddenPatternImportButton.files[0]);
@@ -39,7 +41,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                var duration = Math.pow(2, Math.ceil(Math.sqrt(lastNote.start)));
                store.dispatch(actions.addPattern({ 
                   duration: duration,
-                  channel: channel,
+                  rowIndex: rowIndex,
                   notes: importedMidiFile.notes,
                }));
             }

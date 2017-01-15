@@ -31,7 +31,11 @@ var appDiv = document.createElement('div');
 document.body.appendChild(appDiv);
 
 // initial state 
-store.dispatch(actions.setGridNumRows(6));
+let numRows = 6;
+store.dispatch(actions.setGridNumRows(numRows));
+for (let i=0; i<numRows; i++)
+   store.dispatch(actions.setGridRowMidiChannel({ rowIndex: i, midiChannel: i+1 }));
+
 
 render(<App/>, appDiv);
 
@@ -40,6 +44,9 @@ window.sequencer = sequencer;
 window.ui = { 
    setGridRows: (numRows) => {
       store.dispatch(actions.setGridNumRows(numRows));
+   },
+   setRowChannel: (rowIndex, midiChannel) => {
+      store.dispatch(actions.setGridRowMidiChannel({ rowIndex, midiChannel }))
    }
 }
 

@@ -22,22 +22,22 @@ PatternCell.propTypes = {
 }
 
 const PatternGridLine = ({ 
-   patterns, channel, editMode,
+   patterns, rowIndex, channel, editMode,
    onPatternClick, onRowImportPatternClick, onRemovePatternClick }) => {
    // here's a good reason to use inline styles.. come back to that
-   let rowColourClass = "patternRow-" + String.fromCharCode('a'.charCodeAt(0) + channel-1);
+   let rowColourClass = "patternRow-" + String.fromCharCode('a'.charCodeAt(0) + rowIndex);
    let classes = "row expanded align-middle patternRow " + rowColourClass;
 
    let importPatternButton = !editMode ? undefined : (  
       <div className="row pattern text-center align-middle" 
-         onClick={(e) => { onRowImportPatternClick(channel); }}>
+         onClick={(e) => { onRowImportPatternClick(rowIndex); }}>
          <div className="columns icon-plus"></div>
       </div>
    );
 
    let patternCellClickHandler = function(id) {
       if (editMode) {
-         onRemovePatternClick(id);
+         onRemovePatternClick({rowIndex, id});
       }
       else
          onPatternClick(id);
@@ -62,12 +62,14 @@ const PatternGridLine = ({
             />
          )}
          {importPatternButton}
+         {channelNumberIndicator}
       </div>
    );
 }
 
 PatternGridLine.propTypes = {
    channel: PropTypes.number.isRequired,
+   rowIndex: PropTypes.number.isRequired,
    patterns: PropTypes.array.isRequired,
    editMode: PropTypes.bool.isRequired,
    onPatternClick: PropTypes.func.isRequired,

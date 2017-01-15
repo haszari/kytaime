@@ -11,6 +11,14 @@ const patternrow = (state = {}, action) => {
          return Object.assign({}, state, {
            midiChannel: action.midiChannel
          });
+      case actionTypes.ADD_PATTERN:
+         return Object.assign({}, state, {
+           patterns: state.patterns.concat(action.id)
+         });
+      case actionTypes.REMOVE_PATTERN:
+         return Object.assign({}, state, {
+           patterns: state.patterns.filter((patternId) => (patternId != action.id))
+         });
       default:
          return state;
    }
@@ -18,7 +26,8 @@ const patternrow = (state = {}, action) => {
 
 const makepatternrows = (count) => {
    return Array(count).fill({
-      midiChannel: 1
+      midiChannel: 1,
+      patterns: [] // array of pattern IDs
    });
 }
 
@@ -33,6 +42,8 @@ const patterngrid = (state = [], action) => {
                ...makepatternrows(action.numRows - state.length)
             ];
       case actionTypes.PATTERNGRID_SET_ROW_MIDICHANNEL:
+      case actionTypes.ADD_PATTERN:
+      case actionTypes.REMOVE_PATTERN:
          state = [
             ...state.slice(0, action.rowIndex),
             patternrow(state[action.rowIndex], action),
@@ -77,7 +88,8 @@ const pattern = (state = {}, action) => {
       case actionTypes.ADD_PATTERN:
          return {
             id: action.id,
-            channel: action.channel,  
+            // should change this to rowIndex everywhere
+            rowIndex: action.rowIndex,  
             notes: action.notes || [],
             duration: action.duration || 4,
             startBeats: action.startBeats || [ 0 ],

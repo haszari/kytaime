@@ -8,8 +8,8 @@ const PatternGrid = ({ patternGridLines }) => {
    return ( 
       <section id="patternLines">
 
-         {patternGridLines.map((line, index) => 
-            <PatternGridLine key={index} channel={line.midiChannel} />
+         {patternGridLines.map((info, index) => 
+            <PatternGridLine key={index} rowIndex={index} channel={info.midiChannel} />
          )}
 
       </section>
