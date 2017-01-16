@@ -14,6 +14,8 @@ I wrote this for myself, for fun and the flexibility that I can adapt it to my n
 4. `./node_modules/.bin/electron .` to start the electron app
 
 ### How To Use
+![screenshot](doc/kytaime-screenshot.png)
+
 - Toolbar:
   - Edit mode on/off (pencil icon, left).
   - Play/stop button in top right.
