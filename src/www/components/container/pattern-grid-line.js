@@ -11,9 +11,12 @@ import _ from 'lodash';
 
 
 const mapStateToProps = (state, ownProps) => {
-   let patternsForThisRow = state.patterngrid[ownProps.rowIndex].patterns.map(
-      (patternId) => _.find(state.patterns, { id: patternId })
-   );
+   let rowState = state.patterngrid[ownProps.rowIndex];
+   let patternsForThisRow = [];
+   if (rowState && rowState.patterns.length)
+      patternsForThisRow = rowState.patterns.map(
+         (patternId) => _.find(state.patterns, { id: patternId })
+      );
    return {
       patterns: patternsForThisRow,
       editMode: state.userinterface.editMode
