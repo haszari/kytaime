@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
+import hjson from 'hjson';
+
 import PatternGrid from '../presentation/pattern-grid.jsx';
 
 import * as actions from '../../stores/actions';
-
-
 
 const mapStateToProps = (state, ownProps) => {
    return {
@@ -19,7 +19,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             let fileReader = new FileReader();
             fileReader.onloadend = () => {
                let json = fileReader.result;
-               let stateTree = JSON.parse(json);
+               let stateTree = hjson.parse(json);
                dispatch(actions.importRehydrate(stateTree)); 
             }
             fileReader.readAsText(event.dataTransfer.files[0]);
