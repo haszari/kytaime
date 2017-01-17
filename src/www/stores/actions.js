@@ -54,3 +54,9 @@ export function patternPlayState(pattern) {
 export function removePattern({ rowIndex, id }) {
    return { type: actionTypes.REMOVE_PATTERN, id: id, rowIndex: rowIndex };
 }
+
+
+export function importRehydrate(state) {
+   return { type: actionTypes.IMPORT_REHYDRATE, state: state };
+}
+ 

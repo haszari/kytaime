@@ -33,6 +33,9 @@ const makepatternrows = (count) => {
 
 const patterngrid = (state = [], action) => {
    switch (action.type) {
+      case actionTypes.IMPORT_REHYDRATE:
+         return action.state.patterngrid;
+
       case actionTypes.PATTERNGRID_SET_NUM_ROWS:
          if (state.length > action.numRows)
             return state.slice(0, action.numRows);
@@ -123,6 +126,9 @@ const pattern = (state = {}, action) => {
 
 const patterns = (state = [], action) => {
    switch (action.type) {
+      case actionTypes.IMPORT_REHYDRATE:
+         return action.state.patterns;
+
       case actionTypes.ADD_PATTERN:
          return [
             ...state,

@@ -49,7 +49,13 @@ window.ui = {
       store.dispatch(actions.setGridRowMidiChannel({ rowIndex, midiChannel }))
    }
 }
-
+window.exportProject = () => {
+   return JSON.stringify(store.getState());
+}
+window.importProject = (json) => {
+   let stateTree = JSON.parse(json);
+   store.dispatch(actions.importRehydrate(stateTree)); 
+} 
 
 
 let importPattern = (channel, patternObject) => {
