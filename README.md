@@ -10,8 +10,8 @@ I wrote this for myself, for fun and the flexibility that I can adapt it to my n
 ### Quick Start
 1. Clone this repo.
 2. `npm install`
-3. `npm start` to start the server
-4. `./node_modules/.bin/electron .` to start the electron app
+3. `npm run start-server` to start the server
+4. `npm start` to start the electron app
 
 ### How To Use
 ![screenshot](doc/kytaime-screenshot.png)

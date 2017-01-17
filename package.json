@@ -8,7 +8,8 @@
     "build": "webpack",
     "clean": "rm -rf dist/",
     "start-production": "export NODE_ENV=production; node dist/server/server.js",
-    "start": "export NODE_ENV=development; node src/server/server.js"
+    "start-server": "export NODE_ENV=development; node src/server/server.js",
+    "start": "node_modules/.bin/electron ."
   },
   "dependencies": {
     "babel-preset-react": "^6.11.1",
