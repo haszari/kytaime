@@ -30,6 +30,10 @@ function App() {
 var appDiv = document.createElement('div');
 document.body.appendChild(appDiv);
 
+// block file drop redirect
+document.addEventListener('dragover', event => event.preventDefault())
+document.addEventListener('drop', event => event.preventDefault())
+
 // initial state 
 let numRows = 6;
 store.dispatch(actions.setGridNumRows(numRows));

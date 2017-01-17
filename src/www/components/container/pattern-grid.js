@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import PatternGrid from '../presentation/pattern-grid.jsx';
 
-import store from '../../stores/store';
 import * as actions from '../../stores/actions';
 
 
@@ -15,9 +14,17 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      // onRemovePatternClick: (id) => {
-      //    dispatch(actions.removePattern({id: id}));
-      // },
+      onFilesDropped: (event) => {
+         if (event.dataTransfer.files.length >= 1) {
+            let fileReader = new FileReader();
+            fileReader.onloadend = () => {
+               let json = fileReader.result;
+               let stateTree = JSON.parse(json);
+               dispatch(actions.importRehydrate(stateTree)); 
+            }
+            fileReader.readAsText(event.dataTransfer.files[0]);
+         }
+      },
 
    }
 }
