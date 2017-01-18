@@ -91,8 +91,6 @@ const pattern = (state = {}, action) => {
       case actionTypes.ADD_PATTERN:
          return {
             id: action.id,
-            // should change this to rowIndex everywhere
-            rowIndex: action.rowIndex,  
             notes: action.notes || [],
             duration: action.duration || 4,
             startBeats: action.startBeats || [ 0 ],
