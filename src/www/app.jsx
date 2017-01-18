@@ -7,6 +7,8 @@ import {render} from 'react-dom';
 
 import { Provider } from 'react-redux'
 
+import shortid from 'shortid';
+
 import sequencer from './sequencer';
 
 import store from './stores/store';
@@ -44,6 +46,7 @@ for (let i=0; i<numRows; i++)
 render(<App/>, appDiv);
 
 // budgo ui
+window.shortid = shortid;
 window.sequencer = sequencer;
 window.ui = { 
    setGridRows: (numRows) => {

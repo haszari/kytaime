@@ -1,4 +1,5 @@
 
+import shortid from 'shortid';
 
 import * as actionTypes from './action-types';
 
@@ -29,12 +30,10 @@ export function transportCurrentBeat(beatNumber) {
 }
 
 
-
-let nextPatternId = 1;
 export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {
    return { 
+      id: shortid.generate(),
       type: actionTypes.ADD_PATTERN, 
-      id: nextPatternId++, 
       rowIndex: rowIndex,
       notes: notes,
       duration: duration,

@@ -18,7 +18,7 @@ const mapStateToProps = (state, ownProps) => {
          (patternId) => _.find(state.patterns, { id: patternId })
       );
    return {
-      patterns: patternsForThisRow,
+      patterns: _.compact(patternsForThisRow),
       editMode: state.userinterface.editMode
    }
 }

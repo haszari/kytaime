@@ -1,9 +1,7 @@
 
-
 import { combineReducers } from 'redux'
 
 import * as actionTypes from './action-types';
-
 
 const patternrow = (state = {}, action) => {
    switch (action.type) {
@@ -126,6 +124,15 @@ const patterns = (state = [], action) => {
    switch (action.type) {
       case actionTypes.IMPORT_REHYDRATE:
          return action.state.patterns;
+
+         // this is bad, because it introduces data in this reducer
+         // the others don't have access to it
+         // (i.e. patterngrid)
+         // return _.map(action.state.patterns, (pattern) => {
+         //    if (!pattern.id) 
+         //       pattern.id = shortid.generate();
+         //    return pattern;
+         // });
 
       case actionTypes.ADD_PATTERN:
          return [
