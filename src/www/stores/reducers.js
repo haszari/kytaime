@@ -51,10 +51,10 @@ const patternrow = (state = {}, action) => {
       case actionTypes.TOGGLE_CELL_TRIGGER:
       case actionTypes.SET_CELL_PLAYSTATE:
          let s =  Object.assign({}, state, {
-            patternCells: state.patternCells.map((p, index) => {
+            patternCells: state.patternCells.map((cell, index) => {
                if (index == action.cellIndex)
-                  return patternCell(p, action);
-               return pattern;
+                  return patternCell(cell, action);
+               return cell;
             })
          });
          return s;
@@ -90,7 +90,7 @@ const patterngrid = (state = [], action) => {
       case actionTypes.REMOVE_PATTERN:
       case actionTypes.TOGGLE_CELL_TRIGGER:
       case actionTypes.SET_CELL_PLAYSTATE:
-         state = [
+         return [
             ...state.slice(0, action.rowIndex),
             patternrow(state[action.rowIndex], action),
             ...state.slice(action.rowIndex + 1)
@@ -186,11 +186,11 @@ const patterns = (state = [], action) => {
             pattern(undefined, action)
          ];
 
-      case actionTypes.TOGGLE_PATTERN_TRIGGER:
-      case actionTypes.PATTERN_PLAYSTATE:
-         return state.map(p => {
-            return pattern(p, action);
-         });
+      // case actionTypes.TOGGLE_PATTERN_TRIGGER:
+      // case actionTypes.PATTERN_PLAYSTATE:
+      //    return state.map(p => {
+      //       return pattern(p, action);
+      //    });
 
       case actionTypes.REMOVE_PATTERN:
          return state.filter(pattern => pattern.id !== action.id);
