@@ -193,7 +193,7 @@ const patterns = (state = [], action) => {
       //    });
 
       case actionTypes.REMOVE_PATTERN:
-         return state.filter(pattern => pattern.id !== action.id);
+         return state.filter(pattern => pattern.id !== action.patternId);
 
       default:
          return state;

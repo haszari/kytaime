@@ -29,8 +29,8 @@ hiddenPatternImportButton.setAttribute('type', 'file');
 
 const mapDispatchToProps = (dispatch, ownProps) => {
    return {
-      onRemovePatternClick: ({rowIndex, id}) => {
-         dispatch(actions.removePattern({rowIndex, id}));
+      onRemovePatternClick: ({rowIndex, patternId}) => {
+         dispatch(actions.removePattern({rowIndex, patternId}));
       },
       onPatternClick: ({ rowIndex, cellIndex }) => {
          dispatch(actions.toggleCellTrigger({ rowIndex, cellIndex }));

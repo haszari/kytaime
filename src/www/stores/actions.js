@@ -51,8 +51,8 @@ export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {
    };
 }
 
-export function removePattern({ rowIndex, id }) {
-   return { type: actionTypes.REMOVE_PATTERN, id: id, rowIndex: rowIndex };
+export function removePattern({ rowIndex, patternId }) {
+   return { type: actionTypes.REMOVE_PATTERN, patternId: patternId, rowIndex: rowIndex };
 }
 
 
