@@ -13,6 +13,14 @@ export function setGridRowMidiChannel({ rowIndex, midiChannel }) {
    return { type: actionTypes.PATTERNGRID_SET_ROW_MIDICHANNEL, rowIndex: rowIndex, midiChannel: midiChannel }
 }
 
+export function toggleCellTrigger({ rowIndex, cellIndex }) {
+   return { type: actionTypes.TOGGLE_CELL_TRIGGER, rowIndex: rowIndex, cellIndex: cellIndex };
+}
+
+export function setCellPlayState({ rowIndex, cellIndex, playing }) {
+   return { type: actionTypes.SET_CELL_PLAYSTATE, rowIndex: rowIndex, cellIndex: cellIndex, playing: playing };
+}
+
 
 
 export function uiToggleEditMode() {
@@ -32,22 +40,15 @@ export function transportCurrentBeat(beatNumber) {
 
 export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {
    return { 
-      id: shortid.generate(),
       type: actionTypes.ADD_PATTERN, 
       rowIndex: rowIndex,
+
+      patternId: shortid.generate(),
       notes: notes,
       duration: duration,
       startBeats: startBeats,
       endBeats: endBeats
    };
-}
-
-export function togglePatternTrigger(pattern) {
-   return { type: actionTypes.TOGGLE_PATTERN_TRIGGER, id: pattern.id };
-}
-
-export function patternPlayState(pattern) {
-   return { type: actionTypes.PATTERN_PLAYSTATE, id: pattern.id, playing: pattern.playing };
 }
 
 export function removePattern({ rowIndex, id }) {

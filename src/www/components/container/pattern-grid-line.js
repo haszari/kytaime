@@ -13,12 +13,13 @@ import _ from 'lodash';
 const mapStateToProps = (state, ownProps) => {
    let rowState = state.patterngrid[ownProps.rowIndex];
    let patternsForThisRow = [];
-   if (rowState && rowState.patterns.length)
-      patternsForThisRow = rowState.patterns.map(
-         (patternId) => _.find(state.patterns, { id: patternId })
-      );
+   // if (rowState && rowState.patterns.length)
+   //    patternsForThisRow = rowState.patterns.map(
+   //       (patternId) => _.find(state.patterns, { id: patternId })
+   //    );
    return {
-      patterns: _.compact(patternsForThisRow),
+      // patterns: _.compact(patternsForThisRow),
+      patternCells: rowState.patternCells,
       editMode: state.userinterface.editMode
    }
 }
@@ -31,8 +32,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       onRemovePatternClick: ({rowIndex, id}) => {
          dispatch(actions.removePattern({rowIndex, id}));
       },
-      onPatternClick: (id) => {
-         dispatch(actions.togglePatternTrigger({id: id}));
+      onPatternClick: ({ rowIndex, cellIndex }) => {
+         dispatch(actions.toggleCellTrigger({ rowIndex, cellIndex }));
       },
       onRowImportPatternClick: (rowIndex) => {
          hiddenPatternImportButton.onchange = () => {

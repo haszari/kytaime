@@ -60,7 +60,7 @@ PatternCell.propTypes = {
 }
 
 const PatternGridLine = ({ 
-   patterns, rowIndex, channel, editMode,
+   patternCells, rowIndex, channel, editMode,
    onPatternClick, onRowImportPatternClick, onRemovePatternClick }) => {
 
    let rowHue = (patternColourInfo.baseHue + (rowIndex * patternColourInfo.hueIncrement));
@@ -98,12 +98,12 @@ const PatternGridLine = ({
       </div>
    );
 
-   let patternCellClickHandler = function(id) {
+   let patternCellClickHandler = function({ rowIndex, cellIndex, patternId }) {
       if (editMode) {
-         onRemovePatternClick({rowIndex, id});
+         onRemovePatternClick({ rowIndex, patternId });
       }
       else
-         onPatternClick(id);
+         onPatternClick({ rowIndex, cellIndex });
    }
 
    // we're not using this anymore - minimalist
@@ -115,13 +115,13 @@ const PatternGridLine = ({
 
    return ( 
       <div className={classes} style={rowStyle} >
-         {patterns.map((pattern) => 
+         {patternCells.map((cell, cellIndex) => 
             <PatternCell 
-               key={pattern.id} triggered={pattern.triggered} playing={pattern.playing} 
+               key={cellIndex} triggered={cell.triggered} playing={cell.playing} 
                hue={rowHue}
                iconClass={ editMode ? "icon-trash" : undefined }
                onClick={ () => {
-                  patternCellClickHandler(pattern.id);
+                  patternCellClickHandler({ rowIndex, cellIndex, patternId: cell.patternId });
                } }
             />
          )}
@@ -134,7 +134,7 @@ const PatternGridLine = ({
 PatternGridLine.propTypes = {
    channel: PropTypes.number.isRequired,
    rowIndex: PropTypes.number.isRequired,
-   patterns: PropTypes.array.isRequired,
+   patternCells: PropTypes.array.isRequired,
    editMode: PropTypes.bool.isRequired,
    onPatternClick: PropTypes.func.isRequired,
    onRowImportPatternClick: PropTypes.func.isRequired,

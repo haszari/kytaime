@@ -101,22 +101,26 @@ var updateTransport = function() {
 
    // render patterns
    let appState = store.getState();
-   _.each(appState.patterngrid, (patternGridLine) => {
-      _.each(patternGridLine.patterns, 
-         (patternId) => {
-            let pattern = _.find(appState.patterns, { id: patternId });
+   _.each(appState.patterngrid, (patternGridLine, rowIndex) => {
+      _.each(patternGridLine.patternCells, 
+         (cell, cellIndex) => {
+            let pattern = _.find(appState.patterns, { id: cell.patternId });
             let isStillPlaying = false;
             if (_.isArray(pattern.notes)) {         
                isStillPlaying = renderNotePattern(
                   renderRange, beatsPerMinute, midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
-                  pattern.triggered, 
-                  pattern.playing
+                  cell.triggered, 
+                  cell.playing
             );
          }
-         if (isStillPlaying != pattern.playing)
-            store.dispatch(actions.patternPlayState({ id: patternId, playing: isStillPlaying }));
+         if (isStillPlaying != cell.playing)
+            store.dispatch(actions.setCellPlayState({ 
+               rowIndex: rowIndex, 
+               cellIndex: cellIndex, 
+               playing: isStillPlaying 
+            }));
       });
    });
 
