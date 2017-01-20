@@ -1,3 +1,6 @@
+
+import Hjson from 'hjson';
+
 import sequencer from '../../sequencer';
 
 import { connect } from 'react-redux';
@@ -15,7 +18,8 @@ const mapStateToProps = (state, ownProps) => {
       onPlayClick: () => {
          sequencer.togglePlay();
       },
-      editMode: state.userinterface.editMode
+      editMode: state.userinterface.editMode,
+      exportData: Hjson.stringify(state),
    }
 }
 

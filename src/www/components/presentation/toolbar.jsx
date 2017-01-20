@@ -1,9 +1,14 @@
+
+import moment from 'moment';
+
+import FileSaver from 'file-saver';
+
 import React, { PropTypes } from 'react';
 
 import colours from '../../styles/colours';
 
 
-const Toolbar = ({playState, beatNumber, onPlayClick, onToggleEditMode, editMode}) => {
+const Toolbar = ({ playState, beatNumber, onPlayClick, onToggleEditMode, editMode, exportData }) => {
    let playButtonIconClass = '';
    if (playState == "playing")
       playButtonIconClass = 'icon-stop';
@@ -12,6 +17,14 @@ const Toolbar = ({playState, beatNumber, onPlayClick, onToggleEditMode, editMode
    let editButtonStyle = {};
    if (editMode)
       editButtonStyle = { color: colours.enabledButtonForeground };
+
+   let onExportSessionClicked = () => {
+      let projectName = 'kytaime';
+      let sessionFileName = projectName + '-' + moment().format('YYYYMMDD-hhmmss') + '.kytaime';
+      let dataURI = 'data:Application/octet-stream,' + encodeURIComponent(exportData);
+      var blob = new Blob([exportData], {type: "text/hjson;charset=utf-8"});
+      FileSaver.saveAs(blob, sessionFileName);
+   }
   
    return ( 
       <section className="toolbar noSelect">
@@ -19,6 +32,10 @@ const Toolbar = ({playState, beatNumber, onPlayClick, onToggleEditMode, editMode
             <div className="shrink columns">
                <div className="icon-pencil" style={editButtonStyle} 
                   onClick={onToggleEditMode}></div>
+            </div>
+            <div className="shrink columns">
+               <div className="icon-menu"
+                  onClick={onExportSessionClicked}></div>
             </div>
             <div className="small columns text-center">
                <div className="row align-center">
@@ -39,6 +56,7 @@ Toolbar.propTypes = {
   beatNumber: PropTypes.number.isRequired,
   onPlayClick: PropTypes.func.isRequired,
   onToggleEditMode: PropTypes.func.isRequired,
-  editMode: PropTypes.bool.isRequired
+  editMode: PropTypes.bool.isRequired,
+  exportData: PropTypes.string.isRequired,
 }
 export default Toolbar;
