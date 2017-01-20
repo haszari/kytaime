@@ -37,6 +37,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       },
       onRowImportPatternClick: (rowIndex) => {
          hiddenPatternImportButton.onchange = () => {
+            if (hiddenPatternImportButton.files.length < 1)
+               return;
             var reader = new FileReader();
             reader.readAsArrayBuffer(hiddenPatternImportButton.files[0]);
             reader.onloadend = function(event) {
