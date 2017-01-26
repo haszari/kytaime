@@ -27,6 +27,31 @@ class Toolbar extends React.Component {
          var blob = new Blob([exportData], {type: "text/hjson;charset=utf-8"});
          FileSaver.saveAs(blob, sessionFileName);
       }
+
+      let exportProjectPopover = (
+         <div className="dropdown-pane" id="exportSessionDropdown" data-dropdown data-auto-focus="true">
+            Example form in a dropdown.
+            <form>
+               <div className="row">
+                  <div className="medium-6 columns">
+                    <label>Name
+                      <input type="text" placeholder="kytaime" />
+                    </label>
+                  </div>
+                  <div className="medium-6 columns">
+                    <label>Tag
+                      <input type="text" placeholder="banger" />
+                    </label>
+                  </div>
+               </div>
+               <div className="row">
+                  <div className="columns text-right" >
+                     <button type="button" className="success button">Save</button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      );
      
       return ( 
          <section className="toolbar noSelect">
@@ -38,6 +63,8 @@ class Toolbar extends React.Component {
                <div className="shrink columns">
                   <div className="icon-menu"
                      onClick={onExportSessionClicked}></div>
+                  <button type="button" className="button" data-toggle="exportSessionDropdown">Export</button>
+                  {exportProjectPopover}
                </div>
                <div className="small columns text-center">
                   <div className="row align-center">
