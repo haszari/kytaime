@@ -101,7 +101,7 @@ class Toolbar extends React.Component {
                </div>
                <div className="row align-right">
                   <div className="shrink columns text-right">
-                     <div className="icon-plus"
+                     <div className="icon-tick"
                         onClick={onApplyTempoClicked.bind(null, nextTempoValue)}></div>
                   </div>
                </div>
