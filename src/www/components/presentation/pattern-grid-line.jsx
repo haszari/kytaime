@@ -9,8 +9,8 @@ const hsl = (h, s, l) => {
 }
 
 const patternColourInfo = {
-   baseHue: 22,
-   hueIncrement: 66, // 22 is 360 / 16 channels
+   baseHue: 22 * 8,
+   hueIncrement: 80, // 22 is 360 / 16 channels
    backgroundLightness: 97,
    offLightness: 82,
    onLightness: 50,
