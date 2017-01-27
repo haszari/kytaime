@@ -19,7 +19,7 @@ const mapStateToProps = (state, ownProps) => {
    //    );
    return {
       // patterns: _.compact(patternsForThisRow),
-      patternCells: rowState.patternCells,
+      patternCells: rowState ? rowState.patternCells : [],
       editMode: state.userinterface.editMode
    }
 }
