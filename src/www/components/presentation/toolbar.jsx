@@ -11,12 +11,16 @@ class Toolbar extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         showExportModal: false
+         proposedTempo: undefined,
+         showExportModal: false,
+         showTempoPopover: false,
       };
    }
 
    render() {
       let { 
+         tempo, 
+         onApplyTempoClicked, 
          projectName, projectTag, 
          playState, beatNumber, 
          onPlayClick, onToggleEditMode, 
@@ -71,12 +75,52 @@ class Toolbar extends React.Component {
             </form>
          </div>
       );
-     
+
+      let onChangeProposedTempo = (event) => {
+         this.setState({
+            proposedTempo: event.target.value
+         })
+      };
+
+      let nextTempoValue = this.state.proposedTempo ? this.state.proposedTempo : tempo;
+
+      let tempoPopover = (
+         <div className="popover" id="tempoPopover">
+            <form>
+               <div className="row">
+                  <div className="medium-6 columns">
+                    <label>Current Tempo
+                      <input type="number" value={tempo} readOnly />
+                    </label>
+                  </div>
+                  <div className="medium-6 columns">
+                    <label>Tempo
+                      <input type="number" value={nextTempoValue} onChange={onChangeProposedTempo} />
+                    </label>
+                  </div>
+               </div>
+               <div className="row align-right">
+                  <div className="shrink columns text-right">
+                     <div className="icon-plus"
+                        onClick={onApplyTempoClicked.bind(null, nextTempoValue)}></div>
+                  </div>
+               </div>
+            </form>
+         </div>
+      );
+        
       let onMenuClicked = () => {
          this.setState({
             showExportModal: !this.state.showExportModal 
          });
       }
+
+      let onBeatDisplayClicked = () => {
+         this.setState({
+            showTempoPopover: !this.state.showTempoPopover 
+         });
+      }
+
 
       return ( 
          <section className="toolbar noSelect">
@@ -92,9 +136,10 @@ class Toolbar extends React.Component {
                </div>
                <div className="small columns text-center">
                   <div className="row align-center">
-                     <div className="">{beatNumber}</div>
+                     <div className="" onClick={onBeatDisplayClicked}>{beatNumber}</div>
                      {/* <div className="">/32</div> */}
                   </div>
+                  { this.state.showTempoPopover ? tempoPopover : undefined }
                </div>
                <div className="shrink columns text-right" onClick={onPlayClick}>
                   <div className={playButtonIconClass} ></div>
@@ -106,6 +151,7 @@ class Toolbar extends React.Component {
 }
 
 Toolbar.propTypes = {
+  tempo: PropTypes.number.isRequired,
   projectName: PropTypes.string.isRequired,
   projectTag: PropTypes.string.isRequired,
   playState: PropTypes.string.isRequired,
@@ -114,6 +160,7 @@ Toolbar.propTypes = {
   onToggleEditMode: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   exportData: PropTypes.string.isRequired,
+  onApplyTempoClicked: PropTypes.func.isRequired,
   onChangeProjectName: PropTypes.func.isRequired,
   onChangeProjectTag: PropTypes.func.isRequired,
 }

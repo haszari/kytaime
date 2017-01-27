@@ -24,45 +24,19 @@ var renderInterval = 200;
 // longer period of notes to render to cover potential sloppy timing between render callbacks
 var renderOverlap = renderInterval * 0.2;
 
-var beatsPerMinute = 120;
-var setBeatsPerMinute = function(newBpm) {
-   beatsPerMinute = newBpm;
-};
-
 var updateUI = function(renderRange) {
+   let appState = store.getState();
+
    // this loop and timestamp calc is duplicated around here - should factor it out
    for (var beat=Math.ceil(renderRange.start.beat); beat<renderRange.end.beat; beat++) {
       var beatOffset = beat - renderRange.start.beat;
-      var timestamp = bpmUtilities.beatsToMs(beatsPerMinute, beatOffset);
+      var timestamp = bpmUtilities.beatsToMs(appState.transport.tempo, beatOffset);
 
       // dispatch UI update
       // (this "callback on beat x" is generally useful)
       setTimeout(() => {
          store.dispatch(actions.transportCurrentBeat(beat));
       }, timestamp);
-   }
-};
-
-var renderMetronome = function(renderRange) {
-   if (!midiOutPort)
-      return;
-
-   for (var beat=Math.ceil(renderRange.start.beat); beat<renderRange.end.beat; beat++) {
-      var beatOffset = beat - renderRange.start.beat;
-      var timestamp = bpmUtilities.beatsToMs(beatsPerMinute, beatOffset);
-      var note = { 
-         port: midiOutPort, 
-
-         channel: metronomeChannel, // channelMap.drums, 
-         note: metronomeNote, //drumMap.hat, 
-
-         velocity: 80, 
-         duration: 200, 
-         timestamp: renderRange.start.time + timestamp
-      };
-      // console.log(note.timestamp);
-
-      midiUtilities.renderNote(note);
    }
 };
 
@@ -74,6 +48,8 @@ var state = {
 };
 var updateTransport = function() {
    // console.log('render at ' + window.performance.now() + ' last finished at ' + state.lastRenderEndTime);
+
+   let appState = store.getState();
 
    var now = window.performance.now();
    var renderStart = state.lastRenderEndTime;
@@ -89,18 +65,14 @@ var updateTransport = function() {
       },
       end: {
          time: renderEnd,
-         beat: state.lastRenderEndBeat + bpmUtilities.msToBeats(beatsPerMinute, chunkMs)
+         beat: state.lastRenderEndBeat + 
+            bpmUtilities.msToBeats(appState.transport.tempo, chunkMs)
       }
    };
 
    updateUI(renderRange);
 
-   // render click(s)
-   if (metronomeOn)
-      renderMetronome(renderRange);
-
    // render patterns
-   let appState = store.getState();
    _.each(appState.patterngrid, (patternGridLine, rowIndex) => {
       _.each(patternGridLine.patternCells, 
          (cell, cellIndex) => {
@@ -108,7 +80,7 @@ var updateTransport = function() {
             let isStillPlaying = false;
             if (_.isArray(pattern.notes)) {         
                isStillPlaying = renderNotePattern(
-                  renderRange, beatsPerMinute, midiOutPort, 
+                  renderRange, appState.transport.tempo, midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
                   cell.triggered, 
@@ -132,10 +104,6 @@ var updateTransport = function() {
 
 var setOptions = function(options) {
    midiOutPort = options.port;
-   metronomeNote = options.metronomeNote || 37; 
-   metronomeChannel = options.metronomeChannel || 0; 
-   if (options.metronomeOn != undefined)
-      metronomeOn = options.metronomeOn; 
 };
 
 var worker = new WorkerSetInterval;
@@ -197,9 +165,6 @@ const requestedPortName = "IAC Driver Bus 1";
 function initialiseTransport() {
    setOptions({
       port: midiOutPort,
-      metronomeChannel: midiUtilities.channelMap.drums,
-      metronomeNote: midiUtilities.drumMap.stick,
-      metronomeOn: false
    });
    // transport.start();
 }
@@ -223,6 +188,5 @@ module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;
 module.exports.togglePlay = togglePlay;
 module.exports.isPlaying = isPlaying;
-module.exports.setBeatsPerMinute = setBeatsPerMinute;
 module.exports.setOptions = setOptions;
 module.exports.setPattern = setPattern;

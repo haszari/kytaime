@@ -114,7 +114,11 @@ const userinterface = (state = { editMode: false }, action) => {
 }
 
 
-const transport = (state = { playState: '', beatNumber: 0 }, action) => {
+const transport = (state = { 
+   playState: '', 
+   tempo: 123,
+   beatNumber: 0 
+}, action) => {
    switch (action.type) {
       case actionTypes.TRANSPORT_PLAYSTATE: 
          return Object.assign({}, state, {
@@ -124,6 +128,11 @@ const transport = (state = { playState: '', beatNumber: 0 }, action) => {
          return Object.assign({}, state, {
             beatNumber: action.beatNumber
          });
+      case actionTypes.TRANSPORT_SET_TEMPO:
+         return Object.assign({}, state, {
+            tempo: action.tempo
+         });
+
       default:
          return state;
    }

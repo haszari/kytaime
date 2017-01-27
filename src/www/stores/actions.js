@@ -1,7 +1,10 @@
 
+import _ from 'lodash';
+
 import shortid from 'shortid';
 
 import * as actionTypes from './action-types';
+
 
 
 
@@ -36,6 +39,11 @@ export function transportPlayState(playState) {
 export function transportCurrentBeat(beatNumber) {
    return { type: actionTypes.TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
 }
+
+export function transportTempoBpm(beatsPerMinute) {
+   return { type: actionTypes.TRANSPORT_SET_TEMPO, tempo: _.toNumber(beatsPerMinute) };
+}
+
 
 
 export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {

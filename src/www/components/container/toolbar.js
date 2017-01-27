@@ -13,15 +13,19 @@ import Toolbar from '../presentation/toolbar.jsx';
 
 const mapStateToProps = (state, ownProps) => {
    return {
+      editMode: state.userinterface.editMode,
+      
       projectName: state.project.name, 
       projectTag: state.project.tag, 
+      exportData: Hjson.stringify(state),
+
+      tempo: state.transport.tempo, 
       playState: state.transport.playState,
       beatNumber: state.transport.beatNumber,
+      
       onPlayClick: () => {
          sequencer.togglePlay();
       },
-      editMode: state.userinterface.editMode,
-      exportData: Hjson.stringify(state),
    }
 }
 
@@ -29,6 +33,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
    return {
       onToggleEditMode: () => {
          dispatch(actions.uiToggleEditMode())
+      },
+      onApplyTempoClicked: (bpm) => {
+         dispatch(actions.transportTempoBpm(bpm));
       },
       onChangeProjectName: (event) => {
          dispatch(actions.setProjectName({ name: event.target.value }));
