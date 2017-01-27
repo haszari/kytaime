@@ -8,8 +8,22 @@ import React, { PropTypes } from 'react';
 import colours from '../../styles/colours';
 
 class Toolbar extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         showExportModal: false
+      };
+   }
+
    render() {
-      let { playState, beatNumber, onPlayClick, onToggleEditMode, editMode, exportData } = this.props;
+      let { 
+         projectName, projectTag, 
+         playState, beatNumber, 
+         onPlayClick, onToggleEditMode, 
+         onChangeProjectName, onChangeProjectTag,
+         editMode, 
+         exportData 
+      } = this.props;
 
       let playButtonIconClass = '';
       if (playState == "playing")
@@ -21,38 +35,49 @@ class Toolbar extends React.Component {
          editButtonStyle = { color: colours.enabledButtonForeground };
 
       let onExportSessionClicked = () => {
-         let projectName = 'kytaime';
-         let sessionFileName = projectName + '-' + moment().format('YYYYMMDD-hhmmss') + '.kytaime';
+         let name = projectName || 'kytaime';
+         let tag = projectTag ? ('-' + projectTag) : '';
+         let sessionFileName = name + tag + '-' + moment().format('YYYYMMDD-hhmmss') + '.kytaime';
          let dataURI = 'data:Application/octet-stream,' + encodeURIComponent(exportData);
          var blob = new Blob([exportData], {type: "text/hjson;charset=utf-8"});
          FileSaver.saveAs(blob, sessionFileName);
+
+         this.setState({
+            showExportModal: false 
+         });
       }
 
       let exportProjectPopover = (
-         <div className="dropdown-pane" id="exportSessionDropdown" data-dropdown data-auto-focus="true">
-            Example form in a dropdown.
+         <div className="popover" id="exportSessionDropdown">
             <form>
                <div className="row">
                   <div className="medium-6 columns">
                     <label>Name
-                      <input type="text" placeholder="kytaime" />
+                      <input type="text" placeholder="kytaime" onChange={onChangeProjectName} value={projectName} />
                     </label>
                   </div>
                   <div className="medium-6 columns">
                     <label>Tag
-                      <input type="text" placeholder="banger" />
+                      <input type="text" placeholder="banger" onChange={onChangeProjectTag} value={projectTag} />
                     </label>
                   </div>
                </div>
-               <div className="row">
-                  <div className="columns text-right" >
-                     <button type="button" className="success button">Save</button>
+               <div className="row align-right">
+                  <div className="shrink columns text-right">
+                     <div className="icon-floppy"
+                        onClick={onExportSessionClicked}></div>
                   </div>
                </div>
             </form>
          </div>
       );
      
+      let onMenuClicked = () => {
+         this.setState({
+            showExportModal: !this.state.showExportModal 
+         });
+      }
+
       return ( 
          <section className="toolbar noSelect">
             <div className="row expanded">
@@ -62,9 +87,8 @@ class Toolbar extends React.Component {
                </div>
                <div className="shrink columns">
                   <div className="icon-menu"
-                     onClick={onExportSessionClicked}></div>
-                  <button type="button" className="button" data-toggle="exportSessionDropdown">Export</button>
-                  {exportProjectPopover}
+                     onClick={onMenuClicked}></div>
+                  { this.state.showExportModal ? exportProjectPopover : undefined }
                </div>
                <div className="small columns text-center">
                   <div className="row align-center">
@@ -82,11 +106,15 @@ class Toolbar extends React.Component {
 }
 
 Toolbar.propTypes = {
+  projectName: PropTypes.string.isRequired,
+  projectTag: PropTypes.string.isRequired,
   playState: PropTypes.string.isRequired,
   beatNumber: PropTypes.number.isRequired,
   onPlayClick: PropTypes.func.isRequired,
   onToggleEditMode: PropTypes.func.isRequired,
   editMode: PropTypes.bool.isRequired,
   exportData: PropTypes.string.isRequired,
+  onChangeProjectName: PropTypes.func.isRequired,
+  onChangeProjectTag: PropTypes.func.isRequired,
 }
 export default Toolbar;

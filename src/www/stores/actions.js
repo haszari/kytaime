@@ -60,3 +60,11 @@ export function importRehydrate(state) {
    return { type: actionTypes.IMPORT_REHYDRATE, state: state };
 }
  
+
+export function setProjectTag({ tag }) {
+   return { type: actionTypes.SET_PROJECT_TAG, tag: tag };
+}
+
+export function setProjectName({ name }) {
+   return { type: actionTypes.SET_PROJECT_NAME, name: name };
+}

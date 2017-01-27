@@ -2,10 +2,6 @@
 // styles
 require('./styles/app.scss');
 
-// foundation js & dependencies
-require('script!jquery');
-require('script!foundation-sites');
-
 import React from 'react';
 import {render} from 'react-dom';
 

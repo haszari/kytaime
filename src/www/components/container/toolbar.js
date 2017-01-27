@@ -13,6 +13,8 @@ import Toolbar from '../presentation/toolbar.jsx';
 
 const mapStateToProps = (state, ownProps) => {
    return {
+      projectName: state.project.name, 
+      projectTag: state.project.tag, 
       playState: state.transport.playState,
       beatNumber: state.transport.beatNumber,
       onPlayClick: () => {
@@ -27,7 +29,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
    return {
       onToggleEditMode: () => {
          dispatch(actions.uiToggleEditMode())
-      }
+      },
+      onChangeProjectName: (event) => {
+         dispatch(actions.setProjectName({ name: event.target.value }));
+      },
+      onChangeProjectTag: (event) => {
+         dispatch(actions.setProjectTag({ tag: event.target.value }));
+      },
    }
 }
 

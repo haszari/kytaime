@@ -16,6 +16,7 @@ $grid-column-gutter: (
 
 
 $button-background-colour: #f4f2f2;
+$toolbar-background-colour: #343232;
 
 
 body {
@@ -29,7 +30,19 @@ body {
 .toolbar {
 	font-size: 150%;
    color: white;
-   background-color: #343232;
+   background-color: $toolbar-background-colour;
+}
+
+.popover {
+   @include dropdown-container;
+
+   visibility: visible;
+   font-size: 100%;
+   background-color: $toolbar-background-colour;
+
+   label {
+     color: white;
+   }
 }
 
 #patternLines .patternRow {
@@ -66,60 +79,3 @@ body {
    margin-right: 8px;
 }
 
-// can have some fun spacing HSL colours out for channel themes
-// (should write a program for this!)
-// well should just move all this into component as inline styles
-// aaand will do that when we want more than 3 channels!
-
-$pattern-a-hue: 22;
-$pattern-color-increment: 110; // 22 is 360 / 16 channels
-$pattern-background-lightness: 97%;
-$pattern-off-lightness: 82%;
-$pattern-on-lightness: 50%;
-
-#patternLines .patternRow-a {
-   background-color: hsl($pattern-a-hue, 90%, $pattern-background-lightness);
-}
-#patternLines .patternRow-a .pattern {
-   background-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
-   border-color: hsl($pattern-a-hue, 90%, $pattern-off-lightness);
-}
-#patternLines .patternRow-a .pattern.playing {
-   background-color: hsl($pattern-a-hue, 90%, $pattern-on-lightness);
-}
-#patternLines .patternRow-a .pattern.triggered {
-   border-color: hsl($pattern-a-hue, 90%, $pattern-on-lightness);
-}
-
-
-$pattern-b-hue: $pattern-a-hue + $pattern-color-increment;
-
-#patternLines .patternRow-b {
-   background-color: hsl($pattern-b-hue, 90%, $pattern-background-lightness);
-}
-#patternLines .patternRow-b .pattern {
-   background-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
-   border-color: hsl($pattern-b-hue, 90%, $pattern-off-lightness);
-}
-#patternLines .patternRow-b .pattern.playing {
-   background-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
-}
-#patternLines .patternRow-b .pattern.triggered {
-   border-color: hsl($pattern-b-hue, 90%, $pattern-on-lightness);
-}
-
-$pattern-c-hue: $pattern-b-hue + $pattern-color-increment;
-
-#patternLines .patternRow-c {
-   background-color: hsl($pattern-c-hue, 90%, $pattern-background-lightness);
-}
-#patternLines .patternRow-c .pattern {
-   background-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
-   border-color: hsl($pattern-c-hue, 90%, $pattern-off-lightness);
-}
-#patternLines .patternRow-c .pattern.playing {
-   background-color: hsl($pattern-c-hue, 90%, $pattern-on-lightness);
-}
-#patternLines .patternRow-c .pattern.triggered {
-   border-color: hsl($pattern-c-hue, 90%, $pattern-on-lightness);
-}

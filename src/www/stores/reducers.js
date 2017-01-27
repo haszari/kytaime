@@ -200,7 +200,28 @@ const patterns = (state = [], action) => {
    }
 }
 
+const project = (state = { name: '', tag: '' }, action) => {
+   switch (action.type) {
+      case actionTypes.IMPORT_REHYDRATE:
+         return Object.assign({}, state, action.state.project);
+
+      case actionTypes.SET_PROJECT_NAME: 
+         return Object.assign({}, state, {
+            name: action.name
+         });
+      case actionTypes.SET_PROJECT_TAG: 
+         return Object.assign({}, state, {
+            tag: action.tag
+         });
+
+      default:
+         return state;
+   }
+}
+
+
 const kytaimeApp = combineReducers({
+   project, 
    userinterface,
    patterngrid,
    transport,
