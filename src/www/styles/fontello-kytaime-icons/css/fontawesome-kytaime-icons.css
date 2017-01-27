@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'fontawesome-kytaime-icons';
-  src: url('../font/fontawesome-kytaime-icons.eot?39984889');
-  src: url('../font/fontawesome-kytaime-icons.eot?39984889#iefix') format('embedded-opentype'),
-       url('../font/fontawesome-kytaime-icons.woff2?39984889') format('woff2'),
-       url('../font/fontawesome-kytaime-icons.woff?39984889') format('woff'),
-       url('../font/fontawesome-kytaime-icons.ttf?39984889') format('truetype'),
-       url('../font/fontawesome-kytaime-icons.svg?39984889#fontawesome-kytaime-icons') format('svg');
+  src: url('../font/fontawesome-kytaime-icons.eot?80379007');
+  src: url('../font/fontawesome-kytaime-icons.eot?80379007#iefix') format('embedded-opentype'),
+       url('../font/fontawesome-kytaime-icons.woff2?80379007') format('woff2'),
+       url('../font/fontawesome-kytaime-icons.woff?80379007') format('woff'),
+       url('../font/fontawesome-kytaime-icons.ttf?80379007') format('truetype'),
+       url('../font/fontawesome-kytaime-icons.svg?80379007#fontawesome-kytaime-icons') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -15,7 +15,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: 'fontawesome-kytaime-icons';
-    src: url('../font/fontawesome-kytaime-icons.svg?39984889#fontawesome-kytaime-icons') format('svg');
+    src: url('../font/fontawesome-kytaime-icons.svg?80379007#fontawesome-kytaime-icons') format('svg');
   }
 }
 */
@@ -60,5 +60,6 @@
 .icon-pencil:before { content: '\e802'; } /* '' */
 .icon-plus:before { content: '\e803'; } /* '' */
 .icon-tick:before { content: '\e804'; } /* '' */
+.icon-floppy:before { content: '\e805'; } /* '' */
 .icon-menu:before { content: '\f0c9'; } /* '' */
 .icon-trash:before { content: '\f1f8'; } /* '' */

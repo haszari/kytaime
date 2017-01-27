@@ -30,7 +30,7 @@ var updateUI = function(renderRange) {
    // this loop and timestamp calc is duplicated around here - should factor it out
    for (var beat=Math.ceil(renderRange.start.beat); beat<renderRange.end.beat; beat++) {
       var beatOffset = beat - renderRange.start.beat;
-      var timestamp = bpmUtilities.beatsToMs(appState.transport.tempo, beatOffset);
+      var timestamp = bpmUtilities.beatsToMs(appState.project.tempo, beatOffset);
 
       // dispatch UI update
       // (this "callback on beat x" is generally useful)
@@ -66,7 +66,7 @@ var updateTransport = function() {
       end: {
          time: renderEnd,
          beat: state.lastRenderEndBeat + 
-            bpmUtilities.msToBeats(appState.transport.tempo, chunkMs)
+            bpmUtilities.msToBeats(appState.project.tempo, chunkMs)
       }
    };
 
@@ -80,7 +80,7 @@ var updateTransport = function() {
             let isStillPlaying = false;
             if (_.isArray(pattern.notes)) {         
                isStillPlaying = renderNotePattern(
-                  renderRange, appState.transport.tempo, midiOutPort, 
+                  renderRange, appState.project.tempo, midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
                   cell.triggered, 

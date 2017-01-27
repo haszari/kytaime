@@ -19,7 +19,8 @@ const mapStateToProps = (state, ownProps) => {
       projectTag: state.project.tag, 
       exportData: Hjson.stringify(state),
 
-      tempo: state.transport.tempo, 
+      tempo: state.project.tempo, 
+      
       playState: state.transport.playState,
       beatNumber: state.transport.beatNumber,
       
@@ -35,7 +36,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
          dispatch(actions.uiToggleEditMode())
       },
       onApplyTempoClicked: (bpm) => {
-         dispatch(actions.transportTempoBpm(bpm));
+         dispatch(actions.setProjectTempo(bpm));
       },
       onChangeProjectName: (event) => {
          dispatch(actions.setProjectName({ name: event.target.value }));

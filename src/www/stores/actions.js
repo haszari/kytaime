@@ -40,10 +40,6 @@ export function transportCurrentBeat(beatNumber) {
    return { type: actionTypes.TRANSPORT_CURRENT_BEAT, beatNumber: beatNumber };
 }
 
-export function transportTempoBpm(beatsPerMinute) {
-   return { type: actionTypes.TRANSPORT_SET_TEMPO, tempo: _.toNumber(beatsPerMinute) };
-}
-
 
 
 export function addPattern({rowIndex, notes, duration, startBeats, endBeats}) {
@@ -76,3 +72,8 @@ export function setProjectTag({ tag }) {
 export function setProjectName({ name }) {
    return { type: actionTypes.SET_PROJECT_NAME, name: name };
 }
+
+export function setProjectTempo(beatsPerMinute) {
+   return { type: actionTypes.SET_PROJECT_TEMPO, tempo: _.toNumber(beatsPerMinute) };
+}
+

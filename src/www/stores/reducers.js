@@ -116,7 +116,6 @@ const userinterface = (state = { editMode: false }, action) => {
 
 const transport = (state = { 
    playState: '', 
-   tempo: 123,
    beatNumber: 0 
 }, action) => {
    switch (action.type) {
@@ -127,10 +126,6 @@ const transport = (state = {
       case actionTypes.TRANSPORT_CURRENT_BEAT: 
          return Object.assign({}, state, {
             beatNumber: action.beatNumber
-         });
-      case actionTypes.TRANSPORT_SET_TEMPO:
-         return Object.assign({}, state, {
-            tempo: action.tempo
          });
 
       default:
@@ -209,11 +204,19 @@ const patterns = (state = [], action) => {
    }
 }
 
-const project = (state = { name: '', tag: '' }, action) => {
+const project = (state = { 
+   tempo: 123,
+   name: '', 
+   tag: '' 
+}, action) => {
    switch (action.type) {
       case actionTypes.IMPORT_REHYDRATE:
          return Object.assign({}, state, action.state.project);
 
+      case actionTypes.SET_PROJECT_TEMPO:
+         return Object.assign({}, state, {
+            tempo: action.tempo
+         });
       case actionTypes.SET_PROJECT_NAME: 
          return Object.assign({}, state, {
             name: action.name
@@ -230,10 +233,13 @@ const project = (state = { name: '', tag: '' }, action) => {
 
 
 const kytaimeApp = combineReducers({
-   project, 
+   // not persisted
    userinterface,
-   patterngrid,
    transport,
+
+   // persisted
+   project, 
+   patterngrid,
    patterns
 });
 
