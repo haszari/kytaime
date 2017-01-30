@@ -12,14 +12,20 @@ import _ from 'lodash';
 
 const mapStateToProps = (state, ownProps) => {
    let rowState = state.patterngrid[ownProps.rowIndex];
-   let patternsForThisRow = [];
-   // if (rowState && rowState.patterns.length)
-   //    patternsForThisRow = rowState.patterns.map(
-   //       (patternId) => _.find(state.patterns, { id: patternId })
-   //    );
+   let patternsForThisRow = rowState ? rowState.patternCells : [];
+   // merge in all the rich detail for the patterns .. though we just want the name
+   patternsForThisRow = patternsForThisRow.map(
+      (patternCell) => {
+         return Object.assign({}, 
+            patternCell, 
+            { 
+               pattern: _.find(state.patterns, { id: patternCell.patternId })
+            }
+         )
+      }
+   );
    return {
-      // patterns: _.compact(patternsForThisRow),
-      patternCells: rowState ? rowState.patternCells : [],
+      patternCells: patternsForThisRow,
       editMode: state.userinterface.editMode
    }
 }

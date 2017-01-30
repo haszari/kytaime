@@ -143,6 +143,7 @@ const pattern = (state = {}, action) => {
             duration: action.duration || 4,
             startBeats: action.startBeats || [ 0 ],
             endBeats: action.endBeats || [ 0 ],
+            name: '',
             // triggered: true,
             // playing: false
          }

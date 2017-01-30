@@ -17,7 +17,7 @@ const patternColourInfo = {
    saturation: 90
 }
 
-const PatternCell = ({hue, triggered, playing, onClick, iconClass}) => {
+const PatternCell = ({hue, name, triggered, playing, onClick, iconClass}) => {
    let classes = ["row", "pattern", "text-center align-middle"];
    let borderLightness = patternColourInfo.offLightness;
    let backgroundLightness = patternColourInfo.offLightness;
@@ -40,19 +40,30 @@ const PatternCell = ({hue, triggered, playing, onClick, iconClass}) => {
       patternColourInfo.saturation, 
       borderLightness
    );
+   let containerStyle = { 
+      position: 'relative',
+      backgroundColor: backgroundColour,
+      borderColor: borderColour
+   }
+   let nameStyle = {
+      position: 'absolute',
+      fontSize: '50%',
+      fontWeight: 'bold',
+      width: '100%',
+      textAlign: 'text-center',
+      bottom: 0,
+   }
 
    return (
-      <div className={classes.join(" ")} onClick={onClick}
-         style={{ 
-            backgroundColor: backgroundColour,
-            borderColor: borderColour
-         }} >
+      <div style={containerStyle} className={classes.join(" ")} onClick={onClick}>
          <div className={iconClass + " columns"}></div>
+         <div style={nameStyle}>{name}</div>
       </div>
    );               
 }
 
 PatternCell.propTypes = {
+   name: PropTypes.string,
    hue: PropTypes.number.isRequired,
    triggered: PropTypes.bool.isRequired,
    playing: PropTypes.bool.isRequired,
@@ -118,7 +129,7 @@ const PatternGridLine = ({
          {patternCells.map((cell, cellIndex) => 
             <PatternCell 
                key={cellIndex} triggered={cell.triggered} playing={cell.playing} 
-               hue={rowHue}
+               hue={rowHue} name={cell.pattern.name ? cell.pattern.name : cell.pattern.id}
                iconClass={ editMode ? "icon-trash" : undefined }
                onClick={ () => {
                   patternCellClickHandler({ rowIndex, cellIndex, patternId: cell.patternId });
