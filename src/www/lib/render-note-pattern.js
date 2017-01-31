@@ -3,22 +3,6 @@ import _ from 'lodash';
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
-function valueInWrappedBeatRange(value, renderStart, renderEnd, patternDuration) {
-   // standard case, end is after start
-   var inRange = (
-      (value >= renderStart) && 
-      (value < renderEnd)
-   );
-   // loop case, end is before start because of loop
-   if ((renderEnd < renderStart) && !inRange) {
-      inRange = (
-         ( (value >= 0) && (value < renderEnd) ) ||
-         ( (value >= renderStart) && (value < patternDuration) )
-      );
-   }
-   return inRange;
-}
-
 const renderNotePattern = function(
    renderRange, beatsPerMinute, midiOutPort, 
    patternData, // {notes, duration, startBeats, endBeats }
@@ -45,7 +29,7 @@ const renderNotePattern = function(
    // see if we are going to drop (% duration) this render buffer
    if (!playing && triggered) {
       var triggerStart = _.find(patternData.startBeats, function(startBeat) {
-         return valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
+         return bpmUtilities.valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
       });
       if (!_.isUndefined(triggerStart)) {
          unmuteStart = triggerStart;
@@ -56,7 +40,7 @@ const renderNotePattern = function(
    // see if we are going to undrop (% duration) this render buffer
    if (playing && !triggered) {
       var triggerEnd = _.find(patternData.endBeats, function(beat) {
-         return valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
+         return bpmUtilities.valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
       });
       if (!_.isUndefined(triggerEnd)) {
          unmuteEnd = triggerEnd;
@@ -73,7 +57,7 @@ const renderNotePattern = function(
 
    // get the notes that happen this render buffer
    notes = _.filter(notes, function(noteEvent) {
-      return valueInWrappedBeatRange(noteEvent.start, unmuteStart, unmuteEnd, patternDuration);
+      return bpmUtilities.valueInWrappedBeatRange(noteEvent.start, unmuteStart, unmuteEnd, patternDuration);
    });
 
    // play em

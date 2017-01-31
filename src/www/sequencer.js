@@ -5,6 +5,7 @@ import _ from 'lodash';
 import WebMidiHelper from './lib/web-midi-helper';
 import midiUtilities from './lib/midi-utilities';
 import renderNotePattern from './lib/render-note-pattern';
+import renderAutomationPattern from './lib/render-automation-pattern';
 import * as bpmUtilities from './lib/bpm-utilities';
 
 import store from './stores/store';
@@ -78,22 +79,37 @@ var updateTransport = function() {
          (cell, cellIndex) => {
             let pattern = _.find(appState.patterns, { id: cell.patternId });
             let isStillPlaying = false;
+
             if (_.isArray(pattern.notes)) {         
+               // render NotePatterns
                isStillPlaying = renderNotePattern(
                   renderRange, appState.project.tempo, midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
                   cell.triggered, 
                   cell.playing
-            );
+               );
+            }
+            else if (_.isArray(pattern.points)) {         
+               // render AutomationPatterns
+               isStillPlaying = renderAutomationPattern(
+                  renderRange, appState.project.tempo, midiOutPort, 
+                  pattern,
+                  patternGridLine.midiChannel, 
+                  cell.triggered, 
+                  cell.playing
+               );
+            }
+
+            // update play state in store/ui
+            if (isStillPlaying != cell.playing)
+               store.dispatch(actions.setCellPlayState({ 
+                  rowIndex: rowIndex, 
+                  cellIndex: cellIndex, 
+                  playing: isStillPlaying 
+               }));
          }
-         if (isStillPlaying != cell.playing)
-            store.dispatch(actions.setCellPlayState({ 
-               rowIndex: rowIndex, 
-               cellIndex: cellIndex, 
-               playing: isStillPlaying 
-            }));
-      });
+      );
    });
 
 
