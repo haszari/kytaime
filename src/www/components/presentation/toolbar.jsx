@@ -38,6 +38,8 @@ class Toolbar extends React.Component {
       if (editMode)
          editButtonStyle = { color: colours.enabledButtonForeground };
 
+      let displayBeatNumber = beatNumber ? beatNumber : '-';
+
       let onExportSessionClicked = () => {
          let name = projectName || 'kytaime';
          let tag = projectTag ? ('-' + projectTag) : '';
@@ -136,7 +138,7 @@ class Toolbar extends React.Component {
                </div>
                <div className="small columns text-center">
                   <div className="row align-center">
-                     <div className="" onClick={onBeatDisplayClicked}>{beatNumber}</div>
+                     <div className="" onClick={onBeatDisplayClicked}>{displayBeatNumber}</div>
                      {/* <div className="">/32</div> */}
                   </div>
                   { this.state.showTempoPopover ? tempoPopover : undefined }

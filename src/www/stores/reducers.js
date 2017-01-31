@@ -120,8 +120,10 @@ const transport = (state = {
 }, action) => {
    switch (action.type) {
       case actionTypes.TRANSPORT_PLAYSTATE: 
+         let beatNumber = (action.playState == "stopped") ? 0 : state.beatNumber;
          return Object.assign({}, state, {
-            playState: action.playState
+            playState: action.playState,
+            beatNumber: beatNumber
          });
       case actionTypes.TRANSPORT_CURRENT_BEAT: 
          return Object.assign({}, state, {
