@@ -52,9 +52,7 @@ let renderSingleCC = function(channel, patternData, renderRange, beatsPerMinute,
 
             timestamp: renderRange.start.time + timestamp
          };
-         console.log(automation);
          midiUtilities.renderController(automation);
-         // console.log(timestamp, value);
       }
    }
 }
