@@ -71,6 +71,20 @@ var updateTransport = function() {
       }
    };
 
+   // determine current phrase length (.. in future, only if auto mode)
+   const minimumPhraseLength = 4;
+   const maximumPhraseLength = 32;
+   let curPhraseLength = minimumPhraseLength;
+   curPhraseLength = _.reduce(appState.patterngrid, (curPhraseLength, patternGridLine) => {
+      return _.reduce(patternGridLine.patternCells, (curPhraseLength, cell) => {
+         let pattern = _.find(appState.patterns, { id: cell.patternId });
+         return (
+            (cell.playing || cell.triggered) && (pattern.duration > curPhraseLength)) ? 
+            pattern.duration : curPhraseLength;
+      }, curPhraseLength);
+   }, curPhraseLength);
+   curPhraseLength = Math.min(curPhraseLength, maximumPhraseLength);
+
    updateUI(renderRange);
 
    // render patterns
@@ -83,7 +97,8 @@ var updateTransport = function() {
             if (_.isArray(pattern.notes)) {         
                // render NotePatterns
                isStillPlaying = renderNotePattern(
-                  renderRange, appState.project.tempo, midiOutPort, 
+                  renderRange, appState.project.tempo, curPhraseLength,
+                  midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
                   cell.triggered, 

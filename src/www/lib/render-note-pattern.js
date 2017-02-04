@@ -3,13 +3,8 @@ import _ from 'lodash';
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
-// set phrase to 32 to get phrase mod stop/start working
-// (in future calculate it from the patterns that are playing)
-let phraseDuration = 32;
-let patternDropStopModulus = phraseDuration;
-
 const renderPatternStartStop = function(
-   renderRange, 
+   renderRange, patternDropStopModulus,
    isPlaying, isTriggered, 
    renderStart, renderEnd, 
    startBeats, endBeats
@@ -60,7 +55,8 @@ const renderPatternStartStop = function(
 }
 
 const renderNotePattern = function(
-   renderRange, beatsPerMinute, midiOutPort, 
+   renderRange, beatsPerMinute, currentPhraseLength,
+   midiOutPort, 
    patternData, // {notes, duration, startBeats, endBeats }
    channel, triggered, playing
 ) {
@@ -79,7 +75,7 @@ const renderNotePattern = function(
    var renderEnd = (renderRange.end.beat % patternData.duration);
 
    let startStopInfo = renderPatternStartStop(
-      renderRange, 
+      renderRange, currentPhraseLength,
       playing, triggered, 
       renderStart, renderEnd,
       patternData.startBeats, patternData.endBeats
