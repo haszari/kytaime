@@ -11,7 +11,7 @@ var beatsToMs = function(bpm, beats) {
    return beats * (60 / bpm) * 1000;
 };
 
-function valueInWrappedBeatRange(value, renderStart, renderEnd, patternDuration) {
+function valueInWrappedBeatRange(value, renderStart, renderEnd, wrapDuration) {
    // standard case, end is after start
    var inRange = (
       (value >= renderStart) && 
@@ -21,7 +21,7 @@ function valueInWrappedBeatRange(value, renderStart, renderEnd, patternDuration)
    if ((renderEnd < renderStart) && !inRange) {
       inRange = (
          ( (value >= 0) && (value < renderEnd) ) ||
-         ( (value >= renderStart) && (value < patternDuration) )
+         ( (value >= renderStart) && (value < wrapDuration) )
       );
    }
    return inRange;

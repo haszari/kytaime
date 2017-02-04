@@ -16,11 +16,22 @@ const renderNotePattern = function(
    if (!playing && !triggered) 
       return isPlaying;
 
-   var patternDuration = patternData.duration;
+   let patternDuration = patternData.duration;
+
+   // set phrase to 32 to get phrase mod stop/start working
+   // (in future calculate it from the patterns that are playing)
+   let phraseDuration = 32;
+   let patternDropStopModulus = phraseDuration;
 
    // start and end of render range in pattern-beats
    var renderStart = (renderRange.start.beat % patternData.duration);
    var renderEnd = (renderRange.end.beat % patternData.duration);
+
+   // and in phrase-beats
+   var phrase = {
+      renderStart: (renderRange.start.beat % patternDropStopModulus),
+      renderEnd: (renderRange.end.beat % patternDropStopModulus)
+   };
 
    // the start and end of notes we will allow to play (used to implement drop-on-0, cut-on-end/0)
    var unmuteStart = renderStart;
@@ -29,7 +40,8 @@ const renderNotePattern = function(
    // see if we are going to drop (% duration) this render buffer
    if (!playing && triggered) {
       var triggerStart = _.find(patternData.startBeats, function(startBeat) {
-         return bpmUtilities.valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
+         // might need to express start & stop relative to loop/phrase, i.e. negative for mute early, positive to stop during next bar/phrase
+         return bpmUtilities.valueInWrappedBeatRange(startBeat, phrase.renderStart, phrase.renderEnd, patternDropStopModulus);
       });
       if (!_.isUndefined(triggerStart)) {
          unmuteStart = triggerStart;
@@ -40,7 +52,7 @@ const renderNotePattern = function(
    // see if we are going to undrop (% duration) this render buffer
    if (playing && !triggered) {
       var triggerEnd = _.find(patternData.endBeats, function(beat) {
-         return bpmUtilities.valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
+         return bpmUtilities.valueInWrappedBeatRange(beat, phrase.renderStart, phrase.renderEnd, patternDropStopModulus);
       });
       if (!_.isUndefined(triggerEnd)) {
          unmuteEnd = triggerEnd;
