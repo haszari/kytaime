@@ -108,7 +108,8 @@ var updateTransport = function() {
             else if (_.isArray(pattern.points)) {         
                // render AutomationPatterns
                isStillPlaying = renderAutomationPattern(
-                  renderRange, appState.project.tempo, midiOutPort, 
+                  renderRange, appState.project.tempo, curPhraseLength,
+                  midiOutPort, 
                   pattern,
                   patternGridLine.midiChannel, 
                   cell.triggered, 

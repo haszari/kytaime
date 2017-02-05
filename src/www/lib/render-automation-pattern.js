@@ -12,17 +12,19 @@ function floorBeats(beats) {
 }
 
 
-let renderSingleCC = function(channel, patternData, renderRange, beatsPerMinute, midiOutPort) {
+let renderSingleCC = function(channel, patternData, renderRange, startStopInfo, beatsPerMinute, midiOutPort) {
    // start and end of render range in pattern-beats
    var renderStart = (renderRange.start.beat % patternData.duration);
    var renderEnd = (renderRange.end.beat % patternData.duration);
+
+   let patternDuration = patternData.duration;
+
+   var sortedPoints = _.sortBy(patternData.points, 'start');
 
    for (
       var renderMiddle = ceilBeats(renderStart); 
       renderMiddle <= floorBeats(renderEnd); 
       renderMiddle += ccTimeResolution) {
-   
-      var sortedPoints = _.sortBy(patternData.points, 'start');
 
       var firstPointIndex = _.findLastIndex(sortedPoints, point => {
          return (point.start <= renderMiddle);
@@ -58,7 +60,8 @@ let renderSingleCC = function(channel, patternData, renderRange, beatsPerMinute,
 }
 
 const renderAutomationPattern = function(
-   renderRange, beatsPerMinute, midiOutPort, 
+   renderRange, beatsPerMinute, currentPhraseLength,
+   midiOutPort, 
    patternData, // {controller, points, duration, startBeats, endBeats }
    channel, triggered, playing
 ) {
@@ -76,40 +79,21 @@ const renderAutomationPattern = function(
    var renderStart = (renderRange.start.beat % patternData.duration);
    var renderEnd = (renderRange.end.beat % patternData.duration);
 
-   // the start and end of notes we will allow to play (used to implement drop-on-0, cut-on-end/0)
-   var unmuteStart = renderStart;
-   var unmuteEnd = renderEnd;
-
-   // see if we are going to drop (% duration) this render buffer
-   if (!playing && triggered) {
-      var triggerStart = _.find(patternData.startBeats, function(startBeat) {
-         return bpmUtilities.valueInWrappedBeatRange(startBeat, renderStart, renderEnd, patternDuration);
-      });
-      if (!_.isUndefined(triggerStart)) {
-         unmuteStart = triggerStart;
-         isPlaying = true; // strictly, this becomes true part way through..
-      }
-   }
-   
-   // see if we are going to undrop (% duration) this render buffer
-   if (playing && !triggered) {
-      var triggerEnd = _.find(patternData.endBeats, function(beat) {
-         return bpmUtilities.valueInWrappedBeatRange(beat, renderStart, renderEnd, patternDuration);
-      });
-      if (!_.isUndefined(triggerEnd)) {
-         unmuteEnd = triggerEnd;
-         isPlaying = false;
-      }
-   }
+   let startStopInfo = bpmUtilities.renderPatternStartStop(
+      renderRange, currentPhraseLength,
+      playing, triggered, 
+      renderStart, renderEnd,
+      patternData.startBeats, patternData.endBeats
+   );
 
    // trigger not happening yet
-   if (!isPlaying) {
-      return isPlaying;
+   if (!startStopInfo.isPlaying) {
+      return startStopInfo.isPlaying;
    }
 
-   renderSingleCC(channel, patternData, renderRange, beatsPerMinute, midiOutPort);      
+   renderSingleCC(channel, patternData, renderRange, startStopInfo, beatsPerMinute, midiOutPort);      
 
-   return isPlaying;
+   return startStopInfo.isPlaying;
 }
 
 export default renderAutomationPattern;
