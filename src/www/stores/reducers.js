@@ -210,7 +210,9 @@ const patterns = (state = [], action) => {
 const project = (state = { 
    tempo: 123,
    name: '', 
-   tag: '' 
+   tag: '',
+   minPhraseLength: 4,
+   maxPhraseLength: Infinity,
 }, action) => {
    switch (action.type) {
       case actionTypes.IMPORT_REHYDRATE:

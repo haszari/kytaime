@@ -72,8 +72,8 @@ var updateTransport = function() {
    };
 
    // determine current phrase length (.. in future, only if auto mode)
-   const minimumPhraseLength = 4;
-   const maximumPhraseLength = 32;
+   const minimumPhraseLength = appState.project.minPhraseLength;
+   const maximumPhraseLength = appState.project.maxPhraseLength;
    let curPhraseLength = minimumPhraseLength;
    curPhraseLength = _.reduce(appState.patterngrid, (curPhraseLength, patternGridLine) => {
       return _.reduce(patternGridLine.patternCells, (curPhraseLength, cell) => {
