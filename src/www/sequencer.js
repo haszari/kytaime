@@ -78,8 +78,12 @@ var updateTransport = function() {
    curPhraseLength = _.reduce(appState.patterngrid, (curPhraseLength, patternGridLine) => {
       return _.reduce(patternGridLine.patternCells, (curPhraseLength, cell) => {
          let pattern = _.find(appState.patterns, { id: cell.patternId });
+         if (!_.isUndefined(pattern.includeInPhrase) && !pattern.includeInPhrase)
+            return curPhraseLength;
          return (
-            (cell.playing || cell.triggered) && (pattern.duration > curPhraseLength)) ? 
+               (cell.playing || cell.triggered) && 
+               (pattern.duration > curPhraseLength)
+            ) ? 
             pattern.duration : curPhraseLength;
       }, curPhraseLength);
    }, curPhraseLength);
