@@ -1,5 +1,6 @@
 {
   "name": "kytaime",
+  "productName": "Kytaime Patterns Reality",
   "description": "browser MIDI pattern sequencer prototype",
   "version": "0.0.1",
   "private": true,

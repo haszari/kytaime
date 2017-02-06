@@ -1,3 +1,4 @@
+const path = require('path')
 var express = require('express')
 var app = express();
 
@@ -15,7 +16,7 @@ if (DEVELOPMENT) {
 else {
    // I think this requires that we run from root folder ..
    console.log("We're serving up production from dist/www/");
-   app.use(express.static('dist/www'));
+   app.use(express.static(path.join(process.env.APP_PATH, '/dist/www')));
 }
 
 

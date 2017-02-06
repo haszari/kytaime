@@ -1,6 +1,12 @@
 const {app, BrowserWindow} = require('electron')
 const path = require('path')
 const url = require('url')
+
+
+// appServer needs APP_PATH 
+process.env['APP_PATH'] = app.getAppPath();
+
+// this references APP_PATH 
 const appServer = require('./server/server')
 
 // Keep a global reference of the window object, if you don't, the window will
