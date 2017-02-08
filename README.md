@@ -18,8 +18,10 @@ I wrote this for myself, for fun and the flexibility that I can adapt it to my n
 
 - Toolbar:
   - Edit mode on/off (pencil icon, left).
+  - Save session (menu icon).
   - Play/stop button in top right.
   - Current beat is displayed in the middle (when playing).
+    - Click the number to set the tempo in BPM.
 - Pattern grid:
   - When edit mode is enabled (red pencil):
     - Click + on a row to load a midi file.
@@ -28,13 +30,35 @@ I wrote this for myself, for fun and the flexibility that I can adapt it to my n
     - Click a pattern cell to trigger. 
       - The border will highlight, indicating it is triggered.
         - If you click it again, you can untrigger it.
-      - When triggered, patterns will play on the next appropriate beat, e.g. mod 4.
+      - When triggered, patterns will play on the next appropriate beat; for example, mod 4.
       - Patterns loop until you untrigger.
         - They will stop at an appropriate beat, e.g. the end of the loop.
   - Each row transmits to a midi channel.
     - The channel number is displayed in the circle on the right.
+    - (Currently outputs to "IAC Driver Bus 1".)
+- Saving & reloading session:
+  - Click the hamburger/save session icon in the toolbar.
+    - Enter a name and tag (you might use this for different variations).
+    - Click the tick mark and the file is saved (including a timestamp in the name).
+  - Drag this file on to the pattern area to load.
 
-You can do other things in the console, such as change the midi channel for a row, or set the number of rows.
+### The Session File
+
+You can do other things in the session file, such as change the midi channel for a row, or set the number of rows.
+
+This is a [Hjson](https://hjson.org) format file, so you can have comments.
+
+The whole state (aka [redux](http://redux.js.org) store state) of the app is saved in the file, but only certain things are loaded: `patterngrid`, `patterns` and `project`.
+
+#### Session File - Note Patterns
+Patterns have an `id`, `name`, `duration`, array of `notes`, and `startBeats` & `endBeats`.
+
+`duration` is loop length.
+
+`startBeats` is an array of beats that it's ok to start the pattern on. Defaults to `[ 0 ]`, i.e. the beginning. Similarly, `endBeats` is an array of beats where it's ok to stop the pattern. For example, if you have a pattern that sounds great on the first snare, you could set `startBeats: [ 0, 3 ]` or just `startBeats: [ 3 ]`. If you have a melody that starts with [anacrusis (pick-up notes)](https://en.wikipedia.org/wiki/Anacrusis), you'll probably want to set the endBeats and startBeats to reflect this so your pattern will start with the anacrusis.
+
+#### Session File - Automation Patterns
+You can set up simple automation patterns in the session file. These are similar to note patterns, but they have an array of automation `points` and a `controller` number. You'll need to refer to the pattern `id` in the grid or else you won't be able to trigger it. The controller value is linearly interpolated between the points.
 
 ### Technical Info
 A [Web Worker](https://en.wikipedia.org/wiki/Web_worker) is used to get accurate timing no matter what. This currently doesn't work well in inactive [Google Chrome](http://google.com/chrome) tabs (i.e. minimised, hidden or offscreen) (worked wonderfully until recently, around Chrome 54). 
