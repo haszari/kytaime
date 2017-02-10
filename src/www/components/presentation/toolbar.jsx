@@ -7,10 +7,16 @@ import React, { PropTypes } from 'react';
 
 import colours from '../../styles/colours';
 
+import sequencer from '../../sequencer';
+
+import WebMidiHelper from '../../lib/web-midi-helper';
+
 class Toolbar extends React.Component {
    constructor(props) {
       super(props);
+      let currentMidiOut = sequencer.getMidiOut();
       this.state = {
+         proposedMidiOut: currentMidiOut,
          proposedTempo: undefined,
          showExportModal: false,
          showTempoPopover: false,
@@ -28,6 +34,8 @@ class Toolbar extends React.Component {
          editMode, 
          exportData 
       } = this.props;
+
+      let midiOuts = WebMidiHelper.getOutputs();
 
       let playButtonIconClass = '';
       if (playState == "playing")
@@ -52,6 +60,8 @@ class Toolbar extends React.Component {
             showExportModal: false 
          });
       }
+
+
 
       let exportProjectPopover = (
          <div className="popover" id="exportSessionDropdown">
@@ -84,7 +94,39 @@ class Toolbar extends React.Component {
          })
       };
 
+      let onSelectMidiOut = (event) => {
+         this.setState({
+            proposedMidiOut: event.target.value
+         })
+      };
+
+      let onApplyMidiOut = (event) => {
+         sequencer.setMidiOut(this.state.proposedMidiOut);
+      };
+
       let nextTempoValue = this.state.proposedTempo ? this.state.proposedTempo : tempo;
+
+      let optionsPopover = (
+         <div className="popover" id="optionsPopover">
+            <form>
+               <select onChange={onSelectMidiOut} value={this.state.proposedMidiOut}>
+                  {
+                     midiOuts.map((midiOut, index) =>
+                        <option key={index} value={midiOut.name}>
+                           {midiOut.name}
+                        </option>
+                     )
+                  }
+               </select>
+               <div className="row align-right">
+                  <div className="shrink columns text-right">
+                     <div className="icon-tick"
+                        onClick={onApplyMidiOut}></div>
+                  </div>
+               </div>
+            </form>
+         </div>
+      );
 
       let tempoPopover = (
          <div className="popover" id="tempoPopover">
@@ -111,7 +153,13 @@ class Toolbar extends React.Component {
          </div>
       );
         
-      let onMenuClicked = () => {
+      let onOptionsClicked = () => {
+         this.setState({
+            showOptionsModal: !this.state.showOptionsModal 
+         });
+      }
+
+      let onExportClicked = () => {
          this.setState({
             showExportModal: !this.state.showExportModal 
          });
@@ -128,13 +176,18 @@ class Toolbar extends React.Component {
          <section className="toolbar noSelect">
             <div className="row expanded">
                <div className="shrink columns">
-                  <div className="icon-pencil" style={editButtonStyle} 
-                     onClick={onToggleEditMode}></div>
+                  <div className="icon-menu"
+                     onClick={onOptionsClicked}></div>
+                  { this.state.showOptionsModal ? optionsPopover : undefined }
                </div>
                <div className="shrink columns">
-                  <div className="icon-menu"
-                     onClick={onMenuClicked}></div>
+                  <div className="icon-floppy"
+                     onClick={onExportClicked}></div>
                   { this.state.showExportModal ? exportProjectPopover : undefined }
+               </div>
+               <div className="shrink columns">
+                  <div className="icon-pencil" style={editButtonStyle} 
+                     onClick={onToggleEditMode}></div>
                </div>
                <div className="small columns text-center">
                   <div className="row align-center">

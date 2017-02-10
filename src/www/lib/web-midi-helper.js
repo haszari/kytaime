@@ -1,4 +1,25 @@
+let midiOutPorts = [];
+function getMidiOutputs() {
+   var access = navigator.requestMIDIAccess();
+   access.then(function(midiAccess) { 
+      midiAccess.outputs.forEach((port, key) => { 
+         midiOutPorts.push({
+            name: port.name, 
+            port: port
+         });
+      });
+      console.log('MIDI outputs:', midiOutPorts);
+   });
+}
+
+getMidiOutputs();
+
 module.exports = class WebMidiHelper {
+
+   static getOutputs() {
+      return midiOutPorts;
+   }
+
    static openMidiOut(options) {
       var requestedDeviceName = options.deviceName;
       var callback = options.callback;

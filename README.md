@@ -10,8 +10,12 @@ I wrote this for myself, for fun and the flexibility that I can adapt it to my n
 ### Quick Start
 1. Clone this repo.
 2. `npm install`
-3. `npm run start-server` to start the server
-4. `npm start` to start the electron app
+3. Run:
+  - `npm run start-server` to start the server, browse to localhost:6041 (good for dev) OR
+  - `npm start` to start the electron app
+
+### Building Packaged App
+
 
 ### How To Use
 ![screenshot](doc/kytaime-screenshot.png)
