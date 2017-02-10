@@ -195,9 +195,6 @@ var setPattern = function(patternDictionary) {
    patterns = _.extend(patterns, patternDictionary);
 };
 
-
-const requestedPortName = "IAC Driver Bus 1";
-
 function initialiseTransport() {
    setOptions({
       port: midiOutPort,
@@ -205,20 +202,26 @@ function initialiseTransport() {
    // transport.start();
 }
 
-WebMidiHelper.openMidiOut({
-   deviceName: requestedPortName, // default
-   callback: function(info) {
-      if (info.port) {
-         midiOutPort = info.port;
-         console.log("Using " + midiOutPort.name);
+let midiOutDevice = "IAC Driver Bus 1";
+function getMidiOut() { return midiOutDevice; };
+function setMidiOut(requestedPortName) {
+   WebMidiHelper.openMidiOut({
+      deviceName: requestedPortName, // default
+      callback: function(info) {
+         if (info.port) {
+            midiOutPort = info.port;
+            console.log("Using " + midiOutPort.name);
+            midiOutDevice = midiOutPort.name;
 
-         initialiseTransport();
+            initialiseTransport();
 
-         store.dispatch(actions.transportPlayState("stopped"));
-      }
-   }.bind(this)
-});
+            store.dispatch(actions.transportPlayState("stopped"));
+         }
+      }.bind(this)
+   });   
+}
 
+setMidiOut(midiOutDevice);
 
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;
@@ -226,3 +229,5 @@ module.exports.togglePlay = togglePlay;
 module.exports.isPlaying = isPlaying;
 module.exports.setOptions = setOptions;
 module.exports.setPattern = setPattern;
+module.exports.getMidiOut = getMidiOut;
+module.exports.setMidiOut = setMidiOut;
