@@ -8,6 +8,8 @@
   "scripts": {
     "build": "webpack",
     "clean": "rm -rf dist/",
+    "make-mac-icns": "iconutil -c icns -o src/assets/icons/kytaime-logo.icns src/assets/kytaime.iconset",
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --prune=true --out=packages --icon=src/assets/icons/kytaime-logo.icns",
     "start-production": "export NODE_ENV=production; node dist/server/server.js",
     "start-server": "export NODE_ENV=development; node src/server/server.js",
     "start": "node_modules/.bin/electron ."
