@@ -11,8 +11,9 @@ $grid-column-gutter: (
    medium: 0px,
 );
 
-// import foundation with flex grid (our css assumes this!)
-@include foundation-everything(true);
+// import foundation with flex grid (our css requires this)
+$xy-grid: false; 
+@include foundation-everything();
 
 
 $button-background-colour: #f4f2f2;
@@ -37,6 +38,7 @@ body {
    @include dropdown-container;
 
    visibility: visible;
+   display: block;
    font-size: 100%;
    background-color: $toolbar-background-colour;
 
