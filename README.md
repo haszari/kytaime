@@ -8,6 +8,7 @@ Right now you can import midi pattern loops into a grid, and trigger them so the
 I wrote this for myself, for fun and the flexibility that I can adapt it to my needs. If it sounds interesting to you, [get in touch](mailto:kytaime@cartoonbeats.com)! 
 
 ### Quick Start
+0. Requirements: node.js 8.9.4 (aka LTS). 
 1. Clone this repo.
 2. `npm install`
 3. Run:
