@@ -1,10 +1,10 @@
-var WorkerSetInterval = require('worker!./lib/worker-setInterval')
+var WorkerSetInterval = require('worker!./worker-setInterval')
 
 import _ from 'lodash'; 
 
-import WebMidiHelper from './lib/web-midi-helper';
-import midiUtilities from './lib/midi-utilities';
-import * as bpmUtilities from './lib/bpm-utilities';
+import WebMidiHelper from './web-midi-helper';
+import midiUtilities from './midi-utilities';
+import * as bpmUtilities from './bpm-utilities';
 
 
 // this metronome stuff is like a mini client; not core sequencer

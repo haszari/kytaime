@@ -1,13 +1,13 @@
-import sequencer from './sequencer';
+import sequencer from './lib/sequencer/sequencer';
+import * as bpmUtilities from './lib/sequencer/bpm-utilities';
+import WebMidiHelper from './lib/sequencer/web-midi-helper';
 
 import store from './stores/store';
 import * as actions from './stores/actions';
 
 import renderNotePattern from './lib/render-note-pattern';
 import renderAutomationPattern from './lib/render-automation-pattern';
-import * as bpmUtilities from './lib/bpm-utilities';
 
-import WebMidiHelper from './lib/web-midi-helper';
 
 // dictionary of name: pattern
 var patterns = {};

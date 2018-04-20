@@ -1,15 +1,19 @@
 
 import moment from 'moment';
 
+
 import FileSaver from 'file-saver';
 
 import React, { PropTypes } from 'react';
+
+
+import WebMidiHelper from '../../lib/sequencer/web-midi-helper';
+
 
 import colours from '../../styles/colours';
 
 import ksequencer from '../../kytaime-pattern-sequencer';
 
-import WebMidiHelper from '../../lib/web-midi-helper';
 
 class Toolbar extends React.Component {
    constructor(props) {
