@@ -1,7 +1,7 @@
 
 import Hjson from 'hjson';
 
-import sequencer from '../../sequencer';
+import ksequencer from '../../kytaime-pattern-sequencer';
 
 import { connect } from 'react-redux';
 
@@ -25,7 +25,7 @@ const mapStateToProps = (state, ownProps) => {
       beatNumber: state.transport.beatNumber,
       
       onPlayClick: () => {
-         sequencer.togglePlay();
+         ksequencer.togglePlay();
       },
    }
 }
