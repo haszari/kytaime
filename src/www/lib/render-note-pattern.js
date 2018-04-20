@@ -1,7 +1,7 @@
 import _ from 'lodash'; 
 
-import midiUtilities from './midi-utilities';
-import * as bpmUtilities from './bpm-utilities';
+import midiUtilities from './sequencer/midi-utilities';
+import * as bpmUtilities from './sequencer/bpm-utilities';
 
 const renderNotePattern = function(
    renderRange, beatsPerMinute, currentPhraseLength,

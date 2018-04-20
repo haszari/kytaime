@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 
 import shortid from 'shortid';
 
-import sequencer from './sequencer';
+import kytaimePatternSequencer from './kytaime-pattern-sequencer';
 
 import store from './stores/store';
 import * as actions from './stores/actions';
@@ -47,7 +47,7 @@ render(<App/>, appDiv);
 
 // budgo ui
 window.shortid = shortid;
-window.sequencer = sequencer;
+
 window.ui = { 
    setGridRows: (numRows) => {
       store.dispatch(actions.setGridNumRows(numRows));

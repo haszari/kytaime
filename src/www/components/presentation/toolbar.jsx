@@ -1,20 +1,24 @@
 
 import moment from 'moment';
 
+
 import FileSaver from 'file-saver';
 
 import React, { PropTypes } from 'react';
 
+
+import WebMidiHelper from '../../lib/sequencer/web-midi-helper';
+
+
 import colours from '../../styles/colours';
 
-import sequencer from '../../sequencer';
+import ksequencer from '../../kytaime-pattern-sequencer';
 
-import WebMidiHelper from '../../lib/web-midi-helper';
 
 class Toolbar extends React.Component {
    constructor(props) {
       super(props);
-      let currentMidiOut = sequencer.getMidiOut();
+      let currentMidiOut = ksequencer.getMidiOut();
       this.state = {
          proposedMidiOut: currentMidiOut,
          proposedTempo: undefined,
@@ -101,7 +105,7 @@ class Toolbar extends React.Component {
       };
 
       let onApplyMidiOut = (event) => {
-         sequencer.setMidiOut(this.state.proposedMidiOut);
+         ksequencer.setMidiOut(this.state.proposedMidiOut);
       };
 
       let nextTempoValue = this.state.proposedTempo ? this.state.proposedTempo : tempo;
