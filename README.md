@@ -72,3 +72,16 @@ It's working great as an [Electron](http://electron.atom.io) app though.
 
 You can use in a web browser by browsing to `localhost:6041`.
 
+
+### Branches
+
+#### `feature-live-arrange`
+This was an ambitious branch, which is not currently maintained. It includes UI for triggering basic CC automation linear ramps (as patterns) and "sections", which are loopable, triggerable combinations of patterns.
+
+It is no longer maintained because arranging using triggered individual patterns as "sections" is too bottom-up and limiting. 
+
+In future, I'd like to explore a UI organised around loops which encompass all instruments, and know how to start, stop and provide variation (such as fills, or alternate patterns). This would allow the performer to operate at a similar level to a DJ or loop-based performer – combining 2 or more different, complete musical ideas, while still allowing direct control of instrument, effect an synthesis parameters.
+
+#### `feature-ableton-link`
+An experiment into [__Ableton__](https://www.ableton.com) [Link sync](https://github.com/ableton/link/). Loose sync was achieved, but the accuracy of any sync is limited by the latency between client (where notes are rendered) and server (where sync is implemented).
+
