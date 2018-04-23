@@ -28,8 +28,6 @@ function removeRenderCallback(callbackId) {
    setRenderCallback(callbackId, undefined);
 }
 
-
-
 // sequencer state that is carried between render callbacks
 var state = {
    isPlaying: false,
@@ -37,7 +35,7 @@ var state = {
    lastRenderEndTime: 0,
    intervalId: null,
    
-   // tempo is currently stored in kytaime redux; we need to take control of it
+   // tempo was previously stored in client app redux store; we need to take control of it
    // clients will have to schedule events to update the transport tempo
    tempoBpm: 120, 
 };
@@ -69,8 +67,6 @@ var updateTransport = function() {
    _.map(renderCallbacks, (renderFunc, id) => {
       renderFunc(renderRange);
    } );
-   // kytaimeSequencerCallback(renderRange);
-
 
    // update state
    state.lastRenderEndBeat = renderRange.end.beat;
@@ -118,26 +114,9 @@ var isPlaying = function() {
    return state.isPlaying;
 };
 
-// function initialiseTransport() {
-//    setOptions({
-//       port: midiOutPort,
-//    });
-//    // transport.start();
-// }
-
-
-
-
-/// EXPORTS
-// which of these exports are core (library) sequencer and which are kytaime patterns reality?
-
-// core / lib
 module.exports.start = startTempoClock;
 module.exports.stop = stopTempoClock;
 module.exports.isPlaying = isPlaying;
-// module.exports.setOptions = setOptions;
-// module.exports.getMidiOut = getMidiOut;
-// module.exports.setMidiOut = setMidiOut;
 module.exports.setRenderCallback = setRenderCallback;
 module.exports.removeRenderCallback = removeRenderCallback;
 

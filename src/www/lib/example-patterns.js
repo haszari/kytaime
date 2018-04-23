@@ -1,6 +1,6 @@
 import NotePattern from './note-pattern';
 import AutomationPattern from './automation-pattern';
-import midiUtilities from './midi-utilities';
+import { midiUtilities } from './sequencer';
 
 // default pattern is 4 x hats
 export const hats = new NotePattern();

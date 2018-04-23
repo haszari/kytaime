@@ -1,7 +1,6 @@
 import _ from 'lodash'; 
 
-import midiUtilities from './sequencer/midi-utilities';
-import * as bpmUtilities from './sequencer/bpm-utilities';
+import { midiUtilities, bpmUtilities } from './sequencer';
 
 const ccTimeResolution = 0.05; // beats
 function ceilBeats(beats) {

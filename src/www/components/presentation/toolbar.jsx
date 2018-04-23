@@ -7,7 +7,7 @@ import FileSaver from 'file-saver';
 import React, { PropTypes } from 'react';
 
 
-import WebMidiHelper from '../../lib/sequencer/web-midi-helper';
+import { midiOutputs } from '../../lib/sequencer';
 
 
 import colours from '../../styles/colours';
@@ -39,7 +39,7 @@ class Toolbar extends React.Component {
          exportData 
       } = this.props;
 
-      let midiOuts = WebMidiHelper.getOutputs();
+      let midiOuts = midiOutputs.getOutputs();
 
       let playButtonIconClass = '';
       if (playState == "playing")

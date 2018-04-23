@@ -1,6 +1,5 @@
-import sequencer from './lib/sequencer/sequencer';
-import * as bpmUtilities from './lib/sequencer/bpm-utilities';
-import WebMidiHelper from './lib/sequencer/web-midi-helper';
+
+import { sequencer, bpmUtilities, midiOutputs } from './lib/sequencer';
 
 import store from './stores/store';
 import * as actions from './stores/actions';
@@ -126,7 +125,7 @@ let midiOutDevice = "";
 
 function getMidiOut() { return midiOutDevice; };
 function setMidiOut(requestedPortName) {
-   WebMidiHelper.openMidiOut({
+   midiOutputs.openMidiOutput({
       deviceName: requestedPortName, // default
       callback: function(info) {
          if (info.port) {
