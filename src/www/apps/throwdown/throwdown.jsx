@@ -15,6 +15,7 @@ const throwdowns = {
     patterns: {
       beat: {
         audio: audioPath + '20180425--mivova--padscape--beat.mp3',
+        tempo: 122,
         duration: 8,
         part: 'drums',
         starts: [0, 3],
