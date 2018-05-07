@@ -2,20 +2,24 @@
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
 import renderTestPattern from './test-pattern';
+import renderThrowdown from './throwdown.jsx';
 
 import store from './stores/store';
 import * as actions from './stores/actions';
 
+let AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext;
 
 var midiOutPort = null;
 let midiOutDevice = "";
 
 var sequencerCallback = function(renderRange) {
-   // we should use some kind of chain tech thing here to make this generic!
-   // updateUI(renderRange)
-   // renderKytaimePatterns(renderRange);
-   renderTestPattern(renderRange, midiOutPort, 1);
-   // console.log(renderRange);
+  if (!audioContext)
+    audioContext = new AudioContext();
+
+  renderTestPattern(renderRange, midiOutPort, 1);
+
+  renderThrowdown(renderRange, midiOutPort, audioContext.destination);
 }
 
 function getMidiOut() { return midiOutDevice; };
