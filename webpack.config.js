@@ -28,7 +28,7 @@ module.exports = {
             exclude: /node_modules/, 
             loader: "babel",
             query: {
-               presets: ['es2015', 'react']
+               presets: ['es2015', 'react', 'stage-2']
             },
          },
          { 
@@ -54,6 +54,7 @@ module.exports = {
          template: app.htmlTemplate
       }),
       new CopyWebpackPlugin([
+         { from: 'src/www/audio', to: 'audio' },
          { from: 'src/www/styles/fontello-kytaime-icons', to: 'styles/fontello-kytaime-icons' },
       ]) 
    ]
