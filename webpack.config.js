@@ -4,8 +4,18 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var path = require('path');
 
-module.exports = {
+const kytaimeApp = {
    entry: "./src/www/app.jsx",
+   htmlTemplate: "src/www/index.html",
+};
+const throwdownApp = {
+   entry: "./src/www/apps/throwdown/app.jsx",
+   htmlTemplate: "src/www/index.html",
+};
+const app = throwdownApp;
+
+module.exports = {
+   entry: app.entry,
    output: {
       path: __dirname + "/dist/www",
       filename: "bundle.js"
@@ -41,7 +51,7 @@ module.exports = {
    // this helps generate an html file for our generated bundle filename
    plugins: [
       new HtmlWebpackPlugin({
-         template: 'src/www/index.html'
+         template: app.htmlTemplate
       }),
       new CopyWebpackPlugin([
          { from: 'src/www/styles/fontello-kytaime-icons', to: 'styles/fontello-kytaime-icons' },
