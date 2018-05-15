@@ -19,7 +19,7 @@ var sequencerCallback = function(renderRange) {
 
   renderTestPattern(renderRange, midiOutPort, 1);
 
-  renderThrowdown(renderRange, midiOutPort, audioContext.destination);
+  // renderThrowdown(renderRange, midiOutPort, audioContext.destination);
 }
 
 function getMidiOut() { return midiOutDevice; };
