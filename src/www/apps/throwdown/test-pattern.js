@@ -180,14 +180,20 @@ function renderPatternTrigger(
 
 /***
   renderPatternEvents
-  Implements sequencing of note-like events, with callback for client to implement playback of actual notes (e.g. as audio, midi, etc).
+  Implements sequencing of note-like events by mapping the event beat info to timeline msec.
+
+  returns array of 
+  {
+    start: // msec start time, absolute
+    duration: // msec duration
+    event: // passed in events
+  }
 */
 const renderPatternEvents = function(
   renderStartTimestamp,
   triggerInfo, // { startBeat, endBeat, tempoBpm, isPlaying }
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
-  renderFunc, // function(startTimestamp, msecDuration, event) {}
 ) {
   if (!triggerInfo.isPlaying) return;
 
@@ -204,22 +210,26 @@ const renderPatternEvents = function(
     );
   });
 
-  // loop over the events, calculate sequence time info, and call back to render each event
-  _.each(events, function(noteEvent) {
+  // loop over the events, calculate sequence time info, map to new array
+  return _.map(events, function(noteEvent) {
     var beatOffset = noteEvent.start - renderStart;
 
-      // account for crossing loop boundary
-      if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
-        beatOffset += cycleBeats;
-      }
+    // account for crossing loop boundary
+    if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
+      beatOffset += cycleBeats;
+    }
 
-      var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset);
-      var absoluteTimestamp = renderStartTimestamp + timestamp;
-      var duration = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration);
+    var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset);
+    var absoluteTimestamp = renderStartTimestamp + timestamp;
+    var duration = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration);
 
-      renderFunc(absoluteTimestamp, duration, noteEvent);
-    });
-
+    // return absolute render info as msec + original event
+    return {
+      start: absoluteTimestamp,
+      duration: duration, 
+      event: noteEvent,
+    }
+  });
 }
 
 
@@ -234,16 +244,18 @@ const renderTestPattern = function(renderRange, midiOutPort, channel) {
     pattern.endBeats,
   );
 
-  renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, pattern.notes, (startTimestamp, msecDuration, event) => {
+  let scheduledNotes = renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, pattern.notes);
+
+  _.map(scheduledNotes, (item) => {
     var note = { 
       port: midiOutPort, 
 
       channel: channel + 1,
-      note: event.note,
+      note: item.event.note,
 
-      velocity: event.velocity, 
-      duration: msecDuration, 
-      timestamp: startTimestamp
+      velocity: item.event.velocity, 
+      duration: item.duration, 
+      timestamp: item.start
     };
     midiUtilities.renderNote(note);    
   });
