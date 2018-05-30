@@ -180,15 +180,14 @@ function renderPatternTrigger(
 
 /***
   renderPatternEvents
-  .. ?  
+  Implements sequencing of note-like events, with callback for client to implement playback of actual notes (e.g. as audio, midi, etc).
 */
 const renderPatternEvents = function(
   renderStartTimestamp,
   triggerInfo, // { startBeat, endBeat, tempoBpm, isPlaying }
-  cycleBeats,
+  cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
-  midiOutPort, // TEMPORARY
-  renderFunc, // in future, client will do the rendering
+  renderFunc, // function(startTimestamp, msecDuration, event) {}
 ) {
   if (!triggerInfo.isPlaying) return;
 
@@ -205,36 +204,27 @@ const renderPatternEvents = function(
     );
   });
 
-  // do we really need _.partial()??
-  let channel = 1;
-  _.each(events, _.partial(function(noteEvent, patternDuration, patternChannel) {
+  // loop over the events, calculate sequence time info, and call back to render each event
+  _.each(events, function(noteEvent) {
     var beatOffset = noteEvent.start - renderStart;
 
       // account for crossing loop boundary
       if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
-        beatOffset += patternDuration;
+        beatOffset += cycleBeats;
       }
 
       var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset);
-      var note = { 
-        port: midiOutPort, 
+      var absoluteTimestamp = renderStartTimestamp + timestamp;
+      var duration = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration);
 
-        channel: patternChannel - 1,
-        note: noteEvent.note,
-
-        velocity: noteEvent.velocity, 
-        duration: bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration), 
-        timestamp: renderStartTimestamp + timestamp
-      };
-      // console.log(note.timestamp);
-
-      midiUtilities.renderNote(note);
-    }, _, cycleBeats, channel));
+      renderFunc(absoluteTimestamp, duration, noteEvent);
+    });
 
 }
 
 
 const renderTestPattern = function(renderRange, midiOutPort, channel) {
+
   let triggerInfo = renderPatternTrigger(
     renderRange, 
     patternTriggerState.triggered,
@@ -244,12 +234,21 @@ const renderTestPattern = function(renderRange, midiOutPort, channel) {
     pattern.endBeats,
   );
 
-  patternTriggerState.playing = triggerInfo.isPlaying;
+  renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, pattern.notes, (startTimestamp, msecDuration, event) => {
+    var note = { 
+      port: midiOutPort, 
 
-  renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, pattern.notes, midiOutPort, (event) => {
-    // callback style coming soon
+      channel: channel + 1,
+      note: event.note,
+
+      velocity: event.velocity, 
+      duration: msecDuration, 
+      timestamp: startTimestamp
+    };
+    midiUtilities.renderNote(note);    
   });
 
+  patternTriggerState.playing = triggerInfo.isPlaying;
   console.log(`test render: beats=${renderRange.start.beat.toFixed(2)} start=${triggerInfo.startBeat.toFixed(2)}, end=${triggerInfo.endBeat.toFixed(2)}`);
 }
 
