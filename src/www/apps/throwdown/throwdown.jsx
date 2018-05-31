@@ -1,5 +1,6 @@
 
 import * as bpmUtilities from '../../lib/sequencer/bpm-utilities';
+import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
 
 import _ from 'lodash';
 
@@ -31,8 +32,10 @@ function getSample (url, audioContext, cb) {
    request.open('GET', url);
    request.responseType = 'arraybuffer';
    request.onload = function () {
+     console.log('sample loaded, decoding');
       audioContext.decodeAudioData(request.response, cb);
    };
+   console.log('loading sample');
    request.send();
 }
 
@@ -55,15 +58,24 @@ class ThrowdownAudioStem {
     this.audioContext = options.audioContext;
     this.secPerBeat = (60 / this.tempo);
 
+    this.startBeats = options.startBeats || [0];
+    this.endBeats = options.endBeats || [0];
+
+    this.triggered = true;
+    this.playing = false;
+
+    this.buffer = undefined;
+
     this.loaded = new Promise((resolve, reject) => {      
-       getSample(this.audioFile, this.audioContext, (buffer) => {
-          this.buffer = buffer;
-          resolve();
-       });
+      getSample(this.audioFile, this.audioContext, (buffer) => {
+       console.log('sample decoded, ready to play');
+        this.buffer = buffer;
+        resolve();
+      });
     });
   }
 
-  playAt(startTime, transportBpm, audioDestinationNode) {
+  playAt(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
     let rate = transportBpm / this.tempo;
     // console.log(rate, this.audioContext.currentTime, time);
 
@@ -79,18 +91,40 @@ class ThrowdownAudioStem {
 
     this.player.connect(audioDestinationNode);
 
-    this.player.start(startTime);
+    // this.player.start();
+    this.player.start(startTimestamp, startBeat * this.secPerBeat);
+  }
+
+  stopAt(stopTimestamp) {
+    if (this.player) 
+      this.player.stop(stopTimestamp);
+    this.playing = false;
   }
 
   updateAndRender(renderRange, audioDestinationNode) {
     if (!this.loaded) 
       return;
 
-    // just need to work out when the render range crosses our start point, then trigger the thing
-    const ourStartTime = 0;
-    if (bpmUtilities.valueInWrappedBeatRange(ourStartTime, renderRange.start.beat, renderRange.end.beat, this.sampleLengthBeats)) {
-      const startTime = getTimeOffsetForBeat(ourStartTime, renderRange.start.beat, renderRange.end.beat, renderRange.tempoBpm, this.sampleLengthBeats);
-      this.playAt(startTime, renderRange.tempoBpm, audioDestinationNode);
+    let triggerInfo = patternSequencer.renderPatternTrigger(
+      renderRange, 
+      this.triggered,
+      this.playing, 
+      this.sampleLengthBeats,
+      this.startBeats,
+      this.endBeats,
+    );
+    this.playing = triggerInfo.isPlaying;
+
+    // here we "render" a single note-like event for the onset or offset of the audio stem
+    // the API supports this but makes it feel strange .. 
+    // e.g. fake ignored duration value
+    if (triggerInfo.triggerOnset >= 0) {
+      let events = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }]);
+      this.playAt(events[0].start - renderRange.start.time, triggerInfo.triggerOnset, renderRange.tempoBpm, audioDestinationNode);
+    }
+    else if (triggerInfo.triggerOffset >= 0) {
+      let events = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
+      this.stopAt(events[0].start - renderRange.start.time);    
     }
   }
 }
@@ -118,6 +152,12 @@ class Throwdown {
       audioStem.updateAndRender(renderRange, audioDestinationNode);
     });
   }
+
+  stop() {
+    _.map(this.audioStems, (audioStem) => {
+      audioStem.stopAt(0);
+    });
+  }
 }
 
 let mivova;
@@ -131,4 +171,11 @@ const renderThrowdown = (renderRange, midiOutPort, audioDestinationNode) => {
   mivova.updateAndRender(renderRange, midiOutPort, audioDestinationNode);
 }
 
-export default renderThrowdown;
+const stopThrowdown = () => {
+  mivova.stop();
+}
+
+export default {
+  render: renderThrowdown,
+  stop: stopThrowdown
+}

@@ -2,7 +2,7 @@
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
 import renderTestPattern from './test-pattern';
-import renderThrowdown from './throwdown.jsx';
+import throwdown from './throwdown.jsx';
 
 import store from './stores/store';
 import * as actions from './stores/actions';
@@ -19,7 +19,15 @@ var sequencerCallback = function(renderRange) {
 
   renderTestPattern(renderRange, midiOutPort, 1);
 
-  // renderThrowdown(renderRange, midiOutPort, audioContext.destination);
+  throwdown.render(renderRange, midiOutPort, audioContext.destination);
+}
+
+var startTransport = function() {
+  sequencer.start();
+}
+var stopTransport = function() {
+  throwdown.stop();
+  sequencer.stop();
 }
 
 function getMidiOut() { return midiOutDevice; };
@@ -45,7 +53,7 @@ sequencer.setRenderCallback('throwdown', sequencerCallback);
 
 
 
-module.exports.start = sequencer.start;
-module.exports.stop = sequencer.stop;
+module.exports.start = startTransport;
+module.exports.stop = stopTransport;
 module.exports.getMidiOut = getMidiOut;
 module.exports.setMidiOut = setMidiOut;
