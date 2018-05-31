@@ -7,7 +7,10 @@ import sequencer from '../throwdown-sequencer';
 
 const transport = (state = { 
    playState: '', 
-   beatNumber: 0 
+   beatNumber: 0,
+   /// generalness coming sooon
+   triggerAudio: true, 
+   triggerMidi: false,
 }, action) => {
    switch (action.type) {
       case actionTypes.TRANSPORT_TOGGLE_PLAY:
@@ -34,6 +37,19 @@ const transport = (state = {
          return Object.assign({}, state, {
             beatNumber: action.beatNumber
          });
+
+      case actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE: 
+         if (action.element == 'MIDI') {
+            return Object.assign({}, state, {
+               triggerMidi: !state.triggerMidi
+            });            
+         }
+         if (action.element == 'Audio') {
+            return Object.assign({}, state, {
+               triggerAudio: !state.triggerAudio
+            });            
+         }
+
 
       default:
          return state;

@@ -67,30 +67,30 @@ function renderPatternTrigger(
   // see if we are going to drop (% quant) this render buffer
   if (!isPlaying && isTriggered) {
     // find a trigger start beat..
-    var triggerStart = _.find(triggerBeats, function(startBeat) {
+    var beat = _.find(triggerBeats, function(startBeat) {
       // might need to express start & stop relative to loop/phrase, i.e. negative for mute early, positive to stop during next bar/phrase
       return bpmUtilities.valueInWrappedBeatRange(
         startBeat, phrase.renderStart, phrase.renderEnd, 
         triggerQuant
       );
     });
-    if (!_.isUndefined(triggerStart)) {
-      renderInfo.startBeat = triggerStart;
+    if (!_.isUndefined(beat)) {
+      renderInfo.startBeat = beat;
       renderInfo.isPlaying = true;
-      renderInfo.triggerOnset = triggerStart;
+      renderInfo.triggerOnset = beat;
     }
   }
 
   // see if we are going to undrop (% quant) this render buffer
   if (isPlaying && !isTriggered) {
-    var triggerEnd = _.find(endBeats, function(beat) {
+    var beat = _.find(unTriggerBeats, function(beat) {
       return bpmUtilities.valueInWrappedBeatRange(beat, 
         phrase.renderStart, phrase.renderEnd, 
-        patternDropStopModulus
+        triggerQuant
       );
     });
-    if (!_.isUndefined(triggerEnd)) {
-      renderInfo.endBeat = triggerEnd;
+    if (!_.isUndefined(beat)) {
+      renderInfo.endBeat = beat;
       renderInfo.isPlaying = false;
       renderInfo.triggerOffset = beat;
     }
@@ -112,24 +112,24 @@ function renderPatternTrigger(
 */
 const renderPatternEvents = function(
   renderStartTimestamp,
-  triggerInfo, // { startBeat, endBeat, tempoBpm, isPlaying }
+  triggerInfo, // { startBeat, endBeat, tempoBpm } 
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
 ) {
-  if (!triggerInfo.isPlaying) return;
+  // if (!triggerInfo.isPlaying) return;
 
   // start and end of render range in pattern-beats
   var renderStart = (triggerInfo.startBeat % cycleBeats);
   var renderEnd = (triggerInfo.endBeat % cycleBeats);
 
-  // filter out events that are not within the (triggered-on) render range
-  events = _.filter(events, function(noteEvent) {
-    return bpmUtilities.valueInWrappedBeatRange(
-      noteEvent.start, 
-      renderStart, renderEnd, 
-      cycleBeats
-    );
-  });
+  // // filter out events that are not within the (triggered-on) render range
+  // events = _.filter(events, function(noteEvent) {
+  //   return bpmUtilities.valueInWrappedBeatRange(
+  //     noteEvent.start, 
+  //     renderStart, renderEnd, 
+  //     cycleBeats
+  //   );
+  // });
 
   // loop over the events, calculate sequence time info, map to new array
   return _.map(events, function(noteEvent) {

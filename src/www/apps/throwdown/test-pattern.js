@@ -1,4 +1,5 @@
 
+import * as bpmUtilities from '../../lib/sequencer/bpm-utilities';
 import * as midiUtilities from '../../lib/sequencer/midi-utilities';
 import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
 
@@ -6,7 +7,7 @@ const swing = 0.14;
 
 let pattern = {
   duration: 4,
-  startBeats: [0, 0.98], // start on first kick or snare
+  startBeats: [0.98], // start on first kick or snare
   endBeats: [0.49], // always end on a 1
   notes: [
     { 
@@ -87,7 +88,9 @@ let patternTriggerState = {
   playing: false,
 }
 
-const renderTestPattern = function(renderRange, midiOutPort, channel) {
+const renderTestPattern = function(renderRange, triggerState, midiOutPort, channel) {
+
+  patternTriggerState.triggered = triggerState;
 
   let triggerInfo = patternSequencer.renderPatternTrigger(
     renderRange, 
@@ -98,13 +101,26 @@ const renderTestPattern = function(renderRange, midiOutPort, channel) {
     pattern.endBeats,
   );
 
-  let scheduledNotes = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, pattern.notes);
+  // filter out events that are not within the (triggered-on) render range
+  // should this happen in renderPatternEvents or outside?
+  // do we need to factor out the core of event rendering from renderPatternEvents so we can use it without the filter??
+  let filteredNotes = _.filter(pattern.notes, function(noteEvent) {
+    return bpmUtilities.valueInWrappedBeatRange(
+      noteEvent.start, 
+      triggerInfo.startBeat % pattern.duration, 
+      triggerInfo.endBeat % pattern.duration, 
+      pattern.duration
+    );
+  });
+
+
+  let scheduledNotes = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, pattern.duration, filteredNotes);
 
   _.map(scheduledNotes, (item) => {
     var note = { 
       port: midiOutPort, 
 
-      channel: channel + 1,
+      channel: channel,
       note: item.event.note,
 
       velocity: item.event.velocity, 
@@ -115,7 +131,6 @@ const renderTestPattern = function(renderRange, midiOutPort, channel) {
   });
 
   patternTriggerState.playing = triggerInfo.isPlaying;
-  console.log(`test render: beats=${renderRange.start.beat.toFixed(2)} start=${triggerInfo.startBeat.toFixed(2)}, end=${triggerInfo.endBeat.toFixed(2)}`);
 }
 
 export default renderTestPattern;

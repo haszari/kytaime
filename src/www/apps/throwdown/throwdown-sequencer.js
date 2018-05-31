@@ -17,9 +17,13 @@ var sequencerCallback = function(renderRange) {
   if (!audioContext)
     audioContext = new AudioContext();
 
-  renderTestPattern(renderRange, midiOutPort, 1);
+  let appState = store.getState();
 
-  throwdown.render(renderRange, midiOutPort, audioContext.destination);
+  renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
+
+  throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort, audioContext.destination);
+
+  console.log(`r b=${renderRange.start.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }
 
 var startTransport = function() {

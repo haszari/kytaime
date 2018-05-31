@@ -15,3 +15,8 @@ export function transportTogglePlay() {
 export function transportPlayState(playState) {
    return { type: actionTypes.TRANSPORT_PLAYSTATE, playState: playState };
 }
+
+
+export function toggleElementTriggerState(actionParams) {
+	return { type: actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE, ...actionParams };
+}

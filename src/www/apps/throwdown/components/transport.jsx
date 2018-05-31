@@ -17,13 +17,21 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       onThrowdownClicked: () => {
          dispatch(actions.transportTogglePlay());
       },
+      onThrowdownMIDIClicked: () => {
+         dispatch(actions.toggleElementTriggerState({ element: 'MIDI' }));
+      },
+      onThrowdownAudioClicked: () => {
+         dispatch(actions.toggleElementTriggerState({ element: 'Audio' }));
+      },
    }
 }
 
 const renderTransport = function(props) {
 	return (
-		<div onClick={props.onThrowdownClicked}>
-         <h1>Throwdown</h1>
+		<div>
+         <h1 onClick={props.onThrowdownClicked}>Throwdown</h1>
+         <h2 onClick={props.onThrowdownMIDIClicked}>MIDI</h2>
+         <h2 onClick={props.onThrowdownAudioClicked}>Audio</h2>
       </div>
    );
 } 

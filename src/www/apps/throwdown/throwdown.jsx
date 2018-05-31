@@ -96,14 +96,18 @@ class ThrowdownAudioStem {
  }
 
  stopAt(stopTimestamp) {
-    if (this.player) 
-       this.player.stop(stopTimestamp);
+    if (this.player) {
+       this.player.stop(0);
+       console.log('stopping audio!!');
+    }
     this.playing = false;
  }
 
- updateAndRender(renderRange, audioDestinationNode) {
+ updateAndRender(renderRange, triggerState, audioDestinationNode) {
     if (!this.loaded) 
        return;
+
+    this.triggered = triggerState;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
        renderRange, 
@@ -118,13 +122,14 @@ class ThrowdownAudioStem {
     // here we "render" a single note-like event for the onset or offset of the audio stem
     // the API supports this but makes it feel strange .. 
     // e.g. fake ignored duration value
+    let triggerEvents = [];
     if (triggerInfo.triggerOnset >= 0) {
-       let events = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }]);
-       this.playAt(events[0].start - renderRange.start.time, triggerInfo.triggerOnset, renderRange.tempoBpm, audioDestinationNode);
+       triggerEvents = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }]);
+       this.playAt(triggerEvents[0].start - renderRange.start.time, triggerInfo.triggerOnset, renderRange.tempoBpm, audioDestinationNode);
     }
     else if (triggerInfo.triggerOffset >= 0) {
-       let events = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
-       this.stopAt(events[0].start - renderRange.start.time);    
+       triggerEvents = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
+       this.stopAt(triggerEvents[0].start - renderRange.start.time);    
     }
  }
 }
@@ -147,9 +152,9 @@ class Throwdown {
       });
    }
 
-   updateAndRender(renderRange, midiOutPort, audioDestinationNode) {
+   updateAndRender(renderRange, triggerState, midiOutPort, audioDestinationNode) {
       _.map(this.audioStems, (audioStem) => {
-         audioStem.updateAndRender(renderRange, audioDestinationNode);
+         audioStem.updateAndRender(renderRange, triggerState, audioDestinationNode);
       });
    }
 
@@ -162,13 +167,13 @@ class Throwdown {
 
 let mivova;
 
-const renderThrowdown = (renderRange, midiOutPort, audioDestinationNode) => {
+const renderThrowdown = (renderRange, triggerState, midiOutPort, audioDestinationNode) => {
    if (!mivova)
       mivova = new Throwdown({
          audioContext: audioDestinationNode.context,
          ...throwdowns.mivova
       });
-   mivova.updateAndRender(renderRange, midiOutPort, audioDestinationNode);
+   mivova.updateAndRender(renderRange, triggerState, midiOutPort, audioDestinationNode);
 }
 
 const stopThrowdown = () => {
