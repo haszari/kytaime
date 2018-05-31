@@ -34,11 +34,15 @@ function renderPatternTrigger(
     tempoBpm: renderRange.tempoBpm,
     startBeat: renderRange.start.beat,
     endBeat: renderRange.end.beat,
+    triggerOnset: -1,
+    triggerOffset: -1,
   }
   let nullRenderInfo = { 
     isPlaying: false,
     startBeat: undefined,
     endBeat: undefined,
+    triggerOnset: -1,
+    triggerOffset: -1,
   }
 
   // playing, triggered, so keep playing
@@ -73,6 +77,7 @@ function renderPatternTrigger(
     if (!_.isUndefined(triggerStart)) {
       renderInfo.startBeat = triggerStart;
       renderInfo.isPlaying = true;
+      renderInfo.triggerOnset = triggerStart;
     }
   }
 
@@ -87,6 +92,7 @@ function renderPatternTrigger(
     if (!_.isUndefined(triggerEnd)) {
       renderInfo.endBeat = triggerEnd;
       renderInfo.isPlaying = false;
+      renderInfo.triggerOffset = beat;
     }
   }
 
