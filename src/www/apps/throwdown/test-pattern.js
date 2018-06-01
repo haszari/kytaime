@@ -7,7 +7,7 @@ const swing = 0.03;
 
 let pattern = {
   duration: 4,
-  startBeats: [0], //[0.98], // start on first kick or snare
+  startBeats: [0.98], // start on first kick or snare
   endBeats: [0.49], // always end on a 1
   notes: [
     { 
@@ -143,7 +143,7 @@ const renderTestPattern = function(renderRange, triggerState, midiOutPort, chann
   });
 
 
-  let scheduledNotes = patternSequencer.renderPatternEvents(renderRange, triggerInfo, pattern.duration, filteredNotes);
+  let scheduledNotes = patternSequencer.renderPatternEvents(renderRange, pattern.duration, filteredNotes);
 
   _.map(scheduledNotes, (item) => {
     var note = { 
@@ -173,7 +173,7 @@ const renderTestPattern = function(renderRange, triggerState, midiOutPort, chann
       );
     });
 
-  let scheduledBeeps = patternSequencer.renderPatternEvents(renderRange, triggerInfo, 4, filteredBeeps, true);
+  let scheduledBeeps = patternSequencer.renderPatternEvents(renderRange, 4, filteredBeeps, true);
   _.map(scheduledBeeps, (item) => {
     let time = (item.start + renderRange.audioContextTimeOffsetMsec)  / 1000;
     console.log(`beep t=${time} b=${item.event.start}`)

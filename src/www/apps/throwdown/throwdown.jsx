@@ -130,7 +130,7 @@ class ThrowdownAudioStem {
        /////
        // pass logging option into renderpatternevents from here and for test beep and work out why this is different
        triggerEvents = patternSequencer.renderPatternEvents
-          (renderRange, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }], true);
+          (renderRange, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }], true);
         //(renderRange.start.time, triggerInfo, 4, filteredBeeps, true);
        
 
@@ -142,7 +142,7 @@ class ThrowdownAudioStem {
     }
     else if (triggerInfo.triggerOffset >= 0) {
 
-       triggerEvents = patternSequencer.renderPatternEvents(renderRange, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
+       triggerEvents = patternSequencer.renderPatternEvents(renderRange, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
        let time = (triggerEvents[0].start + renderRange.audioContextTimeOffsetMsec) / 1000;
        let beat = triggerInfo.triggerOffset;
        console.log(`audio offset t=${time.toFixed(2)} b=${beat.toFixed(2)} c=${this.audioContext.currentTime} ~c=${renderRange.audioContextTimeOffsetMsec}`)

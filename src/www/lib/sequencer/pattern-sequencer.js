@@ -112,41 +112,25 @@ function renderPatternTrigger(
 */
 const renderPatternEvents = function(
   renderRange,
-  triggerInfo_do_we_need_this, // { startBeat, endBeat, tempoBpm } 
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
   debug,
 ) {
-  // if (!triggerInfo.isPlaying) return;
   debug = debug || false;
 
   // start and end of render range in pattern-beats
-  // var renderStart = (triggerInfo.startBeat % cycleBeats);
-  // var renderEnd = (triggerInfo.endBeat % cycleBeats);
-
-  // // filter out events that are not within the (triggered-on) render range
-  // events = _.filter(events, function(noteEvent) {
-  //   return bpmUtilities.valueInWrappedBeatRange(
-  //     noteEvent.start, 
-  //     renderStart, renderEnd, 
-  //     cycleBeats
-  //   );
-  // });
-
   let renderStart = (renderRange.start.beat % cycleBeats);
   let renderEnd = (renderRange.end.beat % cycleBeats);
 
   // loop over the events, calculate sequence time info, map to new array
   return _.map(events, function(noteEvent) {
     var beatOffset = noteEvent.start - renderStart;
-    // var beatOffset = noteEvent.start - renderStart;
 
     // account for crossing loop boundary
     if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
       beatOffset += cycleBeats;
     }
 
-    // var offsetForDrop = (triggerInfo.startBeat % cycleBeats) - callbackStartBeats;
     var timestamp = bpmUtilities.beatsToMs(renderRange.tempoBpm, beatOffset);
     var absoluteTimestamp = renderRange.start.time + timestamp;
     
