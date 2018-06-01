@@ -112,7 +112,7 @@ function renderPatternTrigger(
 */
 const renderPatternEvents = function(
   renderRange,
-  triggerInfo, // { startBeat, endBeat, tempoBpm } 
+  triggerInfo_do_we_need_this, // { startBeat, endBeat, tempoBpm } 
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
   debug,
@@ -121,8 +121,8 @@ const renderPatternEvents = function(
   debug = debug || false;
 
   // start and end of render range in pattern-beats
-  var renderStart = (triggerInfo.startBeat % cycleBeats);
-  var renderEnd = (triggerInfo.endBeat % cycleBeats);
+  // var renderStart = (triggerInfo.startBeat % cycleBeats);
+  // var renderEnd = (triggerInfo.endBeat % cycleBeats);
 
   // // filter out events that are not within the (triggered-on) render range
   // events = _.filter(events, function(noteEvent) {
@@ -133,22 +133,27 @@ const renderPatternEvents = function(
   //   );
   // });
 
+  let renderStart = (renderRange.start.beat % cycleBeats);
+  let renderEnd = (renderRange.end.beat % cycleBeats);
+
   // loop over the events, calculate sequence time info, map to new array
   return _.map(events, function(noteEvent) {
     var beatOffset = noteEvent.start - renderStart;
+    // var beatOffset = noteEvent.start - renderStart;
 
     // account for crossing loop boundary
     if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
       beatOffset += cycleBeats;
     }
 
-    var offsetForDrop = (triggerInfo.startBeat % cycleBeats) - renderStart;
-    var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset + offsetForDrop);
+    // var offsetForDrop = (triggerInfo.startBeat % cycleBeats) - callbackStartBeats;
+    var timestamp = bpmUtilities.beatsToMs(renderRange.tempoBpm, beatOffset);
     var absoluteTimestamp = renderRange.start.time + timestamp;
-    var duration = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration);
+    
+    var duration = bpmUtilities.beatsToMs(renderRange.tempoBpm, noteEvent.duration);
 
     if (debug) 
-      console.log(`rendered event renderStartBeat=${renderStart.toFixed(3)} b=${noteEvent.start} t=${timestamp} T=${absoluteTimestamp}`);
+      console.log(`rendered event renderStartBeat=${renderStart.toFixed(3)} b=${noteEvent.start} t=${timestamp} T=${timestamp}`);
 
     // return absolute render info as msec + original event
     return {
@@ -162,4 +167,5 @@ const renderPatternEvents = function(
 
 module.exports.renderPatternTrigger = renderPatternTrigger;
 module.exports.renderPatternEvents = renderPatternEvents;
+
 
