@@ -20,7 +20,7 @@ var sequencerCallback = function(renderRange) {
   let appState = store.getState();
   throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
-  renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
+  renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 0);
 
 
   console.log(''); // newline
