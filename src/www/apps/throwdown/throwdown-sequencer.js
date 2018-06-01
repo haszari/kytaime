@@ -7,23 +7,24 @@ import throwdown from './throwdown.jsx';
 import store from './stores/store';
 import * as actions from './stores/actions';
 
-let AudioContext = window.AudioContext || window.webkitAudioContext;
-var audioContext;
+// let AudioContext = window.AudioContext || window.webkitAudioContext;
+// var audioContext;
+//   if (!audioContext)
+//     audioContext = new AudioContext();
 
 var midiOutPort = null;
 let midiOutDevice = "";
 
 var sequencerCallback = function(renderRange) {
-  if (!audioContext)
-    audioContext = new AudioContext();
 
   let appState = store.getState();
+  throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
   renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
 
-  throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort, audioContext.destination);
 
-  console.log(`r b=${renderRange.start.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
+  console.log(''); // newline
+  console.log(`r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }
 
 var startTransport = function() {

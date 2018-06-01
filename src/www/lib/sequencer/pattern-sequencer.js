@@ -111,12 +111,14 @@ function renderPatternTrigger(
   }
 */
 const renderPatternEvents = function(
-  renderStartTimestamp,
+  renderRange,
   triggerInfo, // { startBeat, endBeat, tempoBpm } 
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
+  debug,
 ) {
   // if (!triggerInfo.isPlaying) return;
+  debug = debug || false;
 
   // start and end of render range in pattern-beats
   var renderStart = (triggerInfo.startBeat % cycleBeats);
@@ -140,9 +142,13 @@ const renderPatternEvents = function(
       beatOffset += cycleBeats;
     }
 
-    var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset);
-    var absoluteTimestamp = renderStartTimestamp + timestamp;
+    var offsetForDrop = (triggerInfo.startBeat % cycleBeats) - renderStart;
+    var timestamp = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, beatOffset + offsetForDrop);
+    var absoluteTimestamp = renderRange.start.time + timestamp;
     var duration = bpmUtilities.beatsToMs(triggerInfo.tempoBpm, noteEvent.duration);
+
+    if (debug) 
+      console.log(`rendered event renderStartBeat=${renderStart.toFixed(3)} b=${noteEvent.start} t=${timestamp} T=${absoluteTimestamp}`);
 
     // return absolute render info as msec + original event
     return {

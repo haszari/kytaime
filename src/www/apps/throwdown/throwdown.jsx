@@ -19,8 +19,8 @@ const throwdowns = {
             tempo: 122,
             duration: 8,
             part: 'drums',
-            starts: [0, 3],
-            ends: [0, 0.1],
+            // starts: [0, 3],
+            // ends: [0, 0.1],
          }
       }   
    }
@@ -124,12 +124,30 @@ class ThrowdownAudioStem {
     // e.g. fake ignored duration value
     let triggerEvents = [];
     if (triggerInfo.triggerOnset >= 0) {
-       triggerEvents = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }]);
-       this.playAt(triggerEvents[0].start - renderRange.start.time, triggerInfo.triggerOnset, renderRange.tempoBpm, audioDestinationNode);
+       
+
+
+       /////
+       // pass logging option into renderpatternevents from here and for test beep and work out why this is different
+       triggerEvents = patternSequencer.renderPatternEvents
+          (renderRange, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOnset, duration: -1 }], true);
+        //(renderRange.start.time, triggerInfo, 4, filteredBeeps, true);
+       
+
+       let time = (triggerEvents[0].start + renderRange.audioContextTimeOffsetMsec) / 1000;
+       let beat = triggerInfo.triggerOnset;
+       console.log(`audio  onset t=${time.toFixed(2)} b=${beat.toFixed(2)} c=${this.audioContext.currentTime} ~c=${renderRange.audioContextTimeOffsetMsec}`)
+
+       this.playAt(time, triggerInfo.triggerOnset, renderRange.tempoBpm, audioDestinationNode);
     }
     else if (triggerInfo.triggerOffset >= 0) {
-       triggerEvents = patternSequencer.renderPatternEvents(renderRange.start.time, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
-       this.stopAt(triggerEvents[0].start - renderRange.start.time);    
+
+       triggerEvents = patternSequencer.renderPatternEvents(renderRange, triggerInfo, this.sampleLengthBeats, [{ start: triggerInfo.triggerOffset, duration: -1 }]);
+       let time = (triggerEvents[0].start + renderRange.audioContextTimeOffsetMsec) / 1000;
+       let beat = triggerInfo.triggerOffset;
+       console.log(`audio offset t=${time.toFixed(2)} b=${beat.toFixed(2)} c=${this.audioContext.currentTime} ~c=${renderRange.audioContextTimeOffsetMsec}`)
+
+       this.stopAt(time);    
     }
  }
 }
@@ -165,19 +183,22 @@ class Throwdown {
    }
 }
 
+
 let mivova;
 
-const renderThrowdown = (renderRange, triggerState, midiOutPort, audioDestinationNode) => {
+const renderThrowdown = (renderRange, triggerState, midiOutPort) => {
+   const audioDestinationNode = renderRange.audioContext.destination;
    if (!mivova)
       mivova = new Throwdown({
-         audioContext: audioDestinationNode.context,
+         audioContext: renderRange.audioContext,
          ...throwdowns.mivova
       });
    mivova.updateAndRender(renderRange, triggerState, midiOutPort, audioDestinationNode);
 }
 
 const stopThrowdown = () => {
-   mivova.stop();
+   if (mivova)
+      mivova.stop();
 }
 
 export default {

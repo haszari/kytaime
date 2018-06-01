@@ -7,6 +7,9 @@ import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
 
 
+let AudioContext = window.AudioContext || window.webkitAudioContext;
+var audioContext;
+
 // this metronome stuff is like a mini client; not core sequencer
 var metronomeChannel = 0;
 var metronomeNote = 37;
@@ -41,16 +44,24 @@ var state = {
 };
 var updateTransport = function() {
    // console.log('render at ' + window.performance.now() + ' last finished at ' + state.lastRenderEndTime);
+  if (!audioContext)
+    audioContext = new AudioContext();
 
    var now = window.performance.now();
+   var audioNow = audioContext.currentTime;
+   var offsetMilliseconds = audioNow * 1000 - performance.now();
+
    var renderStart = state.lastRenderEndTime;
    var renderEnd = now + renderInterval + renderOverlap;
    var chunkMs = renderEnd - renderStart;
    if (chunkMs <= 0)
       return;
 
+
    var renderRange = {
       // we now provide tempo of render range to clients
+      audioContext: audioContext,
+      audioContextTimeOffsetMsec: offsetMilliseconds, 
       tempoBpm: state.tempoBpm,
       start: {
          time: renderStart,

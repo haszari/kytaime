@@ -9,8 +9,8 @@ const transport = (state = {
    playState: '', 
    beatNumber: 0,
    /// generalness coming sooon
-   triggerAudio: true, 
-   triggerMidi: false,
+   triggerAudio: false, 
+   triggerMidi: true,
 }, action) => {
    switch (action.type) {
       case actionTypes.TRANSPORT_TOGGLE_PLAY:
