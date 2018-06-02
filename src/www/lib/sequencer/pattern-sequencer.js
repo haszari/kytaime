@@ -32,26 +32,21 @@ function renderPatternTrigger(
   let renderInfo = { 
     isPlaying: isPlaying,
     tempoBpm: renderRange.tempoBpm,
-    startBeat: renderRange.start.beat,
-    endBeat: renderRange.end.beat,
-    triggerOnset: -1,
-    triggerOffset: -1,
-  }
-  let nullRenderInfo = { 
-    isPlaying: false,
     startBeat: undefined,
     endBeat: undefined,
     triggerOnset: -1,
     triggerOffset: -1,
   }
 
-  // playing, triggered, so keep playing
-  if (isPlaying && isTriggered) {
-    return renderInfo;
-  }
   // not playing, not triggered, don't play
   if (!isPlaying && !isTriggered) {
-    return nullRenderInfo;
+    return renderInfo;
+  }
+  // playing, triggered, so keep playing
+  if (isPlaying && isTriggered) {
+    renderInfo.startBeat = renderRange.start.beat;
+    renderInfo.endBeat = renderRange.end.beat;
+    return renderInfo;
   }
 
   // from here on we may be starting or stopping play during the render chunk
@@ -76,6 +71,7 @@ function renderPatternTrigger(
     });
     if (!_.isUndefined(beat)) {
       renderInfo.startBeat = beat;
+      renderInfo.endBeat = renderRange.end.beat;
       renderInfo.isPlaying = true;
       renderInfo.triggerOnset = beat;
     }
@@ -90,6 +86,7 @@ function renderPatternTrigger(
       );
     });
     if (!_.isUndefined(beat)) {
+      renderInfo.startBeat = renderRange.start.beat;
       renderInfo.endBeat = beat;
       renderInfo.isPlaying = false;
       renderInfo.triggerOffset = beat;
