@@ -5,7 +5,63 @@ import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
 
 const swing = 0.03;
 
-let pattern = {
+let melodyPattern = {
+  duration: 8,
+  startBeats: [0.45], 
+  endBeats: [4.51], 
+  notes: [
+    { 
+      start: 0, 
+      duration: 1, 
+      note: 50, 
+      velocity: 100 
+    },
+    { 
+      start: 1, 
+      duration: 1, 
+      note: 52, 
+      velocity: 100 
+    },
+    { 
+      start: 2, 
+      duration: 1, 
+      note: 53, 
+      velocity: 100 
+    },
+    { 
+      start: 3, 
+      duration: 1, 
+      note: 55, 
+      velocity: 100 
+    },
+    { 
+      start: 0+4.5, 
+      duration: 0.5, 
+      note: 50, 
+      velocity: 100 
+    },
+    { 
+      start: 1+4, 
+      duration: 1, 
+      note: 52, 
+      velocity: 100 
+    },
+    { 
+      start: 2+4, 
+      duration: 1, 
+      note: 53, 
+      velocity: 100 
+    },
+    { 
+      start: 3+4, 
+      duration: 1, 
+      note: 55, 
+      velocity: 100 
+    },  
+  ]
+};
+
+let beatPattern = {
   duration: 4,
   startBeats: [0.98], // start on first kick or snare
   endBeats: [0.49], // always end on a 1
@@ -83,7 +139,7 @@ let pattern = {
   ]
 };
 
-
+let pattern = melodyPattern;
 
 
 let patternTriggerState = {
