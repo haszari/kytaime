@@ -19,8 +19,8 @@ const throwdowns = {
             tempo: 122,
             duration: 8,
             part: 'drums',
-            // starts: [0, 3],
-            // ends: [0, 0.1],
+            startBeats: [0, 3],
+            endBeats: [0.5],
          }
       }   
    }
@@ -97,7 +97,7 @@ class ThrowdownAudioStem {
 
  stopAt(stopTimestamp) {
     if (this.player) {
-       this.player.stop(0);
+       this.player.stop(stopTimestamp);
        console.log('stopping audio!!');
     }
     this.playing = false;
