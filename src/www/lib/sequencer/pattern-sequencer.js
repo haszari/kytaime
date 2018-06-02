@@ -61,6 +61,7 @@ function renderPatternTrigger(
 
   // see if we are going to drop (% quant) this render buffer
   if (!isPlaying && isTriggered) {
+    renderInfo.endBeat = renderRange.end.beat;
     // find a trigger start beat..
     var beat = _.find(triggerBeats, function(startBeat) {
       // might need to express start & stop relative to loop/phrase, i.e. negative for mute early, positive to stop during next bar/phrase
@@ -71,14 +72,16 @@ function renderPatternTrigger(
     });
     if (!_.isUndefined(beat)) {
       renderInfo.startBeat = beat;
-      renderInfo.endBeat = renderRange.end.beat;
       renderInfo.isPlaying = true;
       renderInfo.triggerOnset = beat;
+      console.log(`trig ON! b=${renderInfo.triggerOnset}`);
     }
   }
 
   // see if we are going to undrop (% quant) this render buffer
   if (isPlaying && !isTriggered) {
+    renderInfo.startBeat = renderRange.start.beat;
+    renderInfo.endBeat = renderRange.end.beat;
     var beat = _.find(unTriggerBeats, function(beat) {
       return bpmUtilities.valueInWrappedBeatRange(beat, 
         phrase.renderStart, phrase.renderEnd, 
@@ -86,10 +89,10 @@ function renderPatternTrigger(
       );
     });
     if (!_.isUndefined(beat)) {
-      renderInfo.startBeat = renderRange.start.beat;
       renderInfo.endBeat = beat;
       renderInfo.isPlaying = false;
       renderInfo.triggerOffset = beat;
+      console.log(`trig off b=${renderInfo.triggerOffset}`);
     }
   }
 
