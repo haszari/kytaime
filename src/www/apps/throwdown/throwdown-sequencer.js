@@ -23,8 +23,8 @@ var sequencerCallback = function(renderRange) {
   renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
 
 
-  console.log(''); // newline
-  console.log(`r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
+  // console.log(''); // newline
+  console.log(`--- r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }
 
 var startTransport = function() {

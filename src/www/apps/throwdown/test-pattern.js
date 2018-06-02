@@ -7,8 +7,8 @@ const swing = 0.03;
 
 let melodyPattern = {
   duration: 8,
-  startBeats: [0.45], 
-  endBeats: [4.51], 
+  startBeats: [0, 1, 4.5], 
+  endBeats: [0.1, 4.51, 7.1], 
   notes: [
     { 
       start: 0, 
@@ -186,6 +186,8 @@ const renderTestPattern = function(renderRange, triggerState, midiOutPort, chann
     pattern.endBeats,
   );
 
+  console.log(`trigger p=${patternTriggerState.playing} b=${triggerInfo.startBeat}…${triggerInfo.endBeat}`);
+
   // filter out events that are not within the (triggered-on) render range
   // should this happen in renderPatternEvents or outside?
   // do we need to factor out the core of event rendering from renderPatternEvents so we can use it without the filter??
@@ -215,7 +217,7 @@ const renderTestPattern = function(renderRange, triggerState, midiOutPort, chann
     midiUtilities.renderNote(note);
     
   });
-
+/*
   let beeps = [
     { start: 0, duration: 1, freq: 200, },
     { start: 3.5, duration: 1, freq: 230, },
@@ -229,13 +231,13 @@ const renderTestPattern = function(renderRange, triggerState, midiOutPort, chann
       );
     });
 
-  let scheduledBeeps = patternSequencer.renderPatternEvents(renderRange, 4, filteredBeeps, true);
+  let scheduledBeeps = patternSequencer.renderPatternEvents(renderRange, 4, filteredBeeps, false);
   _.map(scheduledBeeps, (item) => {
     let time = (item.start + renderRange.audioContextTimeOffsetMsec)  / 1000;
-    console.log(`beep t=${time} b=${item.event.start}`)
+    // console.log(`beep t=${time} b=${item.event.start}`)
     beepAt(time, item.event.freq, renderRange.audioContext);
   });
-
+*/
   patternTriggerState.playing = triggerInfo.isPlaying;
 }
 
