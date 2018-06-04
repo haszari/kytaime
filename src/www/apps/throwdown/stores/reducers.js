@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 
 import * as actionTypes from './action-types';
 
-import sequencer from '../throwdown-sequencer';
+import sequencer from '../throwdown-app';
 
 const transport = (state = { 
    playState: '', 
