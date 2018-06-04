@@ -68,15 +68,15 @@ class ThrowdownAudioStem {
 
     this.loaded = new Promise((resolve, reject) => {      
       getSample(this.audioFile, this.audioContext, (buffer) => {
-      console.log('sample decoded, ready to play');
-      this.buffer = buffer;
-      resolve();
+        console.log('sample decoded, ready to play');
+        this.buffer = buffer;
+        resolve();
+      });
     });
-  });
-}
+  }
 
-playAt(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
-  let rate = transportBpm / this.tempo;
+  playAt(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
+    let rate = transportBpm / this.tempo;
     // console.log(rate, this.audioContext.currentTime, time);
 
     this.player = this.audioContext.createBufferSource();
@@ -98,26 +98,25 @@ playAt(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
   stopAt(stopTimestamp) {
     if (this.player) {
       this.player.stop(stopTimestamp);
-      console.log('stopping audio!!');
-   }
-   this.playing = false;
- }
+    }
+    this.playing = false;
+  }
 
- updateAndRender(renderRange, triggerState, audioDestinationNode) {
-  if (!this.loaded) 
-    return;
+  updateAndRender(renderRange, triggerState, audioDestinationNode) {
+    if (!this.loaded) 
+      return;
 
-  this.triggered = triggerState;
+    this.triggered = triggerState;
 
-  let triggerInfo = patternSequencer.renderPatternTrigger(
-    renderRange, 
-    this.triggered,
-    this.playing, 
-    this.sampleLengthBeats,
-    this.startBeats,
-    this.endBeats,
-  );
-  this.playing = triggerInfo.isPlaying;
+    let triggerInfo = patternSequencer.renderPatternTrigger(
+      renderRange, 
+      this.triggered,
+      this.playing, 
+      this.sampleLengthBeats,
+      this.startBeats,
+      this.endBeats,
+    );
+    this.playing = triggerInfo.isPlaying;
 
     // here we "render" a single note-like event for the onset or offset of the audio stem
     // the API supports this but makes it feel strange .. 
