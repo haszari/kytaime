@@ -30,3 +30,6 @@ document.body.appendChild(appDiv);
 
 render(<App/>, appDiv);
 
+
+import throwdownCoreApp from './throwdown-app';
+

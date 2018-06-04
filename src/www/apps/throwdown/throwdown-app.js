@@ -47,6 +47,41 @@ setMidiOut("IAC Driver Bus 1");
 sequencer.setRenderCallback('throwdown', sequencerCallback);
 
 
+// bind sequencer/transport to store
+
+// (thanks to https://github.com/reduxjs/redux/issues/303#issuecomment-125184409)
+function observeStore(store, select, onChange) {
+  let currentState;
+
+  function handleChange() {
+    let nextState = select(store.getState());
+    if (nextState !== currentState) {
+      currentState = nextState;
+      onChange(currentState);
+    }
+  }
+
+  let unsubscribe = store.subscribe(handleChange);
+  handleChange();
+  return unsubscribe;
+}
+
+observeStore(
+  store, 
+  (storeState) => {
+    return storeState.transport.playState
+  }, 
+  (playState) => {
+    if (playState == "playing") {
+      startTransport();
+    }
+    else {
+      stopTransport();
+    }
+  }
+);
+
+
 
 module.exports.start = startTransport;
 module.exports.stop = stopTransport;
