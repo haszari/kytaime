@@ -11,7 +11,7 @@ const audioPath = '/audio/stems/';
 const throwdowns = {
   mivova: {
     name: 'mivova',
-    tempo: 116,
+    tempo: 122,
     key: 'Am',
     patterns: {
       beat: {
@@ -21,7 +21,56 @@ const throwdowns = {
         part: 'drums',
         startBeats: [0, 3],
         endBeats: [0.5],
-      }
+      },
+      bass: {
+        audio: audioPath + '20180425--mivova--padscape--sub.mp3',
+        tempo: 122,
+        duration: 8,
+        part: 'bass',
+        startBeats: [0],
+        endBeats: [0],
+      },
+      synth: {
+        notes: [
+          { 
+            start: 0, 
+            duration: 4, 
+            note: 55, 
+            velocity: 100 
+          },
+          { 
+            start: 4, 
+            duration: 4, 
+            note: 51, 
+            velocity: 100 
+          },
+          { 
+            start: 8, 
+            duration: 4, 
+            note: 47, 
+            velocity: 100 
+          },
+          { 
+            start: 12, 
+            duration: 4, 
+            note: 48, 
+            velocity: 100 
+          },
+        ],
+        tempo: 122,
+        duration: 16,
+        part: 'synth',
+        startBeats: [0],
+        endBeats: [0],
+      },
+      voc: {
+        audio: audioPath + '20180425--mivova--padscape--voc.mp3',
+        tempo: 122,
+        duration: 64,
+        part: 'voc',
+        startBeats: [0, 6, 16, 23, 32, 39, 55, 63],
+        endBeats: [0, 6, 16, 23, 32, 39, 55, 63],
+      },
     }
   }
 };
