@@ -198,7 +198,7 @@ class Throwdown {
     this.audioContext = options.audioContext;
 
     this.audioStems = _.filter(options.patterns, (patternData) => {
-      return patternData.audio.length > 0;
+      return patternData.audio && (patternData.audio.length > 0);
     }).map((patternData) => {
     
       return new ThrowdownAudioStem({
