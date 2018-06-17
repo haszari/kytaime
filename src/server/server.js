@@ -19,6 +19,11 @@ else {
    app.use(express.static(path.join(process.env.APP_PATH, '/dist/www')));
 }
 
+// serve up iTunes media folder for easy access to audio
+app.use('/media', express.static(path.join(process.env.HOME, '/Music/iTunes/iTunes Media/Music')));
+
+// serve up Throwdown folder for easy access to snip / throwdown metadata
+app.use('/throwdown', express.static(path.join(process.env.HOME, '/Music/Throwdown')));
 
 // start http server
 app.listen(webPort);
