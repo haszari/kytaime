@@ -12,7 +12,7 @@ import shortid from 'shortid';
 import store from './stores/store';
 // import * as actions from './stores/actions';
 
-import Transport from './components/transport.jsx';
+import Transport from './components/transport/component.jsx';
 
 function App() {
    return (

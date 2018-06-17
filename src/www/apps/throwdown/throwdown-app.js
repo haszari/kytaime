@@ -5,13 +5,13 @@ import renderTestPattern from './test-pattern';
 import throwdown from './throwdown.jsx';
 
 import store from './stores/store';
-import * as actions from './stores/actions';
 
 var midiOutPort = null;
 let midiOutDevice = "";
 
 var sequencerCallback = function(renderRange) {
   let appState = store.getState();
+
   throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
   renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
