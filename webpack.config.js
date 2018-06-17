@@ -54,7 +54,6 @@ module.exports = {
          template: app.htmlTemplate
       }),
       new CopyWebpackPlugin([
-         { from: 'src/www/audio', to: 'audio' },
          { from: 'src/www/styles/fontello-kytaime-icons', to: 'styles/fontello-kytaime-icons' },
       ]) 
    ]

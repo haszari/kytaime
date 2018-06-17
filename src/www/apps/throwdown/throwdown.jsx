@@ -3,77 +3,7 @@ import * as bpmUtilities from '../../lib/sequencer/bpm-utilities';
 import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
 
 import _ from 'lodash';
-
-// audio is outside source code this time ??
-// const audioPath = '/Users/rua/Music/iTunes/iTunes Media/Music/Haszari/Haszari Renders - Snips Stems/';
-const audioPath = '/audio/stems/';
-
-const throwdowns = {
-  mivova: {
-    name: 'mivova',
-    tempo: 122,
-    key: 'Am',
-    patterns: {
-      beat: {
-        audio: audioPath + '20180425--mivova--padscape--beat.mp3',
-        tempo: 122,
-        duration: 8,
-        part: 'drums',
-        startBeats: [0, 3],
-        endBeats: [0.5],
-      },
-      bass: {
-        audio: audioPath + '20180425--mivova--padscape--sub.mp3',
-        tempo: 122,
-        duration: 8,
-        part: 'bass',
-        startBeats: [0],
-        endBeats: [0],
-      },
-      synth: {
-        notes: [
-          { 
-            start: 0, 
-            duration: 4, 
-            note: 55, 
-            velocity: 100 
-          },
-          { 
-            start: 4, 
-            duration: 4, 
-            note: 51, 
-            velocity: 100 
-          },
-          { 
-            start: 8, 
-            duration: 4, 
-            note: 47, 
-            velocity: 100 
-          },
-          { 
-            start: 12, 
-            duration: 4, 
-            note: 48, 
-            velocity: 100 
-          },
-        ],
-        tempo: 122,
-        duration: 16,
-        part: 'synth',
-        startBeats: [0],
-        endBeats: [0],
-      },
-      voc: {
-        audio: audioPath + '20180425--mivova--padscape--voc.mp3',
-        tempo: 122,
-        duration: 64,
-        part: 'voc',
-        startBeats: [0, 6, 16, 23, 32, 39, 55, 63],
-        endBeats: [0, 6, 16, 23, 32, 39, 55, 63],
-      },
-    }
-  }
-};
+import Hjson from 'hjson';
 
 
 function getSample (url, audioContext, cb) {
@@ -224,16 +154,32 @@ class Throwdown {
 
 
 let mivova;
+let throwdownData;
+
+function loadThrowdownMetadata() {
+  fetch('/throwdown/default.hjson')
+    .then(function(response) {
+      return response.text();
+    })
+    .then(function(bodyText) {
+      return Hjson.parse(bodyText);
+    })
+    .then(function(throwdowns) {
+      throwdownData = throwdowns;
+    });
+}
 
 const renderThrowdown = (renderRange, triggerState, midiOutPort) => {
   const audioDestinationNode = renderRange.audioContext.destination;
   if (!mivova)
     mivova = new Throwdown({
   audioContext: renderRange.audioContext,
-    ...throwdowns.mivova
+    ...throwdownData.mivova
   });
   mivova.updateAndRender(renderRange, triggerState, midiOutPort, audioDestinationNode);
 }
+
+loadThrowdownMetadata();
 
 const stopThrowdown = () => {
   if (mivova)
