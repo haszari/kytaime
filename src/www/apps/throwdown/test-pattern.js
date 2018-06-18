@@ -5,6 +5,39 @@ import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
 
 const swing = 0.03;
 
+let mivovaPattern = {
+  duration: 16,
+  startBeats: [0], 
+  endBeats: [0], 
+  notes: [
+    { 
+      start: 0, 
+      duration: 4, 
+      note: 55, 
+      velocity: 100 
+    },
+    { 
+      start: 4, 
+      duration: 4, 
+      note: 51, 
+      velocity: 100 
+    },
+    { 
+      start: 8, 
+      duration: 4, 
+      note: 47, 
+      velocity: 100 
+    },
+    { 
+      start: 12, 
+      duration: 4, 
+      note: 48, 
+      velocity: 100 
+    },
+
+  ]
+};
+
 let melodyPattern = {
   duration: 8,
   startBeats: [0, 1, 4.5], 
@@ -139,7 +172,7 @@ let beatPattern = {
   ]
 };
 
-let pattern = melodyPattern;
+let pattern = mivovaPattern;
 
 
 let patternTriggerState = {
