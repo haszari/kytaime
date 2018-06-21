@@ -14,7 +14,7 @@ var sequencerCallback = function(renderRange) {
 
   // throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
-  renderTestPattern(renderRange, appState.transport.triggerTestMidi, midiOutPort, 1);
+  renderTestPattern(renderRange, appState.transport.triggerTestMidi, midiOutPort, 0);
 
   console.log(`--- r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }

@@ -172,7 +172,7 @@ let beatPattern = {
   ]
 };
 
-let pattern = mivovaPattern;
+let pattern = beatPattern;
 
 
 let patternTriggerState = {
