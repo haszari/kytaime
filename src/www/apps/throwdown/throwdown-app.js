@@ -2,7 +2,7 @@
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
 import renderTestPattern from './test-pattern';
-import throwdown from './throwdown.jsx';
+// import throwdown from './components/throwdown/service.jsx';
 
 import store from './stores/store';
 
@@ -12,9 +12,9 @@ let midiOutDevice = "";
 var sequencerCallback = function(renderRange) {
   let appState = store.getState();
 
-  throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
+  // throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
-  renderTestPattern(renderRange, appState.transport.triggerMidi, midiOutPort, 1);
+  renderTestPattern(renderRange, appState.transport.triggerTestMidi, midiOutPort, 1);
 
   console.log(`--- r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }

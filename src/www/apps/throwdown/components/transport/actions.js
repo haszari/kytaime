@@ -13,6 +13,6 @@ export function transportPlayState(playState) {
 }
 
 
-export function toggleElementTriggerState(actionParams) {
-	return { type: actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE, ...actionParams };
+export function toggleTestPatternPlayState(actionParams) {
+	return { type: actionTypes.TOGGLE_TEST_PATTERN_PLAY_STATE };
 }

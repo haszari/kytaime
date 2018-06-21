@@ -1,6 +1,6 @@
 
-import * as bpmUtilities from '../../lib/sequencer/bpm-utilities';
-import * as patternSequencer from '../../lib/sequencer/pattern-sequencer';
+import * as bpmUtilities from '../../../../lib/sequencer/bpm-utilities';
+import * as patternSequencer from '../../../../lib/sequencer/pattern-sequencer';
 
 import _ from 'lodash';
 import Hjson from 'hjson';
@@ -156,6 +156,8 @@ class Throwdown {
 let mivova;
 let throwdownData;
 
+
+// load default data
 function loadThrowdownMetadata() {
   fetch('/throwdown/default.hjson')
     .then(function(response) {
@@ -165,17 +167,21 @@ function loadThrowdownMetadata() {
       return Hjson.parse(bodyText);
     })
     .then(function(throwdowns) {
+      console.log('default throwdown data loaded');
       throwdownData = throwdowns;
     });
 }
 
 const renderThrowdown = (renderRange, triggerState, midiOutPort) => {
   const audioDestinationNode = renderRange.audioContext.destination;
+
+  // lazy initialise whole throwdown on first playback (temporary)
   if (!mivova)
     mivova = new Throwdown({
-  audioContext: renderRange.audioContext,
-    ...throwdownData.mivova
-  });
+      audioContext: renderRange.audioContext,
+      ...throwdownData.mivova
+    });
+
   mivova.updateAndRender(renderRange, triggerState, midiOutPort, audioDestinationNode);
 }
 

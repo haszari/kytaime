@@ -40,7 +40,7 @@ var state = {
    
    // tempo was previously stored in client app redux store; we need to take control of it
    // clients will have to schedule events to update the transport tempo
-   tempoBpm: 120, 
+   tempoBpm: 122, 
 };
 var updateTransport = function() {
    // console.log('render at ' + window.performance.now() + ' last finished at ' + state.lastRenderEndTime);

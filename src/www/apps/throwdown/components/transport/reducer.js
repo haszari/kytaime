@@ -5,8 +5,8 @@ const transport = (state = {
   playState: '', 
   beatNumber: 0,
   /// generalness coming sooon
-  triggerAudio: false, 
-  triggerMidi: true,
+  // triggerAudio: false, 
+  triggerTestMidi: true,
 }, action) => {
   switch (action.type) {
     case actionTypes.TRANSPORT_TOGGLE_PLAY:
@@ -26,17 +26,10 @@ const transport = (state = {
         beatNumber: action.beatNumber
       });
 
-    case actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE: 
-      if (action.element == 'MIDI') {
+    case actionTypes.TOGGLE_TEST_PATTERN_PLAY_STATE: 
         return Object.assign({}, state, {
-          triggerMidi: !state.triggerMidi
+          triggerTestMidi: !state.triggerTestMidi
         });            
-      }
-    if (action.element == 'Audio') {
-      return Object.assign({}, state, {
-        triggerAudio: !state.triggerAudio
-      });            
-    }
 
     default:
       return state;
