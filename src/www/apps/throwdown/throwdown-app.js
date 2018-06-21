@@ -23,7 +23,7 @@ var startTransport = function() {
   sequencer.start();
 }
 var stopTransport = function() {
-  throwdown.stop();
+  // throwdown.stop();
   sequencer.stop();
 }
 
