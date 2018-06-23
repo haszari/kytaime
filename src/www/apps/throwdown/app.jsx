@@ -39,13 +39,54 @@ import throwdownCoreApp from './throwdown-app';
 // test / bootstrap actions
 import * as throwdownActions from './components/throwdown/actions';
 
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'mary' }));
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'steve' }));
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'helen' }));
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'pete' }));
+store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'mivova' }));
 
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'helen' }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'beat', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--beat.mp3',
+    tempo: 122,
+    duration: 8,
+    part: 'drums',
+    startBeats: [0, 3],
+    endBeats: [0.5],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'bass', 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'voc', 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'synth', 
+}));
 
-store.dispatch(throwdownActions.throwdown_removeSnip({ slug: 'helen' }));
+store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'kytaime' }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'kytaime', 
+  slug: 'beat', 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'kytaime', 
+  slug: 'bass', 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'kytaime', 
+  slug: 'lead', 
+}));
 
-store.dispatch(throwdownActions.throwdown_renameSnip({ slug: 'steve', newSlug: 'dave' }));
+
+
+// testing snip actions
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'mary' }));
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'steve' }));
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'helen' }));
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'pete' }));
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'helen' }));
+// store.dispatch(throwdownActions.throwdown_removeSnip({ slug: 'helen' }));
+// store.dispatch(throwdownActions.throwdown_renameSnip({ slug: 'steve', newSlug: 'dave' }));

@@ -14,7 +14,9 @@ export function throwdown_renameSnip({ slug, newSlug }) {
   return { type: actionTypes.THROWDOWN_RENAME_SNIP, ...{ slug, newSlug } };
 }
 
-
-// export function toggleElementTriggerState(actionParams) {
-// 	return { type: actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE, ...actionParams };
-// }
+export function throwdown_addSnipStem({ snip, slug, data }) {
+  return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, data } };
+}
+export function throwdown_toggleSnipStemTrigger({ snip, slug }) {
+  return { type: actionTypes.THROWDOWN_TOGGLE_SNIP_STEM_TRIGGER, ...{ snip, slug } };
+}

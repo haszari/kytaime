@@ -1,4 +1,6 @@
 
+import _ from 'lodash';
+
 import React from 'react';
 
 import { connect } from 'react-redux';
@@ -8,7 +10,7 @@ import * as actions from './actions';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    snips: _.keys(state.throwdown)
+    snips: state.throwdown
   }
 }
 
@@ -18,17 +20,26 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const renderThrowdownList = function(props) {
   let { snips } = props;
-  let style = {
-    minWidth: 50
-  };
+
   return (
-    <select size="8" style={style}>
+    <table>
+      <thead><tr>
       { 
-        snips.map((name) => {
-          return ( <option value={name} key={name}>{name}</option> ) 
+        _.map(snips, (snip, name) => {
+          return ( <td key={name}>{name}</td> ) 
         }) 
       }
-    </select>
+      </tr></thead>
+      <tbody>
+        <tr>
+        { _.map(snips, (snip, name) => {
+            return (<td key={name}> { _.map(snip.parts, (part, name) => {
+              return ( <p key={name}>{name}</p> ) 
+            }) } </td>);
+        }) }
+        </tr>
+      </tbody>
+    </table>
   );
 } 
 
