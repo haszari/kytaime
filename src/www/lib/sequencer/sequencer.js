@@ -130,4 +130,5 @@ module.exports.stop = stopTempoClock;
 module.exports.isPlaying = isPlaying;
 module.exports.setRenderCallback = setRenderCallback;
 module.exports.removeRenderCallback = removeRenderCallback;
+module.exports.audioContext = audioContext;
 
