@@ -47,3 +47,5 @@ store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'pete' }));
 store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'helen' }));
 
 store.dispatch(throwdownActions.throwdown_removeSnip({ slug: 'helen' }));
+
+store.dispatch(throwdownActions.throwdown_renameSnip({ slug: 'steve', newSlug: 'dave' }));

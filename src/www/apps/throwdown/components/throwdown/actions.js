@@ -10,9 +10,9 @@ export function throwdown_addSnip({ slug }) {
 export function throwdown_removeSnip({ slug }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SNIP, ...{ slug } };
 }
-// export function throwdown_renameSnip({ snipId, name }) {
-//   return { type: actionTypes.THROWDOWN_RENAME_SNIP, ...`{ snipId, name } };
-// }
+export function throwdown_renameSnip({ slug, newSlug }) {
+  return { type: actionTypes.THROWDOWN_RENAME_SNIP, ...{ slug, newSlug } };
+}
 
 
 // export function toggleElementTriggerState(actionParams) {

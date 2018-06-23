@@ -73,16 +73,20 @@ const throwdownReducer = (state = {
 }, action) => {
   switch (action.type) {
 
-    case actionTypes.THROWDOWN_ADD_SNIP:
+    case actionTypes.THROWDOWN_ADD_SNIP: {
       const slug = tidySlug(action.slug, _.keys(state));
       const newSnip = { [slug]: { test: 'test' } };
-      // newSnip[slug] = { test: 'test' };
       return { ...state, ...newSnip };
+    }
 
     case actionTypes.THROWDOWN_REMOVE_SNIP:
       return _.omit(state, action.slug);
 
-    // case actionTypes.THROWDOWN_RENAME_SNIP:
+    case actionTypes.THROWDOWN_RENAME_SNIP: {
+      let newState = _.omit(state, action.slug);
+      const newSnip = { [action.newSlug]: state[action.slug] };
+      return { ...newState, ...newSnip };
+    }
   }
   return state;
 }
