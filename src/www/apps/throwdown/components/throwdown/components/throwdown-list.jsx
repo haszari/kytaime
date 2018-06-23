@@ -5,7 +5,7 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import * as actions from './actions';
+import * as actions from '../actions';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -21,6 +21,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const renderThrowdownList = function(props) {
   let { snips } = props;
 
+  // this is clearly going to get more componentised, this is ridiculous/prototype
   return (
     <table>
       <thead><tr>

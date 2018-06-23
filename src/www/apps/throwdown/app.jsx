@@ -16,7 +16,7 @@ import renderTestPattern from './test-pattern';
 // import throwdown from './components/throwdown/service.jsx';
 
 import Transport from './components/transport/component.jsx';
-import ThrowdownList from  './components/throwdown/component.jsx';
+import ThrowdownList from  './components/throwdown/components/throwdown-list.jsx';
 
 function App({ audioContext }) {
   return (
