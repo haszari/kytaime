@@ -79,6 +79,14 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   snip: 'kytaime', 
   slug: 'lead', 
 }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'kytaime', 
+  slug: 'lead', 
+}));
+store.dispatch(throwdownActions.throwdown_removeSnipStem({ 
+  snip: 'kytaime', 
+  slug: 'lead', 
+}));
 
 
 

@@ -17,6 +17,9 @@ export function throwdown_renameSnip({ slug, newSlug }) {
 export function throwdown_addSnipStem({ snip, slug, data }) {
   return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, data } };
 }
+export function throwdown_removeSnipStem({ snip, slug }) {
+  return { type: actionTypes.THROWDOWN_REMOVE_SNIP_STEM, ...{ snip, slug } };
+}
 export function throwdown_toggleSnipStemTrigger({ snip, slug }) {
   return { type: actionTypes.THROWDOWN_TOGGLE_SNIP_STEM_TRIGGER, ...{ snip, slug } };
 }
