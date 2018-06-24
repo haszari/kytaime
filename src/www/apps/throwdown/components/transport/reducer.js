@@ -3,8 +3,12 @@ import * as actionTypes from './action-types';
 
 const transport = (state = { 
   playState: '', 
+
+  // redundancy .. I should use a selector to get these out of renderRange
   beat: 0,
   time: 0,
+
+  renderRange: {},
 
   // more transport state coming soon..
   // tempo: 122,
@@ -29,6 +33,7 @@ const transport = (state = {
       return Object.assign({}, state, {
         beat: action.renderRange.end.beat,
         time: action.renderRange.end.time,
+        renderRange: action.renderRange
       });
 
 

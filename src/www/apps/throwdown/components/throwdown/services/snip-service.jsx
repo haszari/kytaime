@@ -21,11 +21,12 @@ import AudioStemService from './audio-stem-service.jsx';
 // }
 
 function StemComponent(props) {
-  const { slug, data, audioContext } = props;
+  const { snip, slug, data, audioContext } = props;
   if (data.audio) {
     return ( 
       <AudioStemService 
         audioContext={ audioContext } 
+        snip={ snip }
         key={ slug } 
         slug={ slug } 
         audio={ data.audio } 
@@ -64,11 +65,12 @@ class SnipService extends React.Component {
   // }
   
   render() {
-    const { stems, audioContext } = this.props;
+    const { slug, stems, audioContext } = this.props;
     const allStems = _.map(stems, (stem, stemSlug) => {
       return ( 
         <StemComponent
           audioContext={ audioContext } 
+          snip={ slug }
           slug={ stemSlug }
           key={ stemSlug }
           data={ stem.data }

@@ -2,6 +2,9 @@ import _ from 'lodash';
 
 import { default as slugify } from 'slug';
 
+import update from 'immutability-helper';
+
+
 import * as actionTypes from './action-types';
 
 
@@ -13,54 +16,23 @@ function tidySlug(desiredSlug, existingSlugs) {
   return uniqueSlug;
 }
 
-
-// function stemReducer(state = {
-//   name: '',
-//   trigger: false,
-// }, action) {
-//   switch (action.type) {
-
-//     case actionTypes.TOGGLE_ELEMENT_TRIGGER_STATE:
-//     return Object.assign({}, state, {
-//       trigger: !state.trigger
-//     });            
-
-//     default:
-//     return state;
-//   }
-// }
-
-// function stemReducer(state = {
-//   name: '',
-
-
-// function snipsReducer(state = {}, action) {
-//   switch (action.type) {
-//     case actionTypes.THROWDOWN_ADD_SNIP:
-//       return { ...state, ...snipReducer({}, action) };
-
-//     case actionTypes.THROWDOWN_REMOVE_SNIP:
-//     case actionTypes.THROWDOWN_RENAME_SNIP:
-//       return state.map( (snip) => {
-//         if (snip.id === action.snipId) {
-//           return snipReducer(snip, action);;
-//         }
-
-//         return snip;
-//       });      
-//   }
-// }
-
-function snipPartsReducer(state = {
-  // object map of slug: { data: midi pattern/audio stem data }
+function snipStemsReducer(state = {
+  // object map of slug: { data: midi pattern/audio stem data, renderPosition: { time } }
 }, action) {
   switch (action.type) {
 
     case actionTypes.THROWDOWN_ADD_SNIP_STEM: {
       const slug = tidySlug(action.slug, _.keys(state));
-      const newSnip = { [slug]: { data: action.data } };
-      return { ...state, ...newSnip };
+      const stem = { [slug]: { data: action.data } };
+      return { ...state, ...stem };
     }
+
+    case actionTypes.THROWDOWN_UPDATE_SNIP_STEM_RENDER_POSITION:
+      return update(state, {
+        [action.slug]: {
+          renderPosition: { $set: action.time }
+        }
+      });
 
     case actionTypes.THROWDOWN_REMOVE_SNIP_STEM:
       return _.omit(state, action.slug);
@@ -104,9 +76,10 @@ const throwdownReducer = (state = {
     }
 
     case actionTypes.THROWDOWN_ADD_SNIP_STEM:
-    case actionTypes.THROWDOWN_REMOVE_SNIP_STEM: {
+    case actionTypes.THROWDOWN_REMOVE_SNIP_STEM: 
+    case actionTypes.THROWDOWN_UPDATE_SNIP_STEM_RENDER_POSITION: {
       let newState = _.omit(state, action.snip);
-      const newSnip = { [action.snip]: { stems: snipPartsReducer(state[action.snip].stems, action) } };
+      const newSnip = { [action.snip]: { stems: snipStemsReducer(state[action.snip].stems, action) } };
       return { ...newState, ...newSnip };
     }
   }

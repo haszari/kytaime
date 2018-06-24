@@ -172,7 +172,7 @@ let beatPattern = {
   ]
 };
 
-let pattern = beatPattern;
+let pattern = melodyPattern;
 
 
 let patternTriggerState = {

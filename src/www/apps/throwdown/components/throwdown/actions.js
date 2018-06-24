@@ -23,3 +23,8 @@ export function throwdown_removeSnipStem({ snip, slug }) {
 export function throwdown_toggleSnipStemTrigger({ snip, slug }) {
   return { type: actionTypes.THROWDOWN_TOGGLE_SNIP_STEM_TRIGGER, ...{ snip, slug } };
 }
+
+
+export function throwdown_updateSnipStemRenderPosition({ snip, slug, time }) {
+  return { type: actionTypes.THROWDOWN_UPDATE_SNIP_STEM_RENDER_POSITION, ...{ snip, slug, time } };
+}
