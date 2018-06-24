@@ -145,18 +145,42 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     endBeats: [0.5],
   } 
 }));
-// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-//   snip: 'mivova', 
-//   slug: 'bass', 
-// }));
-// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-//   snip: 'mivova', 
-//   slug: 'voc', 
-// }));
-// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-//   snip: 'mivova', 
-//   slug: 'synth', 
-// }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'bass', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--sub.mp3',
+    tempo: 122,
+    duration: 8,
+    part: 'bass',
+    // startBeats: [0],
+    // endBeats: [0.5],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'voc', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--voc.mp3',
+    tempo: 122,
+    duration: 64,
+    part: 'voc',
+    startBeats: [0, 6, 16, 23, 32, 39, 55, 62],
+    endBeats: [0, 6, 16, 23, 32, 39, 55, 63],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'mivova', 
+  slug: 'synth', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--lead.mp3',
+    tempo: 122,
+    duration: 64,
+    part: 'synth',
+    // startBeats: [0, 3],
+    // endBeats: [0.5],
+  } 
+}));
 
 // store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'kytaime' }));
 // store.dispatch(throwdownActions.throwdown_addSnipStem({ 

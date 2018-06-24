@@ -14,7 +14,7 @@ const transport = (state = {
   // tempo: 122,
 
   // this like a built-in metronome
-  triggerTestMidi: true,
+  triggerTestMidi: false,
 }, action) => {
   switch (action.type) {
     case actionTypes.TRANSPORT_TOGGLE_PLAY:
