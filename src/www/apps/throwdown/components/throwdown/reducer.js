@@ -17,13 +17,20 @@ function tidySlug(desiredSlug, existingSlugs) {
 }
 
 function snipStemsReducer(state = {
-  // object map of slug: { data: midi pattern/audio stem data, renderPosition: { time } }
+  // object map of slug: { 
+  //   data: midi pattern/audio stem data, 
+  //   renderPosition: most recent render msec 
+  //   trigger: trigger state boolean
+  // }
 }, action) {
   switch (action.type) {
 
     case actionTypes.THROWDOWN_ADD_SNIP_STEM: {
       const slug = tidySlug(action.slug, _.keys(state));
-      const stem = { [slug]: { data: action.data } };
+      const stem = { [slug]: { 
+        data: action.data,
+        trigger: false,
+      } };
       return { ...state, ...stem };
     }
 
@@ -31,6 +38,13 @@ function snipStemsReducer(state = {
       return update(state, {
         [action.slug]: {
           renderPosition: { $set: action.time }
+        }
+      });
+
+    case actionTypes.THROWDOWN_TOGGLE_SNIP_STEM_TRIGGER:
+      return update(state, {
+        [action.slug]: {
+          trigger: { $apply: (trigger) => !trigger }
         }
       });
 
@@ -60,7 +74,8 @@ const throwdownReducer = (state = {
 }, action) => {
   switch (action.type) {
 
-    case actionTypes.THROWDOWN_ADD_SNIP: {
+    case actionTypes.THROWDOWN_ADD_SNIP: 
+    {
       const slug = tidySlug(action.slug, _.keys(state));
       const newSnip = { [slug]: { stems: {} } };
       return { ...state, ...newSnip };
@@ -69,7 +84,8 @@ const throwdownReducer = (state = {
     case actionTypes.THROWDOWN_REMOVE_SNIP:
       return _.omit(state, action.slug);
 
-    case actionTypes.THROWDOWN_RENAME_SNIP: {
+    case actionTypes.THROWDOWN_RENAME_SNIP: 
+    {
       let newState = _.omit(state, action.slug);
       const newSnip = { [action.newSlug]: state[action.slug] };
       return { ...newState, ...newSnip };
@@ -77,7 +93,9 @@ const throwdownReducer = (state = {
 
     case actionTypes.THROWDOWN_ADD_SNIP_STEM:
     case actionTypes.THROWDOWN_REMOVE_SNIP_STEM: 
-    case actionTypes.THROWDOWN_UPDATE_SNIP_STEM_RENDER_POSITION: {
+    case actionTypes.THROWDOWN_UPDATE_SNIP_STEM_RENDER_POSITION: 
+    case actionTypes.THROWDOWN_TOGGLE_SNIP_STEM_TRIGGER:
+    {
       let newState = _.omit(state, action.snip);
       const newSnip = { [action.snip]: { stems: snipStemsReducer(state[action.snip].stems, action) } };
       return { ...newState, ...newSnip };

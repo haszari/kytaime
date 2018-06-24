@@ -15,11 +15,50 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return { };
+  return { 
+    toggleStemTriggerState: (snip, stem) => {
+      dispatch(actions.throwdown_toggleSnipStemTrigger({ snip, slug: stem }));
+    }
+  };
+}
+
+const ThrowdownStem = function(props) {
+  const { snipSlug, stemSlug, triggered, toggleStemTriggerState } = props;
+
+  let stemElement = stemSlug;
+  if (triggered) {
+    stemElement = (
+      <i>{ stemElement }</i>
+    );
+  }
+
+  return ( 
+    <p key={ stemSlug } onClick={ toggleStemTriggerState.bind(undefined, snipSlug, stemSlug) } >
+      { stemElement }
+    </p> 
+  );
+}
+
+const ThrowdownSnip = function(props) {
+  const { slug, snipInfo, toggleStemTriggerState } = props;
+
+  return (<td> { 
+    _.map(snipInfo.stems, (stemInfo, stemSlug) => {
+      return ( 
+        <ThrowdownStem 
+          snipSlug={ slug }
+          key={ stemSlug }
+          stemSlug={ stemSlug }
+          triggered={ stemInfo.trigger }
+          toggleStemTriggerState={ toggleStemTriggerState }
+        />
+      ) 
+    }) 
+  } </td>);
 }
 
 const renderThrowdownList = function(props) {
-  let { snips } = props;
+  let { snips, toggleStemTriggerState } = props;
 
   // this is clearly going to get more componentised, this is ridiculous/prototype
   return (
@@ -33,10 +72,15 @@ const renderThrowdownList = function(props) {
       </tr></thead>
       <tbody>
         <tr>
-        { _.map(snips, (snip, name) => {
-            return (<td key={name}> { _.map(snip.stems, (part, name) => {
-              return ( <p key={name}>{name}</p> ) 
-            }) } </td>);
+        { _.map(snips, (snip, snipSlug) => {
+          return ( 
+            <ThrowdownSnip 
+              slug={ snipSlug } 
+              key={ snipSlug } 
+              snipInfo={ snip } 
+              toggleStemTriggerState={ toggleStemTriggerState }
+            /> 
+          )
         }) }
         </tr>
       </tbody>

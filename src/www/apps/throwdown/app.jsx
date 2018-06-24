@@ -150,7 +150,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 //   slug: 'synth', 
 // }));
 
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'kytaime' }));
+// store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'kytaime' }));
 // store.dispatch(throwdownActions.throwdown_addSnipStem({ 
 //   snip: 'kytaime', 
 //   slug: 'beat', 

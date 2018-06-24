@@ -42,6 +42,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     transportPlayState: state.transport.playState,
     renderRange: state.transport.renderRange,
+    triggered: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'trigger', false),
     lastRenderEndTime: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'renderPosition', 0),
   }
 }
@@ -64,7 +65,7 @@ class AudioStemServiceComponent extends React.Component {
     this.startBeats = props.startBeats || [0];
     this.endBeats = props.endBeats || [0];
 
-    this.triggered = true;
+    this.triggered = false;
     this.playing = false;
 
     this.buffer = undefined;
@@ -91,7 +92,7 @@ class AudioStemServiceComponent extends React.Component {
   // }
   
   componentWillUpdate(props) {
-    const { snip, slug, renderRange, lastRenderEndTime, transportPlayState } = props;
+    const { snip, slug, triggered, renderRange, lastRenderEndTime, transportPlayState } = props;
 
     if (transportPlayState == "stopped") {// need a selector alert!! (hard coded string)
       this.stopAt();
@@ -103,7 +104,7 @@ class AudioStemServiceComponent extends React.Component {
 
     console.log('update audio stem', slug, renderRange.start.time, lastRenderEndTime);
 
-    const triggerState = true; // COMING SOON!!
+    const triggerState = triggered;
     const audioDestinationNode = renderRange.audioContext.destination;
     this.updateAndRender(renderRange, triggerState, audioDestinationNode);
 
