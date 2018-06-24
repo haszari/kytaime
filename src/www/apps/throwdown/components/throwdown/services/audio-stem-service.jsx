@@ -83,9 +83,10 @@ class AudioStemServiceComponent extends React.Component {
   //   this.audioContext = new AudioContext();
   // }
   
-  // componentWillUnmount() {
-  //   this.audioContext.close();
-  // }
+  componentWillUnmount() {
+    // what audio objects do we need to free?
+    this.stopAt();
+  }
   
   // shouldComponentUpdate(props) {
   //   return props.events.length > 0;
@@ -106,7 +107,7 @@ class AudioStemServiceComponent extends React.Component {
 
     const triggerState = triggered;
     const audioDestinationNode = renderRange.audioContext.destination;
-    this.updateAndRender(renderRange, triggerState, audioDestinationNode);
+    this.updateAndRenderAudio(renderRange, triggerState, audioDestinationNode);
 
     store.dispatch(throwdownActions.throwdown_updateSnipStemRenderPosition({
       snip: snip,
@@ -143,7 +144,7 @@ class AudioStemServiceComponent extends React.Component {
     this.playing = false;
   }
 
-  updateAndRender(renderRange, triggerState, audioDestinationNode) {
+  updateAndRenderAudio(renderRange, triggerState, audioDestinationNode) {
     if (!this.loaded) 
       return;
 
@@ -177,11 +178,12 @@ class AudioStemServiceComponent extends React.Component {
       let beat = triggerInfo.triggerOffset;
       console.log(`audio offset t=${time.toFixed(2)} b=${beat.toFixed(2)} c=${this.audioContext.currentTime} ~c=${renderRange.audioContextTimeOffsetMsec}`)
 
-      this.stopAt(time);    
+      this.stopAt(time);
     }
   }
   
   render() {
+    // we are an audio component, not an HTML element/DOM component
     return null;
   }
 }

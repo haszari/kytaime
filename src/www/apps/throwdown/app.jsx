@@ -125,6 +125,14 @@ import * as throwdownActions from './components/throwdown/actions';
 
 store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'mivova' }));
 
+
+// test destroy actions work 
+setTimeout(() => {
+  // store.dispatch(throwdownActions.throwdown_removeSnip({ slug: 'mivova' }));
+  // store.dispatch(throwdownActions.throwdown_removeSnipStem({ snip: 'mivova', slug: 'beat' }));
+}, 5000);
+
+
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'mivova', 
   slug: 'beat', 
