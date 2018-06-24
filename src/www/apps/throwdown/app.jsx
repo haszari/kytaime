@@ -8,7 +8,7 @@ import {render} from 'react-dom';
 import { Provider } from 'react-redux'
 
 import store from './stores/store';
-// import * as actions from './stores/actions';
+import * as transportActions from './components/transport/actions';
 
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
@@ -16,6 +16,8 @@ import renderTestPattern from './test-pattern';
 // import throwdown from './components/throwdown/service.jsx';
 
 import Transport from './components/transport/component.jsx';
+
+import ThrowdownService from  './components/throwdown/services/throwdown-service.jsx';
 import ThrowdownList from  './components/throwdown/components/throwdown-list.jsx';
 
 function App({ audioContext }) {
@@ -24,7 +26,9 @@ function App({ audioContext }) {
       {/* Provider likes to wrap a single element */}
       <div>
         <Transport />
-        <ThrowdownList audioContext={audioContext} />
+
+        <ThrowdownService audioContext={audioContext} />
+        <ThrowdownList />
       </div>
     </Provider>
   );
@@ -39,6 +43,8 @@ var sequencerCallback = function(renderRange) {
   // throwdown.render(renderRange, appState.transport.triggerAudio, midiOutPort);
 
   renderTestPattern(renderRange, appState.transport.triggerTestMidi, midiOutPort, 0);
+
+  store.dispatch(transportActions.transportRenderUpdate(renderRange));
 
   console.log(`--- r t=${renderRange.start.time.toFixed(3)} b=${renderRange.start.beat.toFixed(3)}…${renderRange.end.beat.toFixed(3)} audio=${appState.transport.triggerAudio} midi=${appState.transport.triggerMidi}`);
 }
@@ -131,40 +137,40 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     endBeats: [0.5],
   } 
 }));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'mivova', 
-  slug: 'bass', 
-}));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'mivova', 
-  slug: 'voc', 
-}));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'mivova', 
-  slug: 'synth', 
-}));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'mivova', 
+//   slug: 'bass', 
+// }));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'mivova', 
+//   slug: 'voc', 
+// }));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'mivova', 
+//   slug: 'synth', 
+// }));
 
 store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'kytaime' }));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'kytaime', 
-  slug: 'beat', 
-}));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'kytaime', 
-  slug: 'bass', 
-}));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'kytaime', 
-  slug: 'lead', 
-}));
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'kytaime', 
-  slug: 'lead', 
-}));
-store.dispatch(throwdownActions.throwdown_removeSnipStem({ 
-  snip: 'kytaime', 
-  slug: 'lead', 
-}));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'kytaime', 
+//   slug: 'beat', 
+// }));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'kytaime', 
+//   slug: 'bass', 
+// }));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'kytaime', 
+//   slug: 'lead', 
+// }));
+// store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+//   snip: 'kytaime', 
+//   slug: 'lead', 
+// }));
+// store.dispatch(throwdownActions.throwdown_removeSnipStem({ 
+//   snip: 'kytaime', 
+//   slug: 'lead', 
+// }));
 
 
 

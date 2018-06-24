@@ -52,13 +52,13 @@ function tidySlug(desiredSlug, existingSlugs) {
 // }
 
 function snipPartsReducer(state = {
-  // object map of slug: { midi pattern/audio stem data }
+  // object map of slug: { data: midi pattern/audio stem data }
 }, action) {
   switch (action.type) {
 
     case actionTypes.THROWDOWN_ADD_SNIP_STEM: {
       const slug = tidySlug(action.slug, _.keys(state));
-      const newSnip = { [slug]: { test: 'test' } };
+      const newSnip = { [slug]: { data: action.data } };
       return { ...state, ...newSnip };
     }
 
@@ -74,7 +74,7 @@ function snipPartsReducer(state = {
 {
   mivova: {
     tempo, etc
-    parts: {
+    stems: {
       beat: {
         audio, duration, etc
       }
@@ -90,7 +90,7 @@ const throwdownReducer = (state = {
 
     case actionTypes.THROWDOWN_ADD_SNIP: {
       const slug = tidySlug(action.slug, _.keys(state));
-      const newSnip = { [slug]: { parts: {} } };
+      const newSnip = { [slug]: { stems: {} } };
       return { ...state, ...newSnip };
     }
 
@@ -106,7 +106,7 @@ const throwdownReducer = (state = {
     case actionTypes.THROWDOWN_ADD_SNIP_STEM:
     case actionTypes.THROWDOWN_REMOVE_SNIP_STEM: {
       let newState = _.omit(state, action.snip);
-      const newSnip = { [action.snip]: { parts: snipPartsReducer(state[action.snip].parts, action) } };
+      const newSnip = { [action.snip]: { stems: snipPartsReducer(state[action.snip].stems, action) } };
       return { ...newState, ...newSnip };
     }
   }

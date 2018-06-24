@@ -9,6 +9,7 @@ import * as bpmUtilities from './bpm-utilities';
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
+audioContext = new AudioContext(); // this will start "paused"
 
 // this metronome stuff is like a mini client; not core sequencer
 var metronomeChannel = 0;
@@ -43,45 +44,44 @@ var state = {
    tempoBpm: 122, 
 };
 var updateTransport = function() {
-   // console.log('render at ' + window.performance.now() + ' last finished at ' + state.lastRenderEndTime);
-  if (!audioContext)
-    audioContext = new AudioContext();
+  audioContext.resume().then(function() {
 
-   var now = window.performance.now();
-   var audioNow = audioContext.currentTime;
-   var offsetMilliseconds = audioNow * 1000 - performance.now();
+    var now = window.performance.now();
+    var audioNow = audioContext.currentTime;
+    var offsetMilliseconds = audioNow * 1000 - performance.now();
 
-   var renderStart = state.lastRenderEndTime;
-   var renderEnd = now + renderInterval + renderOverlap;
-   var chunkMs = renderEnd - renderStart;
-   if (chunkMs <= 0)
+    var renderStart = state.lastRenderEndTime;
+    var renderEnd = now + renderInterval + renderOverlap;
+    var chunkMs = renderEnd - renderStart;
+    if (chunkMs <= 0)
       return;
 
 
-   var renderRange = {
+    var renderRange = {
       // we now provide tempo of render range to clients
       audioContext: audioContext,
       audioContextTimeOffsetMsec: offsetMilliseconds, 
       tempoBpm: state.tempoBpm,
       start: {
-         time: renderStart,
-         beat: state.lastRenderEndBeat
+        time: renderStart,
+        beat: state.lastRenderEndBeat
       },
       end: {
-         time: renderEnd,
-         beat: state.lastRenderEndBeat + 
-            bpmUtilities.msToBeats(state.tempoBpm, chunkMs)
+        time: renderEnd,
+        beat: state.lastRenderEndBeat + 
+          bpmUtilities.msToBeats(state.tempoBpm, chunkMs)
       }
-   };
+    };
 
-   // tell the client(s) to do their thing
-   _.map(renderCallbacks, (renderFunc, id) => {
+    // tell the client(s) to do their thing
+    _.map(renderCallbacks, (renderFunc, id) => {
       renderFunc(renderRange);
-   } );
+    } );
 
-   // update state
-   state.lastRenderEndBeat = renderRange.end.beat;
-   state.lastRenderEndTime = state.lastRenderEndTime + chunkMs;
+    // update state
+    state.lastRenderEndBeat = renderRange.end.beat;
+    state.lastRenderEndTime = renderRange.end.time;
+  });
 };
 
 var worker = new WorkerSetInterval;

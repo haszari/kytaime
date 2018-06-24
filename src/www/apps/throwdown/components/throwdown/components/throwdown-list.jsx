@@ -34,7 +34,7 @@ const renderThrowdownList = function(props) {
       <tbody>
         <tr>
         { _.map(snips, (snip, name) => {
-            return (<td key={name}> { _.map(snip.parts, (part, name) => {
+            return (<td key={name}> { _.map(snip.stems, (part, name) => {
               return ( <p key={name}>{name}</p> ) 
             }) } </td>);
         }) }

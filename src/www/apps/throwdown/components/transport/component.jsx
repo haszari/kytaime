@@ -9,6 +9,8 @@ import * as actions from './actions';
 const mapStateToProps = (state, ownProps) => {
    return {
       playState: state.transport.playState,
+      beat: state.transport.beat,
+      time: state.transport.time,
       testBeatTriggered: state.transport.triggerTestMidi,
    }
 }
@@ -29,9 +31,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 const renderTransport = function(props) {
    let testTriggerState = props.testBeatTriggered ? ' >' : ' …';
+   let { playState, beat, time } = props;
 	return (
 		<div>
          <h1 onClick={props.onThrowdownClicked}>Throwdown</h1>
+         <pre>{ Math.round(beat) } { Math.round(time) }ms</pre>
          <p onClick={props.onThrowdownMIDIClicked}>Test beat {testTriggerState}</p>
       </div>
    );
