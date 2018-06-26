@@ -59,25 +59,27 @@ const ThrowdownSnip = function(props) {
 
 const renderThrowdownList = function(props) {
   let { snips, toggleStemTriggerState } = props;
+  let sortedSnips = _.map(snips, (snip, slug) => { return { slug: slug, snipInfo: snip } })
+  sortedSnips = _.sortBy(sortedSnips, 'slug');
 
   // this is clearly going to get more componentised, this is ridiculous/prototype
   return (
     <table>
       <thead><tr>
       { 
-        _.map(snips, (snip, name) => {
-          return ( <td key={name}>{name}</td> ) 
+        _.map(sortedSnips, (item) => {
+          return ( <td key={item.slug}>{item.slug}</td> ) 
         }) 
       }
       </tr></thead>
       <tbody>
         <tr>
-        { _.map(snips, (snip, snipSlug) => {
+        { _.map(sortedSnips, (item) => {
           return ( 
             <ThrowdownSnip 
-              slug={ snipSlug } 
-              key={ snipSlug } 
-              snipInfo={ snip } 
+              slug={ item.slug } 
+              key={ item.slug } 
+              snipInfo={ item.snipInfo } 
               toggleStemTriggerState={ toggleStemTriggerState }
             /> 
           )
