@@ -121,5 +121,6 @@ document.body.appendChild(appDiv);
 
 render(<App audioContext={ sequencer.audioContext } />, appDiv);
 
-import './load-test-snip-data';
+// import './load-test-snip-data';
+import './load-paddedlandscape-snip-data';
 

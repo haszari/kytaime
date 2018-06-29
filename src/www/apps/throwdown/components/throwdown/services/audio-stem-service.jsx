@@ -122,11 +122,11 @@ class AudioStemServiceComponent extends React.Component {
     // default - drums, percussion, etc
     let outputChannelPairOffset = 0;
 
-    if (_.includes(['sub', 'bass'], partName)) 
+    if (_.includes(['sub', 'bass', 'ridge'], partName)) 
       outputChannelPairOffset = 1;
-    else if (_.includes(['synth', 'chords'], partName)) 
+    else if (_.includes(['synth', 'chords', 'uplands'], partName)) 
       outputChannelPairOffset = 2;
-    if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal'], partName)) 
+    if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal', 'hills'], partName)) 
       outputChannelPairOffset = 3;
 
     this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannelPairOffset);    
