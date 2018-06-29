@@ -105,7 +105,7 @@ class AudioStemServiceComponent extends React.Component {
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
       return;
 
-    console.log('update audio stem', slug, renderRange.start.time, lastRenderEndTime);
+    // console.log('update audio stem', slug, renderRange.start.time, lastRenderEndTime);
 
     const triggerState = triggered;
     const audioDestinationNode = renderRange.audioContext.destination;
