@@ -112,6 +112,10 @@ observeStore(
 setMidiOut("IAC Driver Bus 1");
 sequencer.setRenderCallback('throwdown', sequencerCallback);
 
+// I believe we need to nudge the channel count so we can use em all
+sequencer.audioContext.destination.channelCount = sequencer.audioContext.destination.maxChannelCount;
+
+
 var appDiv = document.createElement('div');
 document.body.appendChild(appDiv);
 

@@ -62,6 +62,8 @@ class AudioStemServiceComponent extends React.Component {
     this.audioContext = props.audioContext;
     this.secPerBeat = (60 / this.tempo);
 
+    this.part = props.part || "drums";
+
     this.startBeats = props.startBeats || [0];
     this.endBeats = props.endBeats || [0];
 
@@ -116,13 +118,22 @@ class AudioStemServiceComponent extends React.Component {
     }));
   }
 
-  connectToChannelForPart(audioSourceNode, audioDestinationNode, instrumentName, partName) {
-    
+  connectToChannelForPart(audioContext, audioSourceNode, audioDestinationNode, partName) {
+    // default - drums, percussion, etc
+    let outputChannel = 0;
+
+    if (_.includes(['sub', 'bass'], partName)) 
+      outputChannel = 1;
+    else if (_.includes(['synth', 'chords'], partName)) 
+      outputChannel = 2;
+    if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal'], partName)) 
+      outputChannel = 3;
+
+    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannel);    
   }
 
   connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, channelPairIndex) {
     // is there a problem with maxChannelCount??
-    audioDestinationNode.channelCount = audioDestinationNode.maxChannelCount;
     this.merger = audioContext.createChannelMerger(audioDestinationNode.maxChannelCount);
     this.splitter = audioContext.createChannelSplitter(2);
     audioSourceNode.connect(this.splitter);
@@ -145,11 +156,9 @@ class AudioStemServiceComponent extends React.Component {
 
     this.player.loopEnd = this.sampleLengthBeats * this.secPerBeat;
 
-
     // this.player.connect(audioDestinationNode);
-    const outputChannel = 0;
-    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannel);
-
+    this.connectToChannelForPart(this.audioContext, this.player, audioDestinationNode, this.part);    
+ 
     // this.player.start();
     this.player.start(startTimestamp, startBeat * this.secPerBeat);
   }

@@ -189,7 +189,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/17_02_2015-Opsehg-Stems-Tiddle.m4a',
     tempo: 117,
     duration: 16,
-    part: 'synth',
+    part: 'lead',
     // startBeats: [0],
     // endBeats: [0.5],
   } 

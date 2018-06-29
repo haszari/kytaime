@@ -27,8 +27,9 @@ function StemComponent(props) {
       <AudioStemService 
         audioContext={ audioContext } 
         snip={ snip }
-        key={ slug } 
         slug={ slug } 
+        key={ slug } 
+        part={ data.part }
         audio={ data.audio } 
         duration={ data.duration } 
         tempo={ data.tempo } 
