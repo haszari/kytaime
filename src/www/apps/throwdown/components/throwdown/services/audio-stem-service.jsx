@@ -120,16 +120,16 @@ class AudioStemServiceComponent extends React.Component {
 
   connectToChannelForPart(audioContext, audioSourceNode, audioDestinationNode, partName) {
     // default - drums, percussion, etc
-    let outputChannel = 0;
+    let outputChannelPairOffset = 0;
 
     if (_.includes(['sub', 'bass'], partName)) 
-      outputChannel = 1;
+      outputChannelPairOffset = 1;
     else if (_.includes(['synth', 'chords'], partName)) 
-      outputChannel = 2;
+      outputChannelPairOffset = 2;
     if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal'], partName)) 
-      outputChannel = 3;
+      outputChannelPairOffset = 3;
 
-    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannel);    
+    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannelPairOffset);    
   }
 
   connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, channelPairIndex) {
@@ -156,8 +156,10 @@ class AudioStemServiceComponent extends React.Component {
 
     this.player.loopEnd = this.sampleLengthBeats * this.secPerBeat;
 
-    // this.player.connect(audioDestinationNode);
-    this.connectToChannelForPart(this.audioContext, this.player, audioDestinationNode, this.part);    
+    if (audioDestinationNode.channelCount > 2)
+      this.connectToChannelForPart(this.audioContext, this.player, audioDestinationNode, this.part);    
+    else
+      this.player.connect(audioDestinationNode);
  
     // this.player.start();
     this.player.start(startTimestamp, startBeat * this.secPerBeat);
