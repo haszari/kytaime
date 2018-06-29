@@ -168,6 +168,57 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 
 
 
+store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'manas' }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'manas', 
+  slug: 'beat', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a',
+    tempo: 132,
+    duration: 4,
+    part: 'alpine',
+    // startBeats: [0, 3],
+    // endBeats: [0.5],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'manas', 
+  slug: 'bass', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-sub-ridge2.mp3',
+    tempo: 132,
+    duration: 8,
+    part: 'ridge',
+    // startBeats: [0],
+    // endBeats: [0.5],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'manas', 
+  slug: 'chords', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-lead-uplands.m4a',
+    tempo: 132,
+    duration: 16,
+    part: 'uplands',
+    // startBeats: [0],
+    // endBeats: [0.5],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'manas', 
+  slug: 'lead', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a',
+    tempo: 132,
+    duration: 32,
+    part: 'hills',
+    // startBeats: [0],
+    // endBeats: [0.5],
+  } 
+}));
+
+
 
 
 
