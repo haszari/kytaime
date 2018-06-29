@@ -116,6 +116,21 @@ class AudioStemServiceComponent extends React.Component {
     }));
   }
 
+  connectToChannelForPart(audioSourceNode, audioDestinationNode, instrumentName, partName) {
+    
+  }
+
+  connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, channelPairIndex) {
+    // is there a problem with maxChannelCount??
+    audioDestinationNode.channelCount = audioDestinationNode.maxChannelCount;
+    this.merger = audioContext.createChannelMerger(audioDestinationNode.maxChannelCount);
+    this.splitter = audioContext.createChannelSplitter(2);
+    audioSourceNode.connect(this.splitter);
+    this.merger.connect(audioDestinationNode);
+    this.splitter.connect(this.merger, 0, (channelPairIndex * 2) + 0);
+    this.splitter.connect(this.merger, 1, (channelPairIndex * 2) + 1);
+  }
+
   playAt(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
     let rate = transportBpm / this.tempo;
     // console.log(rate, this.audioContext.currentTime, time);
@@ -130,7 +145,10 @@ class AudioStemServiceComponent extends React.Component {
 
     this.player.loopEnd = this.sampleLengthBeats * this.secPerBeat;
 
-    this.player.connect(audioDestinationNode);
+
+    // this.player.connect(audioDestinationNode);
+    const outputChannel = 0;
+    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannel);
 
     // this.player.start();
     this.player.start(startTimestamp, startBeat * this.secPerBeat);
