@@ -67,8 +67,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 117,
     duration: 4,
     part: 'alpine',
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
+    startBeats: [0, 1, 3.5],
+    endBeats: [0, 0.5, 3.5],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -79,8 +79,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 117,
     duration: 16,
     part: 'ridge',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [0],
+    endBeats: [2],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -91,8 +91,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 117,
     duration: 32,
     part: 'uplands',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [0],
+    endBeats: [3.25],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -103,8 +103,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 117,
     duration: 16,
     part: 'hills',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [1.5, 3],
+    endBeats: [0],
   } 
 }));
 
@@ -120,8 +120,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 133,
     duration: 4,
     part: 'alpine',
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
+    startBeats: [0, 1, 2, 3],
+    endBeats: [0, 1],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -130,10 +130,10 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   data: {
     audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-sub.mp3',
     tempo: 133,
-    duration: 64,
+    duration: 8,
     part: 'ridge',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [0],
+    endBeats: [1.5, 6.5],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -142,10 +142,10 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   data: {
     audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-chords.mp3',
     tempo: 133,
-    duration: 64,
+    duration: 8,
     part: 'uplands',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [1, 7],
+    endBeats: [0, 2],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -156,8 +156,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 133,
     duration: 32,
     part: 'hills',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [1],
+    endBeats: [1], // this accounts for some tail, rather than an actual note
   } 
 }));
 
@@ -173,12 +173,15 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   snip: 'manas', 
   slug: 'beat', 
   data: {
-    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a',
+    // audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a',
+    // startBeats: [0, 3],
+    // endBeats: [0.5],
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a',
+    startBeats: [0, 3, 3.5],
+    endBeats: [0, 1],
     tempo: 132,
     duration: 4,
     part: 'alpine',
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -189,20 +192,20 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 132,
     duration: 8,
     part: 'ridge',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [1],
+    endBeats: [0],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'manas', 
-  slug: 'chords', 
+  slug: 'lead', 
   data: {
     audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-lead-uplands.m4a',
     tempo: 132,
     duration: 16,
     part: 'uplands',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [0.5],
+    endBeats: [0],
   } 
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
@@ -213,8 +216,8 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
     tempo: 132,
     duration: 32,
     part: 'hills',
-    // startBeats: [0],
-    // endBeats: [0.5],
+    startBeats: [16, 30],
+    endBeats: [0, 17],
   } 
 }));
 
