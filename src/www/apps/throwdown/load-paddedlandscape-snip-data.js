@@ -210,7 +210,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 }));
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'manas', 
-  slug: 'lead', 
+  slug: 'voc', 
   data: {
     audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a',
     tempo: 132,
@@ -225,6 +225,56 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 
 
 
+
+store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'radialhead' }));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'radialhead', 
+  slug: 'beat', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-beat-alpine.m4a',
+    tempo: 129,
+    duration: 32,
+    part: 'alpine',
+    startBeats: [0, 5.5, 29, 30, 31],
+    endBeats: [0, 5.5, 31],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'radialhead', 
+  slug: 'sub', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-sub-ridge.m4a',
+    tempo: 129,
+    duration: 64,
+    part: 'ridge',
+    startBeats: [8, 31.5, 39.5, 47.5],
+    endBeats: [8, 31],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'radialhead', 
+  slug: 'synth', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-uplands-gliss.m4a',
+    tempo: 129,
+    duration: 64,
+    part: 'uplands',
+    startBeats: [0, 16, 60],
+    endBeats: [8, 28],
+  } 
+}));
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'radialhead', 
+  slug: 'ambience', 
+  data: {
+    audio: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-hils-trash.m4a',
+    tempo: 129,
+    duration: 64,
+    part: 'hills',
+    startBeats: [0, 6, 14, 26, 30, 58.5, 62, 63],
+    endBeats: [0, 6, 60],
+  } 
+}));
 
 
 
