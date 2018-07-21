@@ -37,7 +37,9 @@ const renderTransport = function(props) {
 		<div>
          <h1 onClick={props.onThrowdownClicked}>{title}</h1>
          <pre>{ Math.round(beat) } { Math.round(time) }ms</pre>
-         <p onClick={props.onThrowdownMIDIClicked}>Test beat {testTriggerState}</p>
+         { 
+         // <p onClick={props.onThrowdownMIDIClicked}>Test beat {testTriggerState}</p>
+         }
       </div>
    );
 } 
