@@ -12,6 +12,8 @@ import store from './stores/store';
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
 import Transport from './components/transport/component.jsx';
+import * as transportActions from './components/transport/actions';
+
 import ThrowdownService from  './components/throwdown/services/throwdown-service.jsx';
 
 function App({ audioContext }) {
@@ -31,7 +33,7 @@ let midiOutDevice = "";
 
 var sequencerCallback = function(renderRange) {
 
-  // store.dispatch(transportActions.transportRenderUpdate(renderRange));
+  store.dispatch(transportActions.transportRenderUpdate(renderRange));
 }
 
 var startTransport = function() {
