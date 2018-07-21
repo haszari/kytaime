@@ -18,3 +18,9 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   } 
 }));
 
+
+// we need a "set"; we don't know what toggle does if we don't know current state
+store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
+  snip: 'squelcherisation', 
+  slug:'beat',
+}));
