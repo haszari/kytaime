@@ -12,7 +12,11 @@ const throwdownApp = {
    entry: "./src/www/apps/throwdown/app.jsx",
    htmlTemplate: "src/www/index.html",
 };
-const app = throwdownApp;
+const squelchApp = {
+   entry: "./src/www/apps/squelcherisation/app.jsx",
+   htmlTemplate: "src/www/index.html",
+};
+const app = squelchApp;
 
 module.exports = {
    entry: app.entry,
