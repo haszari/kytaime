@@ -32,9 +32,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 const renderTransport = function(props) {
    let testTriggerState = props.testBeatTriggered ? ' >' : ' …';
    let { playState, beat, time } = props;
+   let title = props.title ? props.title : 'Throwdown';
 	return (
 		<div>
-         <h1 onClick={props.onThrowdownClicked}>Throwdown</h1>
+         <h1 onClick={props.onThrowdownClicked}>{title}</h1>
          <pre>{ Math.round(beat) } { Math.round(time) }ms</pre>
          <p onClick={props.onThrowdownMIDIClicked}>Test beat {testTriggerState}</p>
       </div>

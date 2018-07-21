@@ -11,12 +11,16 @@ import store from './stores/store';
 
 import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
 
+import Transport from './components/transport/component.jsx';
+import ThrowdownService from  './components/throwdown/services/throwdown-service.jsx';
+
 function App({ audioContext }) {
   return (
     <Provider store={store}>
       {/* Provider likes to wrap a single element */}
       <div>
-        <h1>Squelcherisation</h1>
+        <Transport title="Squelcherisation" />
+        <ThrowdownService audioContext={audioContext} />
       </div>
     </Provider>
   );
