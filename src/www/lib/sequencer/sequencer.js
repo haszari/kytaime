@@ -5,6 +5,7 @@ import _ from 'lodash';
 import WebMidiHelper from './web-midi-helper';
 import midiUtilities from './midi-utilities';
 import * as bpmUtilities from './bpm-utilities';
+import * as midiOutputs from './web-midi-helper';
 
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -32,6 +33,24 @@ function removeRenderCallback(callbackId) {
    setRenderCallback(callbackId, undefined);
 }
 
+var midiOutPort = null;
+let midiOutDevice = "";
+
+function getMidiOut() { return midiOutDevice; };
+function setMidiOut(requestedPortName) {
+  midiOutputs.openMidiOutput({
+    deviceName: requestedPortName,
+    callback: function(info) {
+     if (info.port) {
+      midiOutPort = info.port;
+      console.log("Using " + midiOutPort.name);
+      midiOutDevice = midiOutPort.name;
+      }
+    }.bind(this)
+  });
+}
+
+
 // sequencer state that is carried between render callbacks
 var state = {
    isPlaying: false,
@@ -41,7 +60,7 @@ var state = {
    
    // tempo was previously stored in client app redux store; we need to take control of it
    // clients will have to schedule events to update the transport tempo
-   tempoBpm: 122, 
+   tempoBpm: 77, 
 };
 var updateTransport = function() {
   audioContext.resume().then(function() {
@@ -58,10 +77,13 @@ var updateTransport = function() {
 
 
     var renderRange = {
-      // we now provide tempo of render range to clients
+      midiOutPort: midiOutPort,
       audioContext: audioContext,
+
       audioContextTimeOffsetMsec: offsetMilliseconds, 
+
       tempoBpm: state.tempoBpm,
+
       start: {
         time: renderStart,
         beat: state.lastRenderEndBeat
@@ -131,4 +153,6 @@ module.exports.isPlaying = isPlaying;
 module.exports.setRenderCallback = setRenderCallback;
 module.exports.removeRenderCallback = removeRenderCallback;
 module.exports.audioContext = audioContext;
+module.exports.setMidiOut = setMidiOut;
+module.exports.getMidiOut = getMidiOut;
 

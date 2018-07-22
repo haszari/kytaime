@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 
 import store from './stores/store';
 
-import { sequencer, bpmUtilities, midiOutputs } from '../../lib/sequencer';
+import { sequencer, bpmUtilities } from '../../lib/sequencer';
 
 import Transport from './components/transport/component.jsx';
 import * as transportActions from './components/transport/actions';
@@ -28,9 +28,6 @@ function App({ audioContext }) {
   );
 }
 
-var midiOutPort = null;
-let midiOutDevice = "";
-
 var sequencerCallback = function(renderRange) {
 
   store.dispatch(transportActions.transportRenderUpdate(renderRange));
@@ -44,19 +41,6 @@ var stopTransport = function() {
   sequencer.stop();
 }
 
-function getMidiOut() { return midiOutDevice; };
-function setMidiOut(requestedPortName) {
-  midiOutputs.openMidiOutput({
-    deviceName: requestedPortName,
-    callback: function(info) {
-     if (info.port) {
-      midiOutPort = info.port;
-      console.log("Using " + midiOutPort.name);
-      midiOutDevice = midiOutPort.name;
-      }
-    }.bind(this)
-  });
-}
 
 // bind sequencer/transport to store
 
@@ -98,7 +82,7 @@ observeStore(
 /// -----------------------------------------------------------------------------------------------
 // main
 
-setMidiOut("IAC Driver Bus 1");
+sequencer.setMidiOut("IAC Driver Bus 1");
 sequencer.setRenderCallback('throwdown', sequencerCallback);
 
 // I believe we need to nudge the channel count so we can use em all
