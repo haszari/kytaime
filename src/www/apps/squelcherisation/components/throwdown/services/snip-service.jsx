@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import AudioStemService from './audio-stem-service.jsx';
+import MidiPatternService from './midi-pattern-service.jsx';
 
 
 // const mapStateToProps = (state, ownProps) => {
@@ -35,6 +36,18 @@ function StemComponent(props) {
         tempo={ data.tempo } 
         startBeats={ data.startBeats } 
         endBeats={ data.endBeats } 
+      />
+    )
+  }
+  if (data.notes) {
+    return ( 
+      <MidiPatternService 
+        snip={ snip }
+        slug={ slug } 
+        key={ slug } 
+        part={ data.part }
+        notes={ data.notes } 
+        duration={ data.duration } 
       />
     )
   }
