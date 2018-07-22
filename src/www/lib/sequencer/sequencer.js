@@ -60,7 +60,7 @@ var state = {
    
    // tempo was previously stored in client app redux store; we need to take control of it
    // clients will have to schedule events to update the transport tempo
-   tempoBpm: 77, 
+   tempoBpm: 139, 
 };
 var updateTransport = function() {
   audioContext.resume().then(function() {
