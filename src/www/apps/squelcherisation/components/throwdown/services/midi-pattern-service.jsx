@@ -46,7 +46,8 @@ class MidiPatternServiceComponent extends React.Component {
     super(props);
 
     this.notes = props.notes || [];
-    this.part = props.part || "drums";
+    this.slug = props.slug || "drums";
+    this.part = props.part || this.slug; // hmm ,.. weird fallback, but handy if you don't want to name your parts
     this.duration = props.duration || 4;
 
     this.startBeats = props.startBeats || [0];
@@ -89,20 +90,20 @@ class MidiPatternServiceComponent extends React.Component {
 
   getMidiChannelForPart(partName) {
     // default - drums, percussion, etc
-    let outputChannel = 1;
+    let outputChannel = 0;
 
     if (_.includes(['sub', 'bass', 'ridge'], partName)) 
-      outputChannel = 2;
+      outputChannel = 1;
     else if (_.includes(['synth', 'chords', 'uplands'], partName)) 
-      outputChannel = 3;
+      outputChannel = 2;
     if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal', 'hills'], partName)) 
-      outputChannel = 4;
+      outputChannel = 3;
 
     return outputChannel;
   }
 
   updateAndRenderMidi(renderRange, triggerState) {
-    const { duration } = this;
+    const { duration, part } = this;
     this.triggered = triggerState;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
@@ -134,7 +135,7 @@ class MidiPatternServiceComponent extends React.Component {
       var note = { 
         port: renderRange.midiOutPort, 
 
-        channel: this.getMidiChannelForPart(this.part),
+        channel: this.getMidiChannelForPart(part),
         note: item.event.note,
 
         velocity: item.event.velocity || 100, 
