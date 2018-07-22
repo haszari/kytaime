@@ -20,7 +20,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'squelcherisation', 
-  slug: 'bassline', 
+  slug: 'bass', 
   data: {
     notes: [
       { 
@@ -72,6 +72,26 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 }));
 
 
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'squelcherisation', 
+  slug: 'lead', 
+  data: {
+    notes: [
+      { 
+        start: 1, 
+        duration: 0.3,
+        note: -5 + 64,
+      },
+      { 
+        start: 2.5, 
+        duration: 0.3,
+        note: -5 + 64,
+      },
+    ],
+    duration: 8, // I think
+  } 
+}));
+
 // we need a "set"; we don't know what toggle does if we don't know current state
 store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
@@ -79,5 +99,9 @@ store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({
 }));
 store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
-  slug: 'bassline',
+  slug: 'bass',
+}));
+store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
+  snip: 'squelcherisation', 
+  slug: 'lead',
 }));
