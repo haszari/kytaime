@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from '../actions';
 
 import AudioStemService from './audio-stem-service.jsx';
+import AudioSlicerService from './audio-slicer-service.jsx';
 import MidiPatternService from './midi-pattern-service.jsx';
 
 
@@ -24,20 +25,39 @@ import MidiPatternService from './midi-pattern-service.jsx';
 function StemComponent(props) {
   const { snip, slug, data, audioContext } = props;
   if (data.audio) {
-    return ( 
-      <AudioStemService 
-        audioContext={ audioContext } 
-        snip={ snip }
-        slug={ slug } 
-        key={ slug } 
-        part={ data.part }
-        audio={ data.audio } 
-        duration={ data.duration } 
-        tempo={ data.tempo } 
-        startBeats={ data.startBeats } 
-        endBeats={ data.endBeats } 
-      />
-    )
+    if (data.slices) {
+      return ( 
+        <AudioSlicerService 
+          audioContext={ audioContext } 
+          snip={ snip }
+          slug={ slug } 
+          key={ slug } 
+          part={ data.part }
+          audio={ data.audio } 
+          duration={ data.duration } 
+          tempo={ data.tempo } 
+          startBeats={ data.startBeats } 
+          endBeats={ data.endBeats } 
+          slices={ data.slices }
+        />
+      )
+    }
+    else {    
+      return ( 
+        <AudioStemService 
+          audioContext={ audioContext } 
+          snip={ snip }
+          slug={ slug } 
+          key={ slug } 
+          part={ data.part }
+          audio={ data.audio } 
+          duration={ data.duration } 
+          tempo={ data.tempo } 
+          startBeats={ data.startBeats } 
+          endBeats={ data.endBeats } 
+        />
+      )
+    }
   }
   if (data.notes) {
     return ( 

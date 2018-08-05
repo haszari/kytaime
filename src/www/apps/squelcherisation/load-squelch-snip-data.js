@@ -11,12 +11,85 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
   data: {
     audio: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
     tempo: 137.4,
-    duration: 16, // I think
+    duration: 16, 
     // part: 'alpine',
     // startBeats: [0, 3],
     // endBeats: [0.5],
   } 
 }));
+
+const goodHatBeat = 1.5;
+
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  snip: 'squelcherisation', 
+  slug: 'beat-sliced', 
+  data: {
+    audio: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+    tempo: 137.4,
+    duration: 4, 
+    slices: [
+      {
+        start: 0, 
+        duration: 0.5,
+        beat: 0,
+      },
+      {
+        start: 0.5, 
+        duration: 0.25,
+        beat: goodHatBeat,
+      },
+      {
+        start: 1, 
+        duration: 0.5,
+        beat: 1,
+      },
+      {
+        start: 1.5, 
+        duration: 0.25,
+        beat: goodHatBeat,
+      },
+      {
+        start: 2, 
+        duration: 0.25,
+        beat: goodHatBeat,
+      },
+      {
+        start: 2.5, 
+        duration: 0.5,
+        beat: 0,
+      },
+      {
+        start: 3, 
+        duration: 0.5,
+        beat: 1,
+      },
+      {
+        start: 3.5, 
+        duration: 0.25,
+        beat: goodHatBeat,
+      },
+      // {
+      //   start: 2, 
+      //   duration: 0.5,
+      //   beat: 2,
+      // },
+      // {
+      //   start: 5, 
+      //   duration: 0.5,
+      //   beat: 0,
+      // },
+      // {
+      //   start: 6, 
+      //   duration: 0.5,
+      //   beat: 2,
+      // },
+    ]
+    // part: 'alpine',
+    // startBeats: [0, 3],
+    // endBeats: [0.5],
+  } 
+}));
+
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'squelcherisation', 
@@ -64,7 +137,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
         note: 18 + 24,
       },
     ],
-    duration: 16, // I think
+    duration: 16, 
     // part: 'alpine',
     // startBeats: [0, 3],
     // endBeats: [0.5],
@@ -88,14 +161,14 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
         note: -5 + 64,
       },
     ],
-    duration: 8, // I think
+    duration: 8, 
   } 
 }));
 
 // we need a "set"; we don't know what toggle does if we don't know current state
 store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
-  slug:'beat',
+  slug: 'beat-sliced',
 }));
 store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
