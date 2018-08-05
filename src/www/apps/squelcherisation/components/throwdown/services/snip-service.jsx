@@ -42,7 +42,11 @@ function StemComponent(props) {
         />
       )
     }
-    else {    
+    else {
+      // This may be deprecated soon .. or need to share code with more flexible AudioSlicerService
+      // or, be implemented in terms of AudioSlicerService.
+      // It as one feature / advantage over AudioSlicerService - it will loop the whole sample;
+      // with the slicer you need to slice it up to achieve the loop and that could create little gaps.
       return ( 
         <AudioStemService 
           audioContext={ audioContext } 
