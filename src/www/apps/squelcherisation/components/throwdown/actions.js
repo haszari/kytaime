@@ -14,8 +14,10 @@ export function throwdown_renameSnip({ slug, newSlug }) {
   return { type: actionTypes.THROWDOWN_RENAME_SNIP, ...{ slug, newSlug } };
 }
 
-export function throwdown_addSnipStem({ snip, slug, data }) {
-  return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, data } };
+export function throwdown_addSnipStem(props) {
+  const { snip, slug, data } = props;
+  const audio = props.audio || undefined;
+  return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, audio, data } };
 }
 export function throwdown_removeSnipStem({ snip, slug }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SNIP_STEM, ...{ snip, slug } };

@@ -24,18 +24,23 @@ import MidiPatternService from './midi-pattern-service.jsx';
 
 function StemComponent(props) {
   const { snip, slug, data, audioContext } = props;
-  if (data.audio) {
+  if (props.audio) {
+    const { file, tempo } = props.audio;
     if (data.slices) {
       return ( 
         <AudioSlicerService 
+          key={ slug } 
+
           audioContext={ audioContext } 
+          
           snip={ snip }
           slug={ slug } 
-          key={ slug } 
+
+          audio={ file } 
+          tempo={ tempo } 
+
           part={ data.part }
-          audio={ data.audio } 
           duration={ data.duration } 
-          tempo={ data.tempo } 
           startBeats={ data.startBeats } 
           endBeats={ data.endBeats } 
           slices={ data.slices }
@@ -66,9 +71,11 @@ function StemComponent(props) {
   if (data.notes) {
     return ( 
       <MidiPatternService 
+        key={ slug } 
+        
         snip={ snip }
         slug={ slug } 
-        key={ slug } 
+
         part={ data.part }
         notes={ data.notes } 
         duration={ data.duration } 
@@ -105,12 +112,18 @@ class SnipService extends React.Component {
   render() {
     const { slug, stems, audioContext } = this.props;
     const allStems = _.map(stems, (stem, stemSlug) => {
+      let audio = stem.audio || undefined;
       return ( 
         <StemComponent
+          key={ stemSlug }
+
           audioContext={ audioContext } 
+
           snip={ slug }
           slug={ stemSlug }
-          key={ stemSlug }
+
+          audio={ audio }
+          
           data={ stem.data }
         />
       );

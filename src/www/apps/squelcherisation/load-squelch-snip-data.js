@@ -5,27 +5,16 @@ import * as throwdownActions from './components/throwdown/actions';
 store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }));
 
 
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'squelcherisation', 
-  slug: 'beat', 
-  data: {
-    audio: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
-    tempo: 137.4,
-    duration: 16, 
-    // part: 'alpine',
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
-  } 
-}));
-
 const goodHatBeat = 1.5;
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   snip: 'squelcherisation', 
   slug: 'beat-sliced', 
-  data: {
-    audio: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+  audio: {
+    file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
     tempo: 137.4,
+  },
+  data: {
     duration: 4, 
     slices: [
       {

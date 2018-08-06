@@ -18,7 +18,8 @@ function tidySlug(desiredSlug, existingSlugs) {
 
 function snipStemsReducer(state = {
   // object map of slug: { 
-  //   data: midi pattern/audio stem data, 
+  //   audio: audio file info (optional)
+  //   data: midi note/audio event data, 
   //   renderPosition: most recent render msec 
   //   trigger: trigger state boolean
   // }
@@ -28,6 +29,7 @@ function snipStemsReducer(state = {
     case actionTypes.THROWDOWN_ADD_SNIP_STEM: {
       const slug = tidySlug(action.slug, _.keys(state));
       const stem = { [slug]: { 
+        audio: action.audio, 
         data: action.data,
         trigger: false,
       } };
