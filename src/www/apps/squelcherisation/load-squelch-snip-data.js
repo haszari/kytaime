@@ -6,15 +6,8 @@ store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }))
 
 
 const goodHatBeat = 1.5;
-
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
-  snip: 'squelcherisation', 
-  slug: 'beat-sliced', 
-  audio: {
-    file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
-    tempo: 137.4,
-  },
-  data: {
+const beatPatterns = {
+  dnb: {
     duration: 4, 
     slices: [
       {
@@ -57,33 +50,43 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
         duration: 0.25,
         beat: goodHatBeat,
       },
-      // {
-      //   start: 2, 
-      //   duration: 0.5,
-      //   beat: 2,
-      // },
-      // {
-      //   start: 5, 
-      //   duration: 0.5,
-      //   beat: 0,
-      // },
-      // {
-      //   start: 6, 
-      //   duration: 0.5,
-      //   beat: 2,
-      // },
     ]
-    // part: 'alpine',
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
-  } 
+  },
+  straight: {
+    duration: 2, 
+    slices: [
+      {
+        start: 0, 
+        duration: 0.5,
+        beat: 0,
+      },
+      {
+        start: 1, 
+        duration: 0.5,
+        beat: 1,
+      },
+    ]
+  }
+}
+
+store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  part: 'drums',
+  snip: 'squelcherisation', 
+  slug: 'beat-sliced', 
+  audio: {
+    file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+    tempo: 137.4,
+  },
+  pattern: beatPatterns.dnb,
+  variation: {} // coming soon
 }));
 
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  part: 'bass',
   snip: 'squelcherisation', 
   slug: 'bass', 
-  data: {
+  pattern: {
     notes: [
       { 
         start: 0, 
@@ -127,7 +130,6 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
       },
     ],
     duration: 16, 
-    // part: 'alpine',
     // startBeats: [0, 3],
     // endBeats: [0.5],
   } 
@@ -135,9 +137,10 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+  part: 'lead',
   snip: 'squelcherisation', 
   slug: 'lead', 
-  data: {
+  pattern: {
     notes: [
       { 
         start: 1, 

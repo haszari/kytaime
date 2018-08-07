@@ -15,9 +15,9 @@ export function throwdown_renameSnip({ slug, newSlug }) {
 }
 
 export function throwdown_addSnipStem(props) {
-  const { snip, slug, data } = props;
+  const { snip, slug, pattern } = props;
   const audio = props.audio || undefined;
-  return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, audio, data } };
+  return { type: actionTypes.THROWDOWN_ADD_SNIP_STEM, ...{ snip, slug, audio, pattern } };
 }
 export function throwdown_removeSnipStem({ snip, slug }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SNIP_STEM, ...{ snip, slug } };

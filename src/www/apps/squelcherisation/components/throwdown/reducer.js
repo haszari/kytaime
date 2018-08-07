@@ -30,7 +30,7 @@ function snipStemsReducer(state = {
       const slug = tidySlug(action.slug, _.keys(state));
       const stem = { [slug]: { 
         audio: action.audio, 
-        data: action.data,
+        pattern: action.pattern,
         trigger: false,
       } };
       return { ...state, ...stem };

@@ -58,20 +58,11 @@ class AudioSlicerServiceComponent extends React.Component {
 
     this.audioFile = props.audio;
     this.tempo = props.tempo;
-    this.slices = props.slices;
-
-    // might want these to be different for slicer case?
-    // should we rename the file duration value, or store it in a different place?
-    this.sampleLengthBeats = props.duration;
-    this.duration = props.duration;
 
     this.audioContext = props.audioContext;
     this.secPerBeat = (60 / this.tempo);
 
     this.part = props.part || "drums";
-
-    this.startBeats = props.startBeats || [0];
-    this.endBeats = props.endBeats || [0];
 
     this.triggered = false;
     this.playing = false;
@@ -85,6 +76,12 @@ class AudioSlicerServiceComponent extends React.Component {
         resolve();
       });
     });
+
+    this.startBeats = props.startBeats || [0];
+    this.endBeats = props.endBeats || [0];
+
+    this.slices = props.slices;
+    this.duration = props.duration;
   }
 
   // componentWillMount() {
@@ -159,9 +156,6 @@ class AudioSlicerServiceComponent extends React.Component {
     player.playbackRate.value = rate;
 
     player.loop = false;
-    player.loopStart = 0 * this.secPerBeat;
-
-    player.loopEnd = this.sampleLengthBeats * this.secPerBeat;
 
     if (audioDestinationNode.channelCount > 2)
       this.connectToChannelForPart(this.audioContext, player, audioDestinationNode, this.part);    
@@ -184,7 +178,7 @@ class AudioSlicerServiceComponent extends React.Component {
       renderRange, 
       this.triggered,
       this.playing, 
-      this.sampleLengthBeats,
+      duration,
       this.startBeats,
       this.endBeats,
     );
