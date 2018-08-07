@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 
-import AudioStemService from './audio-stem-service.jsx';
 import AudioSlicerService from './audio-slicer-service.jsx';
 import MidiPatternService from './midi-pattern-service.jsx';
 
@@ -26,47 +25,25 @@ function StemComponent(props) {
   const { snip, slug, data, audioContext } = props;
   if (props.audio) {
     const { file, tempo } = props.audio;
-    if (data.slices) {
-      return ( 
-        <AudioSlicerService 
-          key={ slug } 
+    return ( 
+      <AudioSlicerService 
+        key={ slug } 
 
-          audioContext={ audioContext } 
-          
-          snip={ snip }
-          slug={ slug } 
+        audioContext={ audioContext } 
+        
+        snip={ snip }
+        slug={ slug } 
 
-          audio={ file } 
-          tempo={ tempo } 
+        audio={ file } 
+        tempo={ tempo } 
 
-          part={ data.part }
-          duration={ data.duration } 
-          startBeats={ data.startBeats } 
-          endBeats={ data.endBeats } 
-          slices={ data.slices }
-        />
-      )
-    }
-    else {
-      // This may be deprecated soon .. or need to share code with more flexible AudioSlicerService
-      // or, be implemented in terms of AudioSlicerService.
-      // It as one feature / advantage over AudioSlicerService - it will loop the whole sample;
-      // with the slicer you need to slice it up to achieve the loop and that could create little gaps.
-      return ( 
-        <AudioStemService 
-          audioContext={ audioContext } 
-          snip={ snip }
-          slug={ slug } 
-          key={ slug } 
-          part={ data.part }
-          audio={ data.audio } 
-          duration={ data.duration } 
-          tempo={ data.tempo } 
-          startBeats={ data.startBeats } 
-          endBeats={ data.endBeats } 
-        />
-      )
-    }
+        part={ data.part }
+        duration={ data.duration } 
+        startBeats={ data.startBeats } 
+        endBeats={ data.endBeats } 
+        slices={ data.slices }
+      />
+    )
   }
   if (data.notes) {
     return ( 
