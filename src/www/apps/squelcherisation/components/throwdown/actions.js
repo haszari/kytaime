@@ -4,6 +4,16 @@ import _ from 'lodash';
 import * as actionTypes from './action-types';
 
 
+export function throwdown_addLine() {
+  return { type: actionTypes.THROWDOWN_ADD_LINE };
+}
+export function throwdown_removeLine({ lineId }) {
+  return { type: actionTypes.THROWDOWN_REMOVE_LINE, ...{ id } };
+}
+
+
+/// these actions are asleep right now
+
 export function throwdown_addSnip({ slug }) {
   return { type: actionTypes.THROWDOWN_ADD_SNIP, ...{ slug } };
 }

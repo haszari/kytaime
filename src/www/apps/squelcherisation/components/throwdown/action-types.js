@@ -1,4 +1,11 @@
 
+export const THROWDOWN_ADD_LINE = "THROWDOWN_ADD_LINE";
+export const THROWDOWN_REMOVE_LINE = "THROWDOWN_REMOVE_LINE";
+
+
+/// these actions are asleep right now
+
+
 export const THROWDOWN_ADD_SNIP = "THROWDOWN_ADD_SNIP";
 export const THROWDOWN_REMOVE_SNIP = "THROWDOWN_REMOVE_SNIP";
 export const THROWDOWN_RENAME_SNIP = "THROWDOWN_RENAME_SNIP";

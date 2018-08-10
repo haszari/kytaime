@@ -7,12 +7,12 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 
-import SnipService from './snip-service.jsx';
+// import SnipService from './snip-service.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    snips: state.throwdown
+    lines: state.throwdown.lines
   }
 }
 
@@ -44,13 +44,14 @@ class ThrowdownServiceComponent extends React.Component {
   // }
   
   render() {
-    const { snips, audioContext } = this.props;
-    const allSnips = _.map(snips, (snip, snipSlug) => 
-      <SnipService audioContext={ audioContext } key={ snipSlug } slug={ snipSlug } stems={ snip.stems } />
+    const { lines, audioContext } = this.props;
+    const throwdownLines = _.map(lines, (lyin) => 
+      // <SnipService audioContext={ audioContext } key={ snipSlug } slug={ snipSlug } stems={ snip.stems } />
+      <div key={lyin.id}>Line down {lyin.id}</div>
     );
     return (
       <div>
-        { allSnips }
+        { throwdownLines }
       </div>
     );
   }

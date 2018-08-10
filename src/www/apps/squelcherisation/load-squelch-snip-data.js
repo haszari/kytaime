@@ -2,6 +2,16 @@ import store from './stores/store';
 
 import * as throwdownActions from './components/throwdown/actions';
 
+
+// we have two lines, because we're like a DJ, and they are like decks
+store.dispatch(throwdownActions.throwdown_addLine());
+store.dispatch(throwdownActions.throwdown_addLine());
+
+
+
+
+/// returning soon...
+
 store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }));
 
 

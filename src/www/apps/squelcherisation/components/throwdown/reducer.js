@@ -58,20 +58,9 @@ function snipStemsReducer(state = {
 
 }
 
-/*
-{
-  mivova: {
-    tempo, etc
-    stems: {
-      beat: {
-        audio, duration, etc
-      }
-    }
-  }
-}
-*/
-
-const throwdownReducer = (state = { 
+// a reducer for a dictionary of snips - song part loops, e.g. bass 1, intro beat etc
+// we will use something like this later in throwdown.section
+const snipCollectionReducer = (state = { 
   // object map of slug: { snip data }
 }, action) => {
   switch (action.type) {
@@ -101,6 +90,57 @@ const throwdownReducer = (state = {
       let newState = _.omit(state, action.snip);
       const newSnip = { [action.snip]: { stems: snipStemsReducer(state[action.snip].stems, action) } };
       return { ...newState, ...newSnip };
+    }
+  }
+  return state;
+}
+
+let defaultId = 0;
+const nextId = () => { 
+  return defaultId++;
+}
+
+const lineReducer = (state = {
+  id: nextId(),
+  currentSection: '',
+  sectionQueue: [],
+  sectionData: [],
+}, action) => {
+  return state;
+}
+
+// Throwdown lines reducer
+// Is an array of lines, which are like DJ decks for throwdown stem stuff
+// This reducer handles add/remove, linereducer handles editing of each deck/line
+const linesReducer = (state = [], action) => {
+  switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_LINE: {
+      return [
+        ...state,
+        lineReducer(undefined, action)
+      ];
+    }
+
+    case actionTypes.THROWDOWN_REMOVE_LINE: {
+      return state.filter(line => line.id !== action.lineId);
+    }
+  }
+  return state;
+}
+
+// Throwdown app reducer
+// contains a collection of throwdown lines
+// each line contains a bunch of song sections that it can walk through
+// this guy pretty much delegates to other reducers
+const throwdownReducer = (state = { 
+  lines: [],
+}, action) => {
+  switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_LINE: 
+    case actionTypes.THROWDOWN_REMOVE_LINE: {
+      return Object.assign({}, state, {
+        lines: linesReducer(state.lines, action),
+      });
     }
   }
   return state;
