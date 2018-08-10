@@ -28,7 +28,7 @@ class ThrowdownDecksComponent extends React.Component {
   render() {
     const { decks } = this.props;
     const allTheDecks = _.map( decks, ( deck ) => 
-      <ThrowdownDeck key={ deck.id } id={ deck.id } />
+      <ThrowdownDeck key={ deck.id } id={ deck.id } sections={ deck.sections } />
     );
     return (
       <div>

@@ -102,21 +102,66 @@ const snipCollectionReducer = (state = {
 
 
 
+//---------------------------------------------
+// Deck sections
 
 
+const nextSectionId = () => { 
+  if( typeof nextSectionId.defaultId == 'undefined' ) {
+    nextSectionId.defaultId = 0;
+  }  
+  return nextSectionId.defaultId++;
+}
+
+const sectionReducer = (state = {
+  id: nextSectionId(),
+  parts: [],
+}, action) => {
+  switch (action.type) {
+  }
+  return state;
+}
+
+const sectionsReducer = (state = [], action) => {
+  switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_SECTION: {
+      return [
+        ...state,
+        sectionReducer(undefined, action)
+      ];
+    }
+
+    case actionTypes.THROWDOWN_REMOVE_SECTION: {
+      return state.filter(section => section.id !== action.sectionId);
+    }
+  }
+  return state;
+}
 
 
+//---------------------------------------------
+// Decks
 
-let defaultId = 0;
-const nextId = () => { 
-  return defaultId++;
+const nextDeckId = () => { 
+  if( typeof nextDeckId.defaultId == 'undefined' ) {
+    nextDeckId.defaultId = 0;
+  }  
+  return nextDeckId.defaultId++;
 }
 
 const deckReducer = (state = {
-  id: nextId(),
+  id: nextDeckId(),
   currentSectionId: null,
   sections: [],
 }, action) => {
+  switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_SECTION: 
+    case actionTypes.THROWDOWN_REMOVE_SECTION: {
+      return Object.assign({}, state, {
+        sections: sectionsReducer(state.sections, action),
+      });
+    }
+  }
   return state;
 }
 
@@ -125,6 +170,15 @@ const deckReducer = (state = {
 // This reducer handles add/remove, linereducer handles editing of each deck/line
 const decksReducer = (state = [], action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_SECTION: 
+    case actionTypes.THROWDOWN_REMOVE_SECTION: {
+      return state.map((deck) => {
+        if (deck.id == action.deckId)
+          return deckReducer(deck, action);
+        return deck;
+      })
+    }
+
     case actionTypes.THROWDOWN_ADD_DECK: {
       return [
         ...state,
@@ -139,6 +193,11 @@ const decksReducer = (state = [], action) => {
   return state;
 }
 
+
+//---------------------------------------------
+// Throwdown - app
+
+
 // Throwdown app reducer
 // contains a collection of throwdown decks
 // each line contains a bunch of song un-editable sections that it can walk through
@@ -147,6 +206,8 @@ const throwdownReducer = (state = {
   decks: [],
 }, action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_SECTION: 
+    case actionTypes.THROWDOWN_REMOVE_SECTION: 
     case actionTypes.THROWDOWN_ADD_DECK: 
     case actionTypes.THROWDOWN_REMOVE_DECK: {
       return Object.assign({}, state, {

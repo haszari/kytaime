@@ -7,8 +7,15 @@ import * as throwdownActions from './components/throwdown/actions';
 store.dispatch(throwdownActions.throwdown_addDeck());
 store.dispatch(throwdownActions.throwdown_addDeck());
 
+// let's add some playable sections to the first deck
+store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
+store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
+store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
 
-// test
+
+
+
+// more test actions
 // store.dispatch(throwdownActions.throwdown_addDeck());
 // store.dispatch(throwdownActions.throwdown_addDeck());
 // store.dispatch(throwdownActions.throwdown_addDeck());

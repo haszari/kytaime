@@ -3,6 +3,10 @@ export const THROWDOWN_ADD_DECK = "THROWDOWN_ADD_DECK";
 export const THROWDOWN_REMOVE_DECK = "THROWDOWN_REMOVE_DECK";
 
 
+export const THROWDOWN_ADD_SECTION = "THROWDOWN_ADD_SECTION";
+export const THROWDOWN_REMOVE_SECTION = "THROWDOWN_REMOVE_SECTION";
+
+
 /// these actions are asleep right now
 
 
