@@ -14,6 +14,7 @@ import { sequencer, bpmUtilities } from '../../lib/sequencer';
 import Transport from './components/transport/component.jsx';
 import * as transportActions from './components/transport/actions';
 
+import ThrowdownDecks from  './components/throwdown/components/throwdown-decks.jsx';
 import ThrowdownService from  './components/throwdown/services/throwdown-service.jsx';
 
 function App({ audioContext }) {
@@ -22,6 +23,11 @@ function App({ audioContext }) {
       {/* Provider likes to wrap a single element */}
       <div>
         <Transport title="Squelcherisation" />
+
+        {/* UI components */}
+        <ThrowdownDecks />
+
+        {/* service components to play back audio, midi */}
         <ThrowdownService audioContext={audioContext} />
       </div>
     </Provider>
