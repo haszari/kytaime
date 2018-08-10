@@ -95,16 +95,27 @@ const snipCollectionReducer = (state = {
   return state;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 let defaultId = 0;
 const nextId = () => { 
   return defaultId++;
 }
 
-const lineReducer = (state = {
+const deckReducer = (state = {
   id: nextId(),
-  currentSection: '',
-  sectionQueue: [],
-  sectionData: [],
+  currentSectionId: null,
+  sections: [],
 }, action) => {
   return state;
 }
@@ -112,34 +123,34 @@ const lineReducer = (state = {
 // Throwdown lines reducer
 // Is an array of lines, which are like DJ decks for throwdown stem stuff
 // This reducer handles add/remove, linereducer handles editing of each deck/line
-const linesReducer = (state = [], action) => {
+const decksReducer = (state = [], action) => {
   switch (action.type) {
-    case actionTypes.THROWDOWN_ADD_LINE: {
+    case actionTypes.THROWDOWN_ADD_DECK: {
       return [
         ...state,
-        lineReducer(undefined, action)
+        deckReducer(undefined, action)
       ];
     }
 
-    case actionTypes.THROWDOWN_REMOVE_LINE: {
-      return state.filter(line => line.id !== action.lineId);
+    case actionTypes.THROWDOWN_REMOVE_DECK: {
+      return state.filter(deck => deck.id !== action.deckId);
     }
   }
   return state;
 }
 
 // Throwdown app reducer
-// contains a collection of throwdown lines
-// each line contains a bunch of song sections that it can walk through
+// contains a collection of throwdown decks
+// each line contains a bunch of song un-editable sections that it can walk through
 // this guy pretty much delegates to other reducers
 const throwdownReducer = (state = { 
-  lines: [],
+  decks: [],
 }, action) => {
   switch (action.type) {
-    case actionTypes.THROWDOWN_ADD_LINE: 
-    case actionTypes.THROWDOWN_REMOVE_LINE: {
+    case actionTypes.THROWDOWN_ADD_DECK: 
+    case actionTypes.THROWDOWN_REMOVE_DECK: {
       return Object.assign({}, state, {
-        lines: linesReducer(state.lines, action),
+        decks: decksReducer(state.decks, action),
       });
     }
   }

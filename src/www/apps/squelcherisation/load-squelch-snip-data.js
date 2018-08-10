@@ -4,9 +4,15 @@ import * as throwdownActions from './components/throwdown/actions';
 
 
 // we have two lines, because we're like a DJ, and they are like decks
-store.dispatch(throwdownActions.throwdown_addLine());
-store.dispatch(throwdownActions.throwdown_addLine());
+store.dispatch(throwdownActions.throwdown_addDeck());
+store.dispatch(throwdownActions.throwdown_addDeck());
 
+
+// test
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_removeDeck({ deckId: 3 }));
 
 
 

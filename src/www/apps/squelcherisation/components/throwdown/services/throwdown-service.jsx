@@ -12,7 +12,7 @@ import * as actions from '../actions';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    lines: state.throwdown.lines
+    decks: state.throwdown.decks
   }
 }
 
@@ -44,14 +44,14 @@ class ThrowdownServiceComponent extends React.Component {
   // }
   
   render() {
-    const { lines, audioContext } = this.props;
-    const throwdownLines = _.map(lines, (lyin) => 
+    const { decks, audioContext } = this.props;
+    const allTheDecks = _.map( decks, ( deck ) => 
       // <SnipService audioContext={ audioContext } key={ snipSlug } slug={ snipSlug } stems={ snip.stems } />
-      <div key={lyin.id}>Line down {lyin.id}</div>
+      <div key={ deck.id }>Throwdown deck { deck.id }</div>
     );
     return (
       <div>
-        { throwdownLines }
+        { allTheDecks }
       </div>
     );
   }

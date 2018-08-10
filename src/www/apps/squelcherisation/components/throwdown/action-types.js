@@ -1,6 +1,6 @@
 
-export const THROWDOWN_ADD_LINE = "THROWDOWN_ADD_LINE";
-export const THROWDOWN_REMOVE_LINE = "THROWDOWN_REMOVE_LINE";
+export const THROWDOWN_ADD_DECK = "THROWDOWN_ADD_DECK";
+export const THROWDOWN_REMOVE_DECK = "THROWDOWN_REMOVE_DECK";
 
 
 /// these actions are asleep right now

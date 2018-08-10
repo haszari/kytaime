@@ -4,11 +4,11 @@ import _ from 'lodash';
 import * as actionTypes from './action-types';
 
 
-export function throwdown_addLine() {
-  return { type: actionTypes.THROWDOWN_ADD_LINE };
+export function throwdown_addDeck() {
+  return { type: actionTypes.THROWDOWN_ADD_DECK };
 }
-export function throwdown_removeLine({ lineId }) {
-  return { type: actionTypes.THROWDOWN_REMOVE_LINE, ...{ id } };
+export function throwdown_removeDeck({ deckId }) {
+  return { type: actionTypes.THROWDOWN_REMOVE_DECK, ...{ deckId } };
 }
 
 
