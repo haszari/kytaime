@@ -151,10 +151,15 @@ const nextDeckId = () => {
 
 const deckReducer = (state = {
   id: nextDeckId(),
-  currentSectionId: null,
+  triggeredSectionId: null,
   sections: [],
 }, action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: {
+      return Object.assign({}, state, {
+        triggeredSectionId: action.sectionId,
+      });
+    }
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: {
       return Object.assign({}, state, {
@@ -170,6 +175,7 @@ const deckReducer = (state = {
 // This reducer handles add/remove, linereducer handles editing of each deck/line
 const decksReducer = (state = [], action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: 
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: {
       return state.map((deck) => {
@@ -206,6 +212,7 @@ const throwdownReducer = (state = {
   decks: [],
 }, action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION:
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: 
     case actionTypes.THROWDOWN_ADD_DECK: 

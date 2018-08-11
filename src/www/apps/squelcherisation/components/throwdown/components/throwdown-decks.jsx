@@ -5,19 +5,20 @@ import React from 'react';
 
 import { connect } from 'react-redux';
 
-import * as actions from '../actions';
+// import * as actions from '../actions';
 
 import ThrowdownDeck from './throwdown-deck.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    decks: state.throwdown.decks
+    decks: state.throwdown.decks,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return { };
+  return { 
+  };
 }
 
 class ThrowdownDecksComponent extends React.Component {

@@ -12,6 +12,7 @@ store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
 store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
 store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
 
+store.dispatch(throwdownActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
 
 
 
