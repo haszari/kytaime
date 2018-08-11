@@ -8,6 +8,7 @@ const ThrowdownSection = (props) => {
     borderRadius: '0.2em',
     display: 'inline-block',
     marginRight: '0.5em',
+    userSelect: 'none',
   };
 
   const titleStyle = { };

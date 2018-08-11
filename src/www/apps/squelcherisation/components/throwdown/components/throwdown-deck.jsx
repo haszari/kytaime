@@ -31,6 +31,7 @@ const ThrowdownDeckComponent = (props) => {
     borderRadius: '0.2em',
     padding: '0.5em',
     marginBottom: '1.5em',
+    userSelect: 'none',
   };
 
   const sectionList = _.map( sections, ( section ) => 
