@@ -97,13 +97,8 @@ const snipCollectionReducer = (state = {
 
 
 
-
-
-
-
-
 //---------------------------------------------
-// Deck sections
+// Sections - frozen chunks of arrangement (in a deck ready for playback)
 
 
 const nextSectionId = () => { 
@@ -115,9 +110,16 @@ const nextSectionId = () => {
 
 const sectionReducer = (state = {
   id: nextSectionId(),
-  parts: [],
+  data: {},
 }, action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_SECTION: {
+      const data = { data: action.data };
+      return {
+        ...state,
+        ...data,
+      }
+    }
   }
   return state;
 }
@@ -212,6 +214,8 @@ const throwdownReducer = (state = {
   decks: [],
 }, action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_ADD_PART:
+    case actionTypes.THROWDOWN_REMOVE_PART:
     case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION:
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: 

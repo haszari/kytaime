@@ -2,32 +2,7 @@ import store from './stores/store';
 
 import * as throwdownActions from './components/throwdown/actions';
 
-
-// we have two lines, because we're like a DJ, and they are like decks
-store.dispatch(throwdownActions.throwdown_addDeck());
-store.dispatch(throwdownActions.throwdown_addDeck());
-
-// let's add some playable sections to the first deck
-store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
-store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
-store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0 }));
-
-store.dispatch(throwdownActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
-
-
-
-// more test actions
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_removeDeck({ deckId: 3 }));
-
-
-
-/// returning soon...
-
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }));
-
+//// some useful pattern data
 
 const goodHatBeat = 1.5;
 const beatPatterns = {
@@ -92,6 +67,51 @@ const beatPatterns = {
     ]
   }
 }
+
+//// hard-coded patterns
+
+
+
+// we have two lines, because we're like a DJ, and they are like decks
+store.dispatch(throwdownActions.throwdown_addDeck());
+store.dispatch(throwdownActions.throwdown_addDeck());
+
+// let's add some playable sections to the first deck
+store.dispatch(throwdownActions.throwdown_addSection({ 
+  deckId: 0,
+  data: {
+    parts: [{
+      label: 'beat', 
+      data: {  
+        audio: {
+          file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+          tempo: 137.4,
+        },
+        pattern: beatPatterns.dnb,
+      }
+    }]
+  }
+}));
+store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0, data: {} }));
+store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0, data: {} }));
+
+store.dispatch(throwdownActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
+
+
+
+// more test actions
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_removeDeck({ deckId: 3 }));
+
+
+
+/// returning soon...
+
+store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }));
+
+
 
 store.dispatch(throwdownActions.throwdown_addSnipStem({ 
   part: 'drums',

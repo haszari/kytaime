@@ -11,8 +11,8 @@ export function throwdown_removeDeck({ deckId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_DECK, ...{ deckId } };
 }
 
-export function throwdown_addSection({ deckId }) {
-  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId /* section info coming soon */ } };
+export function throwdown_addSection({ deckId, data }) {
+  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId, data } };
 }
 export function throwdown_removeSection({ deckId, sectionId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SECTION, ...{ deckId, sectionId } };
@@ -22,6 +22,9 @@ export function throwdown_setTriggeredSection({ deckId, sectionId }) {
   return { type: actionTypes.THROWDOWN_SET_TRIGGERED_SECTION, ...{ deckId, sectionId } };
 }
 
+export function throwdown_setPartTriggered({ deckId, sectionId, partId }) {
+  return { type: actionTypes.THROWDOWN_SET_PART_TRIGGERED, ...{ deckId, sectionId, partId } };
+}
 
 
 /// these actions are asleep right now
