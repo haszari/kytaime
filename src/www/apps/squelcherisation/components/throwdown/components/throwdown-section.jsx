@@ -13,9 +13,12 @@ const ThrowdownSection = (props) => {
   const titleStyle = { };
   if (isTriggered) titleStyle.fontWeight = 'bold';
 
+  const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
+  const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
+
   return (
     <div style={ style }>
-      <span style={ titleStyle } onClick={ () => setTriggeredSection({ sectionId: id }) }>
+      <span style={ titleStyle } onClick={ isTriggered ? setNothingTriggered : setMeAsTriggered }>
         Playable section { id }
       </span>
     </div>
