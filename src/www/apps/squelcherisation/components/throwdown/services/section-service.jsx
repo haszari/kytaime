@@ -142,10 +142,10 @@ const mapStateToProps = (state, ownProps) => {
   return { 
     transportPlayState: state.transport.playState,
     renderRange: state.transport.renderRange,
-    triggerPhraseDuration: selectors.getSectionPhraseDuration(state, { 
-      deckId: ownProps.deckId,
-      sectionId: ownProps.id,
-    }),
+    // triggerPhraseDuration: selectors.getSectionPhraseDuration(state, { 
+    //   deckId: ownProps.deckId,
+    //   sectionId: ownProps.id,
+    // }),
     // triggered: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'trigger', false),
     lastRenderEndTime: ownSection ? ownSection.renderPosition : null,
   }
@@ -193,20 +193,39 @@ class SectionServiceComponent extends React.Component {
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
       return;
 
-    console.log('SectionService needs to render stuff', id, renderRange.start.time, lastRenderEndTime);
 
     const isThisSectionTriggered = triggered;
-    const audioDestinationNode = renderRange.audioContext.destination;
-    _.map(this.slicePlayers, (player) => {
-      const isThisPartTriggered = isThisSectionTriggered;
-      player.updateAndRenderAudio(renderRange, isThisPartTriggered, triggerPhraseDuration, audioDestinationNode);
-    });
+
+    let triggerInfo = patternSequencer.renderPatternTrigger(
+      renderRange, 
+      triggered,
+      playing, 
+      triggerPhraseDuration,
+    );
+
+    const isThisSectionPlaying = triggerInfo.isPlaying;
+    // if (triggered || isThisSectionPlaying) 
+    //   console.log(`beat=${Math.round(renderRange.start.beat * 100) / 100} sec${id} trig=${triggered} p=${isThisSectionPlaying} %=${triggerPhraseDuration}`);
+
+    if (isThisSectionPlaying) {      
+      const audioDestinationNode = renderRange.audioContext.destination;
+      _.map(this.slicePlayers, (player) => {
+        const isThisPartTriggered = triggered;
+        player.updateAndRenderAudio(renderRange, isThisPartTriggered, triggerPhraseDuration, audioDestinationNode);
+      });
+    }
 
     store.dispatch(actions.throwdown_updateSectionRenderPosition({
       deckId: deckId,
       sectionId: id,
       time: renderRange.end.time,
     }));
+    if (isThisSectionPlaying) {
+      store.dispatch(actions.throwdown_setPlayingSection({
+        deckId: deckId,
+        sectionId: id,
+      }));
+    }
   }
 
 

@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const ThrowdownDeckComponent = (props) => {
-  const { id, sections, setDeckTriggeredSection, triggeredSectionId } = props;
+  const { id, sections, setDeckTriggeredSection, triggeredSectionId, playingSectionId } = props;
   const style = {
     backgroundColor: '#f8f8f8',
     borderRadius: '0.2em',
@@ -38,7 +38,8 @@ const ThrowdownDeckComponent = (props) => {
     <ThrowdownSection 
       key={ section.id } id={ section.id } 
       setTriggeredSection={ setDeckTriggeredSection } 
-      isTriggered={ triggeredSectionId == section.id } 
+      triggered={ triggeredSectionId == section.id } 
+      playing={ playingSectionId == section.id } 
     />
   );
 

@@ -11,18 +11,21 @@ import * as selectors from '../selectors';
 import SectionService from './section-service.jsx';
 
 
-// const mapStateToProps = (state, ownProps) => {
-//   return { 
-//     decks: state.throwdown.decks
-//   }
-// }
+const mapStateToProps = (state, ownProps) => {
+  return { 
+    triggerPhraseDuration: selectors.getPhraseDuration(state, { 
+      deckId: ownProps.id,
+      sectionIds: [ ownProps.triggeredSectionId, ownProps.playingSectionId ],
+    }),
+  }
+}
 
-// const mapDispatchToProps = (dispatch, ownProps) => {
-//   return { };
-// }
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return { };
+}
 
-// class DeckServiceComponent extends React.Component {
-class DeckService extends React.Component {
+class DeckServiceComponent extends React.Component {
+// class DeckService extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -46,17 +49,19 @@ class DeckService extends React.Component {
   }
 
   render() {
-    const { sections, triggeredSectionId, playingSectionId, audioContext, id } = this.props;
+    const { sections, triggeredSectionId, playingSectionId, triggerPhraseDuration, audioContext, id } = this.props;
+    // console.log(`triggeredSectionId=${triggeredSectionId} playingSectionId=${playingSectionId}`);
 
     const allSections = _.map( sections, ( section ) => 
       <SectionService 
         audioContext={ audioContext } 
         
-        deckId={ section.id } 
+        deckId={ id } 
 
         key={ section.id } 
         id={ section.id } 
 
+        triggerPhraseDuration={ triggerPhraseDuration }
         triggered={ section.id === triggeredSectionId } 
         playing={ section.id === playingSectionId } 
         
@@ -71,9 +76,9 @@ class DeckService extends React.Component {
   }
 }
 
-// const DeckService = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(DeckServiceComponent);
+const DeckService = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DeckServiceComponent);
 
 export default DeckService;

@@ -2,7 +2,7 @@
 import React from 'react';
 
 const ThrowdownSection = (props) => {
-  const { id, setTriggeredSection, isTriggered } = props;
+  const { id, setTriggeredSection, triggered, playing } = props;
   const style = {
     backgroundColor: '#f4f4f4',
     borderRadius: '0.2em',
@@ -12,14 +12,15 @@ const ThrowdownSection = (props) => {
   };
 
   const titleStyle = { };
-  if (isTriggered) titleStyle.fontWeight = 'bold';
+  if (triggered) titleStyle.fontWeight = 'bold';
+  if (playing) titleStyle.fontStyle = 'italic';
 
   const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
   return (
     <div style={ style }>
-      <span style={ titleStyle } onClick={ isTriggered ? setNothingTriggered : setMeAsTriggered }>
+      <span style={ titleStyle } onClick={ triggered ? setNothingTriggered : setMeAsTriggered }>
         Playable section { id }
       </span>
     </div>
