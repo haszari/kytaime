@@ -89,6 +89,29 @@ store.dispatch(throwdownActions.throwdown_addSection({
         },
         pattern: beatPatterns.dnb,
       }
+    }, {
+      label: 'voc', 
+      data: {  
+        audio: {
+          file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--voc.mp3'),
+          tempo: 122,
+        },
+        pattern: {
+          duration: 16,
+          slices: [
+            {
+              start: 0, 
+              duration: 1,
+              beat: 0,
+            },
+            {
+              start: 15, 
+              duration: 1,
+              beat: 63,
+            }
+          ],
+        },
+      }
     }]
   }
 }));
