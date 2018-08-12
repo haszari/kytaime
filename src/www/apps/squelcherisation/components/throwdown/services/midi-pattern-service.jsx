@@ -15,18 +15,6 @@ import * as midiUtilities from '../../../../../lib/sequencer/midi-utilities';
 import * as bpmUtilities from '../../../../../lib/sequencer/bpm-utilities';
 import * as patternSequencer from '../../../../../lib/sequencer/pattern-sequencer';
 
-
-// this routine is probably part of what we want from sequencer/bpm-utilities
-function getTimeOffsetForBeat(eventBeat, renderStart, renderEnd, transportBpm, wrapBeats) {  
-  let beatOffset = eventBeat - renderStart;
-  if ((renderEnd < renderStart) && (eventBeat < renderStart)) {
-      beatOffset += wrapBeats;
-  }
-  var offsetMs = bpmUtilities.beatsToMs(transportBpm, beatOffset);
-  return offsetMs;
-}
-
-
 const mapStateToProps = (state, ownProps) => {
   return {
     transportPlayState: state.transport.playState,

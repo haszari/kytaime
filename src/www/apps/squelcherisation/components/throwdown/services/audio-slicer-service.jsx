@@ -11,31 +11,10 @@ import store from '../../../stores/store';
 import * as throwdownActions from '../actions';
 
 // I should use an @alias for these?
+import * as audioUtilities from '../../../../../lib/audio-utilities';
 import * as bpmUtilities from '../../../../../lib/sequencer/bpm-utilities';
 import * as patternSequencer from '../../../../../lib/sequencer/pattern-sequencer';
 
-
-function getSample (url, audioContext, cb) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url);
-  request.responseType = 'arraybuffer';
-  request.onload = function () {
-    console.log('sample loaded, decoding');
-    audioContext.decodeAudioData(request.response, cb);
-  };
-  console.log('loading sample');
-  request.send();
-}
-
-// this routine is probably part of what we want from sequencer/bpm-utilities
-function getTimeOffsetForBeat(eventBeat, renderStart, renderEnd, transportBpm, wrapBeats) {  
-  let beatOffset = eventBeat - renderStart;
-  if ((renderEnd < renderStart) && (eventBeat < renderStart)) {
-      beatOffset += wrapBeats;
-  }
-  var offsetMs = bpmUtilities.beatsToMs(transportBpm, beatOffset);
-  return offsetMs;
-}
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -70,7 +49,7 @@ class AudioSlicerServiceComponent extends React.Component {
     this.buffer = undefined;
 
     this.loaded = new Promise((resolve, reject) => {      
-      getSample(this.audioFile, this.audioContext, (buffer) => {
+      audioUtilities.loadSample(this.audioFile, this.audioContext, (buffer) => {
         console.log('sample decoded, ready to play');
         this.buffer = buffer;
         resolve();
@@ -88,10 +67,10 @@ class AudioSlicerServiceComponent extends React.Component {
   //   this.audioContext = new AudioContext();
   // }
   
-  componentWillUnmount() {
-    // what audio objects do we need to free?
-    this.stopAt();
-  }
+  // componentWillUnmount() {
+  //   // what audio objects do we need to free?
+  //   this.stopAt();
+  // }
   
   // shouldComponentUpdate(props) {
   //   return props.events.length > 0;
