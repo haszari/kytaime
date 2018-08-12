@@ -12,7 +12,8 @@ const mapStateToProps = (state, ownProps) => {
   let isTriggered = false;
   const deck = getDeck(state, { deckId: ownProps.id });
   return {
-    triggeredSectionId: deck.triggeredSectionId
+    triggeredSectionId: deck.triggeredSectionId,
+    playingSectionId: deck.playingSectionId,
   }
 }
 
