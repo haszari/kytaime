@@ -74,7 +74,7 @@ function renderPatternTrigger(
       renderInfo.startBeat = beat;
       renderInfo.isPlaying = true;
       renderInfo.triggerOnset = beat;
-      console.log(`trig ON! b=${renderInfo.triggerOnset}`);
+      // console.log(`trig ON! b=${renderInfo.triggerOnset}`);
     }
   }
 
@@ -92,7 +92,7 @@ function renderPatternTrigger(
       renderInfo.endBeat = beat;
       renderInfo.isPlaying = false;
       renderInfo.triggerOffset = beat;
-      console.log(`trig off b=${renderInfo.triggerOffset}`);
+      // console.log(`trig off b=${renderInfo.triggerOffset}`);
     }
   }
 
