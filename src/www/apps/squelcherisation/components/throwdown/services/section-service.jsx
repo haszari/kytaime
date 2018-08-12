@@ -49,43 +49,6 @@ class AudioSlicePlayer {
     this.duration = props.duration;
   }
 
-  // componentWillMount() {
-  //   this.audioContext = new AudioContext();
-  // }
-  
-  // componentWillUnmount() {
-  //   // what audio objects do we need to free?
-  //   this.stopAt();
-  // }
-  
-  // shouldComponentUpdate(props) {
-  //   return props.events.length > 0;
-  // }
-  
-  // componentWillUpdate(props) {
-  //   const { snip, slug, triggered, renderRange, lastRenderEndTime, transportPlayState } = props;
-
-  //   if (transportPlayState == "stopped") {// need a selector alert!! (hard coded string)
-  //     // this.stopAt();
-  //     return;
-  //   }
-
-  //   if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
-  //     return;
-
-  //   // console.log('update audio stem', slug, renderRange.start.time, lastRenderEndTime);
-
-  //   const triggerState = triggered;
-  //   const audioDestinationNode = renderRange.audioContext.destination;
-  //   this.updateAndRenderAudio(renderRange, triggerState, audioDestinationNode);
-
-  //   store.dispatch(throwdownActions.throwdown_updateSnipStemRenderPosition({
-  //     snip: snip,
-  //     slug: slug,
-  //     time: renderRange.end.time,
-  //   }));
-  // }
-
   connectToChannelForPart(audioContext, audioSourceNode, audioDestinationNode, partName) {
     // default - drums, percussion, etc
     let outputChannelPairOffset = 0;
@@ -244,13 +207,7 @@ class SectionServiceComponent extends React.Component {
 
   render() {
     // we are a service component!
-    // const { data, audioContext } = this.props;
     return null;
-    // const allSections = _.map( sections, ( section ) => 
-    //   <SectionService audioContext={ audioContext } key={ section.id }  />
-    // );
-    // return (
-    // );
   }
 }
 
