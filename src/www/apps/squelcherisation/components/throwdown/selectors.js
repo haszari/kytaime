@@ -14,3 +14,8 @@ export const getSection = (state, { deckId, sectionId }) => {
   if (deck)
     return _.find(deck.sections, { id: sectionId });
 }
+
+export const getSectionPhraseDuration = (state, { deckId, sectionId }) => {
+  // we'll hard code this to begin with!
+  return 32;
+}

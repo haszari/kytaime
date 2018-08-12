@@ -95,7 +95,7 @@ class AudioSlicePlayer {
     player.stop(stopTimestamp);
   }
 
-  updateAndRenderAudio(renderRange, triggerState, audioDestinationNode) {
+  updateAndRenderAudio(renderRange, triggerState, triggerPhraseDuration, audioDestinationNode) {
     const { duration } = this;
     if (!this.loaded) 
       return;
@@ -106,7 +106,7 @@ class AudioSlicePlayer {
       renderRange, 
       this.triggered,
       this.playing, 
-      duration,
+      triggerPhraseDuration,
       this.startBeats,
       this.endBeats,
     );
@@ -142,6 +142,10 @@ const mapStateToProps = (state, ownProps) => {
   return { 
     transportPlayState: state.transport.playState,
     renderRange: state.transport.renderRange,
+    triggerPhraseDuration: selectors.getSectionPhraseDuration(state, { 
+      deckId: ownProps.deckId,
+      sectionId: ownProps.id,
+    }),
     // triggered: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'trigger', false),
     lastRenderEndTime: ownSection ? ownSection.renderPosition : null,
   }
@@ -184,17 +188,18 @@ class SectionServiceComponent extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { deckId, id, renderRange, lastRenderEndTime, transportPlayState } = props;
+    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportPlayState } = props;
 
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
       return;
 
     console.log('SectionService needs to render stuff', id, renderRange.start.time, lastRenderEndTime);
 
-    const triggerState = true;
+    const isThisSectionTriggered = triggered;
     const audioDestinationNode = renderRange.audioContext.destination;
     _.map(this.slicePlayers, (player) => {
-      player.updateAndRenderAudio(renderRange, triggerState, audioDestinationNode);
+      const isThisPartTriggered = isThisSectionTriggered;
+      player.updateAndRenderAudio(renderRange, isThisPartTriggered, triggerPhraseDuration, audioDestinationNode);
     });
 
     store.dispatch(actions.throwdown_updateSectionRenderPosition({

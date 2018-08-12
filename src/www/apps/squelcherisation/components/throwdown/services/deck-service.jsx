@@ -6,6 +6,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import * as actions from '../actions';
+import * as selectors from '../selectors';
 
 import SectionService from './section-service.jsx';
 
@@ -45,9 +46,8 @@ class DeckService extends React.Component {
   }
 
   render() {
-    // we are a service component!
-    // return null;
-    const { sections, audioContext, id } = this.props;
+    const { sections, triggeredSectionId, playingSectionId, audioContext, id } = this.props;
+
     const allSections = _.map( sections, ( section ) => 
       <SectionService 
         audioContext={ audioContext } 
@@ -56,6 +56,9 @@ class DeckService extends React.Component {
 
         key={ section.id } 
         id={ section.id } 
+
+        triggered={ section.id === triggeredSectionId } 
+        playing={ section.id === playingSectionId } 
         
         data={ section.data }  
       />

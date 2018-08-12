@@ -21,6 +21,11 @@ export function throwdown_setTriggeredSection({ deckId, sectionId }) {
   // pass sectionId: null to clear triggered section
   return { type: actionTypes.THROWDOWN_SET_TRIGGERED_SECTION, ...{ deckId, sectionId } };
 }
+export function throwdown_setPlayingSection({ deckId, sectionId }) {
+  // pass sectionId: null to clear playing section
+  return { type: actionTypes.THROWDOWN_SET_PLAYING_SECTION, ...{ deckId, sectionId } };
+}
+
 
 export function throwdown_updateSectionRenderPosition({ deckId, sectionId, time }) {
   return { type: actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION, ...{ deckId, sectionId, time } };

@@ -29,7 +29,16 @@ class ThrowdownServiceComponent extends React.Component {
     // we are a service component!
     const { decks, audioContext } = this.props;
     const allTheDecks = _.map( decks, ( deck ) => 
-      <DeckService key={ deck.id } id={ deck.id } audioContext={ audioContext } sections={ deck.sections }  />
+      <DeckService 
+        key={ deck.id } 
+        id={ deck.id } 
+
+        audioContext={ audioContext } 
+
+        triggeredSectionId={ deck.triggeredSectionId }
+
+        sections={ deck.sections }  
+      />
     );
     return (
       <div>
