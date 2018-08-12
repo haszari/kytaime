@@ -115,7 +115,44 @@ store.dispatch(throwdownActions.throwdown_addSection({
     }]
   }
 }));
-store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0, data: {} }));
+store.dispatch(throwdownActions.throwdown_addSection({ 
+  deckId: 0, 
+  data: {
+    parts: [{
+      label: 'beat', 
+      data: {  
+        audio: {
+          file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+          tempo: 137.4,
+        },
+        pattern: beatPatterns.straight,
+      }
+    }, {
+      label: 'voc', 
+      data: {  
+        audio: {
+          file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--voc.mp3'),
+          tempo: 122,
+        },
+        pattern: {
+          duration: 8,
+          slices: [
+            {
+              start: 3, 
+              duration: 1,
+              beat: 1.5,
+            },
+            {
+              start: 7, 
+              duration: 1,
+              beat: 31,
+            }
+          ],
+        },
+      }
+    }]
+  }
+}));
 store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0, data: {} }));
 
 store.dispatch(throwdownActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
