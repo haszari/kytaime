@@ -27,6 +27,19 @@ function valueInWrappedBeatRange(value, renderStart, renderEnd, wrapDuration) {
    return inRange;
 }
 
+// I pasted this method aroujnd the place but I don't think anyone's using it?
+//  in  throwdown & squelcherisation at least
+// function getWrappedTimeOffsetForBeat(eventBeat, renderStart, renderEnd, transportBpm, wrapBeats) {  
+//   let beatOffset = eventBeat - renderStart;
+//   if ((renderEnd < renderStart) && (eventBeat < renderStart)) {
+//       beatOffset += wrapBeats;
+//   }
+//   var offsetMs = beatsToMs(transportBpm, beatOffset);
+//   return offsetMs;
+// }
+
+
+
 const renderPatternStartStop = function(
    renderRange, patternDropStopModulus,
    isPlaying, isTriggered, 
@@ -86,6 +99,7 @@ const renderPatternStartStop = function(
 export {
    renderPatternStartStop,
    valueInWrappedBeatRange,
+   // getWrappedTimeOffsetForBeat,
    bpmToMsPerBeat,
    msToBeats,
    beatsToMs
