@@ -74,7 +74,7 @@ const beatPatterns = {
 
 // we have two lines, because we're like a DJ, and they are like decks
 store.dispatch(throwdownActions.throwdown_addDeck());
-store.dispatch(throwdownActions.throwdown_addDeck());
+// store.dispatch(throwdownActions.throwdown_addDeck());
 
 // let's add some playable sections to the first deck
 store.dispatch(throwdownActions.throwdown_addSection({ 
@@ -143,7 +143,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
               beat: 1.5,
             },
             {
-              start: 7, 
+              start: 6.5, 
               duration: 1,
               beat: 31,
             }
