@@ -228,8 +228,11 @@ class SectionServiceComponent extends React.Component {
 
     console.log('SectionService needs to render stuff', id, renderRange.start.time, lastRenderEndTime);
 
-    // const triggerState = triggered;
-    // this.updateAndRenderMidi(renderRange, triggerState);
+    const triggerState = true;
+    const audioDestinationNode = renderRange.audioContext.destination;
+    _.map(this.slicePlayers, (player) => {
+      player.updateAndRenderAudio(renderRange, triggerState, audioDestinationNode);
+    });
 
     store.dispatch(actions.throwdown_updateSectionRenderPosition({
       deckId: deckId,
@@ -237,6 +240,7 @@ class SectionServiceComponent extends React.Component {
       time: renderRange.end.time,
     }));
   }
+
 
   render() {
     // we are a service component!
