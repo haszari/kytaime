@@ -7,18 +7,21 @@ import { connect } from 'react-redux';
 
 import * as actions from '../actions';
 
-// import SnipService from './snip-service.jsx';
+import SectionService from './section-service.jsx';
 
 
-const mapStateToProps = (state, ownProps) => {
-  return { }
-}
+// const mapStateToProps = (state, ownProps) => {
+//   return { 
+//     decks: state.throwdown.decks
+//   }
+// }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return { };
-}
+// const mapDispatchToProps = (dispatch, ownProps) => {
+//   return { };
+// }
 
-class ThrowdownServiceComponent extends React.Component {
+// class DeckServiceComponent extends React.Component {
+class DeckService extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -43,23 +46,31 @@ class ThrowdownServiceComponent extends React.Component {
 
   render() {
     // we are a service component!
-    return null;
-    // const { decks, audioContext } = this.props;
-    // const allTheDecks = _.map( decks, ( deck ) => 
-    //   // <SnipService audioContext={ audioContext } key={ snipSlug } slug={ snipSlug } stems={ snip.stems } />
-    //   <div key={ deck.id }>Throwdown deck { deck.id }</div>
-    // );
-    // return (
-    //   <div>
-    //     { allTheDecks }
-    //   </div>
-    // );
+    // return null;
+    const { sections, audioContext, id } = this.props;
+    const allSections = _.map( sections, ( section ) => 
+      <SectionService 
+        audioContext={ audioContext } 
+        
+        deckId={ section.id } 
+
+        key={ section.id } 
+        id={ section.id } 
+        
+        data={ section.data }  
+      />
+    );
+    return (
+      <div>
+        { allSections }
+      </div>
+    );
   }
 }
 
-const DeckService = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ThrowdownServiceComponent);
+// const DeckService = connect(
+//   mapStateToProps,
+//   mapDispatchToProps
+// )(DeckServiceComponent);
 
 export default DeckService;

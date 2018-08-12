@@ -24,30 +24,12 @@ class ThrowdownServiceComponent extends React.Component {
   constructor(props) {
     super(props);
   }
-  // componentWillMount() {
-  //   this.audioContext = new AudioContext();
-  // }
-  
-  // componentWillUnmount() {
-  //   this.audioContext.close();
-  // }
-  
-  // shouldComponentUpdate(props) {
-  //   return props.events.length > 0;
-  // }
-  
-  // componentWillUpdate(props) {
-  //   props.events.forEach(this.processEvent.bind(this));
-  //   props.dispatch({
-  //     type: "CLEAR_EVENT_QUEUE"
-  //   });
-  // }
   
   render() {
     // we are a service component!
     const { decks, audioContext } = this.props;
     const allTheDecks = _.map( decks, ( deck ) => 
-      <DeckService key={ deck.id } audioContext={ audioContext } />
+      <DeckService key={ deck.id } id={ deck.id } audioContext={ audioContext } sections={ deck.sections }  />
     );
     return (
       <div>
