@@ -38,9 +38,12 @@ const ThrowdownDeckComponent = (props) => {
   const sectionList = _.map( sections, ( section ) => 
     <ThrowdownSection 
       key={ section.id } id={ section.id } 
+
       setTriggeredSection={ setDeckTriggeredSection } 
       triggered={ triggeredSectionId == section.id } 
       playing={ playingSectionId == section.id } 
+
+      data={ section.data }
     />
   );
 

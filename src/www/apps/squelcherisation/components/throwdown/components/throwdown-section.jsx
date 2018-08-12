@@ -2,7 +2,7 @@
 import React from 'react';
 
 const ThrowdownSection = (props) => {
-  const { id, setTriggeredSection, triggered, playing } = props;
+  const { id, setTriggeredSection, triggered, playing, data } = props;
   const style = {
     backgroundColor: '#f4f4f4',
     borderRadius: '0.2em',
@@ -18,11 +18,17 @@ const ThrowdownSection = (props) => {
   const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
+  const partPlayers = _.map(data.parts, (part) => {
+    return (<div>{ part.label }</div>);
+  });
+
+
   return (
     <div style={ style }>
-      <span style={ titleStyle } onClick={ triggered ? setNothingTriggered : setMeAsTriggered }>
+      <div style={ titleStyle } onClick={ triggered ? setNothingTriggered : setMeAsTriggered }>
         Playable section { id }
-      </span>
+      </div>
+      { partPlayers }
     </div>
   );
 }
