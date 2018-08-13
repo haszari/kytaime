@@ -19,7 +19,7 @@ const ThrowdownSection = (props) => {
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
   const partPlayers = _.map(data.parts, (part) => {
-    return (<div>{ part.label }</div>);
+    return (<div key={ part.label } >{ part.label }</div>);
   });
 
 
