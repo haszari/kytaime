@@ -97,6 +97,16 @@ const snipCollectionReducer = (state = {
 
 
 
+
+
+
+
+
+
+//---------------------------------------------
+// WE HAVE RUN OUT OF NEW REDUCERS
+// above this line is old unused reducers
+
 //---------------------------------------------
 // Sections - frozen chunks of arrangement (in a deck ready for playback)
 
