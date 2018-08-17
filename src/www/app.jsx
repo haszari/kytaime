@@ -22,7 +22,7 @@ function App({ audioContext }) {
     <Provider store={store}>
       {/* Provider likes to wrap a single element */}
       <div>
-        <Transport title="Squelcherisation" />
+        <Transport title="Throwdown" />
 
         {/* UI components */}
         <ThrowdownDecks />
