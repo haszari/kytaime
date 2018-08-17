@@ -57,10 +57,10 @@ class AudioSlicePlayer {
       outputChannelPairOffset = 1;
     else if (_.includes(['synth', 'chords', 'uplands'], partName)) 
       outputChannelPairOffset = 2;
-    if (_.includes(['lead', 'pad', 'fx', 'voc', 'vocal', 'hills'], partName)) 
+    if (_.includes(['lead', 'pad', 'fx', 'voc', 'vox', 'vocal', 'hills'], partName)) 
       outputChannelPairOffset = 3;
 
-    this.connectToStereoOutChannel(this.audioContext, this.player, audioDestinationNode, outputChannelPairOffset);    
+    this.connectToStereoOutChannel(this.audioContext, audioSourceNode, audioDestinationNode, outputChannelPairOffset);    
   }
 
   connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, channelPairIndex) {
@@ -173,7 +173,7 @@ class SectionServiceComponent extends React.Component {
         
         // snip: snip,
         // slug: slug, 
-        // part: part,
+        part: part.part,
 
         audio: audio.file,
         tempo: audio.tempo, 

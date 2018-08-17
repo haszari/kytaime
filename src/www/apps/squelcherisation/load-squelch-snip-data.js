@@ -82,6 +82,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
   data: {
     parts: [{
       label: 'beat', 
+      part: 'drums',
       data: {  
         audio: {
           file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
@@ -91,6 +92,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
       }
     }, {
       label: 'voc', 
+      part: 'voc',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--voc.mp3'),
@@ -120,6 +122,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
   data: {
     parts: [{
       label: 'beat', 
+      part: 'drums',
       data: {  
         audio: {
           file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
@@ -129,6 +132,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
       }
     }, {
       label: 'voc', 
+      part: 'voc',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--voc.mp3'),
@@ -163,6 +167,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
   data: {
     parts: [{
       label: 'chord', 
+      part: 'chords',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-chords.mp3'),
@@ -186,6 +191,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
       }
     }, {
       label: 'arp', 
+      part: 'pad',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--lead.mp3'),
@@ -235,6 +241,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
   data: {
     parts: [{
       label: 'chord', 
+      part: 'chords',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-chords.mp3'),
@@ -268,6 +275,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
       }
     }, {
       label: 'arp2', 
+      part: 'pad',
       data: {  
         audio: {
           file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--lead.mp3'),
