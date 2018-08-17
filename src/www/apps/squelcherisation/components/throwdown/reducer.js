@@ -205,8 +205,8 @@ const deckReducer = (state = {
   return state;
 }
 
-// Throwdown lines reducer
-// Is an array of lines, which are like DJ decks for throwdown stem stuff
+// Decks reducer
+// Is an array of decks, which are like DJ decks for throwdown stem stuff
 // This reducer handles add/remove, linereducer handles editing of each deck/line
 const decksReducer = (state = [], action) => {
   switch (action.type) {
@@ -237,33 +237,4 @@ const decksReducer = (state = [], action) => {
 }
 
 
-//---------------------------------------------
-// Throwdown - app
-
-
-// Throwdown app reducer
-// contains a collection of throwdown decks
-// each line contains a bunch of song un-editable sections that it can walk through
-// this guy pretty much delegates to other reducers
-const throwdownReducer = (state = { 
-  decks: [],
-}, action) => {
-  switch (action.type) {
-    case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
-    case actionTypes.THROWDOWN_ADD_PART:
-    case actionTypes.THROWDOWN_REMOVE_PART:
-    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION:
-    case actionTypes.THROWDOWN_SET_PLAYING_SECTION:
-    case actionTypes.THROWDOWN_ADD_SECTION: 
-    case actionTypes.THROWDOWN_REMOVE_SECTION: 
-    case actionTypes.THROWDOWN_ADD_DECK: 
-    case actionTypes.THROWDOWN_REMOVE_DECK: {
-      return Object.assign({}, state, {
-        decks: decksReducer(state.decks, action),
-      });
-    }
-  }
-  return state;
-}
-
-export default throwdownReducer;
+export default decksReducer;

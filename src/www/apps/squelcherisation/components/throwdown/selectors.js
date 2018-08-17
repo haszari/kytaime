@@ -1,12 +1,12 @@
 
 import _ from 'lodash';
 
-export const get = (state) => { 
+export const getDecks = (state) => { 
   return state.throwdown;
 };
 
 export const getDeck = (state, { deckId }) => {
-  return _.find(get(state).decks, { id: deckId });
+  return _.find(getDecks(state), { id: deckId });
 };
 
 export const getSection = (state, { deckId, sectionId }) => {

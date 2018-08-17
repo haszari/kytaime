@@ -9,10 +9,12 @@ import { connect } from 'react-redux';
 
 import ThrowdownDeck from './throwdown-deck.jsx';
 
+import { getDecks } from '../selectors';
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    decks: state.throwdown.decks,
+    decks: getDecks( state ),
   }
 }
 

@@ -9,10 +9,11 @@ import * as actions from '../actions';
 
 import DeckService from './deck-service.jsx';
 
+import { getDecks } from '../selectors';
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    decks: state.throwdown.decks
+    decks: getDecks( state ),
   }
 }
 
