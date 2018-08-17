@@ -2,7 +2,7 @@
 import _ from 'lodash';
 
 export const getDecks = (state) => { 
-  return state.throwdown;
+  return state.decks;
 };
 
 export const getDeck = (state, { deckId }) => {

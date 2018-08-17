@@ -14,8 +14,8 @@ import { sequencer, bpmUtilities } from '../../lib/sequencer';
 import Transport from './components/transport/component.jsx';
 import * as transportActions from './components/transport/actions';
 
-import ThrowdownDecks from  './components/throwdown/components/throwdown-decks.jsx';
-import ThrowdownService from  './components/throwdown/services/throwdown-service.jsx';
+import ThrowdownDecks from  './components/decks/views/throwdown-decks.jsx';
+import ThrowdownService from  './components/decks/services/throwdown-service.jsx';
 
 function App({ audioContext }) {
   return (

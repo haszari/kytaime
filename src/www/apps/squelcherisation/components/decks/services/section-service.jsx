@@ -142,11 +142,6 @@ const mapStateToProps = (state, ownProps) => {
   return { 
     transportPlayState: state.transport.playState,
     renderRange: state.transport.renderRange,
-    // triggerPhraseDuration: selectors.getSectionPhraseDuration(state, { 
-    //   deckId: ownProps.deckId,
-    //   sectionId: ownProps.id,
-    // }),
-    // triggered: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'trigger', false),
     lastRenderEndTime: ownSection ? ownSection.renderPosition : null,
   }
 }

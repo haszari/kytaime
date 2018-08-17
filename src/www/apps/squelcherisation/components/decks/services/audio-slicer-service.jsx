@@ -21,8 +21,6 @@ const mapStateToProps = (state, ownProps) => {
   return {
     transportPlayState: state.transport.playState,
     renderRange: state.transport.renderRange,
-    triggered: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'trigger', false),
-    lastRenderEndTime: _.get(state.throwdown[ownProps.snip].stems[ownProps.slug], 'renderPosition', 0),
   }
 }
 

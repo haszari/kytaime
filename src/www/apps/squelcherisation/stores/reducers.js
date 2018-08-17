@@ -2,11 +2,11 @@
 import { combineReducers } from 'redux'
 
 import transport from '../components/transport/index';
-import throwdown from '../components/throwdown/index';
+import decks from '../components/decks/index';
 
 const app = combineReducers({
   transport: transport.reducer,
-  throwdown: throwdown.reducer,
+  decks: decks.reducer,
 });
 
 export default app;

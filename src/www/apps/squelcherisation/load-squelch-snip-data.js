@@ -1,6 +1,6 @@
 import store from './stores/store';
 
-import * as throwdownActions from './components/throwdown/actions';
+import * as deckActions from './components/decks/actions';
 
 //// some useful pattern data
 
@@ -73,11 +73,11 @@ const beatPatterns = {
 
 
 // we have two lines, because we're like a DJ, and they are like decks
-store.dispatch(throwdownActions.throwdown_addDeck());
-store.dispatch(throwdownActions.throwdown_addDeck());
+store.dispatch(deckActions.throwdown_addDeck());
+store.dispatch(deckActions.throwdown_addDeck());
 
 // let's add some playable sections to the first deck
-store.dispatch(throwdownActions.throwdown_addSection({ 
+store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 0,
   data: {
     parts: [{
@@ -117,7 +117,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
     }]
   }
 }));
-store.dispatch(throwdownActions.throwdown_addSection({ 
+store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 0, 
   data: {
     parts: [{
@@ -157,12 +157,12 @@ store.dispatch(throwdownActions.throwdown_addSection({
     }]
   }
 }));
-store.dispatch(throwdownActions.throwdown_addSection({ deckId: 0, data: {} }));
+store.dispatch(deckActions.throwdown_addSection({ deckId: 0, data: {} }));
 
-store.dispatch(throwdownActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
+store.dispatch(deckActions.throwdown_setTriggeredSection({ deckId: 0, sectionId: 0 }));
 
 // let's add some cool stuff to the second deck
-store.dispatch(throwdownActions.throwdown_addSection({ 
+store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 1,
   data: {
     parts: [{
@@ -236,7 +236,7 @@ store.dispatch(throwdownActions.throwdown_addSection({
     }]
   }
 }));
-store.dispatch(throwdownActions.throwdown_addSection({ 
+store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 1,
   data: {
     parts: [{
@@ -303,20 +303,20 @@ store.dispatch(throwdownActions.throwdown_addSection({
 
 
 // more test actions
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_addDeck());
-// store.dispatch(throwdownActions.throwdown_removeDeck({ deckId: 3 }));
+// store.dispatch(deckActions.throwdown_addDeck());
+// store.dispatch(deckActions.throwdown_addDeck());
+// store.dispatch(deckActions.throwdown_addDeck());
+// store.dispatch(deckActions.throwdown_removeDeck({ deckId: 3 }));
 
 
 
 /// returning soon...
 
-store.dispatch(throwdownActions.throwdown_addSnip({ slug: 'squelcherisation' }));
+store.dispatch(deckActions.throwdown_addSnip({ slug: 'squelcherisation' }));
 
 
 
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+store.dispatch(deckActions.throwdown_addSnipStem({ 
   part: 'drums',
   snip: 'squelcherisation', 
   slug: 'beat-sliced', 
@@ -329,7 +329,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 }));
 
 
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+store.dispatch(deckActions.throwdown_addSnipStem({ 
   part: 'bass',
   snip: 'squelcherisation', 
   slug: 'bass', 
@@ -383,7 +383,7 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 }));
 
 
-store.dispatch(throwdownActions.throwdown_addSnipStem({ 
+store.dispatch(deckActions.throwdown_addSnipStem({ 
   part: 'lead',
   snip: 'squelcherisation', 
   slug: 'lead', 
@@ -405,15 +405,15 @@ store.dispatch(throwdownActions.throwdown_addSnipStem({
 }));
 
 // we need a "set"; we don't know what toggle does if we don't know current state
-store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
+store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
   slug: 'beat-sliced',
 }));
-store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
+store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
   slug: 'bass',
 }));
-store.dispatch(throwdownActions.throwdown_toggleSnipStemTrigger({ 
+store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
   snip: 'squelcherisation', 
   slug: 'lead',
 }));
