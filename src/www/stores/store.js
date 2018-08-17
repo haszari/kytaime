@@ -1,5 +1,7 @@
 import { createStore } from 'redux'
-import kytaimeApp from './reducers'
-let store = createStore(kytaimeApp)
+
+import app from './reducers'
+
+let store = createStore(app)
 
 export default store;

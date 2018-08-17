@@ -1,85 +1,105 @@
 
 // styles
-require('./styles/app.scss');
+// require('./styles/app.scss');
 
 import React from 'react';
 import {render} from 'react-dom';
 
 import { Provider } from 'react-redux'
 
-import shortid from 'shortid';
-
-import kytaimePatternSequencer from './kytaime-pattern-sequencer';
-
 import store from './stores/store';
-import * as actions from './stores/actions';
 
-import Toolbar from './components/container/toolbar.js';
-import PatternGrid from './components/container/pattern-grid.js';
+import { sequencer, bpmUtilities } from '@kytaime/lib/sequencer';
 
-function App() {
-   return (
-      <Provider store={store}>
-         {/* Provider likes to wrap a single element */}
-         <div>
-            <Toolbar /> 
-            <PatternGrid />
-         </div>
-      </Provider>
-   );
+import Transport from './components/transport/component.jsx';
+import * as transportActions from './components/transport/actions';
+
+import ThrowdownDecks from  './components/decks/views/throwdown-decks.jsx';
+import ThrowdownService from  './components/decks/services/throwdown-service.jsx';
+
+function App({ audioContext }) {
+  return (
+    <Provider store={store}>
+      {/* Provider likes to wrap a single element */}
+      <div>
+        <Transport title="Squelcherisation" />
+
+        {/* UI components */}
+        <ThrowdownDecks />
+
+        {/* service components to play back audio, midi */}
+        <ThrowdownService audioContext={audioContext} />
+      </div>
+    </Provider>
+  );
 }
+
+var sequencerCallback = function(renderRange) {
+
+  store.dispatch(transportActions.transportRenderUpdate(renderRange));
+}
+
+var startTransport = function() {
+  sequencer.start();
+}
+var stopTransport = function() {
+  // throwdown.stop();
+  sequencer.stop();
+}
+
+
+// bind sequencer/transport to store
+
+// (thanks to https://github.com/reduxjs/redux/issues/303#issuecomment-125184409)
+// this should be moved into a lib folder
+function observeStore(store, select, onChange) {
+  let currentState;
+
+  function handleChange() {
+    let nextState = select(store.getState());
+    if (nextState !== currentState) {
+      currentState = nextState;
+      onChange(currentState);
+    }
+  }
+
+  let unsubscribe = store.subscribe(handleChange);
+  handleChange();
+  return unsubscribe;
+}
+
+// hook up playback to app state
+observeStore(
+  store, 
+  // transport component could provide this selector
+  (storeState) => {
+    return storeState.transport.playState
+  }, 
+  (playState) => {
+    if (playState == "playing") {
+      startTransport();
+    }
+    else {
+      stopTransport();
+    }
+  }
+);
+
+/// -----------------------------------------------------------------------------------------------
+// main
+
+sequencer.setMidiOut("IAC Driver Bus 1");
+sequencer.setRenderCallback('throwdown', sequencerCallback);
+
+// I believe we need to nudge the channel count so we can use em all
+sequencer.audioContext.destination.channelCount = sequencer.audioContext.destination.maxChannelCount;
+
 
 var appDiv = document.createElement('div');
 document.body.appendChild(appDiv);
 
-// block file drop redirect
-document.addEventListener('dragover', event => event.preventDefault())
-document.addEventListener('drop', event => event.preventDefault())
+render(<App audioContext={ sequencer.audioContext } />, appDiv);
 
-// initial state 
-let numRows = 6;
-store.dispatch(actions.setGridNumRows(numRows));
-for (let i=0; i<numRows; i++)
-   store.dispatch(actions.setGridRowMidiChannel({ rowIndex: i, midiChannel: i+1 }));
+// import './load-test-snip-data';
+import './load-squelch-snip-data';
 
-
-render(<App/>, appDiv);
-
-// budgo ui
-window.shortid = shortid;
-
-window.ui = { 
-   setGridRows: (numRows) => {
-      store.dispatch(actions.setGridNumRows(numRows));
-   },
-   setRowChannel: (rowIndex, midiChannel) => {
-      store.dispatch(actions.setGridRowMidiChannel({ rowIndex, midiChannel }))
-   }
-}
-window.exportProject = () => {
-   return JSON.stringify(store.getState());
-}
-window.importProject = (json) => {
-   let stateTree = JSON.parse(json);
-   store.dispatch(actions.importRehydrate(stateTree)); 
-} 
-
-
-let importPattern = (channel, patternObject) => {
-   store.dispatch(actions.addPattern({ 
-      channel: channel,
-      duration: patternObject.duration,
-      notes: patternObject.notes,
-      startBeats: patternObject.startBeats,
-      endBeats: patternObject.endBeats
-   }));
-}
-
-// import {hats, kick, beat, bassline, lead, filter, send} from './lib/example-patterns';
-
-// importPattern(1, kick);
-// importPattern(1, hats);
-// importPattern(1, beat);
-// importPattern(2, bassline);
-// importPattern(3, lead);
-// importPattern(3, filter);

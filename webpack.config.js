@@ -4,19 +4,22 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var path = require('path');
 
-const kytaimeApp = {
+var aliases = require('./webpack-aliases');
+
+
+// const kytaimeApp = {
+//    entry: "./src/www/app.jsx",
+//    htmlTemplate: "src/www/index.html",
+// };
+const throwdownApp = {
    entry: "./src/www/app.jsx",
    htmlTemplate: "src/www/index.html",
 };
-const throwdownApp = {
-   entry: "./src/www/apps/throwdown/app.jsx",
-   htmlTemplate: "src/www/index.html",
-};
-const squelchApp = {
-   entry: "./src/www/apps/squelcherisation/app.jsx",
-   htmlTemplate: "src/www/index.html",
-};
-const app = squelchApp;
+// const squelchApp = {
+//    entry: "./src/www/apps/squelcherisation/app.jsx",
+//    htmlTemplate: "src/www/index.html",
+// };
+const app = throwdownApp;
 
 module.exports = {
    entry: app.entry,
@@ -25,6 +28,9 @@ module.exports = {
       filename: "bundle.js"
    },
    devtool: 'source-map',
+   resolve: {
+      alias: aliases,
+   },
    module: {
       loaders: [
          { 

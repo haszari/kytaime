@@ -14,9 +14,9 @@ import * as selectors from '../selectors';
 
 
 // I should use an @alias for these?
-import * as audioUtilities from '../../../../../lib/audio-utilities';
-import * as bpmUtilities from '../../../../../lib/sequencer/bpm-utilities';
-import * as patternSequencer from '../../../../../lib/sequencer/pattern-sequencer';
+import * as audioUtilities from '@kytaime/lib/audio-utilities';
+import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
+import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
 
 class AudioSlicePlayer {
