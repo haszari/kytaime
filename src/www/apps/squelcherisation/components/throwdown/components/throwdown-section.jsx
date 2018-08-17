@@ -1,6 +1,13 @@
 
 import React from 'react';
 
+function triggerStyles(triggered, playing) {
+  const styles = { };
+  if (triggered) styles.fontWeight = 'bold';
+  if (playing) styles.fontStyle = 'italic';
+  return styles;
+}
+
 const ThrowdownSection = (props) => {
   const { id, setTriggeredSection, triggered, playing, data } = props;
   const style = {
@@ -11,15 +18,29 @@ const ThrowdownSection = (props) => {
     userSelect: 'none',
   };
 
-  const titleStyle = { };
-  if (triggered) titleStyle.fontWeight = 'bold';
-  if (playing) titleStyle.fontStyle = 'italic';
+  const titleStyle = triggerStyles(triggered, playing);
 
+  // section triggering
   const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
+  // part (within section) triggering 
+  const toggleThisPartTriggered = () => {
+    // coming soon
+  };
+
+
   const partPlayers = _.map(data.parts, (part) => {
-    return (<div key={ part.label } >{ part.label }</div>);
+    const partStyle = triggerStyles(part.triggered, playing && part.playing); // these properties coming soon
+    const setNothingTriggered = () => {
+      // this action coming soon
+    };
+
+    return (
+      <div style={ partStyle } key={ part.label } onClick={ toggleThisPartTriggered } >
+        { part.label }
+      </div>
+    );
   });
 
 
