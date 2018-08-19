@@ -21,35 +21,19 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return { };
+  return { 
+    setDeckSectionPartPlaying: ({ sectionId, partSlug, playing }) => {
+      dispatch(actions.throwdown_setPartPlaying( { deckId: ownProps.id, sectionId, partSlug, playing } ));
+    },
+  };
 }
-
 class DeckServiceComponent extends React.Component {
-// class DeckService extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  componentWillUpdate(props) {
-    // const { snip, slug, triggered, renderRange, lastRenderEndTime, transportPlayState } = props;
-
-    // if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
-    //   return;
-
-    // // console.log('update midi stem', slug, renderRange.start.time, lastRenderEndTime);
-
-    // const triggerState = triggered;
-    // this.updateAndRenderMidi(renderRange, triggerState);
-
-    // store.dispatch(throwdownActions.throwdown_updateSnipStemRenderPosition({
-    //   snip: snip,
-    //   slug: slug,
-    //   time: renderRange.end.time,
-    // }));
-  }
-
   render() {
-    const { sections, triggeredSectionId, playingSectionId, triggerPhraseDuration, audioContext, id } = this.props;
+    const { sections, triggeredSectionId, playingSectionId, triggerPhraseDuration, audioContext, id, setDeckSectionPartPlaying } = this.props;
     // console.log(`triggeredSectionId=${triggeredSectionId} playingSectionId=${playingSectionId}`);
 
     const allSections = _.map( sections, ( section ) => 
@@ -64,6 +48,8 @@ class DeckServiceComponent extends React.Component {
         triggerPhraseDuration={ triggerPhraseDuration }
         triggered={ section.id === triggeredSectionId } 
         playing={ section.id === playingSectionId } 
+
+        setDeckSectionPartPlaying={ setDeckSectionPartPlaying }
         
         parts={ section.parts }  
       />

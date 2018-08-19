@@ -35,6 +35,9 @@ export function throwdown_setPartTriggered({ deckId, sectionId, partSlug, trigge
   return { type: actionTypes.THROWDOWN_SET_PART_TRIGGERED, ...{ deckId, sectionId, partSlug, triggered } };
 }
 
+export function throwdown_setPartPlaying({ deckId, sectionId, partSlug, playing }) {
+  return { type: actionTypes.THROWDOWN_SET_PART_PLAYING, ...{ deckId, sectionId, partSlug, playing } };
+}
 
 /// these actions are asleep right now
 

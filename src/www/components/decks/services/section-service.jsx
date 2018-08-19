@@ -49,6 +49,8 @@ class AudioSlicePlayer {
 
     this.slices = props.slices;
     this.duration = props.duration;
+
+    this.updatePlayingState = props.updatePlayingState;
   }
 
   connectToChannelForPart(audioContext, audioSourceNode, audioDestinationNode, partName) {
@@ -113,6 +115,7 @@ class AudioSlicePlayer {
       this.endBeats,
     );
     this.playing = triggerInfo.isPlaying;
+    this.updatePlayingState( this.playing );
 
     let filteredSlices = _.filter(this.slices, function(sliceEvent) {
       return bpmUtilities.valueInWrappedBeatRange(
@@ -157,7 +160,7 @@ class SectionServiceComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    const { audioContext, parts } = props;
+    const { id, audioContext, parts, setDeckSectionPartPlaying } = props;
 
     this.slicePlayers = _.filter(parts, (part) => {
       return (part.data.audio && part.data.pattern);
@@ -172,7 +175,9 @@ class SectionServiceComponent extends React.Component {
             beat: 0,
         }];
       }
-
+      let updatePlayingState = ( isPlaying ) => {
+        setDeckSectionPartPlaying( { sectionId: id, partSlug: part.slug, playing: isPlaying } );
+      };
       return new AudioSlicePlayer({
         key: part.slug,
         slug: part.slug,
@@ -189,6 +194,8 @@ class SectionServiceComponent extends React.Component {
         duration: pattern.duration,
         startBeats: pattern.startBeats, 
         endBeats: pattern.endBeats, 
+
+        updatePlayingState: updatePlayingState,
         
         slices: slices,
       });

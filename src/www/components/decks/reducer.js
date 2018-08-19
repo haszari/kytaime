@@ -17,19 +17,28 @@ function tidySlug(desiredSlug, existingSlugs) {
 }
 
 //---------------------------------------------
+// defaults / schema for various data types
+
+const defaults = {
+  part: {
+    slug: '',
+    triggered: true, 
+    playing: false, 
+    // audio { file, tempo }, pattern { duration, slices }
+    // or midi pattern data
+  }
+}
+
+//---------------------------------------------
 // Parts - patterns or stems (loops) within a section
 
-const partReducer = (state = {
-  slug: '',
-  triggered: true,
-  // audio { file, tempo }, pattern { duration, slices }
-  // or midi pattern data
-}, action) => {
+
+const partReducer = ( state = {}, action ) => {
   switch ( action.type ) {
     case actionTypes.THROWDOWN_ADD_SECTION: {
       // normalise - add missing fields
       const dang =  {
-        triggered: true,
+        ...defaults.part,
         ...state,
       };
       return dang;
@@ -38,6 +47,12 @@ const partReducer = (state = {
       return {
         ...state,
         triggered: action.triggered,
+      }
+    }
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: {
+      return {
+        ...state,
+        playing: action.playing,
       }
     }
   }
@@ -51,6 +66,7 @@ const partsReducer = ( state = [], action ) => {
         return partReducer(part, action);
       })
     }
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
       return state.map( ( part ) => {
         if (part.slug == action.partSlug)
@@ -93,6 +109,7 @@ const sectionReducer = (state = {
         renderPosition: action.time,
       }      
     }
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
       return {
         ...state,
@@ -112,6 +129,7 @@ const sectionsReducer = (state = [], action) => {
       ];
     }
 
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {
       return state.map((section) => {
@@ -157,6 +175,7 @@ const deckReducer = (state = {
       });
     }
 
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
     case actionTypes.THROWDOWN_ADD_SECTION: 
@@ -174,6 +193,7 @@ const deckReducer = (state = {
 // This reducer handles add/remove, linereducer handles editing of each deck/line
 const decksReducer = (state = [], action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
     case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: 
