@@ -155,9 +155,9 @@ class SectionServiceComponent extends React.Component {
   constructor(props) {
     super(props);
 
-    const { audioContext, data } = props;
+    const { audioContext, parts } = props;
 
-    this.slicePlayers = _.filter(data.parts, (part) => {
+    this.slicePlayers = _.filter(parts, (part) => {
       return (part.data.audio && part.data.pattern);
     }).map((part) => {
       const { audio, pattern } = part.data;

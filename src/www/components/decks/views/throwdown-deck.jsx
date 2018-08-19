@@ -21,12 +21,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return { 
     setDeckTriggeredSection: ({ sectionId }) => {
       dispatch(actions.throwdown_setTriggeredSection({ deckId: ownProps.id, sectionId }));
-    }
+    },
+    setDeckTriggeredSectionPart: ({ sectionId, partId }) => {
+      dispatch(actions.throwdown_setTriggeredSection({ deckId: ownProps.id, sectionId, partId }));
+    },
   };
 }
 
 const ThrowdownDeckComponent = (props) => {
-  const { id, sections, setDeckTriggeredSection, triggeredSectionId, playingSectionId } = props;
+  const { id, sections, setDeckTriggeredSection, setDeckTriggeredSectionPart, triggeredSectionId, playingSectionId } = props;
   const style = {
     backgroundColor: '#f8f8f8',
     borderRadius: '0.2em',
@@ -43,7 +46,9 @@ const ThrowdownDeckComponent = (props) => {
       triggered={ triggeredSectionId == section.id } 
       playing={ playingSectionId == section.id } 
 
-      data={ section.data }
+      setTriggeredSection={ setDeckTriggeredSectionPart } 
+
+      parts={ section.parts }
     />
   );
 

@@ -9,7 +9,7 @@ function triggerStyles(triggered, playing) {
 }
 
 const ThrowdownSection = (props) => {
-  const { id, setTriggeredSection, triggered, playing, data } = props;
+  const { id, setTriggeredSection, setPartTrigger, triggered, playing, parts } = props;
   const style = {
     backgroundColor: '#f4f4f4',
     borderRadius: '0.2em',
@@ -25,19 +25,17 @@ const ThrowdownSection = (props) => {
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
   // part (within section) triggering 
-  const toggleThisPartTriggered = () => {
-    // coming soon
-  };
+  const toggleThisPartTriggered = ( partId ) => setPartTrigger({ sectionId: id, partId });
 
 
-  const partPlayers = _.map(data.parts, (part) => {
+  const partPlayers = _.map(parts, (part) => {
     const partStyle = triggerStyles(part.triggered, playing && part.playing); // these properties coming soon
     const setNothingTriggered = () => {
       // this action coming soon
     };
 
     return (
-      <div style={ partStyle } key={ part.label } onClick={ toggleThisPartTriggered } >
+      <div style={ partStyle } key={ part.label } onClick={ () => toggleThisPartTriggered(partId) } >
         { part.label }
       </div>
     );

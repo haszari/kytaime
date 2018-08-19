@@ -65,7 +65,7 @@ class DeckServiceComponent extends React.Component {
         triggered={ section.id === triggeredSectionId } 
         playing={ section.id === playingSectionId } 
         
-        data={ section.data }  
+        parts={ section.parts }  
       />
     );
     return (

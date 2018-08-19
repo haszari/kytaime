@@ -16,6 +16,25 @@ function tidySlug(desiredSlug, existingSlugs) {
   return uniqueSlug;
 }
 
+//---------------------------------------------
+// Parts - patterns or stems (loops) within a section
+
+const partReducer = (state = {}, action) => {
+  
+}
+
+const partsReducer = ( state = [], action ) => {
+  switch ( action.type ) {
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
+      return state.map( ( part ) => {
+        if (part.id == action.partId)
+          return partReducer(part, action);
+        return part;
+      })
+    }
+  }
+  return state;
+}
 
 //---------------------------------------------
 // Sections - frozen chunks of arrangement (in a deck ready for playback)
@@ -31,14 +50,14 @@ const nextSectionId = () => {
 const sectionReducer = (state = {
   id: nextSectionId(),
   renderPosition: null,
-  data: {},
+  parts: [], 
 }, action) => {
   switch (action.type) {
     case actionTypes.THROWDOWN_ADD_SECTION: {
-      const data = { data: action.data };
+      // const data = { data: action.data };
       return {
         ...state,
-        ...data,
+        parts: action.parts,
       }
     }
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {
@@ -46,6 +65,12 @@ const sectionReducer = (state = {
         ...state,
         renderPosition: action.time,
       }      
+    }
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
+      return {
+        ...state,
+        parts: partsReducer( state.parts, action ),
+      }
     }
   }
   return state;
@@ -60,6 +85,7 @@ const sectionsReducer = (state = [], action) => {
       ];
     }
 
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {
       return state.map((section) => {
         if (section.id == action.sectionId)
@@ -104,6 +130,7 @@ const deckReducer = (state = {
       });
     }
 
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: {
@@ -120,6 +147,7 @@ const deckReducer = (state = {
 // This reducer handles add/remove, linereducer handles editing of each deck/line
 const decksReducer = (state = [], action) => {
   switch (action.type) {
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
     case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: 
     case actionTypes.THROWDOWN_SET_PLAYING_SECTION:
