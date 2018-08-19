@@ -21,15 +21,17 @@ import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
 class AudioSlicePlayer {
   constructor(props) {
+    this.slug = props.slug;
+
+    this.part = props.part || "drums";
+    
     this.audioFile = props.audio;
     this.tempo = props.tempo;
 
     this.audioContext = props.audioContext;
     this.secPerBeat = (60 / this.tempo);
 
-    this.part = props.part || "drums";
-
-    this.triggered = false;
+    this.triggered = true;
     this.playing = false;
 
     this.buffer = undefined;
@@ -163,10 +165,13 @@ class SectionServiceComponent extends React.Component {
       const { audio, pattern } = part.data;
       return new AudioSlicePlayer({
         key: part.slug,
+        slug: part.slug,
 
         audioContext: audioContext,
         
         part: part.part,
+
+        triggered: part.triggered,
 
         audio: audio.file,
         tempo: audio.tempo, 
@@ -181,7 +186,7 @@ class SectionServiceComponent extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportPlayState } = props;
+    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportPlayState, parts } = props;
 
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
       return;
@@ -202,8 +207,8 @@ class SectionServiceComponent extends React.Component {
 
     if (isThisSectionPlaying) {      
       const audioDestinationNode = renderRange.audioContext.destination;
-      _.map(this.slicePlayers, (player) => {
-        const isThisPartTriggered = triggered;
+      _.map(this.slicePlayers, ( player ) => {
+        const isThisPartTriggered = _.find(parts, { slug: player.slug }).triggered;
         player.updateAndRenderAudio(renderRange, isThisPartTriggered, triggerPhraseDuration, audioDestinationNode);
       });
     }
