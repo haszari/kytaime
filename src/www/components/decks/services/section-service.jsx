@@ -163,6 +163,16 @@ class SectionServiceComponent extends React.Component {
       return (part.data.audio && part.data.pattern);
     }).map((part) => {
       const { audio, pattern } = part.data;
+      let slices = pattern.slices;
+      if ( ! slices || ! slices.length ) {
+        // default to full slice
+        slices = [{
+            start: 0, 
+            duration: pattern.duration,
+            beat: 0,
+        }];
+      }
+
       return new AudioSlicePlayer({
         key: part.slug,
         slug: part.slug,
@@ -179,8 +189,8 @@ class SectionServiceComponent extends React.Component {
         duration: pattern.duration,
         startBeats: pattern.startBeats, 
         endBeats: pattern.endBeats, 
-        slices: pattern.slices,
-
+        
+        slices: slices,
       });
     });
   }
