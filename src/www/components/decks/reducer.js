@@ -19,15 +19,41 @@ function tidySlug(desiredSlug, existingSlugs) {
 //---------------------------------------------
 // Parts - patterns or stems (loops) within a section
 
-const partReducer = (state = {}, action) => {
-  
+const partReducer = (state = {
+  slug: '',
+  triggered: true,
+  // audio { file, tempo }, pattern { duration, slices }
+  // or midi pattern data
+}, action) => {
+  switch ( action.type ) {
+    case actionTypes.THROWDOWN_ADD_SECTION: {
+      // normalise - add missing fields
+      const dang =  {
+        triggered: true,
+        ...state,
+      };
+      return dang;
+    }
+    case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
+      return {
+        ...state,
+        triggered: action.triggered,
+      }
+    }
+  }
+  return state;
 }
 
 const partsReducer = ( state = [], action ) => {
   switch ( action.type ) {
+    case actionTypes.THROWDOWN_ADD_SECTION: {
+      return state.map( ( part ) => {
+        return partReducer(part, action);
+      })
+    }
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
       return state.map( ( part ) => {
-        if (part.id == action.partId)
+        if (part.slug == action.partSlug)
           return partReducer(part, action);
         return part;
       })
@@ -57,7 +83,8 @@ const sectionReducer = (state = {
       // const data = { data: action.data };
       return {
         ...state,
-        parts: action.parts,
+        // run parts through the reducer to normalise and add missing fields
+        parts: partsReducer( action.parts, action ), 
       }
     }
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {

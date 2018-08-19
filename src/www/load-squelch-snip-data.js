@@ -80,7 +80,7 @@ store.dispatch(deckActions.throwdown_addDeck());
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 0,
   parts: [{
-    label: 'beat', 
+    slug: 'beat', 
     part: 'drums',
     data: {  
       audio: {
@@ -90,7 +90,7 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: beatPatterns.dnb,
     }
   }, {
-    label: 'voc', 
+    slug: 'voc', 
     part: 'voc',
     data: {  
       audio: {
@@ -119,7 +119,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 0, 
   parts: [{
-    label: 'beat', 
+    slug: 'beat', 
     part: 'drums',
     data: {  
       audio: {
@@ -129,7 +129,7 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: beatPatterns.straight,
     }
   }, {
-    label: 'voc', 
+    slug: 'voc', 
     part: 'voc',
     data: {  
       audio: {
@@ -162,7 +162,7 @@ store.dispatch(deckActions.throwdown_setTriggeredSection({ deckId: 0, sectionId:
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 1,
   parts: [{
-    label: 'chord', 
+    slug: 'chord', 
     part: 'chords',
     data: {  
       audio: {
@@ -186,7 +186,7 @@ store.dispatch(deckActions.throwdown_addSection({
       },
     }
   }, {
-    label: 'arp', 
+    slug: 'arp', 
     part: 'pad',
     data: {  
       audio: {
@@ -234,7 +234,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: 1,
   parts: [{
-    label: 'chord', 
+    slug: 'chord', 
     part: 'chords',
     data: {  
       audio: {
@@ -268,7 +268,7 @@ store.dispatch(deckActions.throwdown_addSection({
       },
     }
   }, {
-    label: 'arp2', 
+    slug: 'arp2', 
     part: 'pad',
     data: {  
       audio: {
@@ -302,111 +302,3 @@ store.dispatch(deckActions.throwdown_addSection({
 // store.dispatch(deckActions.throwdown_removeDeck({ deckId: 3 }));
 
 
-
-/// returning soon...
-
-store.dispatch(deckActions.throwdown_addSnip({ slug: 'squelcherisation' }));
-
-
-
-store.dispatch(deckActions.throwdown_addSnipStem({ 
-  part: 'drums',
-  snip: 'squelcherisation', 
-  slug: 'beat-sliced', 
-  audio: {
-    file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
-    tempo: 137.4,
-  },
-  pattern: beatPatterns.dnb,
-  variation: {} // coming soon
-}));
-
-
-store.dispatch(deckActions.throwdown_addSnipStem({ 
-  part: 'bass',
-  snip: 'squelcherisation', 
-  slug: 'bass', 
-  pattern: {
-    notes: [
-      { 
-        start: 0, 
-        duration: 1.1,
-        note: 27 + 24,
-      },
-      { 
-        start: 1.5, 
-        duration: 0.5,
-        note: 22 + 24,
-      },
-      { 
-        start: 3, 
-        duration: 0.5,
-        note: 22 + 24,
-      },
-      { 
-        start: 4, 
-        duration: 3,
-        note: 15 + 24,
-      },
-      { 
-        start: 9, 
-        duration: 1,
-        note: 25 + 24,
-      },
-      { 
-        start: 11, 
-        duration: 1,
-        note: 25 + 24,
-      },
-      { 
-        start: 12, 
-        duration: 3,
-        note: 16 + 24,
-      },
-      { // is this one for real?
-        start: 15, 
-        duration: 1,
-        note: 18 + 24,
-      },
-    ],
-    duration: 16, 
-    // startBeats: [0, 3],
-    // endBeats: [0.5],
-  } 
-}));
-
-
-store.dispatch(deckActions.throwdown_addSnipStem({ 
-  part: 'lead',
-  snip: 'squelcherisation', 
-  slug: 'lead', 
-  pattern: {
-    notes: [
-      { 
-        start: 1, 
-        duration: 0.3,
-        note: -5 + 64,
-      },
-      { 
-        start: 2.5, 
-        duration: 0.3,
-        note: -5 + 64,
-      },
-    ],
-    duration: 8, 
-  } 
-}));
-
-// we need a "set"; we don't know what toggle does if we don't know current state
-store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
-  snip: 'squelcherisation', 
-  slug: 'beat-sliced',
-}));
-store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
-  snip: 'squelcherisation', 
-  slug: 'bass',
-}));
-store.dispatch(deckActions.throwdown_toggleSnipStemTrigger({ 
-  snip: 'squelcherisation', 
-  slug: 'lead',
-}));

@@ -24,19 +24,16 @@ const ThrowdownSection = (props) => {
   const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
   const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
 
-  // part (within section) triggering 
-  const toggleThisPartTriggered = ( partId ) => setPartTrigger({ sectionId: id, partId });
 
-
-  const partPlayers = _.map(parts, (part) => {
-    const partStyle = triggerStyles(part.triggered, playing && part.playing); // these properties coming soon
-    const setNothingTriggered = () => {
-      // this action coming soon
-    };
+  const partPlayers = _.map(parts, ( part ) => {
+    const { slug, triggered } = part;
+    // part (within section) triggering 
+    const toggleThisPartTriggered = ( partSlug, triggerState ) => setPartTrigger({ sectionId: id, partSlug, triggered: triggerState });
+    const partStyle = triggerStyles( triggered, playing && part.playing ); // these properties coming soon
 
     return (
-      <div style={ partStyle } key={ part.label } onClick={ () => toggleThisPartTriggered(partId) } >
-        { part.label }
+      <div style={ partStyle } key={ slug } onClick={ () => toggleThisPartTriggered( slug, ! triggered ) } >
+        { slug }
       </div>
     );
   });

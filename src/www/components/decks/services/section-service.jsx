@@ -162,12 +162,10 @@ class SectionServiceComponent extends React.Component {
     }).map((part) => {
       const { audio, pattern } = part.data;
       return new AudioSlicePlayer({
-        key: part.id,
+        key: part.slug,
 
         audioContext: audioContext,
         
-        // snip: snip,
-        // slug: slug, 
         part: part.part,
 
         audio: audio.file,

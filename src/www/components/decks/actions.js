@@ -31,8 +31,8 @@ export function throwdown_updateSectionRenderPosition({ deckId, sectionId, time 
   return { type: actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION, ...{ deckId, sectionId, time } };
 }
 
-export function throwdown_setPartTriggered({ deckId, sectionId, partId }) {
-  return { type: actionTypes.THROWDOWN_SET_PART_TRIGGERED, ...{ deckId, sectionId, partId } };
+export function throwdown_setPartTriggered({ deckId, sectionId, partSlug, triggered }) {
+  return { type: actionTypes.THROWDOWN_SET_PART_TRIGGERED, ...{ deckId, sectionId, partSlug, triggered } };
 }
 
 
