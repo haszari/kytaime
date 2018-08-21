@@ -99,7 +99,7 @@ class AudioSlicePlayer {
     player.stop(stopTimestamp);
   }
 
-  updateAndRenderAudio(renderRange, triggerState, triggerPhraseDuration, audioDestinationNode) {
+  updateAndRenderAudio(renderRange, triggerState, audioDestinationNode) {
     const { duration } = this;
     if (!this.loaded) 
       return;
@@ -232,7 +232,7 @@ class SectionServiceComponent extends React.Component {
       const audioDestinationNode = renderRange.audioContext.destination;
       _.map(this.slicePlayers, ( player ) => {
         const isThisPartTriggered = _.find(parts, { slug: player.slug }).triggered;
-        player.updateAndRenderAudio(renderRange, isThisPartTriggered, triggerPhraseDuration, audioDestinationNode);
+        player.updateAndRenderAudio(renderRange, isThisPartTriggered, audioDestinationNode);
       });
     }
 
