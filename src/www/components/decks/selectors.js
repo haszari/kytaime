@@ -21,8 +21,8 @@ const minSectionPhraseDuration = 4;
 
 export const getSectionPhraseDuration = (state, { deckId, sectionId }) => {
   const section = getSection(state, { deckId, sectionId });
-  if (section && section.data && section.data.parts)
-    return _.reduce(section.data.parts, (accum, part) => {
+  if (section && section.parts)
+    return _.reduce(section.parts, (accum, part) => {
       const patternDuration = (part.data && part.data.pattern) ? part.data.pattern.duration : 0;
       return Math.max(patternDuration, accum)
     }, minSectionPhraseDuration);

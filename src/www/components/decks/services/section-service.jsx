@@ -110,13 +110,17 @@ class AudioSlicePlayer {
       renderRange, 
       this.triggered,
       this.playing, 
-      triggerPhraseDuration,
+      duration,
       this.startBeats,
       this.endBeats,
     );
+
     this.playing = triggerInfo.isPlaying;
     this.updatePlayingState( this.playing );
 
+    // slices: start time in pattern beats
+
+    // filteredSlices: start time in pattern beats; excludes slices that are pre-trigger
     let filteredSlices = _.filter(this.slices, function(sliceEvent) {
       return bpmUtilities.valueInWrappedBeatRange(
         sliceEvent.start, 
@@ -126,12 +130,14 @@ class AudioSlicePlayer {
       );
     });
 
-
+    // scheduledSlices: start time in msec
     let scheduledSlices = patternSequencer.renderPatternEvents(renderRange, duration, filteredSlices);
 
+    const renderEventTime = (time) => (time + renderRange.audioContextTimeOffsetMsec) / 1000;
+
     _.map(scheduledSlices, (sliceRenderInfo) => {
-      let startTime = (sliceRenderInfo.start + renderRange.audioContextTimeOffsetMsec) / 1000,
-        stopTime = (sliceRenderInfo.start + sliceRenderInfo.duration + renderRange.audioContextTimeOffsetMsec) / 1000;
+      const startTime = renderEventTime(sliceRenderInfo.start);
+      const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
       this.playSliceAt(startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, audioDestinationNode);
     });
   }
