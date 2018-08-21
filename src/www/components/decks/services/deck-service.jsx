@@ -12,10 +12,11 @@ import SectionService from './section-service.jsx';
 
 
 const mapStateToProps = (state, ownProps) => {
+  let sections = _.filter(ownProps.sections, (section) => section.triggered || section.playing);
   return { 
     triggerPhraseDuration: selectors.getPhraseDuration(state, { 
       deckId: ownProps.id,
-      sectionIds: [ ownProps.triggeredSectionId, ownProps.playingSectionId ],
+      sectionIds: _.map(sections, 'id'),
     }),
   }
 }
@@ -33,8 +34,7 @@ class DeckServiceComponent extends React.Component {
   }
 
   render() {
-    const { sections, triggeredSectionId, playingSectionId, triggerPhraseDuration, audioContext, id, setDeckSectionPartPlaying } = this.props;
-    // console.log(`triggeredSectionId=${triggeredSectionId} playingSectionId=${playingSectionId}`);
+    const { sections, triggerPhraseDuration, audioContext, id, setDeckSectionPartPlaying } = this.props;
 
     const allSections = _.map( sections, ( section ) => 
       <SectionService 
@@ -46,8 +46,8 @@ class DeckServiceComponent extends React.Component {
         id={ section.id } 
 
         triggerPhraseDuration={ triggerPhraseDuration }
-        triggered={ section.id === triggeredSectionId } 
-        playing={ section.id === playingSectionId } 
+        triggered={ section.triggered } 
+        playing={ section.playing } 
 
         setDeckSectionPartPlaying={ setDeckSectionPartPlaying }
         

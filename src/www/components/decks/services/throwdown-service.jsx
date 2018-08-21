@@ -36,9 +36,6 @@ class ThrowdownServiceComponent extends React.Component {
 
         audioContext={ audioContext } 
 
-        triggeredSectionId={ deck.triggeredSectionId }
-        playingSectionId={ deck.playingSectionId }
-
         sections={ deck.sections }  
       />
     );

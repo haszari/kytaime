@@ -161,7 +161,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return { };
 }
 
-// class DeckServiceComponent extends React.Component {
 class SectionServiceComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -225,28 +224,23 @@ class SectionServiceComponent extends React.Component {
     );
 
     const isThisSectionPlaying = triggerInfo.isPlaying;
-    // if (triggered || isThisSectionPlaying) 
-    //   console.log(`beat=${Math.round(renderRange.start.beat * 100) / 100} sec${id} trig=${triggered} p=${isThisSectionPlaying} %=${triggerPhraseDuration}`);
 
-    if (isThisSectionPlaying) {      
-      const audioDestinationNode = renderRange.audioContext.destination;
-      _.map(this.slicePlayers, ( player ) => {
-        const isThisPartTriggered = _.find(parts, { slug: player.slug }).triggered;
-        player.updateAndRenderAudio(renderRange, isThisPartTriggered, audioDestinationNode);
-      });
-    }
+    const audioDestinationNode = renderRange.audioContext.destination;
+    _.map(this.slicePlayers, ( player ) => {
+      const isThisPartTriggered = _.find(parts, { slug: player.slug }).triggered;
+      player.updateAndRenderAudio(renderRange, isThisPartTriggered && isThisSectionPlaying, audioDestinationNode);
+    });
 
     store.dispatch(actions.throwdown_updateSectionRenderPosition({
       deckId: deckId,
       sectionId: id,
       time: renderRange.end.time,
     }));
-    if (isThisSectionPlaying) {
-      store.dispatch(actions.throwdown_setPlayingSection({
-        deckId: deckId,
-        sectionId: id,
-      }));
-    }
+    store.dispatch(actions.throwdown_setSectionPlaying({
+      deckId: deckId,
+      sectionId: id,
+      playing: isThisSectionPlaying,
+    }));
   }
 
 

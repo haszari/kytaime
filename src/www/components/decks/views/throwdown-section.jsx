@@ -21,8 +21,9 @@ const ThrowdownSection = (props) => {
   const titleStyle = triggerStyles(triggered, playing);
 
   // section triggering
-  const setMeAsTriggered = () => setTriggeredSection({ sectionId: id });
-  const setNothingTriggered = () => setTriggeredSection({ sectionId: null });
+  const toggleSectionTriggered = () => {
+    setTriggeredSection({ sectionId: id, triggered: ! triggered });
+  }
 
 
   const partPlayers = _.map(parts, ( part ) => {
@@ -41,7 +42,7 @@ const ThrowdownSection = (props) => {
 
   return (
     <div style={ style }>
-      <div style={ titleStyle } onClick={ triggered ? setNothingTriggered : setMeAsTriggered }>
+      <div style={ titleStyle } onClick={ toggleSectionTriggered }>
         Playable section { id }
       </div>
       { partPlayers }

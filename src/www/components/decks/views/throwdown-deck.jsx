@@ -9,18 +9,14 @@ import { getDeck } from '../selectors';
 import ThrowdownSection from './throwdown-section.jsx';
 
 const mapStateToProps = (state, ownProps) => {
-  let isTriggered = false;
-  const deck = getDeck(state, { deckId: ownProps.id });
   return {
-    triggeredSectionId: deck.triggeredSectionId,
-    playingSectionId: deck.playingSectionId,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return { 
-    setDeckTriggeredSection: ({ sectionId }) => {
-      dispatch(actions.throwdown_setTriggeredSection({ deckId: ownProps.id, sectionId }));
+    setDeckTriggeredSection: ({ sectionId, triggered }) => {
+      dispatch(actions.throwdown_setSectionTriggered({ deckId: ownProps.id, sectionId, triggered }));
     },
     setDeckTriggeredSectionPart: ({ sectionId, partSlug, triggered }) => {
       dispatch(actions.throwdown_setPartTriggered({ deckId: ownProps.id, sectionId, partSlug, triggered }));
@@ -29,7 +25,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 const ThrowdownDeckComponent = (props) => {
-  const { id, sections, setDeckTriggeredSection, setDeckTriggeredSectionPart, triggeredSectionId, playingSectionId } = props;
+  const { id, sections, setDeckTriggeredSection, setDeckTriggeredSectionPart } = props;
   const style = {
     backgroundColor: '#f8f8f8',
     borderRadius: '0.2em',
@@ -43,8 +39,8 @@ const ThrowdownDeckComponent = (props) => {
       key={ section.id } id={ section.id } 
 
       setTriggeredSection={ setDeckTriggeredSection } 
-      triggered={ triggeredSectionId == section.id } 
-      playing={ playingSectionId == section.id } 
+      triggered={ section.triggered } 
+      playing={ section.playing } 
 
       setPartTrigger={ setDeckTriggeredSectionPart } 
 

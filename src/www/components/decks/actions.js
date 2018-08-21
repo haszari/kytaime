@@ -17,16 +17,13 @@ export function throwdown_addSection({ deckId, parts }) {
 export function throwdown_removeSection({ deckId, sectionId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SECTION, ...{ deckId, sectionId } };
 }
-export function throwdown_setTriggeredSection({ deckId, sectionId }) {
-  // pass sectionId: null to clear triggered section
-  return { type: actionTypes.THROWDOWN_SET_TRIGGERED_SECTION, ...{ deckId, sectionId } };
-}
-export function throwdown_setPlayingSection({ deckId, sectionId }) {
-  // pass sectionId: null to clear playing section
-  return { type: actionTypes.THROWDOWN_SET_PLAYING_SECTION, ...{ deckId, sectionId } };
-}
 
-
+export function throwdown_setSectionTriggered({ deckId, sectionId, triggered }) {
+  return { type: actionTypes.THROWDOWN_SET_SECTION_TRIGGERED, ...{ deckId, sectionId, triggered } };
+}
+export function throwdown_setSectionPlaying({ deckId, sectionId, playing }) {
+  return { type: actionTypes.THROWDOWN_SET_SECTION_PLAYING, ...{ deckId, sectionId, playing } };
+}
 export function throwdown_updateSectionRenderPosition({ deckId, sectionId, time }) {
   return { type: actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION, ...{ deckId, sectionId, time } };
 }

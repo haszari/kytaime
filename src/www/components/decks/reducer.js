@@ -92,6 +92,8 @@ const nextSectionId = () => {
 const sectionReducer = (state = {
   id: nextSectionId(),
   renderPosition: null,
+  triggered: false,
+  playing: false,
   parts: [], 
 }, action) => {
   switch (action.type) {
@@ -109,6 +111,18 @@ const sectionReducer = (state = {
         renderPosition: action.time,
       }      
     }
+
+    case actionTypes.THROWDOWN_SET_SECTION_PLAYING: {
+      return Object.assign({}, state, {
+        playing: action.playing,
+      });
+    }
+    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED: {
+      return Object.assign({}, state, {
+        triggered: action.triggered,
+      });
+    }
+
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: {
       return {
@@ -129,6 +143,8 @@ const sectionsReducer = (state = [], action) => {
       ];
     }
 
+    case actionTypes.THROWDOWN_SET_SECTION_PLAYING: 
+    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED:
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {
@@ -159,22 +175,11 @@ const nextDeckId = () => {
 
 const deckReducer = (state = {
   id: nextDeckId(),
-  triggeredSectionId: null,
-  playingSectionId: null,
   sections: [],
 }, action) => {
   switch (action.type) {
-    case actionTypes.THROWDOWN_SET_PLAYING_SECTION: {
-      return Object.assign({}, state, {
-        playingSectionId: action.sectionId,
-      });
-    }
-    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: {
-      return Object.assign({}, state, {
-        triggeredSectionId: action.sectionId,
-      });
-    }
-
+    case actionTypes.THROWDOWN_SET_SECTION_PLAYING: 
+    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED:
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
@@ -196,8 +201,8 @@ const decksReducer = (state = [], action) => {
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
-    case actionTypes.THROWDOWN_SET_TRIGGERED_SECTION: 
-    case actionTypes.THROWDOWN_SET_PLAYING_SECTION:
+    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED: 
+    case actionTypes.THROWDOWN_SET_SECTION_PLAYING:
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: {
       return state.map((deck) => {
