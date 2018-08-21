@@ -118,8 +118,10 @@ const sectionReducer = (state = {
       });
     }
     case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED: {
+      // solo triggered section (across deck)
+      const triggered = state.id === action.sectionId ? action.triggered : false;
       return Object.assign({}, state, {
-        triggered: action.triggered,
+        triggered: triggered,
       });
     }
 
@@ -143,8 +145,15 @@ const sectionsReducer = (state = [], action) => {
       ];
     }
 
+    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED: {
+      // only allow one section toggled within a deck (solo)
+      // so we call through to reducer for all sections here
+      return state.map((section) => {
+        return sectionReducer(section, action);
+      })
+    }
+
     case actionTypes.THROWDOWN_SET_SECTION_PLAYING: 
-    case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED:
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: {
