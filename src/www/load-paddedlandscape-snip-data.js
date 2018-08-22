@@ -88,6 +88,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: kufca.tempo,
       },
       pattern: {
+        startBeats: [2],
         duration: 64,
       },
     }
@@ -135,7 +136,7 @@ store.dispatch(deckActions.throwdown_addSection({
 
 const peaches = {
   tempo: 132,
-  deckId: 2,
+  deckId: 1,
 };
 
 store.dispatch(deckActions.throwdown_addDeck());
@@ -151,6 +152,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: peaches.tempo,
       },
       pattern: {
+        startBeats: [1],
         duration: 16,
       },
     }

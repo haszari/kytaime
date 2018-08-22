@@ -51,7 +51,7 @@ class SectionServiceComponent extends React.Component {
       let updatePlayingState = ( isPlaying ) => {
         setDeckSectionPartPlaying( { sectionId: id, partSlug: part.slug, playing: isPlaying } );
       };
-      if (true || slices && slices.length) {
+      if (slices && slices.length) {
         return new AudioSlicePlayer({
           key: part.slug,
           slug: part.slug,
