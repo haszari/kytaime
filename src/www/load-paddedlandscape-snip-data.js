@@ -308,6 +308,60 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: squelch.patterns.normal,
     },
   }, {
+    slug: 'bass', 
+    part: 'bass',
+    data: {  
+      audio: {
+        file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+        tempo: squelch.tempo,
+      },
+      pattern: {
+        duration: 16, // I think
+        notes: [
+          { 
+            start: 0, 
+            duration: 1.1,
+            note: 27 + 24,
+          },
+          { 
+            start: 1.5, 
+            duration: 0.5,
+            note: 22 + 24,
+          },
+          { 
+            start: 3, 
+            duration: 0.5,
+            note: 22 + 24,
+          },
+          { 
+            start: 4, 
+            duration: 3,
+            note: 15 + 24,
+          },
+          { 
+            start: 9, 
+            duration: 1,
+            note: 25 + 24,
+          },
+          { 
+            start: 11, 
+            duration: 1,
+            note: 25 + 24,
+          },
+          { 
+            start: 12, 
+            duration: 3,
+            note: 16 + 24,
+          },
+          { 
+            start: 15, 
+            duration: 1,
+            note: 18 + 24,
+          },
+        ]
+      },
+    },
+  }, {
     slug: 'arpeggio', 
     part: 'lead',
     data: {
