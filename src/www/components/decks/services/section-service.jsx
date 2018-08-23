@@ -47,7 +47,7 @@ class SectionServiceComponent extends React.Component {
     const { id, audioContext, parts, setDeckSectionPartPlaying } = props;
 
     this.slicePlayers = _.filter(parts, (part) => {
-      return (part.data.audio && part.data.pattern);
+      return (part.data.audio || part.data.pattern);
     }).map((part) => {
       const { audio, pattern } = part.data;
       let slices = pattern.slices;
