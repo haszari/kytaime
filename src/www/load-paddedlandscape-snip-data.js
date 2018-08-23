@@ -89,7 +89,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: kufca.tempo,
       },
       pattern: {
-        startBeats: [2],
+        startBeats: [0, 2],
         duration: 64,
       },
     }
@@ -198,7 +198,7 @@ store.dispatch(deckActions.throwdown_addSection({
 
 
 ////---------------------------------------
-//// Squelcherisation
+//// Squelcherisation + Gemare
 
 const goodHatBeat = 1.5;
 const squelch = {
@@ -307,6 +307,35 @@ store.dispatch(deckActions.throwdown_addSection({
       },
       pattern: squelch.patterns.normal,
     },
+  }, {
+    slug: 'arpeggio', 
+    part: 'lead',
+    data: {
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20170709-padscape--gemare-lead-hills-dry.m4a'),
+        tempo: 120,
+      },
+      pattern: {
+        duration: 2, 
+        slices: [{
+          start: 0, 
+          duration: 0.15,
+          beat: 0
+        }, {
+          start: 0.5, 
+          duration: 0.15,
+          beat: 1.5
+        }, {
+          start: 1, 
+          duration: 0.15,
+          beat: 3
+        }, {
+          start: 1.5, 
+          duration: 0.15,
+          beat: 13
+        }]
+      }
+    }
   }]
 }));
 
