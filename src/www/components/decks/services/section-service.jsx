@@ -21,6 +21,7 @@ import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
 import AudioSlicePlayer from './audio-slice-player';
 import AudioStemPlayer from './audio-stem-player';
+import MidiPatternPlayer from './midi-pattern-player';
 
 
 const mapStateToProps = (state, ownProps) => {
@@ -50,10 +51,30 @@ class SectionServiceComponent extends React.Component {
     }).map((part) => {
       const { audio, pattern } = part.data;
       let slices = pattern.slices;
+      let notes = pattern.notes;
       let updatePlayingState = ( isPlaying ) => {
         setDeckSectionPartPlaying( { sectionId: id, partSlug: part.slug, playing: isPlaying } );
       };
-      if (slices && slices.length) {
+      if (notes) {
+        return new MidiPatternPlayer({
+          key: part.slug,
+          slug: part.slug,
+
+          part: part.part,
+
+          triggered: part.triggered,
+
+          duration: pattern.duration,
+          startBeats: pattern.startBeats, 
+          endBeats: pattern.endBeats, 
+
+          updatePlayingState: updatePlayingState,
+          
+          notes: pattern.notes,
+        });
+
+      }
+      else if (slices && slices.length) {
         return new AudioSlicePlayer({
           key: part.slug,
           slug: part.slug,
