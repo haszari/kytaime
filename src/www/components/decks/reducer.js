@@ -1,7 +1,5 @@
 import _ from 'lodash';
 
-import { default as slugify } from 'slug';
-
 import update from 'immutability-helper';
 
 
@@ -9,12 +7,12 @@ import * as actionTypes from './action-types';
 
 
 // refactor to util lib
-function tidySlug(desiredSlug, existingSlugs) {
-  let uniqueSlug = slugify(desiredSlug);
-  while (_.includes(existingSlugs, uniqueSlug))
-    uniqueSlug += _.sample('123456789');
-  return uniqueSlug;
-}
+// function tidySlug(desiredSlug, existingSlugs) {
+//   let uniqueSlug = slugify(desiredSlug);
+//   while (_.includes(existingSlugs, uniqueSlug))
+//     uniqueSlug += _.sample('123456789');
+//   return uniqueSlug;
+// }
 
 //---------------------------------------------
 // defaults / schema for various data types
