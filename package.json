@@ -24,7 +24,7 @@
     "lodash": "^4.17.10",
     "midievents": "^1.0.1",
     "midifile": "^1.0.4",
-    "node-sass": "^4.9.0",
+    "node-sass": "^4.9.3",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.9",
