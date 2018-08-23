@@ -60,6 +60,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: noyu.tempo,
       },
       pattern: {
+        endBeats: [63.5],
         duration: 64,
       },
     }
@@ -139,7 +140,7 @@ const peaches = {
   deckId: 1,
 };
 
-store.dispatch(deckActions.throwdown_addDeck());
+// store.dispatch(deckActions.throwdown_addDeck());
 
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: peaches.deckId,
@@ -194,4 +195,119 @@ store.dispatch(deckActions.throwdown_addSection({
     }
   }]
 }));
+
+
+////---------------------------------------
+//// Squelcherisation
+
+const goodHatBeat = 1.5;
+const squelch = {
+  tempo: 137.4,
+  deckId: 2,
+  patterns: {
+    dnb: {
+      duration: 4, 
+      slices: [
+        {
+          start: 0, 
+          duration: 0.5,
+          beat: 0,
+        },
+        {
+          start: 0.5, 
+          duration: 0.25,
+          beat: goodHatBeat,
+        },
+        {
+          start: 1, 
+          duration: 0.5,
+          beat: 1,
+        },
+        {
+          start: 1.5, 
+          duration: 0.25,
+          beat: goodHatBeat,
+        },
+        {
+          start: 2, 
+          duration: 0.25,
+          beat: goodHatBeat,
+        },
+        {
+          start: 2.5, 
+          duration: 0.5,
+          beat: 0,
+        },
+        {
+          start: 3, 
+          duration: 0.5,
+          beat: 1,
+        },
+        {
+          start: 3.5, 
+          duration: 0.25,
+          beat: goodHatBeat,
+        },
+      ]
+    },
+    straight: {
+      duration: 2, 
+      slices: [
+        {
+          start: 0, 
+          duration: 1.5,
+          beat: 0,
+        },
+        {
+          start: 1, 
+          duration: 1.5,
+          beat: 1,
+        },
+      ]
+    },
+    normal: {
+      duration: 16, 
+      slices: [
+        {
+          start: 0, 
+          duration: 4,
+          beat: 0,
+        },
+        {
+          start: 4, 
+          duration: 4,
+          beat: 4,
+        },
+        {
+          start: 8, 
+          duration: 4,
+          beat: 8,
+        },
+        {
+          start: 12, 
+          duration: 4,
+          beat: 12,
+        },
+      ]
+    },
+  },
+};
+
+store.dispatch(deckActions.throwdown_addDeck());
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: squelch.deckId,
+  parts: [{
+    slug: 'beat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
+        tempo: squelch.tempo,
+      },
+      pattern: squelch.patterns.normal,
+    },
+  }]
+}));
+
 
