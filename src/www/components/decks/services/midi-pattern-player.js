@@ -24,6 +24,8 @@ class MidiPatternPlayer {
     this.notes = props.notes;
     this.duration = props.duration;
 
+    this.midiChannel = midiUtilities.getZeroChannelForPart(this.part);
+
     this.updatePlayingState = props.updatePlayingState;
   }
 
@@ -32,10 +34,7 @@ class MidiPatternPlayer {
   }
 
   updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
-    const { duration } = this;
-
-    // this channel is 1-based
-    const patternChannel = 2; // param and or choose by part coming soon
+    const { duration, midiChannel } = this;
 
     const beatsPerMinute = renderRange.tempoBpm;
 
@@ -79,7 +78,7 @@ class MidiPatternPlayer {
       const note = { 
         port: renderRange.midiOutPort, 
 
-        channel: patternChannel - 1,
+        channel: midiChannel,
         note: noteEvent.note || 60,
 
         velocity: noteEvent.velocity || 100, 
