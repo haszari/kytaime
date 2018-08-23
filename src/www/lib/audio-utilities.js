@@ -29,9 +29,9 @@ export function connectToChannelForPart(audioContext, audioSourceNode, audioDest
 
   if (_.includes(['sub', 'bass', 'ridge'], partName)) 
     outputChannelPairOffset = 1;
-  else if (_.includes(['synth', 'chords', 'uplands'], partName)) 
+  else if (_.includes(['lead', 'synth', 'chords', 'uplands'], partName)) 
     outputChannelPairOffset = 2;
-  if (_.includes(['lead', 'pad', 'fx', 'voc', 'vox', 'vocal', 'hills'], partName)) 
+  if (_.includes(['pad', 'fx', 'voc', 'vox', 'vocal', 'hills', 'texture'], partName)) 
     outputChannelPairOffset = 3;
 
   connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, outputChannelPairOffset);    
