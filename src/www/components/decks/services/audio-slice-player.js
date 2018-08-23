@@ -95,6 +95,21 @@ class AudioSlicePlayer {
     // this.player.start();
     player.start(startTimestamp, startBeat * this.secPerBeat);
     player.stop(stopTimestamp);
+    this.player = player;
+  }
+  
+  stopAt(stopTimestamp) {
+    if (this.player) {
+      this.player.stop(stopTimestamp);
+      this.player = null;
+      // todo  .. send this after the timestamp
+      this.updatePlayingState( false );
+    }
+  }
+
+
+  stop() {
+    this.stopAt(0);
   }
 
   updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
