@@ -97,12 +97,13 @@ class AudioSlicePlayer {
     player.stop(stopTimestamp);
   }
 
-  updateAndRenderAudio(renderRange, triggerState, audioDestinationNode) {
+  updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
     const { duration } = this;
     if (!this.loaded) 
       return;
 
     this.triggered = triggerState;
+    this.playing = playingState;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
       renderRange, 

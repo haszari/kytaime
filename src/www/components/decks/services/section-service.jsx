@@ -13,6 +13,8 @@ import store from '../../../stores/store';
 import * as actions from '../actions';
 import * as selectors from '../selectors';
 
+import * as transportSelectors from '../../transport/selectors';
+
 
 import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
@@ -27,7 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     sectionId: ownProps.id,
   });
   return { 
-    transportPlayState: state.transport.playState,
+    transportIsPlaying: transportSelectors.transportIsPlaying(state),
     renderRange: state.transport.renderRange,
     lastRenderEndTime: ownSection ? ownSection.renderPosition : null,
   }
@@ -99,11 +101,16 @@ class SectionServiceComponent extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportPlayState, parts } = props;
+    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportIsPlaying, parts } = props;
+
+    if ( !transportIsPlaying ) {
+      _.map(this.slicePlayers, ( player ) => {
+        player.stop();
+      });
+    }
 
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
       return;
-
 
     const isThisSectionTriggered = triggered;
 
@@ -118,8 +125,8 @@ class SectionServiceComponent extends React.Component {
 
     const audioDestinationNode = renderRange.audioContext.destination;
     _.map(this.slicePlayers, ( player ) => {
-      const isThisPartTriggered = _.find(parts, { slug: player.slug }).triggered;
-      player.updateAndRenderAudio(renderRange, isThisPartTriggered && isThisSectionPlaying, audioDestinationNode);
+      const part = _.find(parts, { slug: player.slug });
+      player.updateAndRenderAudio(renderRange, part.triggered && isThisSectionPlaying, part.playing, audioDestinationNode);
     });
 
     store.dispatch(actions.throwdown_updateSectionRenderPosition({

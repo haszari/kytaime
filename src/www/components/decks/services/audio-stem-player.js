@@ -89,15 +89,22 @@ class AudioStemPlayer {
     if (this.player) {
       this.player.stop(stopTimestamp);
       this.player = null;
+      // todo  .. send this after the timestamp
+      this.updatePlayingState( false );
     }
   }
 
-  updateAndRenderAudio(renderRange, triggerState, audioDestinationNode) {
+  stop() {
+    this.stopLoopAt(0);
+  }
+
+  updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
     const { duration } = this;
     if (!this.loaded) 
       return;
 
     this.triggered = triggerState;
+    this.playing = playingState;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
       renderRange, 
