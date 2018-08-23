@@ -1,4 +1,6 @@
 
+import { getZeroChannelForPart } from './sequencer/midi-utilities';
+
 export function loadSample (url, audioContext, callback) {
   var request = new XMLHttpRequest();
   request.open('GET', url);
@@ -24,15 +26,6 @@ export function connectToStereoOutChannel(audioContext, audioSourceNode, audioDe
 
 
 export function connectToChannelForPart(audioContext, audioSourceNode, audioDestinationNode, partName) {
-  // default - drums, percussion, etc
-  let outputChannelPairOffset = 0;
-
-  if (_.includes(['sub', 'bass', 'ridge'], partName)) 
-    outputChannelPairOffset = 1;
-  else if (_.includes(['lead', 'synth', 'chords', 'uplands'], partName)) 
-    outputChannelPairOffset = 2;
-  if (_.includes(['pad', 'fx', 'voc', 'vox', 'vocal', 'hills', 'texture'], partName)) 
-    outputChannelPairOffset = 3;
-
+  const outputChannelPairOffset = getZeroChannelForPart(partName);
   connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, outputChannelPairOffset);    
 }
