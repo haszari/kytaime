@@ -3,28 +3,28 @@ import store from './stores/store';
 import * as deckActions from './components/decks/actions';
 
 ////---------------------------------------
-//// Noyu
+//// Yeritoejy
 
 store.dispatch(deckActions.throwdown_addDeck());
 
-const noyu = {
-  tempo: 120,
+const yeritoejy = {
+  tempo: 125,
   deckId: 0,
 };
 
 
 store.dispatch(deckActions.throwdown_addSection({ 
-  deckId: noyu.deckId,
+  deckId: yeritoejy.deckId,
   parts: [{
     slug: 'beat', 
     part: 'drums',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--noyu-alpine-beat.mp3'),
-        tempo: noyu.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape-yeritoejy--drums-alpine.m4a'),
+        tempo: yeritoejy.tempo,
       },
       pattern: {
-        duration: 32,
+        duration: 4,
       },
     }
   }, {
@@ -32,8 +32,125 @@ store.dispatch(deckActions.throwdown_addSection({
     part: 'bass',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--noyu-ridge-bass.mp3'),
-        tempo: noyu.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape-yeritoejy--bass-ridge.m4a'),
+        tempo: yeritoejy.tempo,
+      },
+      pattern: {
+        duration: 32,
+      },
+    }
+  }, {
+    slug: 'blicks', 
+    part: 'synth',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape-yeritoejy--blicks-hills.m4a'),
+        tempo: yeritoejy.tempo,
+      },
+      pattern: {
+        duration: 32,
+      },
+    }
+  }, {
+    slug: 'perc', 
+    part: 'perc',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape-yeritoejy--perc-uplands.m4a'),
+        tempo: yeritoejy.tempo,
+      },
+      pattern: {
+        duration: 4,
+      },
+    }
+  }]
+}));
+
+////---------------------------------------
+//// Saehaija
+
+store.dispatch(deckActions.throwdown_addDeck());
+
+const saehaija = {
+  tempo: 117,
+  deckId: 1,
+};
+
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: saehaija.deckId,
+  parts: [{
+    slug: 'beat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180701--saehaija--beat.mp3'),
+        tempo: saehaija.tempo,
+      },
+      pattern: {
+        duration: 4,
+      },
+    }
+  }, {
+    slug: 'bass', 
+    part: 'bass',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180701--saehaija--bass.mp3'),
+        tempo: saehaija.tempo,
+      },
+      pattern: {
+        duration: 4,
+      },
+    }
+  }, {
+    slug: 'lead', 
+    part: 'synth',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180701--saehaija--lead.mp3'),
+        tempo: saehaija.tempo,
+      },
+      pattern: {
+        duration: 4,
+      },
+    }
+  }]
+}));
+
+
+////---------------------------------------
+//// Hivaofi
+
+store.dispatch(deckActions.throwdown_addDeck());
+
+const hivaofi = {
+  tempo: 120,
+  deckId: 2,
+};
+
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: hivaofi.deckId,
+  parts: [{
+    slug: 'beat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/06-12-2014-hivaofi-drums.m4a'),
+        tempo: hivaofi.tempo,
+      },
+      pattern: {
+        duration: 8,
+      },
+    }
+  }, {
+    slug: 'bass', 
+    part: 'bass',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/06-12-2014-hivaofi-bass.m4a'),
+        tempo: hivaofi.tempo,
       },
       pattern: {
         duration: 8,
@@ -44,74 +161,62 @@ store.dispatch(deckActions.throwdown_addSection({
     part: 'chords',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--noyu-uplands-chords.mp3'),
-        tempo: noyu.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/06-12-2014-hivaofi-chords.m4a'),
+        tempo: hivaofi.tempo,
       },
       pattern: {
-        duration: 64,
-      },
-    }
-  }, {
-    slug: 'piano', 
-    part: 'lead',
-    data: {  
-      audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--noyu-hills-piano.mp3'),
-        tempo: noyu.tempo,
-      },
-      pattern: {
-        endBeats: [63.5],
-        duration: 64,
+        duration: 8,
       },
     }
   }]
 }));
 
 
-////---------------------------------------
-//// Kufca
 
-const kufca = {
-  tempo: 126,
-  deckId: 1,
-};
+////---------------------------------------
+//// Radial Head
 
 store.dispatch(deckActions.throwdown_addDeck());
 
+const radialhead = {
+  tempo: 129,
+  deckId: 3,
+};
+
+
 store.dispatch(deckActions.throwdown_addSection({ 
-  deckId: kufca.deckId,
+  deckId: radialhead.deckId,
   parts: [{
     slug: 'beat', 
     part: 'drums',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170806-kufca-padscape-beat-alpine.mp3'),
-        tempo: kufca.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180825--tubasy-newsounds-drumbeat-stems.mp3'),
+        tempo: 122,
       },
       pattern: {
-        startBeats: [0, 2],
-        duration: 64,
+        duration: 4,
       },
     }
   }, {
     slug: 'sub', 
-    part: 'bass',
+    part: 'sub',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170806-kufca-padscape-sub-ridge.mp3'),
-        tempo: kufca.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--radialhead-sub-ridge.m4a'),
+        tempo: radialhead.tempo,
       },
       pattern: {
-        duration: 16,
+        duration: 64,
       },
     }
   }, {
-    slug: 'lead', 
-    part: 'synth',
+    slug: 'synth', 
+    part: 'lead',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170806-kufca-padscape-lead-uplands.mp3'),
-        tempo: kufca.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--radialhead-uplands-gliss.m4a'),
+        tempo: radialhead.tempo,
       },
       pattern: {
         duration: 64,
@@ -122,8 +227,8 @@ store.dispatch(deckActions.throwdown_addSection({
     part: 'texture',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170806-kufca-padscape-texture-hills.mp3'),
-        tempo: kufca.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--radialhead-hils-trash.m4a'),
+        tempo: radialhead.tempo,
       },
       pattern: {
         duration: 64,
@@ -132,62 +237,63 @@ store.dispatch(deckActions.throwdown_addSection({
   }]
 }));
 
-////---------------------------------------
-//// Peaches (Stickity)
 
-const peaches = {
+////---------------------------------------
+//// Manas
+
+store.dispatch(deckActions.throwdown_addDeck());
+
+const manas = {
   tempo: 132,
-  deckId: 1,
+  deckId: 4,
 };
 
-// store.dispatch(deckActions.throwdown_addDeck());
 
 store.dispatch(deckActions.throwdown_addSection({ 
-  deckId: peaches.deckId,
+  deckId: manas.deckId,
   parts: [{
     slug: 'beat', 
     part: 'drums',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--peaches-alpine-beat.mp3'),
-        tempo: peaches.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--manas-beat-alpine.m4a'),
+        tempo: manas.tempo,
       },
       pattern: {
-        startBeats: [1],
-        duration: 16,
+        duration: 4,
       },
     }
   }, {
-    slug: 'sub', 
+    slug: 'bass', 
     part: 'bass',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--peaches-ridge-sub.mp3'),
-        tempo: peaches.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--manas-sub-ridge2.mp3'),
+        tempo: manas.tempo,
+      },
+      pattern: {
+        duration: 8,
+      },
+    }
+  }, {
+    slug: 'synth', 
+    part: 'lead',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--manas-lead-uplands.m4a'),
+        tempo: manas.tempo,
       },
       pattern: {
         duration: 16,
       },
     }
   }, {
-    slug: 'lead', 
-    part: 'synth',
+    slug: 'voc', 
+    part: 'voc',
     data: {  
       audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--peaches-uplands-lead.mp3'),
-        tempo: peaches.tempo,
-      },
-      pattern: {
-        duration: 64,
-      },
-    }
-  }, {
-    slug: 'texture', 
-    part: 'texture',
-    data: {  
-      audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170816--padscape-stemprep--peaches-hills-texture.mp3'),
-        tempo: peaches.tempo,
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems Padded Landscape/20170709-padscape--manas-voc-hills.m4a'),
+        tempo: manas.tempo,
       },
       pattern: {
         duration: 32,
@@ -195,228 +301,3 @@ store.dispatch(deckActions.throwdown_addSection({
     }
   }]
 }));
-
-
-////---------------------------------------
-//// Squelcherisation + Gemare
-
-const goodHatBeat = 1.5;
-const squelch = {
-  tempo: 137.4,
-  deckId: 2,
-  patterns: {
-    dnb: {
-      duration: 4, 
-      slices: [
-        {
-          start: 0, 
-          duration: 0.5,
-          beat: 0,
-        },
-        {
-          start: 0.5, 
-          duration: 0.25,
-          beat: goodHatBeat,
-        },
-        {
-          start: 1, 
-          duration: 0.5,
-          beat: 1,
-        },
-        {
-          start: 1.5, 
-          duration: 0.25,
-          beat: goodHatBeat,
-        },
-        {
-          start: 2, 
-          duration: 0.25,
-          beat: goodHatBeat,
-        },
-        {
-          start: 2.5, 
-          duration: 0.5,
-          beat: 0,
-        },
-        {
-          start: 3, 
-          duration: 0.5,
-          beat: 1,
-        },
-        {
-          start: 3.5, 
-          duration: 0.25,
-          beat: goodHatBeat,
-        },
-      ]
-    },
-    straight: {
-      duration: 2, 
-      slices: [
-        {
-          start: 0, 
-          duration: 1.5,
-          beat: 0,
-        },
-        {
-          start: 1, 
-          duration: 1.5,
-          beat: 1,
-        },
-      ]
-    },
-    normal: {
-      duration: 16, 
-      slices: [
-        {
-          start: 0, 
-          duration: 4,
-          beat: 0,
-        },
-        {
-          start: 4, 
-          duration: 4,
-          beat: 4,
-        },
-        {
-          start: 8, 
-          duration: 4,
-          beat: 8,
-        },
-        {
-          start: 12, 
-          duration: 4,
-          beat: 12,
-        },
-      ]
-    },
-  },
-};
-
-store.dispatch(deckActions.throwdown_addDeck());
-
-store.dispatch(deckActions.throwdown_addSection({ 
-  deckId: squelch.deckId,
-  parts: [{
-    slug: 'beat', 
-    part: 'drums',
-    data: {  
-      audio: {
-        file: encodeURI('/Media/Unknown Artist/Samples/AmenBreak-edited.m4a'),
-        tempo: squelch.tempo,
-      },
-      pattern: squelch.patterns.normal,
-    },
-  }, {
-    slug: 'bass', 
-    part: 'bass',
-    data: {  
-      pattern: {
-        duration: 16, 
-        notes: [
-          { 
-            start: 0, 
-            duration: 1.1,
-            note: 27 + 24,
-          },
-          { 
-            start: 1.5, 
-            duration: 0.5,
-            note: 22 + 24,
-          },
-          { 
-            start: 3, 
-            duration: 0.5,
-            note: 22 + 24,
-          },
-          { 
-            start: 4, 
-            duration: 3,
-            note: 15 + 24,
-          },
-          { 
-            start: 9, 
-            duration: 1,
-            note: 25 + 24,
-          },
-          { 
-            start: 11, 
-            duration: 1,
-            note: 25 + 24,
-          },
-          { 
-            start: 12, 
-            duration: 3,
-            note: 16 + 24,
-          },
-          { 
-            start: 15, 
-            duration: 1,
-            note: 18 + 24,
-          },
-        ]
-      },
-    },
-  }, {
-    slug: 'synth', 
-    part: 'lead',
-    data: {  
-      pattern: {
-        duration: 4, 
-        notes: [
-          { 
-            start: 0.5, 
-            duration: 0.5,
-            note: 27 + 36,
-          },
-          { 
-            start: 1.5, 
-            duration: 0.5,
-            note: 27 + 36,
-          },
-          { 
-            start: 3, 
-            duration: 0.5,
-            note: 22 + 36,
-          },
-          { 
-            start: 3.5, 
-            duration: 0.5,
-            note: 15 + 36,
-          },
-        ]
-      },
-    },  
-  }, {
-    slug: 'arpeggio', 
-    part: 'lead',
-    data: {
-      audio: {
-        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20170709-padscape--gemare-lead-hills-dry.m4a'),
-        tempo: 120,
-      },
-      pattern: {
-        duration: 2, 
-        slices: [{
-          start: 0, 
-          duration: 0.15,
-          beat: 0
-        }, {
-          start: 0.5, 
-          duration: 0.15,
-          beat: 1.5
-        }, {
-          start: 1, 
-          duration: 0.15,
-          beat: 3
-        }, {
-          start: 1.5, 
-          duration: 0.15,
-          beat: 13
-        }]
-      }
-    }
-  }]
-}));
-
-
