@@ -301,3 +301,68 @@ store.dispatch(deckActions.throwdown_addSection({
     }
   }]
 }));
+
+
+////---------------------------------------
+//// Mivova
+
+store.dispatch(deckActions.throwdown_addDeck());
+
+const mivova = {
+  tempo: 122,
+  deckId: 5,
+};
+
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: mivova.deckId,
+  parts: [{
+    slug: 'beat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--beat.mp3'),
+        tempo: mivova.tempo,
+      },
+      pattern: {
+        duration: 64,
+      },
+    }
+  }, {
+    slug: 'bass', 
+    part: 'bass',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--sub.mp3'),
+        tempo: mivova.tempo,
+      },
+      pattern: {
+        duration: 64,
+      },
+    }
+  }, {
+    slug: 'pad', 
+    part: 'pad',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--lead.mp3'),
+        tempo: mivova.tempo,
+      },
+      pattern: {
+        duration: 64,
+      },
+    }
+  }, {
+    slug: 'voc', 
+    part: 'voc',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Snips Stems/20180425--mivova--padscape--voc.mp3'),
+        tempo: mivova.tempo,
+      },
+      pattern: {
+        duration: 64,
+      },
+    }
+  }]
+}));
