@@ -35,12 +35,18 @@ class AudioStemPlayer {
 
     this.duration = props.duration;
 
+    // we allow zeroBeat in beats or seconds, seconds is a string with suffix s
+    this.zeroBeatSeconds = parseFloat(props.zeroBeat) || 0;
+    if ( props.zeroBeat && 's' !== props.zeroBeat.slice(-1) ) {
+      this.zeroBeatSeconds = props.zeroBeat * this.secPerBeat;
+    }
+
     this.updatePlayingState = props.updatePlayingState;
 
     this.player = null;
   }
 
-  playLoopFrom(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
+  playLoopFromSeconds(startTimestamp, startSeconds, transportBpm, audioDestinationNode) {
     let rate = transportBpm / this.tempo;
 
     let player = this.audioContext.createBufferSource();
@@ -49,15 +55,20 @@ class AudioStemPlayer {
     player.playbackRate.value = rate;
 
     player.loop = true;
-    player.loopEnd = this.duration * this.secPerBeat;
+    player.loopStart = startSeconds + this.zeroBeatSeconds;
+    player.loopEnd = ( this.duration * this.secPerBeat + this.zeroBeatSeconds);
 
     if (audioDestinationNode.channelCount > 2)
       audioUtilities.connectToChannelForPart(this.audioContext, player, audioDestinationNode, this.part);    
     else
       player.connect(audioDestinationNode);
  
-    player.start(startTimestamp, startBeat * this.secPerBeat);
+    player.start(startTimestamp, player.loopStart);
     this.player = player;
+  }
+
+  playLoopFromBeat(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
+    this.playLoopFromSeconds(startTimestamp, startBeat * this.secPerBeat, transportBpm, audioDestinationNode);
   }
 
   stopLoopAt(stopTimestamp) {
@@ -100,7 +111,7 @@ class AudioStemPlayer {
         start: triggerInfo.triggerOnset
       }]);
       const eventTime = renderEventTime(scheduledEvent[0].start);
-      this.playLoopFrom(eventTime, scheduledEvent[0].event.start, renderRange.tempoBpm, audioDestinationNode);
+      this.playLoopFromBeat(eventTime, scheduledEvent[0].event.start, renderRange.tempoBpm, audioDestinationNode);
     }
 
     if ( triggerInfo.triggerOffset !== -1) {
