@@ -102,5 +102,6 @@ render(<App audioContext={ sequencer.audioContext } />, appDiv);
 
 // import './load-test-snip-data';
 // import './load-squelch-snip-data';
-import './load-paddedlandscape-snip-data';
+// import './load-paddedlandscape-snip-data';
+import './load-the-jacket-data';
 
