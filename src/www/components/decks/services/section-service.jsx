@@ -89,6 +89,7 @@ class SectionServiceComponent extends React.Component {
           tempo: audio.tempo, 
 
           duration: pattern.duration,
+
           startBeats: pattern.startBeats, 
           endBeats: pattern.endBeats, 
 
@@ -112,6 +113,8 @@ class SectionServiceComponent extends React.Component {
           tempo: audio.tempo, 
 
           duration: pattern.duration,
+          zeroBeat: pattern.zeroBeat,
+
           startBeats: pattern.startBeats, 
           endBeats: pattern.endBeats, 
 
