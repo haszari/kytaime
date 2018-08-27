@@ -71,6 +71,33 @@ store.dispatch(deckActions.throwdown_addSection({
         startOffset: 160,
       },
     }
+  }, {
+    slug: 'hihat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - HiHats.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 8,
+        zeroBeat: theJacket.zeroBeat,
+      },
+    }
+  }, {
+    slug: 'tabla', 
+    part: 'perc',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Tabla.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 4,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 64,
+      },
+    }
   }]
 }));
 
