@@ -57,7 +57,7 @@ class AudioStemPlayer {
 
     player.loop = true;
     player.loopStart = ( startBeat * this.secPerBeat ) + ( this.startOffset * this.secPerBeat ) + this.zeroBeatSeconds;
-    player.loopEnd = ( this.duration * this.secPerBeat + this.zeroBeatSeconds);
+    player.loopEnd = ( this.duration * this.secPerBeat ) + player.loopStart;
 
     if (audioDestinationNode.channelCount > 2)
       audioUtilities.connectToChannelForPart(this.audioContext, player, audioDestinationNode, this.part);    

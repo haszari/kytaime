@@ -38,7 +38,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: theJacket.tempo,
       },
       pattern: {
-        duration: 16,
+        duration: 32,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 64,
       },
