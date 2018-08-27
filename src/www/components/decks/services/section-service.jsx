@@ -114,6 +114,7 @@ class SectionServiceComponent extends React.Component {
 
           duration: pattern.duration,
           zeroBeat: pattern.zeroBeat,
+          startOffset: pattern.startOffset,
 
           startBeats: pattern.startBeats, 
           endBeats: pattern.endBeats, 

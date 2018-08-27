@@ -34,6 +34,7 @@ class AudioStemPlayer {
     this.endBeats = props.endBeats || [0];
 
     this.duration = props.duration;
+    this.startOffset = props.startOffset || 0;
 
     // we allow zeroBeat in beats or seconds, seconds is a string with suffix s
     this.zeroBeatSeconds = parseFloat(props.zeroBeat) || 0;
@@ -46,7 +47,7 @@ class AudioStemPlayer {
     this.player = null;
   }
 
-  playLoopFromSeconds(startTimestamp, startSeconds, transportBpm, audioDestinationNode) {
+  playLoopFrom(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
     let rate = transportBpm / this.tempo;
 
     let player = this.audioContext.createBufferSource();
@@ -55,7 +56,7 @@ class AudioStemPlayer {
     player.playbackRate.value = rate;
 
     player.loop = true;
-    player.loopStart = startSeconds + this.zeroBeatSeconds;
+    player.loopStart = ( startBeat * this.secPerBeat ) + ( this.startOffset * this.secPerBeat ) + this.zeroBeatSeconds;
     player.loopEnd = ( this.duration * this.secPerBeat + this.zeroBeatSeconds);
 
     if (audioDestinationNode.channelCount > 2)
@@ -65,10 +66,6 @@ class AudioStemPlayer {
  
     player.start(startTimestamp, player.loopStart);
     this.player = player;
-  }
-
-  playLoopFromBeat(startTimestamp, startBeat, transportBpm, audioDestinationNode) {
-    this.playLoopFromSeconds(startTimestamp, startBeat * this.secPerBeat, transportBpm, audioDestinationNode);
   }
 
   stopLoopAt(stopTimestamp) {
@@ -111,7 +108,7 @@ class AudioStemPlayer {
         start: triggerInfo.triggerOnset
       }]);
       const eventTime = renderEventTime(scheduledEvent[0].start);
-      this.playLoopFromBeat(eventTime, scheduledEvent[0].event.start, renderRange.tempoBpm, audioDestinationNode);
+      this.playLoopFrom(eventTime, scheduledEvent[0].event.start, renderRange.tempoBpm, audioDestinationNode);
     }
 
     if ( triggerInfo.triggerOffset !== -1) {

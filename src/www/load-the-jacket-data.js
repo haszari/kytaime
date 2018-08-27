@@ -10,6 +10,7 @@ store.dispatch(deckActions.throwdown_addDeck());
 const theJacket = {
   tempo: 128,
   deckId: 0,
+  zeroBeat: "7.5s"
 };
 
 
@@ -25,7 +26,21 @@ store.dispatch(deckActions.throwdown_addSection({
       },
       pattern: {
         duration: 8,
-        zeroBeat: "7.5s",
+        zeroBeat: theJacket.zeroBeat,
+      },
+    }
+  }, {
+    slug: 'sub', 
+    part: 'sub',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Sub.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 16,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 64,
       },
     }
   }]
