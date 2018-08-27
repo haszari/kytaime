@@ -43,6 +43,34 @@ store.dispatch(deckActions.throwdown_addSection({
         startOffset: 64,
       },
     }
+  }, {
+    slug: 'bass', 
+    part: 'synth',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Bass.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 16,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 160,
+      },
+    }
+  }, {
+    slug: 'pad', 
+    part: 'pad',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Pad.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 16,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 160,
+      },
+    }
   }]
 }));
 
