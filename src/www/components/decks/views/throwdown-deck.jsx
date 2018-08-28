@@ -45,6 +45,7 @@ const ThrowdownDeckComponent = (props) => {
       setTriggeredSection={ setDeckTriggeredSection } 
       triggered={ section.triggered } 
       playing={ section.playing } 
+      renderPhraseBeats={ section.renderPhraseBeats }
 
       setPartTrigger={ setDeckTriggeredSectionPart } 
 
@@ -54,7 +55,7 @@ const ThrowdownDeckComponent = (props) => {
 
   return (
     <div style={ style }>
-      <div>deck { id }</div>
+      <div>d{ id }</div>
       { sectionList }
     </div>
   );

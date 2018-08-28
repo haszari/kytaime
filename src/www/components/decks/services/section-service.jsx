@@ -159,6 +159,7 @@ class SectionServiceComponent extends React.Component {
       deckId: deckId,
       sectionId: id,
       time: renderRange.end.time,
+      phraseBeats: renderRange.end.beat % triggerPhraseDuration,
     }));
     store.dispatch(actions.throwdown_setSectionPlaying({
       deckId: deckId,

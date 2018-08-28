@@ -29,6 +29,7 @@ const defaults = {
     id: 0,
     slug: '',
     renderPosition: null,
+    renderPhraseBeats: 0,
     triggered: false,
     playing: false,
     parts: [], 
@@ -112,6 +113,7 @@ const sectionReducer = (state = defaults.section, action) => {
       return {
         ...state,
         renderPosition: action.time,
+        renderPhraseBeats: action.phraseBeats,
       }      
     }
 

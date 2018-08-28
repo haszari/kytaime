@@ -24,8 +24,8 @@ export function throwdown_setSectionTriggered({ deckId, sectionId, triggered }) 
 export function throwdown_setSectionPlaying({ deckId, sectionId, playing }) {
   return { type: actionTypes.THROWDOWN_SET_SECTION_PLAYING, ...{ deckId, sectionId, playing } };
 }
-export function throwdown_updateSectionRenderPosition({ deckId, sectionId, time }) {
-  return { type: actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION, ...{ deckId, sectionId, time } };
+export function throwdown_updateSectionRenderPosition({ deckId, sectionId, time, phraseBeats }) {
+  return { type: actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION, ...{ deckId, sectionId, time, phraseBeats } };
 }
 
 export function throwdown_setPartTriggered({ deckId, sectionId, partSlug, triggered }) {
