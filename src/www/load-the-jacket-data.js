@@ -16,6 +16,71 @@ const theJacket = {
 
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
+  slug: "intro",
+  parts: [{
+    slug: 'beat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Drums.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 8,
+        zeroBeat: theJacket.zeroBeat,
+      },
+    }
+  }, {
+    slug: 'sub-intro', 
+    part: 'sub',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Sub.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 32,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 64,
+        slices: [{
+          start: 0, 
+          duration: 3,
+        }]
+      },
+    }
+  }, {
+    slug: 'hihat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - HiHats.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 8,
+        zeroBeat: theJacket.zeroBeat,
+      },
+    }
+  }, {
+    slug: 'bass', 
+    part: 'synth',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Bass.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 4,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 160,
+      },
+    }
+  }]
+}));
+
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: theJacket.deckId,
   slug: "main",
   parts: [{
     slug: 'beat', 
