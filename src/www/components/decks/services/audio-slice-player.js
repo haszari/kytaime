@@ -34,6 +34,12 @@ class AudioSlicePlayer {
     this.startBeats = props.startBeats || [0];
     this.endBeats = props.endBeats || [0];
 
+    // we allow zeroBeat in beats or seconds, seconds is a string with suffix s
+    this.zeroBeatSeconds = parseFloat(props.zeroBeat) || 0;
+    if ( props.zeroBeat && 's' !== props.zeroBeat.slice(-1) ) {
+      this.zeroBeatSeconds = props.zeroBeat * this.secPerBeat;
+    }
+
     this.slices = props.slices;
     // this.autosliced = false;
     this.duration = props.duration;
@@ -54,6 +60,7 @@ class AudioSlicePlayer {
   playSliceAt(startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode) {
     let rate = transportBpm / this.tempo;
     // console.log(rate, this.audioContext.currentTime, time);
+    startBeat = startBeat || 0;
 
     // possibly keep a reference to all these players in case we want to stopAllNow()?
     let player = this.audioContext.createBufferSource();
@@ -69,7 +76,7 @@ class AudioSlicePlayer {
       player.connect(audioDestinationNode);
  
     // this.player.start();
-    player.start(startTimestamp, startBeat * this.secPerBeat);
+    player.start(startTimestamp, ( startBeat * this.secPerBeat ) + this.zeroBeatSeconds);
     player.stop(stopTimestamp);
     this.player = player;
   }
