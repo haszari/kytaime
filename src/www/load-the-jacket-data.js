@@ -16,6 +16,7 @@ const theJacket = {
 
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
+  slug: "main",
   parts: [{
     slug: 'beat', 
     part: 'drums',

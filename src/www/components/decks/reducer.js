@@ -24,6 +24,14 @@ const defaults = {
     playing: false, 
     // audio { file, tempo }, pattern { duration, slices }
     // or midi pattern data
+  },
+  section: {
+    id: 0,
+    slug: '',
+    renderPosition: null,
+    triggered: false,
+    playing: false,
+    parts: [], 
   }
 }
 
@@ -87,18 +95,15 @@ const nextSectionId = () => {
   return nextSectionId.defaultId++;
 }
 
-const sectionReducer = (state = {
-  id: nextSectionId(),
-  renderPosition: null,
-  triggered: false,
-  playing: false,
-  parts: [], 
-}, action) => {
+
+const sectionReducer = (state = defaults.section, action) => {
   switch (action.type) {
     case actionTypes.THROWDOWN_ADD_SECTION: {
       // const data = { data: action.data };
       return {
         ...state,
+        id: nextSectionId(),
+        slug: action.slug,
         // run parts through the reducer to normalise and add missing fields
         parts: partsReducer( action.parts, action ), 
       }

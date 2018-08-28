@@ -9,7 +9,7 @@ function triggerStyles(triggered, playing) {
 }
 
 const ThrowdownSection = (props) => {
-  const { id, setTriggeredSection, setPartTrigger, triggered, playing, parts } = props;
+  const { id, slug, setTriggeredSection, setPartTrigger, triggered, playing, parts } = props;
   const style = {
     backgroundColor: '#f4f4f4',
     borderRadius: '0.2em',
@@ -43,7 +43,7 @@ const ThrowdownSection = (props) => {
   return (
     <div style={ style }>
       <div style={ titleStyle } onClick={ toggleSectionTriggered }>
-        Playable section { id }
+        section { id } – { slug }
       </div>
       { partPlayers }
     </div>

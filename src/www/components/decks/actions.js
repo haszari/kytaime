@@ -11,8 +11,8 @@ export function throwdown_removeDeck({ deckId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_DECK, ...{ deckId } };
 }
 
-export function throwdown_addSection({ deckId, parts }) {
-  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId, parts } };
+export function throwdown_addSection({ deckId, slug, parts }) {
+  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId, slug, parts } };
 }
 export function throwdown_removeSection({ deckId, sectionId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SECTION, ...{ deckId, sectionId } };

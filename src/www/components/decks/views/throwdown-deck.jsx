@@ -40,6 +40,8 @@ const ThrowdownDeckComponent = (props) => {
     <ThrowdownSection 
       key={ section.id } id={ section.id } 
 
+      slug={ section.slug }
+
       setTriggeredSection={ setDeckTriggeredSection } 
       triggered={ section.triggered } 
       playing={ section.playing } 
@@ -52,7 +54,7 @@ const ThrowdownDeckComponent = (props) => {
 
   return (
     <div style={ style }>
-      <div>Throwdown deck { id }</div>
+      <div>deck { id }</div>
       { sectionList }
     </div>
   );
