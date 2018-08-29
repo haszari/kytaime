@@ -117,7 +117,7 @@ const sectionReducer = (state = defaults.section, action) => {
         playbackBeats: action.playbackBeats,
       }      
     }
-    case actionTypes.THROWDOWN_UPDATE_SECTION_ONSET_BEAT: {
+    case actionTypes.THROWDOWN_SET_SECTION_ONSET_BEAT: {
       return {
         ...state,
         onsetBeat: action.onsetBeat,
@@ -170,7 +170,7 @@ const sectionsReducer = (state = [], action) => {
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
-    case actionTypes.THROWDOWN_UPDATE_SECTION_ONSET_BEAT: {
+    case actionTypes.THROWDOWN_SET_SECTION_ONSET_BEAT: {
       return state.map((section) => {
         if (section.id == action.sectionId)
           return sectionReducer(section, action);
@@ -206,7 +206,7 @@ const deckReducer = (state = {
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
-    case actionTypes.THROWDOWN_UPDATE_SECTION_ONSET_BEAT: 
+    case actionTypes.THROWDOWN_SET_SECTION_ONSET_BEAT: 
     case actionTypes.THROWDOWN_ADD_SECTION: 
     case actionTypes.THROWDOWN_REMOVE_SECTION: {
       return Object.assign({}, state, {
@@ -225,6 +225,7 @@ const decksReducer = (state = [], action) => {
     case actionTypes.THROWDOWN_SET_PART_PLAYING: 
     case actionTypes.THROWDOWN_SET_PART_TRIGGERED: 
     case actionTypes.THROWDOWN_UPDATE_SECTION_RENDER_POSITION: 
+    case actionTypes.THROWDOWN_SET_SECTION_ONSET_BEAT:
     case actionTypes.THROWDOWN_SET_SECTION_TRIGGERED: 
     case actionTypes.THROWDOWN_SET_SECTION_PLAYING:
     case actionTypes.THROWDOWN_ADD_SECTION: 
