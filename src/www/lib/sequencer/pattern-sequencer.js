@@ -8,9 +8,18 @@ import * as bpmUtilities from './bpm-utilities';
   
   returns
   {
-    possibly a boolean indicating whether pattern is playing (coarse, e.g. for UI really)
-    something to tell client when trigger happened - in pattern time and in transport time (or not)
-    something to tell client how to render events
+    isPlaying: 
+    tempoBpm: 
+
+    // the start and end range of events to play this buffer
+    // (i.e. not the whole buffer if it starts/stops during this buffer)
+    startBeat: 
+    endBeat: 
+    
+    // the beat within the pattern at which it should start/stop
+    // -1 if it doesn't trigger on/off this buffer
+    triggerOnset: 
+    triggerOffset: 
   }
 */
 function renderPatternTrigger(
@@ -107,7 +116,7 @@ function renderPatternTrigger(
   {
     start: // msec start time, absolute
     duration: // msec duration
-    event: // passed in events
+    event: // passed in event data
   }
 */
 const renderPatternEvents = function(
@@ -141,6 +150,7 @@ const renderPatternEvents = function(
 
     // return absolute render info as msec + original event
     return {
+      beatOffset: beatOffset,
       start: absoluteTimestamp,
       duration: duration, 
       event: noteEvent,

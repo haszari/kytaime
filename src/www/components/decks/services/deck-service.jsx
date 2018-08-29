@@ -48,6 +48,7 @@ class DeckServiceComponent extends React.Component {
         triggerPhraseDuration={ triggerPhraseDuration }
         triggered={ section.triggered } 
         playing={ section.playing } 
+        onsetBeat={ section.onsetBeat }
 
         setDeckSectionPartPlaying={ setDeckSectionPartPlaying }
         

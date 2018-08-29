@@ -9,7 +9,7 @@ function triggerStyles(triggered, playing) {
 }
 
 const ThrowdownSection = (props) => {
-  const { id, slug, setTriggeredSection, setPartTrigger, triggered, playing, renderPhraseBeats, parts } = props;
+  const { id, slug, setTriggeredSection, setPartTrigger, triggered, playing, playbackBeats, parts } = props;
   const style = {
     backgroundColor: '#f4f4f4',
     borderRadius: '0.2em',
@@ -25,7 +25,7 @@ const ThrowdownSection = (props) => {
     setTriggeredSection({ sectionId: id, triggered: ! triggered });
   }
 
-  const playbackPosition = playing ? Math.floor(renderPhraseBeats) : '';
+  const playbackBeatCounter = playing ? Math.floor(playbackBeats) : '';
 
 
   const partPlayers = _.map(parts, ( part ) => {
@@ -45,7 +45,7 @@ const ThrowdownSection = (props) => {
   return (
     <div style={ style }>
       <div style={ titleStyle } onClick={ toggleSectionTriggered }>
-        s{ id } – { slug } { playbackPosition }
+        s{ id } – { slug } { playbackBeatCounter }
       </div>
       { partPlayers }
     </div>

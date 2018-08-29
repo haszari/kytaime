@@ -127,12 +127,26 @@ class SectionServiceComponent extends React.Component {
   }
 
   componentWillUpdate(props) {
-    const { deckId, id, triggered, playing, triggerPhraseDuration, renderRange, lastRenderEndTime, transportIsPlaying, parts } = props;
+    const { 
+      deckId, id, 
+      triggered, playing, 
+      triggerPhraseDuration, onsetBeat, 
+      renderRange, lastRenderEndTime, 
+      transportIsPlaying, 
+      parts 
+    } = props;
 
     if ( !transportIsPlaying ) {
       _.map(this.slicePlayers, ( player ) => {
         player.stop();
       });
+      if (playing) {        
+        store.dispatch(actions.throwdown_setSectionPlaying({
+          deckId: deckId,
+          sectionId: id,
+          playing: false,
+        }));
+      }
     }
 
     if (lastRenderEndTime >= _.get(renderRange, 'end.time', 0))
@@ -155,11 +169,28 @@ class SectionServiceComponent extends React.Component {
       player.updateAndRenderAudio(renderRange, part.triggered && isThisSectionPlaying, part.playing, audioDestinationNode);
     });
 
+    if (triggerInfo.triggerOnset >= 0) {
+      // we are triggering on
+      // store the absolute beat we started at
+      // so we can keep track of how long we've been playing
+      const onsetInfo = patternSequencer.renderPatternEvents(
+        renderRange, 
+        triggerPhraseDuration,
+        [{ start: triggerInfo.triggerOnset, duration: 1 }]
+      );
+      const sectionOnsetBeat = renderRange.start.beat + onsetInfo[0].beatOffset;
+      store.dispatch(actions.throwdown_setSectionOnsetBeat({
+        deckId: deckId,
+        sectionId: id,
+        onsetBeat: sectionOnsetBeat,
+      }));
+    }
+
     store.dispatch(actions.throwdown_updateSectionRenderPosition({
       deckId: deckId,
       sectionId: id,
       time: renderRange.end.time,
-      phraseBeats: renderRange.end.beat % triggerPhraseDuration,
+      playbackBeats: renderRange.end.beat - onsetBeat,
     }));
     store.dispatch(actions.throwdown_setSectionPlaying({
       deckId: deckId,
