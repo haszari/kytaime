@@ -28,6 +28,7 @@ const defaults = {
   section: {
     id: 0,
     slug: '',
+    repeat: 0, // 0 = loop forever, otherwise is number of full duration repeats before auto-trigger next (phrase/longest pattern)
     renderPosition: null,
     onsetBeat: null,
     playbackBeats: 0,
@@ -106,6 +107,7 @@ const sectionReducer = (state = defaults.section, action) => {
         ...state,
         id: nextSectionId(),
         slug: action.slug,
+        repeat: action.repeat,
         // run parts through the reducer to normalise and add missing fields
         parts: partsReducer( action.parts, action ), 
       }

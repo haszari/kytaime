@@ -46,6 +46,7 @@ class SectionServiceComponent extends React.Component {
 
     const { id, audioContext, parts, setDeckSectionPartPlaying } = props;
 
+
     this.slicePlayers = _.filter(parts, (part) => {
       return (part.data.audio || part.data.pattern);
     }).map((part) => {
@@ -133,6 +134,7 @@ class SectionServiceComponent extends React.Component {
       triggerPhraseDuration, onsetBeat, 
       renderRange, lastRenderEndTime, 
       transportIsPlaying, 
+      repeat, autoTriggerNextSection,
       parts 
     } = props;
 
@@ -186,11 +188,20 @@ class SectionServiceComponent extends React.Component {
       }));
     }
 
+    const playbackBeats = renderRange.end.beat - onsetBeat;
+    const repeatDurationBeats = repeat * triggerPhraseDuration;
+    const autoTriggerNextSectionToleranceBeats = 4;
+    if ( playing && triggered && repeatDurationBeats > 0 && ( repeatDurationBeats - playbackBeats ) <= autoTriggerNextSectionToleranceBeats ) {
+      autoTriggerNextSection();
+    }
+
+
+
     store.dispatch(actions.throwdown_updateSectionRenderPosition({
       deckId: deckId,
       sectionId: id,
       time: renderRange.end.time,
-      playbackBeats: renderRange.end.beat - onsetBeat,
+      playbackBeats: playbackBeats,
     }));
     store.dispatch(actions.throwdown_setSectionPlaying({
       deckId: deckId,

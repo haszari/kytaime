@@ -11,8 +11,8 @@ export function throwdown_removeDeck({ deckId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_DECK, ...{ deckId } };
 }
 
-export function throwdown_addSection({ deckId, slug, parts }) {
-  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId, slug, parts } };
+export function throwdown_addSection({ deckId, slug, repeat, parts }) {
+  return { type: actionTypes.THROWDOWN_ADD_SECTION, ...{ deckId, slug, repeat, parts } };
 }
 export function throwdown_removeSection({ deckId, sectionId }) {
   return { type: actionTypes.THROWDOWN_REMOVE_SECTION, ...{ deckId, sectionId } };
@@ -38,6 +38,7 @@ export function throwdown_setPartTriggered({ deckId, sectionId, partSlug, trigge
 export function throwdown_setPartPlaying({ deckId, sectionId, partSlug, playing }) {
   return { type: actionTypes.THROWDOWN_SET_PART_PLAYING, ...{ deckId, sectionId, partSlug, playing } };
 }
+
 
 /// these actions are asleep right now
 

@@ -17,6 +17,7 @@ const theJacket = {
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "intro",
+  repeat: 2,
   parts: [{
     slug: 'beat', 
     part: 'drums',
@@ -82,6 +83,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "main",
+  repeat: 4, 
   parts: [{
     slug: 'beat', 
     part: 'drums',
@@ -162,6 +164,58 @@ store.dispatch(deckActions.throwdown_addSection({
         duration: 4,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 64,
+      },
+    }
+  }]
+}));
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: theJacket.deckId,
+  slug: "build",
+  repeat: 1,
+  parts: [{
+    slug: 'hihat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - HiHats.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 8,
+        zeroBeat: theJacket.zeroBeat,
+      },
+    }
+  }, {
+    slug: 'pad', 
+    part: 'pad',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Pad.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 16,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 160,
+      },
+    }
+  }, {
+    slug: 'sub-intro', 
+    part: 'sub',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Sub.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 32,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 64,
+        slices: [{
+          start: 0, 
+          duration: 3,
+        }]
       },
     }
   }]

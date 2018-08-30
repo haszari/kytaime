@@ -22,9 +22,25 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
+  const { sections } = ownProps;
+  
+  const chooseNextSectionId = () => {
+    const currentSectionIndex = _.findIndex( sections, { playing: true } );  
+    // here we take care to handle the one section per deck case .. which is a stupid case
+    if ( sections.length ) 
+      return sections[ ( currentSectionIndex + 1 ) % sections.length ].id;
+    return -1;
+  }
+
   return { 
     setDeckSectionPartPlaying: ({ sectionId, partSlug, playing }) => {
       dispatch(actions.throwdown_setPartPlaying( { deckId: ownProps.id, sectionId, partSlug, playing } ));
+    },
+    autoTriggerNextSection: () => {
+      const newSectionId = chooseNextSectionId();
+      if ( newSectionId !== -1 ) {
+        dispatch(actions.throwdown_setSectionTriggered({ deckId: ownProps.id, sectionId: newSectionId, triggered: true }));
+      }
     },
   };
 }
@@ -34,7 +50,16 @@ class DeckServiceComponent extends React.Component {
   }
 
   render() {
-    const { sections, triggerPhraseDuration, audioContext, id, setDeckSectionPartPlaying } = this.props;
+    const { 
+      id, 
+      sections, 
+      triggerPhraseDuration, 
+
+      audioContext, 
+
+      setDeckSectionPartPlaying, 
+      autoTriggerNextSection 
+    } = this.props;
 
     const allSections = _.map( sections, ( section ) => 
       <SectionService 
@@ -49,8 +74,11 @@ class DeckServiceComponent extends React.Component {
         triggered={ section.triggered } 
         playing={ section.playing } 
         onsetBeat={ section.onsetBeat }
+        repeat={ section.repeat }
 
         setDeckSectionPartPlaying={ setDeckSectionPartPlaying }
+
+        autoTriggerNextSection={ autoTriggerNextSection }
         
         parts={ section.parts }  
       />
