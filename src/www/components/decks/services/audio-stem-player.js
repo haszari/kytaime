@@ -5,12 +5,18 @@ import * as audioUtilities from '@kytaime/lib/audio-utilities';
 import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
+const minGain = 0.001;
+const maxGain = 1.0;
+
 class AudioStemPlayer {
   constructor(props) {
     this.slug = props.slug;
 
     this.part = props.part || "drums";
     
+    this.attack = props.attack || 0.02;
+    this.release = props.release || 0.02;
+
     this.audioFile = props.audio;
     this.tempo = props.tempo;
 
@@ -52,26 +58,43 @@ class AudioStemPlayer {
 
     let player = this.audioContext.createBufferSource();
     player.buffer = this.buffer;
-    
+
+    let faderGain = this.audioContext.createGain();
+    faderGain.gain.setValueAtTime( minGain, startTimestamp );
+    faderGain.gain.linearRampToValueAtTime( maxGain, startTimestamp + this.attack );
+
     player.playbackRate.value = rate;
 
     player.loop = true;
     player.loopStart = ( startBeat * this.secPerBeat ) + ( this.startOffset * this.secPerBeat ) + this.zeroBeatSeconds;
     player.loopEnd = ( this.duration * this.secPerBeat ) + player.loopStart;
 
+    player.connect(faderGain);
+
     if (audioDestinationNode.channelCount > 2)
-      audioUtilities.connectToChannelForPart(this.audioContext, player, audioDestinationNode, this.part);    
+      audioUtilities.connectToChannelForPart(this.audioContext, faderGain, audioDestinationNode, this.part);    
     else
-      player.connect(audioDestinationNode);
+      faderGain.connect(audioDestinationNode);
  
     player.start(startTimestamp, player.loopStart);
+
     this.player = player;
+    this.faderGain = faderGain;
   }
 
   stopLoopAt(stopTimestamp) {
     if (this.player) {
+      if ( !stopTimestamp )
+        stopTimestamp = this.audioContext.currentTime + this.release;
+
+      this.faderGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
+      this.faderGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
+
       this.player.stop(stopTimestamp);
+
+      this.faderGain = null;
       this.player = null;
+
       // todo  .. send this after the timestamp
       this.updatePlayingState( false );
     }
