@@ -172,7 +172,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "build",
-  repeat: 1,
+  repeat: 2,
   parts: [{
     slug: 'hihat', 
     part: 'drums',
@@ -215,6 +215,54 @@ store.dispatch(deckActions.throwdown_addSection({
         slices: [{
           start: 0, 
           duration: 3,
+        }]
+      },
+    }
+  }]
+}));
+
+store.dispatch(deckActions.throwdown_addSection({ 
+  deckId: theJacket.deckId,
+  slug: "build2",
+  repeat: 2,
+  parts: [{
+    slug: 'hihat', 
+    part: 'drums',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - HiHats.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 0.5,
+        zeroBeat: theJacket.zeroBeat,
+        slices: [{
+          start: 0, 
+          duration: 0.5
+        }]
+      },
+    }
+  }, {
+    slug: 'pad', 
+    part: 'pad',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Stems/The Jacket - Pad.m4a'),
+        tempo: theJacket.tempo,
+      },
+      pattern: {
+        duration: 8,
+        zeroBeat: theJacket.zeroBeat,
+        startOffset: 160,
+        slices: [{
+          start: 0, 
+          duration: 3, 
+        }, {
+          start: 3, 
+          duration: 3, 
+        }, {
+          start: 6, 
+          duration: 2, 
         }]
       },
     }
