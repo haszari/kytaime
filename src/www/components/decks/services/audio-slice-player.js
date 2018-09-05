@@ -15,7 +15,7 @@ class AudioSlicePlayer {
     this.part = props.part || "drums";
     
     this.attack = props.attack || 0.02;
-    this.release = props.release || 0.02;
+    this.release = props.release || 0.05;
 
     this.audioFile = props.audio;
     this.tempo = props.tempo;
@@ -30,7 +30,6 @@ class AudioSlicePlayer {
 
     this.loaded = new Promise((resolve, reject) => {      
       audioUtilities.loadSample(this.audioFile, this.audioContext, (buffer) => {
-        console.log('sample decoded, ready to play');
         this.buffer = buffer;
         resolve();
       });

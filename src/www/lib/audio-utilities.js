@@ -1,16 +1,64 @@
 
 import { getZeroChannelForPart } from './sequencer/midi-utilities';
 
+
+// We maintain a dictionary of audio files, keyed by URL
+// This ensures we only download and decode one copy of each file
+const audioFiles = {};
+
+class AudioFileBufferDecoder {
+  constructor({ audioContext, url, callback }) {
+    this.onDecoded = this.onDecoded.bind(this);
+
+    this.url = url;
+    this.callbacks = [ callback ];
+    this.buffer = null;
+
+    this.request = new XMLHttpRequest();
+    this.request.open('GET', url);
+    this.request.responseType = 'arraybuffer';
+
+    let onDecoded = this.onDecoded;
+    let request = this.request;
+    this.request.onload = function () {
+      console.log(`decoding sample ${ url }`);
+      audioContext.decodeAudioData( request.response, onDecoded );
+    };
+
+    console.log( `loading sample ${ this.url }` );
+    this.request.send();
+  }
+
+  onDecoded( buffer ) {
+    console.log(`decoded sample ${ this.url }`);
+
+    this.buffer = buffer;
+    const callbacks = this.callbacks;
+    this.callbacks = [];
+
+    callbacks.forEach( ( callback ) => {
+      callback( this.buffer );
+    });
+  }
+
+  addCallback( callback ) {
+    if (this.buffer)
+      callback( this.buffer );
+    else
+      this.callbacks.push( callback );
+  }
+
+}
+
 export function loadSample (url, audioContext, callback) {
-  var request = new XMLHttpRequest();
-  request.open('GET', url);
-  request.responseType = 'arraybuffer';
-  request.onload = function () {
-    console.log('sample loaded, decoding');
-    audioContext.decodeAudioData(request.response, callback);
-  };
-  console.log('loading sample');
-  request.send();
+  if (audioFiles[url]) {
+    audioFiles[url].addCallback(callback);
+    return;
+  }
+
+  audioFiles[url] = new AudioFileBufferDecoder( {
+    url, audioContext, callback
+  } );
 }
 
 
