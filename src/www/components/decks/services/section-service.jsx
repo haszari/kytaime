@@ -100,6 +100,9 @@ class SectionServiceComponent extends React.Component {
 
           updatePlayingState: updatePlayingState,
           
+          attack: pattern.attack,
+          release: pattern.release,
+
           slices: pattern.slices,
         });
       }

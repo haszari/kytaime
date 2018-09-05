@@ -72,6 +72,8 @@ store.dispatch(deckActions.throwdown_addSection({
       },
       pattern: {
         duration: 4,
+        // attack: 0.6,
+        // release: 0.7,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 160,
       },
@@ -234,6 +236,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: theJacket.tempo,
       },
       pattern: {
+        attack: 0.2, // soften these hats ...
         duration: 0.5,
         zeroBeat: theJacket.zeroBeat,
         slices: [{
@@ -253,6 +256,7 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: {
         duration: 8,
         zeroBeat: theJacket.zeroBeat,
+        release: 0.5,
         startOffset: 160,
         slices: [{
           start: 0, 
