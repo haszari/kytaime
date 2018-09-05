@@ -17,7 +17,7 @@ const theJacket = {
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "intro",
-  repeat: 2,
+  // repeat: 2,
   parts: [{
     slug: 'beat', 
     part: 'drums',
@@ -29,6 +29,21 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: {
         duration: 8,
         zeroBeat: theJacket.zeroBeat,
+        variation: [{
+          type: 'audio-mute',
+          basis: 'section', // what are these numbers in relation to – pattern or section?
+          events: [{
+            // in beats, like note events or slices
+            start: 0, 
+            duration: 1, 
+          }],
+          every: {
+            multiple: 2, // only once every 2 loops
+            offset: 1, // on the second loop
+            // multiple: 0.5, // every loop
+            // offset: 0.25, // half way through the loop
+          }
+        }]
       },
     }
   }, {
@@ -40,7 +55,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: theJacket.tempo,
       },
       pattern: {
-        duration: 32,
+        duration: 16,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 64,
         slices: [{
@@ -97,6 +112,20 @@ store.dispatch(deckActions.throwdown_addSection({
       pattern: {
         duration: 8,
         zeroBeat: theJacket.zeroBeat,
+        variation: [{
+          type: 'audio-mute',
+          basis: 'section', // what are these numbers in relation to – pattern or section?
+          events: [{
+            // in beats, like note events or slices
+            // in relation to basis – section!
+            start: 30, // really we want -2 here
+            duration: 2, 
+          }],
+          every: {
+            multiple: 2, // only once every 2 loops
+            offset: 1, // on the second loop
+          }
+        }]
       },
     }
   }, {
@@ -139,6 +168,19 @@ store.dispatch(deckActions.throwdown_addSection({
         duration: 16,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 160,
+        variation: [{
+          type: 'audio-mute',
+          basis: 'pattern', // what are these numbers in relation to – pattern or section?
+          events: [{
+            // in beats, like note events or slices
+            start: 12, // really we want -4 here
+            duration: 4, 
+          }],
+          every: {
+            multiple: 3, // only once every 3 loops
+            offset: 2, // on the third loop
+          }
+        }]
       },
     }
   }, {
