@@ -173,6 +173,9 @@ store.dispatch(deckActions.throwdown_addSection({
           basis: 'pattern', // what are these numbers in relation to – pattern or section?
           events: [{
             // in beats, like note events or slices
+            start: 0,
+            duration: 2, 
+          }, {
             start: 12, // really we want -4 here
             duration: 4, 
           }],

@@ -8,14 +8,21 @@ import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 const minGain = 0.001;
 const maxGain = 1.0;
 
+const defaultGainRampUpTime = 0.02;
+const defaultGainRampDownTime = 0.05;
+
+const defaultMuteGainRampTime = 0.02;
+
+const renderEventTime = ( renderRange, time ) => (time + renderRange.audioContextTimeOffsetMsec) / 1000;
+
 class AudioSlicePlayer {
   constructor(props) {
     this.slug = props.slug;
 
     this.part = props.part || "drums";
     
-    this.attack = props.attack || 0.02;
-    this.release = props.release || 0.05;
+    this.attack = props.attack || defaultGainRampUpTime;
+    this.release = props.release || defaultGainRampDownTime;
 
     this.audioFile = props.audio;
     this.tempo = props.tempo;
@@ -59,9 +66,16 @@ class AudioSlicePlayer {
     }
 
     this.updatePlayingState = props.updatePlayingState;
+
+    this.variation = props.variation;
+
+    // overall gain, used for variation muting
+    // (and or other volume automation?)
+    let finalGain = this.audioContext.createGain();
+    this.finalGain = finalGain;
   }
 
-  playSliceAt(startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode) {
+  playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
     let rate = transportBpm / this.tempo;
     // console.log(rate, this.audioContext.currentTime, time);
     startBeat = startBeat || 0;
@@ -75,24 +89,27 @@ class AudioSlicePlayer {
 
     player.loop = false;
 
+    // per-slice gain envelope (declick, attack/release)
     let faderGain = this.audioContext.createGain();
-    this.faderGain = faderGain;
+    // this.faderGain = faderGain;
     faderGain.gain.setValueAtTime( minGain, startTimestamp );
     faderGain.gain.linearRampToValueAtTime( maxGain, startTimestamp + this.attack );
 
-    player.connect(faderGain);
+    player.connect( faderGain );
     if (audioDestinationNode.channelCount > 2)
-      audioUtilities.connectToChannelForPart(this.audioContext, faderGain, audioDestinationNode, this.part);    
+      audioUtilities.connectToChannelForPart( this.audioContext, faderGain, this.finalGain, this.part );    
     else
-      faderGain.connect(audioDestinationNode);
+      faderGain.connect( this.finalGain );
+    this.finalGain.connect( audioDestinationNode );
  
     player.start(startTimestamp, ( (this.startOffset + startBeat) * this.secPerBeat ) + this.zeroBeatSeconds);
+    this.finalGain.gain.linearRampToValueAtTime( maxGain, startTimestamp );
 
     if ( (stopTimestamp - startTimestamp) < this.release)
       stopTimestamp = startTimestamp + this.release;
 
-    this.faderGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
-    this.faderGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
+    faderGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
+    faderGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
     this.player.stop(stopTimestamp);
   }
   
@@ -101,8 +118,8 @@ class AudioSlicePlayer {
       if ( !stopTimestamp )
         stopTimestamp = this.audioContext.currentTime + this.release;
 
-      this.faderGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
-      this.faderGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
+      this.finalGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
+      this.finalGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
       this.player.stop(stopTimestamp);
 
       this.player = null;
@@ -116,7 +133,58 @@ class AudioSlicePlayer {
     this.stopAt(0);
   }
 
-  updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
+  updateAndRenderVariation( renderRange, triggerInfo, sectionDuration, variation ) {
+    const { duration, finalGain } = this;
+
+    if ( 'audio-mute' === variation.type && variation.events ) {
+      let basisDuration = sectionDuration;
+      if ( variation.every && 'pattern' === variation.basis )
+        basisDuration = duration;
+      let overallVariationDuration = basisDuration;
+
+      // shift the events by any section-loop offset 
+      let offsetInBeats = 0;
+      if ( variation.every && _.isNumber(variation.every.multiple) && _.isNumber(variation.every.offset) ) {
+        overallVariationDuration = basisDuration * variation.every.multiple; 
+        offsetInBeats = ( variation.every.offset % variation.every.multiple ) * basisDuration;
+      }
+
+      const offsetEvents = _.map( variation.events, ( event ) => {
+        return {
+          ... event,
+          start: event.start + offsetInBeats,
+        }
+      } );
+
+      // filter out events that aren't this time period
+      let filteredEvents = _.filter( offsetEvents, function( event ) {
+        return bpmUtilities.valueInWrappedBeatRange(
+          event.start, 
+          triggerInfo.startBeat % overallVariationDuration, 
+          triggerInfo.endBeat % overallVariationDuration, 
+          overallVariationDuration
+        );
+      } );
+
+      let scheduledEvents = patternSequencer.renderPatternEvents( renderRange, overallVariationDuration, filteredEvents );
+
+      _.map( scheduledEvents, (eventInfo) => {
+        const startTime = renderEventTime( renderRange, eventInfo.start );
+        const stopTime = renderEventTime( renderRange, eventInfo.start + eventInfo.duration );
+
+        // cut
+        finalGain.gain.setValueAtTime( maxGain, startTime );
+        finalGain.gain.linearRampToValueAtTime( minGain, startTime + defaultMuteGainRampTime );
+
+        // bring back in
+        finalGain.gain.setValueAtTime( minGain, stopTime - defaultMuteGainRampTime );
+        finalGain.gain.linearRampToValueAtTime( maxGain, stopTime );
+      });
+    
+    }
+  }
+
+  updateAndRenderAudio( renderRange, triggerState, playingState, sectionDuration, audioDestinationNode ) {
     const { duration } = this;
     if (!this.loaded) 
       return;
@@ -136,6 +204,12 @@ class AudioSlicePlayer {
     this.playing = triggerInfo.isPlaying;
     this.updatePlayingState( this.playing );
 
+    if ( this.variation ) {
+      _.map( this.variation, ( currentVariation ) => {
+        this.updateAndRenderVariation( renderRange, triggerInfo, sectionDuration, currentVariation );
+      } );
+    }
+
     // slices: start time in pattern beats
 
     // filteredSlices: start time in pattern beats; excludes slices that are pre-trigger
@@ -151,13 +225,11 @@ class AudioSlicePlayer {
     // scheduledSlices: start time in msec
     let scheduledSlices = patternSequencer.renderPatternEvents(renderRange, duration, filteredSlices);
 
-    const renderEventTime = (time) => (time + renderRange.audioContextTimeOffsetMsec) / 1000;
-
-    _.map(scheduledSlices, (sliceRenderInfo) => {
-      const startTime = renderEventTime(sliceRenderInfo.start);
-      const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
-      this.playSliceAt(startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, audioDestinationNode);
-    });
+    _.map( scheduledSlices, ( sliceRenderInfo ) => {
+      const startTime = renderEventTime( renderRange, sliceRenderInfo.start );
+      const stopTime = renderEventTime( renderRange, sliceRenderInfo.start + sliceRenderInfo.duration );
+      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, audioDestinationNode );
+    } );
   }
 }
 

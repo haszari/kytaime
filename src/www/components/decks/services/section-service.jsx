@@ -47,7 +47,7 @@ class SectionServiceComponent extends React.Component {
     const { id, audioContext, parts, setDeckSectionPartPlaying } = props;
 
 
-    this.slicePlayers = _.filter(parts, (part) => {
+    this.partPlayers = _.filter(parts, (part) => {
       return (part.data.audio || part.data.pattern);
     }).map((part) => {
       const { audio, pattern } = part.data;
@@ -104,6 +104,8 @@ class SectionServiceComponent extends React.Component {
           release: pattern.release,
 
           slices: pattern.slices,
+
+          variation: pattern.variation,
         });
       }
       // we don't use AudioStemPlayer anymore
@@ -149,7 +151,7 @@ class SectionServiceComponent extends React.Component {
     } = props;
 
     if ( !transportIsPlaying ) {
-      _.map(this.slicePlayers, ( player ) => {
+      _.map(this.partPlayers, ( player ) => {
         player.stop();
       });
       if (playing) {        
@@ -176,9 +178,9 @@ class SectionServiceComponent extends React.Component {
     const isThisSectionPlaying = triggerInfo.isPlaying;
 
     const audioDestinationNode = renderRange.audioContext.destination;
-    _.map(this.slicePlayers, ( player ) => {
+    _.map(this.partPlayers, ( player ) => {
       const part = _.find(parts, { slug: player.slug });
-      player.updateAndRenderAudio(renderRange, part.triggered && isThisSectionPlaying, part.playing, audioDestinationNode);
+      player.updateAndRenderAudio( renderRange, part.triggered && isThisSectionPlaying, part.playing, triggerPhraseDuration, audioDestinationNode );
     });
 
     if (triggerInfo.triggerOnset >= 0) {

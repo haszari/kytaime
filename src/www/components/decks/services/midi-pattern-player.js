@@ -33,7 +33,7 @@ class MidiPatternPlayer {
     // we can't; we don't, and we won't 
   }
 
-  updateAndRenderAudio(renderRange, triggerState, playingState, audioDestinationNode) {
+  updateAndRenderAudio( renderRange, triggerState, playingState, sectionDuration, audioDestinationNode ) {
     const { duration, midiChannel } = this;
 
     const beatsPerMinute = renderRange.tempoBpm;
