@@ -8,7 +8,7 @@ import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 const minGain = 0.001;
 const maxGain = 1.0;
 
-class AudioStemPlayer {
+class AudioStemPlayer_deprecated {
   constructor(props) {
     this.slug = props.slug;
 
@@ -145,4 +145,4 @@ class AudioStemPlayer {
   }
 }
 
-export default AudioStemPlayer;
+export default AudioStemPlayer_deprecated;

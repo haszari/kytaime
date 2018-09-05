@@ -103,6 +103,10 @@ class SectionServiceComponent extends React.Component {
           slices: pattern.slices,
         });
       }
+      // we don't use AudioStemPlayer anymore
+      // implementing declick envelopes means we need to add gain ramps on loop boundary
+      // so we might as well implement looping with slices ourselves
+      // long live AudioSlicePlayer
       // else {
       //   return new AudioStemPlayer({
       //     key: part.slug,
