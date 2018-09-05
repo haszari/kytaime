@@ -66,6 +66,7 @@ class SectionServiceComponent extends React.Component {
           triggered: part.triggered,
 
           duration: pattern.duration,
+
           startBeats: pattern.startBeats, 
           endBeats: pattern.endBeats, 
 
@@ -75,33 +76,9 @@ class SectionServiceComponent extends React.Component {
         });
 
       }
-      else if (slices && slices.length) {
-        return new AudioSlicePlayer({
-          key: part.slug,
-          slug: part.slug,
-
-          audioContext: audioContext,
-          
-          part: part.part,
-
-          triggered: part.triggered,
-
-          audio: audio.file,
-          tempo: audio.tempo, 
-
-          duration: pattern.duration,
-          zeroBeat: pattern.zeroBeat,
-
-          startBeats: pattern.startBeats, 
-          endBeats: pattern.endBeats, 
-
-          updatePlayingState: updatePlayingState,
-          
-          slices: pattern.slices,
-        });
-      }
       else {
-        return new AudioStemPlayer({
+      // else if (slices && slices.length) {
+        return new AudioSlicePlayer({
           key: part.slug,
           slug: part.slug,
 
@@ -122,8 +99,34 @@ class SectionServiceComponent extends React.Component {
           endBeats: pattern.endBeats, 
 
           updatePlayingState: updatePlayingState,
-        });        
+          
+          slices: pattern.slices,
+        });
       }
+      // else {
+      //   return new AudioStemPlayer({
+      //     key: part.slug,
+      //     slug: part.slug,
+
+      //     audioContext: audioContext,
+          
+      //     part: part.part,
+
+      //     triggered: part.triggered,
+
+      //     audio: audio.file,
+      //     tempo: audio.tempo, 
+
+      //     duration: pattern.duration,
+      //     zeroBeat: pattern.zeroBeat,
+      //     startOffset: pattern.startOffset,
+
+      //     startBeats: pattern.startBeats, 
+      //     endBeats: pattern.endBeats, 
+
+      //     updatePlayingState: updatePlayingState,
+      //   });        
+      // }
     });
   }
 

@@ -39,6 +39,9 @@ class AudioSlicePlayer {
     this.startBeats = props.startBeats || [0];
     this.endBeats = props.endBeats || [0];
 
+    this.duration = props.duration;
+    this.startOffset = props.startOffset || 0;
+
     // we allow zeroBeat in beats or seconds, seconds is a string with suffix s
     this.zeroBeatSeconds = parseFloat(props.zeroBeat) || 0;
     if ( props.zeroBeat && 's' !== props.zeroBeat.slice(-1) ) {
@@ -46,9 +49,6 @@ class AudioSlicePlayer {
     }
 
     this.slices = props.slices;
-    // this.autosliced = false;
-    this.duration = props.duration;
-
     if ( ! this.slices || ! this.slices.length ) {
       // this.autosliced = true;
       // default to full slice
@@ -87,7 +87,7 @@ class AudioSlicePlayer {
     else
       faderGain.connect(audioDestinationNode);
  
-    player.start(startTimestamp, ( startBeat * this.secPerBeat ) + this.zeroBeatSeconds);
+    player.start(startTimestamp, ( (this.startOffset + startBeat) * this.secPerBeat ) + this.zeroBeatSeconds);
 
     if ( (stopTimestamp - startTimestamp) < this.release)
       stopTimestamp = startTimestamp + this.release;
