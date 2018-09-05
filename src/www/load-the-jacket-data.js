@@ -236,7 +236,7 @@ store.dispatch(deckActions.throwdown_addSection({
         tempo: theJacket.tempo,
       },
       pattern: {
-        attack: 0.2, // soften these hats ...
+        attack: 0.1, // soften these hats ...
         duration: 0.5,
         zeroBeat: theJacket.zeroBeat,
         slices: [{
