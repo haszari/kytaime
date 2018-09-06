@@ -96,11 +96,11 @@ class AudioSlicePlayer {
     faderGain.gain.linearRampToValueAtTime( maxGain, startTimestamp + this.attack );
 
     player.connect( faderGain );
+    faderGain.connect( this.finalGain );
     if (audioDestinationNode.channelCount > 2)
-      audioUtilities.connectToChannelForPart( this.audioContext, faderGain, this.finalGain, this.part );    
+      audioUtilities.connectToChannelForPart( this.audioContext, this.finalGain, audioDestinationNode, this.part );    
     else
-      faderGain.connect( this.finalGain );
-    this.finalGain.connect( audioDestinationNode );
+      this.finalGain.connect( audioDestinationNode );
  
     player.start(startTimestamp, ( (this.startOffset + startBeat) * this.secPerBeat ) + this.zeroBeatSeconds);
     this.finalGain.gain.linearRampToValueAtTime( maxGain, startTimestamp );
