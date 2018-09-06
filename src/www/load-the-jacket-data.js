@@ -100,7 +100,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "main",
-  repeat: 4, 
+  // repeat: 4, 
   parts: [{
     slug: 'beat', 
     part: 'drums',
@@ -219,7 +219,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "build",
-  repeat: 2,
+  // repeat: 2,
   parts: [{
     slug: 'hihat', 
     part: 'drums',
@@ -271,7 +271,7 @@ store.dispatch(deckActions.throwdown_addSection({
 store.dispatch(deckActions.throwdown_addSection({ 
   deckId: theJacket.deckId,
   slug: "build2",
-  repeat: 2,
+  // repeat: 2,
   parts: [{
     slug: 'hihat', 
     part: 'drums',
@@ -312,6 +312,31 @@ store.dispatch(deckActions.throwdown_addSection({
         }, {
           start: 6, 
           duration: 2, 
+        }]
+      },
+    }
+  }, {
+    slug: 'arp', 
+    part: 'synth',
+    data: {  
+      pattern: {
+        duration: 0.5,
+        notes: [{
+          note: 0 + 74, 
+          start: 0,
+          duration: 0.125, 
+        }, {
+          note: 3 + 74, 
+          start: 0.125,
+          duration: 0.25, 
+        }, {
+          note: 6 + 74, 
+          start: 0.25,
+          duration: 0.25, 
+        }, {
+          note: 9 + 74, 
+          start: 0.375,
+          duration: 0.25, 
         }]
       },
     }
