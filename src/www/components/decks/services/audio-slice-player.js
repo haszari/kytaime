@@ -5,8 +5,8 @@ import * as audioUtilities from '@kytaime/lib/audio-utilities';
 import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 import * as patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
-const minGain = 0.001;
-const maxGain = 1.0;
+const defaultMinGain = 0.001;
+const defaultMaxGain = 1.0;
 
 const defaultGainRampUpTime = 0.02;
 const defaultGainRampDownTime = 0.05;
@@ -23,6 +23,7 @@ class AudioSlicePlayer {
     
     this.attack = props.attack || defaultGainRampUpTime;
     this.release = props.release || defaultGainRampDownTime;
+    this.maxGain = props.gain || defaultMaxGain;
 
     this.audioFile = props.audio;
     this.tempo = props.tempo;
@@ -75,10 +76,18 @@ class AudioSlicePlayer {
     this.finalGain = finalGain;
   }
 
-  playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
-    let rate = transportBpm / this.tempo;
-    // console.log(rate, this.audioContext.currentTime, time);
+  playBeatSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
     startBeat = startBeat || 0;
+    const startTimeSeconds = ( (this.startOffset + startBeat) * this.secPerBeat ) + this.zeroBeatSeconds;
+
+    this.playSliceAt( startTimestamp, stopTimestamp, startTimeSeconds, transportBpm, audioDestinationNode );
+  }
+  
+  playSliceAt( startTimestamp, stopTimestamp, startTimeSeconds, transportBpm, audioDestinationNode ) {
+    let rate = 1;
+    if ( this.tempo )
+      rate = transportBpm / this.tempo;
+    // console.log(rate, this.audioContext.currentTime, time);
 
     // possibly keep a reference to all these players in case we want to stopAllNow()?
     let player = this.audioContext.createBufferSource();
@@ -92,8 +101,8 @@ class AudioSlicePlayer {
     // per-slice gain envelope (declick, attack/release)
     let faderGain = this.audioContext.createGain();
     // this.faderGain = faderGain;
-    faderGain.gain.setValueAtTime( minGain, startTimestamp );
-    faderGain.gain.linearRampToValueAtTime( maxGain, startTimestamp + this.attack );
+    faderGain.gain.setValueAtTime( defaultMinGain, startTimestamp );
+    faderGain.gain.linearRampToValueAtTime( this.maxGain, startTimestamp + this.attack );
 
     player.connect( faderGain );
     faderGain.connect( this.finalGain );
@@ -102,14 +111,14 @@ class AudioSlicePlayer {
     else
       this.finalGain.connect( audioDestinationNode );
  
-    player.start(startTimestamp, ( (this.startOffset + startBeat) * this.secPerBeat ) + this.zeroBeatSeconds);
-    this.finalGain.gain.linearRampToValueAtTime( maxGain, startTimestamp );
+    player.start(startTimestamp, startTimeSeconds);
+    this.finalGain.gain.linearRampToValueAtTime( defaultMaxGain, startTimestamp );
 
     if ( (stopTimestamp - startTimestamp) < this.release)
       stopTimestamp = startTimestamp + this.release;
 
-    faderGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
-    faderGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
+    faderGain.gain.setValueAtTime( this.maxGain, stopTimestamp - this.release );
+    faderGain.gain.linearRampToValueAtTime( defaultMinGain, stopTimestamp );
     this.player.stop(stopTimestamp);
   }
   
@@ -118,8 +127,8 @@ class AudioSlicePlayer {
       if ( !stopTimestamp )
         stopTimestamp = this.audioContext.currentTime + this.release;
 
-      this.finalGain.gain.setValueAtTime( maxGain, stopTimestamp - this.release );
-      this.finalGain.gain.linearRampToValueAtTime( minGain, stopTimestamp );
+      this.finalGain.gain.setValueAtTime( defaultMaxGain, stopTimestamp - this.release );
+      this.finalGain.gain.linearRampToValueAtTime( defaultMinGain, stopTimestamp );
       this.player.stop(stopTimestamp);
 
       this.player = null;
@@ -173,12 +182,12 @@ class AudioSlicePlayer {
         const stopTime = renderEventTime( renderRange, eventInfo.start + eventInfo.duration );
 
         // cut
-        finalGain.gain.setValueAtTime( maxGain, startTime );
-        finalGain.gain.linearRampToValueAtTime( minGain, startTime + defaultMuteGainRampTime );
+        finalGain.gain.setValueAtTime( defaultMaxGain, startTime );
+        finalGain.gain.linearRampToValueAtTime( defaultMinGain, startTime + defaultMuteGainRampTime );
 
         // bring back in
-        finalGain.gain.setValueAtTime( minGain, stopTime - defaultMuteGainRampTime );
-        finalGain.gain.linearRampToValueAtTime( maxGain, stopTime );
+        finalGain.gain.setValueAtTime( defaultMinGain, stopTime - defaultMuteGainRampTime );
+        finalGain.gain.linearRampToValueAtTime( defaultMaxGain, stopTime );
       });
     
     }
@@ -228,7 +237,10 @@ class AudioSlicePlayer {
     _.map( scheduledSlices, ( sliceRenderInfo ) => {
       const startTime = renderEventTime( renderRange, sliceRenderInfo.start );
       const stopTime = renderEventTime( renderRange, sliceRenderInfo.start + sliceRenderInfo.duration );
-      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, audioDestinationNode );
+      if ( _.isNumber(sliceRenderInfo.event.seconds) )
+        this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.seconds, renderRange.tempoBpm, audioDestinationNode );
+      else
+        this.playBeatSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, audioDestinationNode );
     } );
   }
 }

@@ -10,7 +10,11 @@ store.dispatch(deckActions.throwdown_addDeck());
 const theJacket = {
   tempo: 128,
   deckId: 0,
-  zeroBeat: "7.5s"
+  zeroBeat: "7.5s",
+  hitPoints: {
+    okay: 3.652,
+    kay: 3.749,
+  }
 };
 
 
@@ -38,10 +42,8 @@ store.dispatch(deckActions.throwdown_addSection({
             duration: 1, 
           }],
           every: {
-            multiple: 2, // only once every 2 loops
-            offset: 1, // on the second loop
-            // multiple: 0.5, // every loop
-            // offset: 0.25, // half way through the loop
+            multiple: 1, 
+            offset: 0.5, 
           }
         }]
       },
@@ -91,6 +93,23 @@ store.dispatch(deckActions.throwdown_addSection({
         // release: 0.7,
         zeroBeat: theJacket.zeroBeat,
         startOffset: 160,
+      },
+    }
+  }, {
+    slug: 'sample', 
+    part: 'sample',
+    data: {  
+      audio: {
+        file: encodeURI('/media/Haszari/Haszari Renders - Samples/The Jacket - vocal sample (ft. Curb Your Enthusiasm).m4a'),
+      },
+      pattern: {
+        duration: 32,
+        gain: 0.35,
+        slices: [{
+          seconds: theJacket.hitPoints.kay,
+          duration: 1,
+          start: 31,
+        }]
       },
     }
   }]

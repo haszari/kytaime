@@ -102,6 +102,7 @@ class SectionServiceComponent extends React.Component {
           
           attack: pattern.attack,
           release: pattern.release,
+          gain: pattern.gain,
 
           slices: pattern.slices,
 
