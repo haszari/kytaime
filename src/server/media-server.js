@@ -13,7 +13,6 @@ function findAndServeMedia(req, res, next) {
     if ( ! files.length ) 
       res.sendStatus( 404 );
 
-    console.log( files[ 0 ] );
     res.sendFile( files[ 0 ] );
   }, 
   () => {
@@ -22,7 +21,7 @@ function findAndServeMedia(req, res, next) {
 }
 
 function mediaServer( app ) {
-  app.use( '/api/media/:queryText', findAndServeMedia );
+  app.use( '/api/media/first/:queryText', findAndServeMedia );
 }
 
 module.exports = mediaServer;
