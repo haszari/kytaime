@@ -1,6 +1,8 @@
 const path = require('path')
-var express = require('express')
-var app = express();
+const express = require('express')
+const app = express();
+
+const mediaServer = require('./media-server')
 
 // dev or production (so we can serve up appropriate client stuff)
 const DEVELOPMENT = process.env.NODE_ENV === 'development';
@@ -22,8 +24,15 @@ else {
 // serve up iTunes media folder for easy access to audio
 app.use('/media', express.static(path.join(process.env.HOME, '/Music/iTunes/iTunes Media/Music')));
 
+// serve up iTunes media as a queryable API for easy access to audio without paths
+// for example:
+//  http://localhost:6041/api/media/20170709-padscape--manas-beat-alpine
+// returns the first file matching `*20170709-padscape--manas-beat-alpine*'
+mediaServer(app);
+
 // serve up Throwdown folder for easy access to snip / throwdown metadata
 app.use('/throwdown', express.static(path.join(process.env.HOME, '/Music/Throwdown')));
+
 
 // start http server
 app.listen(webPort);
