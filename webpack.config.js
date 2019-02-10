@@ -1,8 +1,8 @@
-const webpack = require('webpack');
-const path = require('path');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const express = require('express');
+const path = require('path');
 
-// const aliases = require('./webpack-aliases');
+const aliases = require('./webpack-aliases');
 
 const Config = {
   entry: './index.js',
@@ -12,7 +12,7 @@ const Config = {
     modules: [
       'node_modules'
     ],
-    // alias: aliases,
+    alias: aliases,
   },
   module: {
     rules: [
@@ -28,6 +28,12 @@ const Config = {
     ]
   },
   devServer: {
+    before: function(app, server) {
+      app.use(
+        '/media', 
+        express.static(path.join(process.env.HOME, '/Music/iTunes/iTunes Media/Music'))
+      );
+    },
     contentBase: __dirname,
     compress: true,
     port: 8080
