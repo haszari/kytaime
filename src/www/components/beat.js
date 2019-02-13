@@ -45,7 +45,7 @@ class BeatSamplePlayer {
     this.player = player;
   }
 
-  throwdownRender( renderRange ) {
+  throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
     if ( ! this.loaded && ! this.loading ) {
       this.loading = true;
       this.loaded = new Promise( ( resolve, reject ) => {      
@@ -69,6 +69,8 @@ class BeatSamplePlayer {
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
       renderRange, 
+      tempoBpm, 
+      renderRangeBeats,
       triggered,
       this.playing, 
       sampleDuration,
@@ -87,7 +89,13 @@ class BeatSamplePlayer {
     });
 
     // scheduledSlices: start time in msec
-    let scheduledSlices = patternSequencer.renderPatternEvents(renderRange, sampleDuration, filteredSlices);
+    let scheduledSlices = patternSequencer.renderPatternEvents(
+      renderRange, 
+      tempoBpm, 
+      renderRangeBeats,
+      sampleDuration, 
+      filteredSlices
+    );
 
     const renderEventTime = (time) => (time + renderRange.audioContextTimeOffsetMsec) / 1000;
     // const renderEventTime = (time) => (time) / 1000;
@@ -95,7 +103,7 @@ class BeatSamplePlayer {
     _.map(scheduledSlices, (sliceRenderInfo) => {
       const startTime = renderEventTime(sliceRenderInfo.start);
       const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
-      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, renderRange.tempoBpm, renderRange.audioContext.destination );
+      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );
     });
   }
 }

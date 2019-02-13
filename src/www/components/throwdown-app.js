@@ -7,6 +7,7 @@ import transportActions from '../store/transport/actions';
 import { sequencer } from '@kytaime/lib/sequencer';
 import renderNotePattern from '@kytaime/lib/render-note-pattern';
 import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
+import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 
 // metronome/test pattern
 // import { hats, kick, beat, bassline } from '@kytaime/lib/example-patterns';
@@ -19,6 +20,8 @@ import { hats } from '@kytaime/lib/example-patterns';
 class ThrowdownApp {
   constructor(props) {
     this.nextTempoBpm = null;
+    this.tempoBpm = 120;
+    this.lastRenderEndBeat = 0;
 
     // do we need to do all this binding?
     this.toggleTransport = this.toggleTransport.bind( this );
@@ -45,20 +48,20 @@ class ThrowdownApp {
   }
 
   setTempo( tempoBpm ) {
-    sequencer.setTempo( tempoBpm );
+    this.tempoBpm = tempoBpm;
   }
 
   setNextTempo( nextTempoBpm ) {
     this.nextTempoBpm = nextTempoBpm;
   }
 
-  renderTimePeriod( renderRange ) {
+  renderTimePeriod( renderRange, renderRangeBeats ) {
     // console.log(renderRange);
-    console.log( 
-      `--- app renderTimePeriod ` +
-      `start=(${ renderRange.start.beat }, ${ renderRange.start.time }) ` +
-      `end=(${ renderRange.end.beat }, ${ renderRange.end.time }) `
-    );
+    // console.log( 
+    //   `--- app renderTimePeriod ` +
+    //   `start=(${ renderRange.start.beat }, ${ renderRange.start.time }) ` +
+    //   `end=(${ renderRange.end.beat }, ${ renderRange.end.time }) `
+    // );
     
     // render built-in metronome pattern
     const currentPhraseLength = 4;
@@ -66,7 +69,10 @@ class ThrowdownApp {
     const triggered = true;
     const playing = true;
     renderNotePattern( 
-      renderRange, renderRange.tempoBpm, currentPhraseLength,
+      renderRange, 
+      this.tempoBpm, 
+      renderRangeBeats, 
+      currentPhraseLength,
       renderRange.midiOutPort, 
       hats, // {notes, duration, startBeats, endBeats }
       drumchannel, triggered, playing
@@ -75,7 +81,7 @@ class ThrowdownApp {
     // get children to render themselves
     this.children.map( ( child ) => {
       if ( child.throwdownRender ) {
-        child.throwdownRender( renderRange );
+        child.throwdownRender( renderRange, this.tempo, renderRangeBeats );
       }
     } );    
   }
@@ -83,11 +89,23 @@ class ThrowdownApp {
   sequencerCallback( renderRange ) {
     this.renderIndex++;
 
+    // calculate render range in beats
+    var chunkMs = renderRange.end - renderRange.start;
+    var chunkBeats = bpmUtilities.msToBeats( this.tempoBpm, chunkMs );
+    const renderBeats = {
+      start: this.lastRenderEndBeat,
+      end: this.lastRenderEndBeat + chunkBeats,
+    };
+    // update for next time
+    this.lastRenderEndBeat += chunkBeats;
+    // could just do this inside renderTimePeriod
+
     // drop tempo changes mod what
     const tempoChangePhrase = 16;
-    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != sequencer.getTempo();
+    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != this.tempo;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
       renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
+      renderBeats, 
       true, // triggered, we want the new tempo to drop soon
       false, // hasn't happened yet
       tempoChangePhrase, 
@@ -96,59 +114,62 @@ class ThrowdownApp {
     // normal case, just render all the stuff
     const tempoChangeThisRender = ( newTempoIncoming && tempoDropInfo.isPlaying );
     if ( ! tempoChangeThisRender ) {
-      this.renderTimePeriod( renderRange );
+      this.renderTimePeriod( renderRange, renderBeats );
       return;
     }
 
-    console.log( 
-      `----------`
-    );
-    const tempoChangeInfo = tempoChangeThisRender ? `newTempo=(${ this.nextTempoBpm }, ${ tempoDropInfo.triggerOnset })` : '';
-    console.log( 
-      `---- app sequencerCallback ` +
-      `start=(${ renderRange.start.beat }, ${ renderRange.start.time }) ` +
-      `end=(${ renderRange.end.beat }, ${ renderRange.end.time }) ` + 
-      `offset=${ renderRange.audioContextTimeOffsetMsec } ` + 
-      tempoChangeInfo
-    );
+    // console.log( 
+    //   `----------`
+    // );
+    // const tempoChangeInfo = tempoChangeThisRender ? `newTempo=(${ this.nextTempoBpm }, ${ tempoDropInfo.triggerOnset })` : '';
+    // console.log( 
+    //   `---- app sequencerCallback ` +
+    //   `start=(${ renderRange.start.beat }, ${ renderRange.start.time }) ` +
+    //   `end=(${ renderRange.end.beat }, ${ renderRange.end.time }) ` + 
+    //   `offset=${ renderRange.audioContextTimeOffsetMsec } ` + 
+    //   tempoChangeInfo
+    // );
 
     // we have a tempo change to render, before we can render other stuff!
     var tempoChangeEvent = patternSequencer.renderPatternEvents(
       renderRange, 
+      this.tempoBpm,
+      renderBeats,
       tempoChangePhrase,
       [ { start: 0, duration: 1 } ],
     );
 
-    const tempoChangeAbsoluteBeat = tempoDropInfo.triggerOnset + Math.ceil( renderRange.start.beat / tempoChangePhrase ) * tempoChangePhrase;
+    // const tempoChangeAbsoluteBeat = tempoDropInfo.triggerOnset + Math.ceil( renderRange.start.beat / tempoChangePhrase ) * tempoChangePhrase;
     var renderRangeCurrent = _.cloneDeep( renderRange );
     var renderRangeNext = _.cloneDeep( renderRange );
-    renderRangeCurrent.end = {
-      time: tempoChangeEvent[0].start,
-      beat: tempoChangeAbsoluteBeat,
-    };
-    renderRangeNext.start = {
-      time: tempoChangeEvent[0].start,
-      beat: tempoChangeAbsoluteBeat,
-    };
+    renderRangeCurrent.end = tempoChangeEvent[0].start;
+    renderRangeNext.start = tempoChangeEvent[0].start;
     renderRangeNext.tempoBpm = this.nextTempoBpm;
 
     // there's something broken for when we render renderRangeNext - when tempo changes
     // the first audio sample slice is out by a little bit, presumably the length of renderRangeCurrent
     // renderRangeNext.audioContextTimeOffsetMsec += renderRangeCurrent.end.time - renderRangeCurrent.start.time;
 
-    this.renderTimePeriod( renderRangeCurrent );
-    this.renderTimePeriod( renderRangeNext );
-
-    // the sequencer is officially at this tempo "now", i.e. after those buffers have rendered
     var newTempo = this.nextTempoBpm;
-    sequencer.setTempo( newTempo );
+    this.renderTimePeriod( renderRangeCurrent, { 
+      start: renderBeats.start, 
+      end: tempoDropInfo.triggerOnset,
+    } );
+    var hanChunkBeats = bpmUtilities.msToBeats( this.nextTempoBpm, renderRangeNext.end - renderRangeNext.start );
+    this.tempo = newTempo;
+    this.renderTimePeriod( renderRangeNext, { 
+      start: tempoDropInfo.triggerOnset, 
+      end: tempoDropInfo.triggerOnset + hanChunkBeats,
+    } );
+    this.lastRenderEndBeat = tempoDropInfo.triggerOnset + hanChunkBeats;
+
 
     // update the UI at the appropriate time
     setTimeout(() => {
       store.dispatch( 
         transportActions.setTempo( newTempo )
       );
-    }, ( renderRange.start.time - tempoDropInfo.triggerOnset ) / 1000 );
+    }, ( renderRange.start - tempoDropInfo.triggerOnset ) / 1000 );
 
     this.nextTempoBpm = null;
   }

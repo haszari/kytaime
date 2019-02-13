@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 // import WebMidiHelper from './web-midi-helper';
 // import midiUtilities from './midi-utilities';
-import * as bpmUtilities from './bpm-utilities';
+// import * as bpmUtilities from './bpm-utilities';
 import * as midiOutputs from './web-midi-helper';
 
 
@@ -54,22 +54,27 @@ function setMidiOut(requestedPortName) {
 // sequencer state that is carried between render callbacks
 var state = {
    isPlaying: false,
-   lastRenderEndBeat: 0,
+   // lastRenderEndBeat: 0,
    lastRenderEndTime: 0,
    intervalId: null,
    
    // tempo was previously stored in client app redux store; we need to take control of it
    // clients will have to schedule events to update the transport tempo
-   tempoBpm: 121, 
+   // tempoBpm: 121, 
 };
 var updateTransport = function() {
   audioContext.resume().then(function() {
 
+    // get the current time in milliseconds (since page/app began)
     var now = window.performance.now();
-    
+
+    // determine the period we need to render
+    // start & end, duration in milliseconds
     var renderStart = state.lastRenderEndTime;
     var renderEnd = now + renderInterval + renderOverlap;
     var chunkMs = renderEnd - renderStart;
+
+    // 
     if (chunkMs <= 0)
       return;
 
@@ -82,17 +87,8 @@ var updateTransport = function() {
 
       audioContextTimeOffsetMsec: offsetMilliseconds, 
 
-      tempoBpm: state.tempoBpm,
-
-      start: {
-        time: renderStart,
-        beat: state.lastRenderEndBeat
-      },
-      end: {
-        time: renderEnd,
-        beat: state.lastRenderEndBeat + 
-          bpmUtilities.msToBeats(state.tempoBpm, chunkMs)
-      }
+      start: renderStart,
+      end: renderEnd,
     };
 
     // tell the client(s) to do their thing
@@ -101,8 +97,7 @@ var updateTransport = function() {
     } );
 
     // update state
-    state.lastRenderEndBeat = renderRange.end.beat;
-    state.lastRenderEndTime = renderRange.end.time;
+    state.lastRenderEndTime = renderRange.end;
   });
 };
 
@@ -115,13 +110,13 @@ worker.addEventListener('message', function(e) {
    }
 }, false);
 
-var setTempo = function( newTempo ) {
-  state.tempoBpm = newTempo;
-}
+// var setTempo = function( newTempo ) {
+//   state.tempoBpm = newTempo;
+// }
 
-var getTempo = function(  ) {
-  return state.tempoBpm;
-}
+// var getTempo = function(  ) {
+//   return state.tempoBpm;
+// }
 
 
 var startTempoClock = function() {
@@ -159,8 +154,8 @@ var isPlaying = function() {
 export default {
   start: startTempoClock,
   stop: stopTempoClock,
-  setTempo: setTempo,
-  getTempo: getTempo,
+  // setTempo: setTempo,
+  // getTempo: getTempo,
   isPlaying: isPlaying,
   setRenderCallback: setRenderCallback,
   removeRenderCallback: removeRenderCallback,

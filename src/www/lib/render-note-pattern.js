@@ -1,9 +1,14 @@
 import _ from 'lodash'; 
 
 import { midiUtilities, bpmUtilities } from './sequencer';
+import patternSequencer from './sequencer/pattern-sequencer';
+
 
 const renderNotePattern = function(
-   renderRange, beatsPerMinute, currentPhraseLength,
+   renderRange, 
+   beatsPerMinute, 
+   renderRangeBeats, 
+   currentPhraseLength,
    midiOutPort, 
    patternData, // {notes, duration, startBeats, endBeats }
    channel, triggered, playing
@@ -19,13 +24,16 @@ const renderNotePattern = function(
    let patternDuration = patternData.duration;
 
    // start and end of render range in pattern-beats
-   var renderStart = (renderRange.start.beat % patternData.duration);
-   var renderEnd = (renderRange.end.beat % patternData.duration);
+   var renderStart = (renderRangeBeats.start % patternData.duration);
+   var renderEnd = (renderRangeBeats.end % patternData.duration);
 
-   let startStopInfo = bpmUtilities.renderPatternStartStop(
-      renderRange, currentPhraseLength,
-      playing, triggered, 
-      renderStart, renderEnd,
+   let startStopInfo = patternSequencer.renderPatternTrigger(
+      renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
+      beatsPerMinute,
+      renderRangeBeats, 
+      triggered, // triggered, we want the new tempo to drop soon
+      playing, // hasn't happened yet
+      currentPhraseLength, 
       patternData.startBeats, patternData.endBeats
    );
 
@@ -40,7 +48,7 @@ const renderNotePattern = function(
    notes = _.filter(notes, function(noteEvent) {
       return bpmUtilities.valueInWrappedBeatRange(
          noteEvent.start, 
-         startStopInfo.unmuteStart, startStopInfo.unmuteEnd, 
+         renderStart, renderEnd, 
          patternDuration
       );
    });
@@ -64,7 +72,7 @@ const renderNotePattern = function(
 
          velocity: noteEvent.velocity, 
          duration: bpmUtilities.beatsToMs(beatsPerMinute, noteEvent.duration), 
-         timestamp: renderRange.start.time + timestamp
+         timestamp: renderRange.start + timestamp
       };
       // console.log(note.timestamp);
 

@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './src/www/store/store';
 
 import ThrowdownApp from './src/www/components/throwdown-app';
-import BasslinePlayer from './src/www/components/bassline';
+// import BasslinePlayer from './src/www/components/bassline';
 import BeatPlayer from './src/www/components/beat';
 
 import TempoSlider from './src/www/components/tempo-slider.jsx';

@@ -14,7 +14,14 @@ import * as bpmUtilities from './bpm-utilities';
   }
 */
 function renderPatternTrigger(
+  // delete this param??
   renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
+  // I don't thnk we're using renderRange at all now
+  //...
+
+
+  tempoBpm, 
+  renderRangeBeats,
   isTriggered, isPlaying, // current state
   triggerQuant, // what cycle length we want to trigger within
   triggerBeats, // beat positions within the pattern that are OK to trigger (start) at
@@ -31,7 +38,7 @@ function renderPatternTrigger(
   // render time range in global transport beats
   let renderInfo = { 
     isPlaying: isPlaying,
-    tempoBpm: renderRange.tempoBpm,
+    tempoBpm: tempoBpm,
     startBeat: undefined,
     endBeat: undefined,
     triggerOnset: -1,
@@ -44,8 +51,8 @@ function renderPatternTrigger(
   }
   // playing, triggered, so keep playing
   if (isPlaying && isTriggered) {
-    renderInfo.startBeat = renderRange.start.beat;
-    renderInfo.endBeat = renderRange.end.beat;
+    renderInfo.startBeat = renderRangeBeats.start;
+    renderInfo.endBeat = renderRangeBeats.end;
     return renderInfo;
   }
 
@@ -55,14 +62,14 @@ function renderPatternTrigger(
 
   // render range in terms of trigger quant (rather than since the beginning of playback)
   var phrase = {
-    renderStart: (renderRange.start.beat % triggerQuant),
-    renderEnd: (renderRange.end.beat % triggerQuant)
+    renderStart: (renderRangeBeats.start % triggerQuant),
+    renderEnd: (renderRangeBeats.end % triggerQuant)
   };
   var beat;
 
   // see if we are going to drop (% quant) this render buffer
   if (!isPlaying && isTriggered) {
-    renderInfo.endBeat = renderRange.end.beat;
+    renderInfo.endBeat = renderRangeBeats.end;
     // find a trigger start beat..
     beat = _.find(triggerBeats, function(startBeat) {
       // might need to express start & stop relative to loop/phrase, i.e. negative for mute early, positive to stop during next bar/phrase
@@ -81,8 +88,8 @@ function renderPatternTrigger(
 
   // see if we are going to undrop (% quant) this render buffer
   if (isPlaying && !isTriggered) {
-    renderInfo.startBeat = renderRange.start.beat;
-    renderInfo.endBeat = renderRange.end.beat;
+    renderInfo.startBeat = renderRangeBeats.start;
+    renderInfo.endBeat = renderRangeBeats.end;
     beat = _.find(unTriggerBeats, function(beat) {
       return bpmUtilities.valueInWrappedBeatRange(beat, 
         phrase.renderStart, phrase.renderEnd, 
@@ -113,6 +120,8 @@ function renderPatternTrigger(
 */
 const renderPatternEvents = function(
   renderRange,
+  tempoBpm,
+  renderRangeBeats,
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
   debug,
@@ -120,8 +129,8 @@ const renderPatternEvents = function(
   debug = debug || false;
 
   // start and end of render range in pattern-beats
-  let renderStart = (renderRange.start.beat % cycleBeats);
-  let renderEnd = (renderRange.end.beat % cycleBeats);
+  let renderStart = (renderRangeBeats.start % cycleBeats);
+  let renderEnd = (renderRangeBeats.end % cycleBeats);
 
   // loop over the events, calculate sequence time info, map to new array
   return _.map(events, function(noteEvent) {
@@ -132,10 +141,10 @@ const renderPatternEvents = function(
       beatOffset += cycleBeats;
     }
 
-    var timestamp = bpmUtilities.beatsToMs(renderRange.tempoBpm, beatOffset);
-    var absoluteTimestamp = renderRange.start.time + timestamp;
+    var timestamp = bpmUtilities.beatsToMs(tempoBpm, beatOffset);
+    var absoluteTimestamp = renderRange.start + timestamp;
     
-    var duration = bpmUtilities.beatsToMs(renderRange.tempoBpm, noteEvent.duration);
+    var duration = bpmUtilities.beatsToMs(tempoBpm, noteEvent.duration);
 
     if (debug) 
       console.log(`rendered event renderStartBeat=${renderStart.toFixed(3)} b=${noteEvent.start} t=${timestamp} T=${timestamp}`);
