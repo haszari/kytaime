@@ -73,12 +73,12 @@ class ThrowdownApp {
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
     // console.log(renderRange);
-    console.log( 
-      `--- app renderTimePeriod ` +
-      `current=(${ this.lastRenderEndBeat })` +
-      `start=(${ renderRangeBeats.start }, ${ renderRange.start }) ` +
-      `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
-    );
+    // console.log( 
+    //   `--- app renderTimePeriod ` +
+    //   `current=(${ this.lastRenderEndBeat })` +
+    //   `start=(${ renderRangeBeats.start }, ${ renderRange.start }) ` +
+    //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
+    // );
     
     // render built-in metronome pattern
     const currentPhraseLength = 4;

@@ -68,7 +68,6 @@ class BeatSamplePlayer {
     var triggered = true;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
-      renderRange, 
       tempoBpm, 
       renderRangeBeats,
       triggered,
