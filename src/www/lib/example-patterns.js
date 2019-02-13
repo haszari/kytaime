@@ -1,5 +1,5 @@
 import NotePattern from './note-pattern';
-import AutomationPattern from './automation-pattern';
+// import AutomationPattern from './automation-pattern';
 import { midiUtilities } from './sequencer';
 
 // default pattern is 4 x hats
@@ -72,30 +72,30 @@ export const lead = new NotePattern({
    endBeats: [ 12 ]
 });
 
-export const send = new AutomationPattern({
-   duration: 128,
-   controller: 0,
-   points: [
-      { start: 5, value: 0 },
-      { start: 6, value: 120 },
-      { start: 7, value: 1 },
+// export const send = new AutomationPattern({
+//    duration: 128,
+//    controller: 0,
+//    points: [
+//       { start: 5, value: 0 },
+//       { start: 6, value: 120 },
+//       { start: 7, value: 1 },
 
-      { start: 31, value: 1 },
-      { start: 30, value: 100 },
-      { start: 33, value: 1 },
+//       { start: 31, value: 1 },
+//       { start: 30, value: 100 },
+//       { start: 33, value: 1 },
 
-      { start: 100, value: 12 },
-      { start: 120, value: 127 },
-      { start: 127, value: 3 },
-   ]
-});
-export const filter = new AutomationPattern({
-   duration: 32, 
-   controller: 20,
-   points: [
-      { start: 0, value: 120 },
-      { start: 16, value: 12 },
-      { start: 32, value: 120 }
-   ]
-});
+//       { start: 100, value: 12 },
+//       { start: 120, value: 127 },
+//       { start: 127, value: 3 },
+//    ]
+// });
+// export const filter = new AutomationPattern({
+//    duration: 32, 
+//    controller: 20,
+//    points: [
+//       { start: 0, value: 120 },
+//       { start: 16, value: 12 },
+//       { start: 32, value: 120 }
+//    ]
+// });
 

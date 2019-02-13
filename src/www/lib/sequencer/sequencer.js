@@ -1,12 +1,12 @@
-var WorkerSetInterval = require('./setInterval.worker');
 
 import _ from 'lodash'; 
 
 // import WebMidiHelper from './web-midi-helper';
 // import midiUtilities from './midi-utilities';
 // import * as bpmUtilities from './bpm-utilities';
-import * as midiOutputs from './web-midi-helper';
+// import * as midiOutputs from './web-midi-helper';
 
+var WorkerSetInterval = require('./setInterval.worker');
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
@@ -33,22 +33,22 @@ function removeRenderCallback(callbackId) {
    setRenderCallback(callbackId, undefined);
 }
 
-var midiOutPort = null;
-let midiOutDevice = "";
+// var midiOutPort = null;
+// let midiOutDevice = "";
 
-function getMidiOut() { return midiOutDevice; };
-function setMidiOut(requestedPortName) {
-  midiOutputs.openMidiOutput({
-    deviceName: requestedPortName,
-    callback: function(info) {
-     if (info.port) {
-      midiOutPort = info.port;
-      console.log("Using " + midiOutPort.name);
-      midiOutDevice = midiOutPort.name;
-      }
-    }.bind(this)
-  });
-}
+// function getMidiOut() { return midiOutDevice; };
+// function setMidiOut(requestedPortName) {
+//   midiOutputs.openMidiOutput({
+//     deviceName: requestedPortName,
+//     callback: function(info) {
+//      if (info.port) {
+//       midiOutPort = info.port;
+//       console.log("Using " + midiOutPort.name);
+//       midiOutDevice = midiOutPort.name;
+//       }
+//     }.bind(this)
+//   });
+// }
 
 
 // sequencer state that is carried between render callbacks
@@ -82,7 +82,7 @@ var updateTransport = function() {
     var offsetMilliseconds = audioNow * 1000 - now;
 
     var renderRange = {
-      midiOutPort: midiOutPort,
+      // midiOutPort: midiOutPort,
       audioContext: audioContext,
 
       audioContextTimeOffsetMsec: offsetMilliseconds, 
@@ -160,6 +160,6 @@ export default {
   setRenderCallback: setRenderCallback,
   removeRenderCallback: removeRenderCallback,
   audioContext: audioContext,
-  setMidiOut: setMidiOut,
-  getMidiOut: getMidiOut,
+  // setMidiOut: setMidiOut,
+  // getMidiOut: getMidiOut,
 };

@@ -8,6 +8,7 @@ import { sequencer } from '@kytaime/lib/sequencer';
 import renderNotePattern from '@kytaime/lib/render-note-pattern';
 import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
+import * as midiOutputs from '@kytaime/lib/web-midi-helper';
 
 // metronome/test pattern
 // import { hats, kick, beat, bassline } from '@kytaime/lib/example-patterns';
@@ -22,6 +23,7 @@ class ThrowdownApp {
     this.nextTempoBpm = null;
     this.tempoBpm = 120;
     this.lastRenderEndBeat = 0;
+    this.midiOutPort = null;
 
     // do we need to do all this binding?
     this.toggleTransport = this.toggleTransport.bind( this );
@@ -31,7 +33,6 @@ class ThrowdownApp {
 
     this.children = [];
 
-    sequencer.setMidiOut( "IAC Driver Bus 1" );
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
     // I believe we need to nudge the channel count so we can use em all
@@ -41,6 +42,21 @@ class ThrowdownApp {
     this.tempoParam.start();
 
     this.renderIndex = 0;
+
+    this.openMidiOutput( "IAC Driver Bus 1" );
+  }
+
+  openMidiOutput(requestedPortName) {
+    midiOutputs.openMidiOutput({
+      deviceName: requestedPortName,
+      callback: function(info) {
+       if (info.port) {
+        this.midiOutPort = info.port;
+        console.log("Using " + this.midiOutPort.name);
+        // midiOutDevice = midiOutPort.name;
+        }
+      }.bind(this)
+    });
   }
 
   push( throwdownItem ) {
@@ -73,7 +89,7 @@ class ThrowdownApp {
       this.tempoBpm, 
       renderRangeBeats, 
       currentPhraseLength,
-      renderRange.midiOutPort, 
+      this.midiOutPort, 
       hats, // {notes, duration, startBeats, endBeats }
       drumchannel, triggered, playing
     );
