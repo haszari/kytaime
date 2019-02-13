@@ -73,11 +73,12 @@ class ThrowdownApp {
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
     // console.log(renderRange);
-    // console.log( 
-    //   `--- app renderTimePeriod ` +
-    //   `start=(${ renderRange.start.beat }, ${ renderRange.start.time }) ` +
-    //   `end=(${ renderRange.end.beat }, ${ renderRange.end.time }) `
-    // );
+    console.log( 
+      `--- app renderTimePeriod ` +
+      `current=(${ this.lastRenderEndBeat })` +
+      `start=(${ renderRangeBeats.start }, ${ renderRange.start }) ` +
+      `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
+    );
     
     // render built-in metronome pattern
     const currentPhraseLength = 4;
@@ -97,9 +98,11 @@ class ThrowdownApp {
     // get children to render themselves
     this.children.map( ( child ) => {
       if ( child.throwdownRender ) {
-        child.throwdownRender( renderRange, this.tempo, renderRangeBeats );
+        child.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
       }
-    } );    
+    } );   
+
+    this.lastRenderEndBeat = renderRangeBeats.end; 
   }
 
   sequencerCallback( renderRange ) {
@@ -112,15 +115,12 @@ class ThrowdownApp {
       start: this.lastRenderEndBeat,
       end: this.lastRenderEndBeat + chunkBeats,
     };
-    // update for next time
-    this.lastRenderEndBeat += chunkBeats;
-    // could just do this inside renderTimePeriod
 
     // drop tempo changes mod what
     const tempoChangePhrase = 16;
     const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != this.tempo;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
-      renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
+      this.tempoBpm, // we may not need this whole blob - can we expand out to the minimum params we need?
       renderBeats, 
       true, // triggered, we want the new tempo to drop soon
       false, // hasn't happened yet
@@ -167,17 +167,20 @@ class ThrowdownApp {
     // renderRangeNext.audioContextTimeOffsetMsec += renderRangeCurrent.end.time - renderRangeCurrent.start.time;
 
     var newTempo = this.nextTempoBpm;
+    chunkBeats = bpmUtilities.msToBeats( this.tempoBpm, renderRangeCurrent.end - renderRangeCurrent.start );
+
+    // renderTimePeriod updats this.lastRenderEndBeat ... FYI
     this.renderTimePeriod( renderRangeCurrent, { 
-      start: renderBeats.start, 
-      end: tempoDropInfo.triggerOnset,
+      start: this.lastRenderEndBeat, 
+      end: this.lastRenderEndBeat + chunkBeats,
     } );
-    var hanChunkBeats = bpmUtilities.msToBeats( this.nextTempoBpm, renderRangeNext.end - renderRangeNext.start );
+
+    chunkBeats = bpmUtilities.msToBeats( this.nextTempoBpm, renderRangeNext.end - renderRangeNext.start );
     this.tempo = newTempo;
     this.renderTimePeriod( renderRangeNext, { 
-      start: tempoDropInfo.triggerOnset, 
-      end: tempoDropInfo.triggerOnset + hanChunkBeats,
+      start: this.lastRenderEndBeat, 
+      end: this.lastRenderEndBeat + chunkBeats,
     } );
-    this.lastRenderEndBeat = tempoDropInfo.triggerOnset + hanChunkBeats;
 
 
     // update the UI at the appropriate time

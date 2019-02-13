@@ -10,7 +10,7 @@ class BasslinePlayer {
     this.throwdownRender = this.throwdownRender.bind(this);
   }
 
-  throwdownRender( renderRange ) {
+  throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {
     const currentPhraseLength = 4;
     const channel = this.props.midiChannel;
     // let { triggered, playing } = this.state;
@@ -18,10 +18,15 @@ class BasslinePlayer {
     var playing = true;
 
     renderNotePattern( 
-      renderRange, renderRange.tempoBpm, currentPhraseLength,
-      renderRange.midiOutPort, 
+      renderMsec, 
+      tempoBpm, 
+      renderBeats,
+      currentPhraseLength,
+      midiOutPort, 
       bassline, // {notes, duration, startBeats, endBeats }
-      channel, triggered, playing
+      channel, 
+      triggered, 
+      playing
     );
   }
 }

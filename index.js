@@ -6,8 +6,8 @@ import { Provider } from 'react-redux';
 import store from './src/www/store/store';
 
 import ThrowdownApp from './src/www/components/throwdown-app';
-// import BasslinePlayer from './src/www/components/bassline';
-import BeatPlayer from './src/www/components/beat';
+import BasslinePlayer from './src/www/components/bassline';
+// import BeatPlayer from './src/www/components/beat';
 
 import TempoSlider from './src/www/components/tempo-slider.jsx';
 import TempoDrop from './src/www/components/tempo-drop/component.jsx';
@@ -17,10 +17,10 @@ import TempoDrop from './src/www/components/tempo-drop/component.jsx';
 // app audio engine / service
 
 const throwdownApp = new ThrowdownApp();
-// throwdownApp.push( new BasslinePlayer() );
+throwdownApp.push( new BasslinePlayer() );
 // throwdownApp.push( new BasslinePlayer( { midiChannel: 3 } ) );
-const softStepBeat = new BeatPlayer();
-throwdownApp.push( softStepBeat );
+// const softStepBeat = new BeatPlayer();
+// throwdownApp.push( softStepBeat );
 
 throwdownApp.toggleTransport();
 

@@ -15,7 +15,7 @@ import * as bpmUtilities from './bpm-utilities';
 */
 function renderPatternTrigger(
   // delete this param??
-  renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
+  // renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
   // I don't thnk we're using renderRange at all now
   //...
 
@@ -26,13 +26,13 @@ function renderPatternTrigger(
   triggerQuant, // what cycle length we want to trigger within
   triggerBeats, // beat positions within the pattern that are OK to trigger (start) at
   unTriggerBeats, // beat positions within the pattern that are OK to untrigger (stop) at
-  mode // future - alternatives to picking the closest (un)trigger beat
+  // mode // future - alternatives to picking the closest (un)trigger beat
 ) {
   // defaults
   triggerQuant = triggerQuant || 4;
   triggerBeats = triggerBeats || [ 0 ];
   unTriggerBeats = unTriggerBeats || [ 0 ];
-  mode = 'closest'; // we don't support modes yet!
+  // mode = 'closest'; // we don't support modes yet!
 
   // defaults for our return value, what we provide to client
   // render time range in global transport beats
