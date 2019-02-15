@@ -1,3 +1,9 @@
+/*
+Import a midi file and convert it into JS midi data that we can play.
+
+see also NotePattern, renderNotePattern
+*/
+
 import MIDIFile from 'midifile';
 import MIDIEvents from 'midievents';
 import _ from 'lodash';
@@ -6,7 +12,6 @@ import _ from 'lodash';
 // we want to convert our midi to something like this
 {
    duration: 16,
-   channel: midiUtilities.channelMap.saw,
    notes: [
       { start: 0, duration: 7, note: 36, velocity: 50 },
       { start: 4, duration: 7, note: 42, velocity: 50 },
@@ -19,6 +24,11 @@ import _ from 'lodash';
 }
 */
 
+// Process a MIDIFile ('midifile' 3rd party lib) into something we can play.
+// - converts time to beats
+// - filters out events that aren't notes
+// - pairs up note on and note off events, calculates duration
+// returns something that looks like a NotePattern
 function convertMidiToObject(midiFile) {
    var pattern = {
       duration: 4,
