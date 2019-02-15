@@ -32,7 +32,6 @@ import _ from 'lodash';
 function convertMidiToObject(midiFile) {
    var pattern = {
       duration: 4,
-      channel: 0, 
       notes: []
    };
    var allEvents = midiFile.getMidiEvents();
