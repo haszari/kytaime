@@ -1,17 +1,16 @@
 
 import _ from 'lodash';
 
-import { bassline } from '@kytaime/data/example-patterns';
 import renderNotePattern from '@kytaime/render-note-pattern';
 
-class BasslinePlayer {
+class MidiLoopPlayer {
   constructor(props) {
-    this.props = _.defaults( props, BasslinePlayer.defaultProps );
+    this.props = _.defaults( props, MidiLoopPlayer.defaultProps );
     this.throwdownRender = this.throwdownRender.bind(this);
   }
 
   throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {
-    const currentPhraseLength = 4;
+    const currentPhraseLength = this.props.pattern.duration;
     const channel = this.props.midiChannel;
     // let { triggered, playing } = this.state;
     var triggered = true;
@@ -23,7 +22,7 @@ class BasslinePlayer {
       renderBeats,
       currentPhraseLength,
       midiOutPort, 
-      bassline, // {notes, duration, startBeats, endBeats }
+      this.props.pattern, // {notes, duration, startBeats, endBeats }
       channel, 
       triggered, 
       playing
@@ -31,9 +30,10 @@ class BasslinePlayer {
   }
 }
 
-BasslinePlayer.defaultProps = {
-  midiChannel: 2
+MidiLoopPlayer.defaultProps = {
+  midiChannel: 2,
+  pattern: [],
 };
 
 
-export default BasslinePlayer;
+export default MidiLoopPlayer;

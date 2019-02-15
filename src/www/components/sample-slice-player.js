@@ -24,11 +24,10 @@ class SampleSlicePlayer {
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
-    console.log( 
-      `-- beat playSliceAt ` +
-      `start=(${ startBeat }, ${ startTimestamp }) `
-    );
-
+    // console.log( 
+    //   `-- beat playSliceAt ` +
+    //   `start=(${ startBeat }, ${ startTimestamp }) `
+    // );
 
     let { tempoBpm } = this.props;
     
