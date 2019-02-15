@@ -34,9 +34,9 @@ class MidiImporterApp extends React.Component {
         midiPatternData: patternData,
         filename: filename,
       } );
-      // event.currentTarget.value = '';
     }
     reader.readAsArrayBuffer( event.currentTarget.files[0] );
+    event.currentTarget.value = '';
   }
 
   render() {
