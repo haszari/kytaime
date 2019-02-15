@@ -7,9 +7,8 @@ import store from './src/www/store/store';
 
 import ThrowdownApp from './src/www/components/throwdown-app';
 import BasslinePlayer from './src/www/components/bassline';
-import BeatPlayer from './src/www/components/beat';
+import SampleSlicePlayer from './src/www/components/sample-slice-player';
 
-import TempoSlider from './src/www/components/tempo-slider.jsx';
 import TempoDrop from './src/www/components/tempo-drop/component.jsx';
 
 
@@ -17,13 +16,52 @@ import TempoDrop from './src/www/components/tempo-drop/component.jsx';
 // app audio engine / service
 
 const throwdownApp = new ThrowdownApp();
-throwdownApp.push( new BasslinePlayer() );
-throwdownApp.push( new BasslinePlayer( { midiChannel: 3 } ) );
-const softStepBeat = new BeatPlayer();
-throwdownApp.push( softStepBeat );
+
+
+/// -----------------------------------------------------------------------------------------------
+// hard-coded test data
+
+// throwdownApp.push( new BasslinePlayer() );
+// throwdownApp.push( new BasslinePlayer( { midiChannel: 3 } ) );
+throwdownApp.push(
+  new SampleSlicePlayer( {
+    audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a',
+    tempoBpm: 132, 
+    sampleDuration: 4,
+  } )
+);
+throwdownApp.push(
+  new SampleSlicePlayer( {
+    audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a',
+    tempoBpm: 132, 
+    sampleDuration: 4,
+  } )
+);
+throwdownApp.push(
+  new SampleSlicePlayer( {
+    audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-sub-ridge2.mp3',
+    tempoBpm: 132, 
+    sampleDuration: 4,
+  } )
+);
+throwdownApp.push(
+  new SampleSlicePlayer( {
+    audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-lead-uplands.m4a',
+    tempoBpm: 132, 
+    sampleDuration: 16,
+  } )
+);
+throwdownApp.push(
+  new SampleSlicePlayer( {
+    audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a',
+    tempoBpm: 132, 
+    sampleDuration: 32,
+  } )
+);
 
 throwdownApp.toggleTransport();
 
+/// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
 
 // (thanks to https://github.com/reduxjs/redux/issues/303#issuecomment-125184409)
@@ -75,7 +113,6 @@ function App() {
   return (
     <Provider store={ store }>
       <h1>Bam</h1>
-      <TempoSlider />
       <TempoDrop />
     </Provider>
   );

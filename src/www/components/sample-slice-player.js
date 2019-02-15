@@ -5,10 +5,17 @@ import audioUtilities from '@kytaime/lib/audio-utilities';
 import bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
-class BeatSamplePlayer {
+class SampleSlicePlayer {
   constructor(props) {
-    this.props = _.defaults( props, BeatSamplePlayer.defaultProps );
-    // this.throwdownRender = this.throwdownRender.bind(this);
+    this.props = _.defaults( props, SampleSlicePlayer.defaultProps );
+
+    if ( ! this.props.slices || ! this.props.slices.length  ) {
+      this.props.slices = [{
+        start: 0, 
+        duration: this.props.sampleDuration,
+        beat: 0,
+      }];
+    }
 
     this.playing = false;
 
@@ -107,7 +114,7 @@ class BeatSamplePlayer {
   }
 }
 
-BeatSamplePlayer.defaultProps = {
+SampleSlicePlayer.defaultProps = {
   // audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20181110--starthere--haszari%202%20Beat.wav',
   // tempoBpm: 150, 
 
@@ -115,12 +122,14 @@ BeatSamplePlayer.defaultProps = {
   tempoBpm: 122, 
 
   sampleDuration: 4,
-  slices: [ {
-    start: 0, 
-    duration: 4,
-    beat: 0,
-  } ],
+  slices: [ 
+  // {
+    // start: 0, 
+    // duration: 4,
+    // beat: 0,
+  // } 
+  ],
 };
 
 
-export default BeatSamplePlayer;
+export default SampleSlicePlayer;
