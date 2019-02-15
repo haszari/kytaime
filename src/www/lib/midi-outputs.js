@@ -1,3 +1,10 @@
+/*
+Utilities for accessing Web MIDI output devices.
+
+- list and display devices
+- open a named device for sending midi events to
+*/
+
 let midiOutPorts = [];
 
 function getMidiOutputs() {
@@ -15,7 +22,7 @@ function getMidiOutputs() {
 
 getMidiOutputs();
 
-module.exports = {
+export default {
    getOutputs: function() {
       return midiOutPorts;
    },
