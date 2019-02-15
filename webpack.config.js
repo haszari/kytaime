@@ -5,7 +5,10 @@ const path = require('path');
 const aliases = require('./webpack-aliases');
 
 const Config = {
-  entry: './index.js',
+  entry: {
+    main: './index.js',
+    'import-midi': './src/apps/import-midi/index.js'
+  },
   mode: process.env['NODE_ENV'] || 'production',
   devtool: process.env['NODE_ENV'] === 'development' ? 'source-map' : false,
   resolve: {
@@ -31,10 +34,12 @@ const Config = {
     before: function(app, server) {
       app.use(
         '/media', 
-        express.static(path.join(process.env.HOME, '/Music/iTunes/iTunes Media/Music'))
+        express.static(
+          path.join( process.env.HOME, '/Music/iTunes/iTunes Media/Music' )
+        )
       );
     },
-    contentBase: __dirname,
+    contentBase: path.join( __dirname, '/src/html-routes' ),
     compress: true,
     port: 8080
   }
