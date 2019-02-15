@@ -18,7 +18,7 @@ class BasslinePlayer {
     var playing = true;
 
     renderNotePattern( 
-      renderMsec, 
+      renderMsec.start, 
       tempoBpm, 
       renderBeats,
       currentPhraseLength,

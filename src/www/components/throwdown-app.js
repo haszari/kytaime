@@ -86,7 +86,7 @@ class ThrowdownApp {
     const triggered = true;
     const playing = true;
     renderNotePattern( 
-      renderRange, 
+      renderRange.start, 
       this.tempoBpm, 
       renderRangeBeats, 
       currentPhraseLength,

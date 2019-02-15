@@ -1,3 +1,9 @@
+/*
+Render a midi note pattern.
+
+Handles triggering the pattern on at appropriate times and rendering note events.
+*/
+
 import _ from 'lodash'; 
 
 import midiUtilities from './midi-utilities';
@@ -5,8 +11,9 @@ import bpmUtilities from './sequencer/bpm-utilities';
 import patternSequencer from './sequencer/pattern-sequencer';
 
 
+// Returns boolean indicating whether the pattern is currently playing.
 const renderNotePattern = function(
-   renderRange, 
+   renderStartMsec, 
    beatsPerMinute, 
    renderRangeBeats, 
    currentPhraseLength,
@@ -29,7 +36,6 @@ const renderNotePattern = function(
    var renderEnd = (renderRangeBeats.end % patternData.duration);
 
    let startStopInfo = patternSequencer.renderPatternTrigger(
-      renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
       beatsPerMinute,
       renderRangeBeats, 
       triggered, // triggered, we want the new tempo to drop soon
@@ -73,7 +79,7 @@ const renderNotePattern = function(
 
          velocity: noteEvent.velocity, 
          duration: bpmUtilities.beatsToMs(beatsPerMinute, noteEvent.duration), 
-         timestamp: renderRange.start + timestamp
+         timestamp: renderStartMsec + timestamp
       };
       // console.log(note.timestamp);
 
