@@ -28,8 +28,10 @@ import _ from 'lodash';
 // - converts time to beats
 // - filters out events that aren't notes
 // - pairs up note on and note off events, calculates duration
+// - if specified, offset (beats) is subtracted from the start of every event (if your midi file starts later in the timeline)
 // returns something that looks like a NotePattern
-function convertMidiToObject(midiFile) {
+function convertMidiToObject( midiFile, offset ) {
+   const beatOffset = offset || 0;
    var pattern = {
       duration: 4,
       notes: []
@@ -66,16 +68,22 @@ function convertMidiToObject(midiFile) {
             note: noteOnEvent.param1,
             velocity: noteOnEvent.param2,
             duration: noteOffEvent.beats - noteOnEvent.beats,
-            start: noteOnEvent.beats 
+            start: noteOnEvent.beats - beatOffset
          });
       }
    });
+   // determine pattern length, by the start of the last note
+   pattern.duration = _.reduce( pattern.notes, ( state, note ) => {
+      return Math.max( state, note.start );
+   }, pattern.duration );
+   // round to a power of 2 (1 / 2 / 4 / 8 / 16) beats
+   pattern.duration = Math.pow(2,Math.ceil(Math.log(pattern.duration)/Math.log(2)));
    return pattern;
 }
 
-function importMidiFile(buffer) {
+function importMidiFile( buffer, offset ) {
    var midiFile = new MIDIFile(buffer);
-   return convertMidiToObject(midiFile);
+   return convertMidiToObject(midiFile, offset);
 }
 
 export default importMidiFile;

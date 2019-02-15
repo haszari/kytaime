@@ -8,20 +8,33 @@ class MidiImporterApp extends React.Component {
     super( props );
 
     this.importFile = this.importFile.bind( this );
+    this.offsetChange = this.offsetChange.bind( this );
 
     this.state = {
       midiPatternData: undefined,
+      beatOffset: 0,
+      filename: ''
     }
+  }
+
+  offsetChange( event ) {
+    this.setState( {
+      beatOffset: parseInt( event.currentTarget.value )
+    } );
   }
 
   importFile( event ) {
     var reader = new FileReader();
     const setState = this.setState.bind( this );
+    const offset = this.state.beatOffset;
+    const filename = event.currentTarget.files[0].name;
     reader.onload = function() {
-      const patternData = importMidiFile( this.result );
+      const patternData = importMidiFile( this.result, offset );
       setState( {
         midiPatternData: patternData,
+        filename: filename,
       } );
+      // event.currentTarget.value = '';
     }
     reader.readAsArrayBuffer( event.currentTarget.files[0] );
   }
@@ -29,6 +42,7 @@ class MidiImporterApp extends React.Component {
   render() {
     return (
       <div>
+        Subtract beats: <input type="number" step='1' value={ this.state.beatOffset } onChange={ this.offsetChange } />
         <input 
           type="file" 
           onChange={ this.importFile } 
@@ -40,11 +54,12 @@ class MidiImporterApp extends React.Component {
           }}
         />
         <br />
+        <h2>{ this.state.filename }</h2>
         <textarea 
           rows="40"
           readOnly 
           style={{ width: '100%' }}
-          value={ this.state.midiPatternData ? JSON.stringify(this.state.midiPatternData, null, ' ') : '' }
+          value={ this.state.midiPatternData ? JSON.stringify(this.state.midiPatternData, null, '  ') : '' }
         />
         <br />
       </div>

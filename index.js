@@ -24,256 +24,64 @@ const throwdownApp = new ThrowdownApp();
 // throwdownApp.push( new BasslinePlayer() );
 throwdownApp.push( new MidiLoopPlayer( {
   pattern: {
-   "duration": 16,
-   "notes": [
-    {
-     "note": 70,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 0
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 0.75
-    },
-    {
-     "note": 66,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 1.5
-    },
-    {
-     "note": 65,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 2
-    },
-    {
-     "note": 28,
-     "velocity": 100,
-     "duration": 3,
-     "start": 3
-    },
-    {
-     "note": 60,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 4
-    },
-    {
-     "note": 65,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 4
-    },
-    {
-     "note": 60,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 4.75
-    },
-    {
-     "note": 66,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 4.75
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 5.5
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 5.5
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 6
-    },
-    {
-     "note": 24,
-     "velocity": 100,
-     "duration": 1,
-     "start": 6
-    },
-    {
-     "note": 70,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 6
-    },
-    {
-     "note": 70,
-     "velocity": 67,
-     "duration": 0.25,
-     "start": 6.5
-    },
-    {
-     "note": 70,
-     "velocity": 69,
-     "duration": 0.25,
-     "start": 6.75
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 7
-    },
-    {
-     "note": 70,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 7
-    },
-    {
-     "note": 70,
-     "velocity": 46,
-     "duration": 0.25,
-     "start": 7.5
-    },
-    {
-     "note": 70,
-     "velocity": 58,
-     "duration": 0.25,
-     "start": 7.75
-    },
-    {
-     "note": 70,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 8
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 8.75
-    },
-    {
-     "note": 48,
-     "velocity": 100,
-     "duration": 1,
-     "start": 9
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 9.5
-    },
-    {
-     "note": 65,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 10
-    },
-    {
-     "note": 24,
-     "velocity": 100,
-     "duration": 3,
-     "start": 10
-    },
-    {
-     "note": 60,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 12
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 12
-    },
-    {
-     "note": 60,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 12.75
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 12.75
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 13.5
-    },
-    {
-     "note": 68,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 13.5
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 14
-    },
-    {
-     "note": 76,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 14
-    },
-    {
-     "note": 76,
-     "velocity": 67,
-     "duration": 0.25,
-     "start": 14.5
-    },
-    {
-     "note": 76,
-     "velocity": 69,
-     "duration": 0.25,
-     "start": 14.75
-    },
-    {
-     "note": 56,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 15
-    },
-    {
-     "note": 76,
-     "velocity": 100,
-     "duration": 0.25,
-     "start": 15
-    },
-    {
-     "note": 34,
-     "velocity": 100,
-     "duration": 1,
-     "start": 15
-    },
-    {
-     "note": 75,
-     "velocity": 46,
-     "duration": 0.25,
-     "start": 15.5
-    },
-    {
-     "note": 70,
-     "velocity": 58,
-     "duration": 0.25,
-     "start": 15.75
-    }
-   ]
-  } 
+    "duration": 32,
+    "notes": [
+      {
+        "note": 28,
+        "velocity": 100,
+        "duration": 4,
+        "start": 0
+      },
+      {
+        "note": 28,
+        "velocity": 100,
+        "duration": 4,
+        "start": 8
+      },
+      {
+        "note": 28,
+        "velocity": 100,
+        "duration": 4,
+        "start": 16
+      },
+      {
+        "note": 24,
+        "velocity": 100,
+        "duration": 4,
+        "start": 24
+      },
+      {
+        "note": 34,
+        "velocity": 100,
+        "duration": 3,
+        "start": 28
+      },
+      {
+        "note": 35,
+        "velocity": 100,
+        "duration": 0.25,
+        "start": 31
+      },
+      {
+        "note": 37,
+        "velocity": 100,
+        "duration": 0.25,
+        "start": 31.25
+      },
+      {
+        "note": 41,
+        "velocity": 100,
+        "duration": 0.25,
+        "start": 31.5
+      },
+      {
+        "note": 46,
+        "velocity": 100,
+        "duration": 0.25,
+        "start": 31.75
+      }
+    ]
+  }
 } ) );
 throwdownApp.push(
   new SampleSlicePlayer( {
