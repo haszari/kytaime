@@ -1,6 +1,7 @@
 import _ from 'lodash'; 
 
-import { midiUtilities, bpmUtilities } from './sequencer';
+import midiUtilities from './midi-utilities';
+import bpmUtilities from './sequencer/bpm-utilities';
 import patternSequencer from './sequencer/pattern-sequencer';
 
 

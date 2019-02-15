@@ -1,8 +1,8 @@
 
 import _ from 'lodash';
 
-import * as audioUtilities from '@kytaime/lib/audio-utilities';
-import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
+import audioUtilities from '@kytaime/lib/audio-utilities';
+import bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
 
 class BeatSamplePlayer {

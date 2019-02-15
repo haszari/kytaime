@@ -4,15 +4,15 @@ import store from '../store/store';
 
 import transportActions from '../store/transport/actions';
 
-import { sequencer } from '@kytaime/lib/sequencer';
+import sequencer from '@kytaime/lib/sequencer/sequencer';
 import renderNotePattern from '@kytaime/lib/render-note-pattern';
 import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
-import * as bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
+import bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
 import * as midiOutputs from '@kytaime/lib/web-midi-helper';
 
 // metronome/test pattern
 // import { hats, kick, beat, bassline } from '@kytaime/lib/example-patterns';
-import { hats } from '@kytaime/lib/example-patterns';
+import { hats } from '@kytaime/lib/data/example-patterns';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core

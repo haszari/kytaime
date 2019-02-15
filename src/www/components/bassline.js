@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import { bassline } from '@kytaime/lib/example-patterns';
+import { bassline } from '@kytaime/lib/data/example-patterns';
 import renderNotePattern from '@kytaime/lib/render-note-pattern';
 
 class BasslinePlayer {

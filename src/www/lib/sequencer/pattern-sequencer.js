@@ -1,6 +1,6 @@
 import _ from 'lodash'; 
 
-import * as bpmUtilities from './bpm-utilities';
+import bpmUtilities from './bpm-utilities';
 
 /***
   renderPatternTrigger

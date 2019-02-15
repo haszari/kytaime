@@ -99,7 +99,7 @@ function valueInWrappedBeatRange(value, renderStart, renderEnd, wrapDuration) {
 // }
 
 
-export {
+export default {
    // renderPatternStartStop,
    valueInWrappedBeatRange,
    // getWrappedTimeOffsetForBeat,

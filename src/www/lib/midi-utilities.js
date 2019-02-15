@@ -1,7 +1,5 @@
 
-//console.log('readiing midi utils')
-
-module.exports.drumMap = {
+const drumMap = {
    kick: 36, 
    stick: 37,
    snare: 38,
@@ -9,7 +7,9 @@ module.exports.drumMap = {
    hat: 42
 };
 
-module.exports.channelMap = {
+// TODO this logic should be factored out to a shared module & used for audio and midi.
+// see also connectToChannelForPart
+const channelMap = {
    drums: 0, 
    bass: 1, 
    saw: 2,
@@ -19,7 +19,7 @@ module.exports.channelMap = {
    piano: 6
 };
 
-module.exports.renderNote = function(options) {
+const renderNote = function(options) {
    // options: port, channel, noteNumber, velocity, duration, timestamp
    options.port.send(
       [0x90 + options.channel, options.note, options.velocity], 
@@ -32,10 +32,17 @@ module.exports.renderNote = function(options) {
    );
 };
 
-module.exports.renderController = function(options) {
+const renderController = function(options) {
    // options: port, channel, controller, value, timestamp
    options.port.send(
       [0xB0 + options.channel, options.controller, options.value], 
       options.timestamp
    );
+};
+
+export default {
+   renderController,
+   renderNote,
+   channelMap,
+   drumMap  
 };
