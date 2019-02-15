@@ -1,5 +1,5 @@
 var path = require('path');
 
 module.exports = {
-  '@kytaime/lib': path.resolve(__dirname, 'src/www/lib'),
+  '@kytaime': path.resolve(__dirname, 'src/lib/kytaime'),
 }

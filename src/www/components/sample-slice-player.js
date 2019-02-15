@@ -1,9 +1,9 @@
 
 import _ from 'lodash';
 
-import audioUtilities from '@kytaime/lib/audio-utilities';
-import bpmUtilities from '@kytaime/lib/sequencer/bpm-utilities';
-import patternSequencer from '@kytaime/lib/sequencer/pattern-sequencer';
+import audioUtilities from '@kytaime/audio-utilities';
+import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
+import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 class SampleSlicePlayer {
   constructor(props) {
