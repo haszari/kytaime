@@ -33,5 +33,9 @@
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.14",
     "worker-loader": "^2.0.0"
+  },
+  "dependencies": {
+    "midievents": "^2.0.0",
+    "midifile": "^2.0.0"
   }
 }
