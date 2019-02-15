@@ -1,10 +1,14 @@
+/*
+Kytaime sequencer core.
+
+Doesn't sequence anything on its own, but sets up everything so an app 
+can sequence midi and audio reliably and accurately.
+
+This doesn't provide any tempo / beat / pattern sequencing. Use this in 
+conjunction with pattern-sequencer.
+*/
 
 import _ from 'lodash'; 
-
-// import WebMidiHelper from './web-midi-helper';
-// import midiUtilities from './midi-utilities';
-// import * as bpmUtilities from './bpm-utilities';
-// import * as midiOutputs from './web-midi-helper';
 
 var WorkerSetInterval = require('./setInterval.worker');
 
@@ -12,15 +16,32 @@ let AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
 audioContext = new AudioContext(); // this will start "paused"
 
-// this metronome stuff is like a mini client; not core sequencer
-// var metronomeChannel = 0;
-// var metronomeNote = 37;
-// var metronomeOn = true;
+//-----------------------------------------------
+//--- render interval settings ---
 
-// how often we ideally want to call our note renderer
-var renderInterval = 200;
-// longer period of notes to render to cover potential sloppy timing between render callbacks
-var renderOverlap = renderInterval * 0.2;
+// How often we ideally want to call our note renderer (milliseconds).
+const renderInterval = 200;
+// We render a slightly longer period of notes to cover any potential 
+// sloppy timing between render callbacks.
+const renderOverlap = renderInterval * 0.2;
+
+// A string message used to identify our web worker interval callback.
+const webWorkerTimerMessage = 'kytaime-sequencer-update';
+
+//-----------------------------------------------
+//--- render callbacks ---
+
+// Client app can set up as many render callbacks as they like.
+// This library will call these, and pass them all they need to 
+// render accurately sequenced midi and audio.
+
+// Render callback is passed an object:
+// {
+//   audioContext: audioContext, // there can only be one, and we need it to implement accurate timing, so we own it, and pass to clients
+//   audioContextTimeOffsetMsec: offsetMilliseconds, // the difference in timing between midi and audio events; add this to any scheduled audio events
+//   start: renderStart, // render period start time in milliseconds
+//   end: renderEnd, // render period end time in milliseconds
+// }
 
 let renderCallbacks = {};
 
@@ -28,40 +49,25 @@ function setRenderCallback(callbackId, callbackFunction) {
    renderCallbacks[callbackId] = callbackFunction;
 }
 
-
 function removeRenderCallback(callbackId) {
    setRenderCallback(callbackId, undefined);
 }
 
-// var midiOutPort = null;
-// let midiOutDevice = "";
+//-----------------------------------------------
+//--- internal sequencer state ---
 
-// function getMidiOut() { return midiOutDevice; };
-// function setMidiOut(requestedPortName) {
-//   midiOutputs.openMidiOutput({
-//     deviceName: requestedPortName,
-//     callback: function(info) {
-//      if (info.port) {
-//       midiOutPort = info.port;
-//       console.log("Using " + midiOutPort.name);
-//       midiOutDevice = midiOutPort.name;
-//       }
-//     }.bind(this)
-//   });
-// }
-
-
-// sequencer state that is carried between render callbacks
 var state = {
-   isPlaying: false,
-   // lastRenderEndBeat: 0,
-   lastRenderEndTime: 0,
-   intervalId: null,
-   
-   // tempo was previously stored in client app redux store; we need to take control of it
-   // clients will have to schedule events to update the transport tempo
-   // tempoBpm: 121, 
+  isPlaying: false,
+  lastRenderEndTime: 0,
+  intervalId: null,
 };
+
+//-----------------------------------------------
+//--- internal sequencer render callback ---
+
+// Determines the exact time period that should be rendered and 
+// calls through to any registered renderCallbacks.
+
 var updateTransport = function() {
   audioContext.resume().then(function() {
 
@@ -74,92 +80,93 @@ var updateTransport = function() {
     var renderEnd = now + renderInterval + renderOverlap;
     var chunkMs = renderEnd - renderStart;
 
-    // 
+    // we're getting ahead of ourselves, chill out
+    // time keeps on slipping, slipping
+    // into the future
     if (chunkMs <= 0)
       return;
 
+    // determine an approx difference between midi now and audio now, so midi and audio beats line up
     var audioNow = audioContext.currentTime;
     var offsetMilliseconds = audioNow * 1000 - now;
 
-    var renderRange = {
-      // midiOutPort: midiOutPort,
-      audioContext: audioContext,
-
-      audioContextTimeOffsetMsec: offsetMilliseconds, 
-
-      start: renderStart,
-      end: renderEnd,
-    };
-
     // tell the client(s) to do their thing
     _.map(renderCallbacks, (renderFunc, id) => {
-      renderFunc(renderRange);
+      renderFunc( {
+        audioContext: audioContext,
+
+        audioContextTimeOffsetMsec: offsetMilliseconds, 
+
+        start: renderStart,
+        end: renderEnd,
+      } );
     } );
 
     // update state
-    state.lastRenderEndTime = renderRange.end;
+    state.lastRenderEndTime = renderEnd;
   });
 };
+
+//-----------------------------------------------
+//--- timer machinery ---
+
+// this calls us reliably often - like setInterval but more reliable & consistent
 
 var worker = new WorkerSetInterval;
 // worker.postMessage();
 worker.addEventListener('message', function(e) {
    // console.log('Worker said: ', e.data);
-   if (e.data == 'updateMetronome') {
+   if (e.data == webWorkerTimerMessage) {
       updateTransport();
    }
 }, false);
 
-// var setTempo = function( newTempo ) {
-//   state.tempoBpm = newTempo;
-// }
+//-----------------------------------------------
+//--- sequencer interface – start & stop, play state ---
 
-// var getTempo = function(  ) {
-//   return state.tempoBpm;
-// }
-
+// note that 'start' & 'stop' are hard-coded in setInterval.worker.js
 
 var startTempoClock = function() {
-   state.isPlaying = true;
+  state.isPlaying = true;
 
-   // let's start the tempoclock NOW      
-   state.lastRenderEndTime = window.performance.now();
-   updateTransport();
+  // let's start the tempoclock NOW      
+  state.lastRenderEndTime = window.performance.now();
+  updateTransport();
 
-   // now loop forever
-   worker.postMessage({
-      type: "start", 
-      interval: renderInterval,
-      message: "updateMetronome"
-   });
+  // now loop forever
+  worker.postMessage({
+    type: "start", 
+    interval: renderInterval,
+    message: webWorkerTimerMessage
+  });
 };
 
 var stopTempoClock = function() {
-   worker.postMessage({
-      type: "stop"
-   });
-   state = {
-      tempoBpm: state.tempoBpm,
-      isPlaying: false,
-      lastRenderEndBeat: 0,
-      lastRenderEndTime: 0,
-      intervalId: null
-   };
+  // kill timer
+  worker.postMessage({
+    type: "stop"
+  });
+
+  // reset state
+  state = {
+    isPlaying: false,
+    lastRenderEndTime: 0,
+    intervalId: null
+  };
 };
 
 var isPlaying = function() {
-   return state.isPlaying;
+  return state.isPlaying;
 };
+
+//-----------------------------------------------
+//--- export quality ---
 
 export default {
   start: startTempoClock,
   stop: stopTempoClock,
-  // setTempo: setTempo,
-  // getTempo: getTempo,
   isPlaying: isPlaying,
   setRenderCallback: setRenderCallback,
   removeRenderCallback: removeRenderCallback,
   audioContext: audioContext,
-  // setMidiOut: setMidiOut,
-  // getMidiOut: getMidiOut,
 };
