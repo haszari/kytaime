@@ -148,7 +148,7 @@ class ThrowdownApp {
 
     // we have a tempo change to render, before we can render other stuff!
     var tempoChangeEvent = patternSequencer.renderPatternEvents(
-      renderRange, 
+      renderRange.start, 
       this.tempoBpm,
       renderBeats,
       tempoChangePhrase,

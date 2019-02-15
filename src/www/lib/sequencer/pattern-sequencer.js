@@ -1,3 +1,11 @@
+/*
+Routines to help sequence patterns and trigger / untrigger patterns at appropriate beats.
+
+This is arguably where some magic happens.
+
+Other sequencers only have patterns start at the start (0) and end at the end, but music can be more fluid than that :)
+*/
+
 import _ from 'lodash'; 
 
 import bpmUtilities from './bpm-utilities';
@@ -5,25 +13,26 @@ import bpmUtilities from './bpm-utilities';
 /***
   renderPatternTrigger
   Provides the ability to trigger (start, drop) and untrigger (stop) patterns (loops, midi patterns, beats).
+
+  Triggering and untriggering occurs on the nearest appropriate point.
+
+  Appropriate times for start/stop are specified via triggerBeats and untriggerBeats.
+
+  This allows patterns that only start on the first snare (beat 3), or stop jsut before the 4th beat, or for anacrusis.
   
   returns
   {
-    possibly a boolean indicating whether pattern is playing (coarse, e.g. for UI really)
-    something to tell client when trigger happened - in pattern time and in transport time (or not)
-    something to tell client how to render events
+    isPlaying: boolean indicating whether pattern is playing (coarse, e.g. for UI really)
+    triggerOnset: if pattern triggers on this render, this is what beat it happens at (otherwise -1)
+    triggerOffset: same as triggerOnset, but for when the pattern is triggered off  
+    startBeat, endBeat: the range of time that this pattern should be rendered; sometimes smaller, if has just been triggered on or off
   }
 */
 function renderPatternTrigger(
-  // delete this param??
-  // renderRange, // we may not need this whole blob - can we expand out to the minimum params we need?
-  // I don't thnk we're using renderRange at all now
-  //...
-
-
   tempoBpm, 
-  renderRangeBeats,
+  renderRangeBeats, // { start, end } in beats
   isTriggered, isPlaying, // current state
-  triggerQuant, // what cycle length we want to trigger within
+  triggerQuant, // what cycle length we want to trigger within, aka the loop length
   triggerBeats, // beat positions within the pattern that are OK to trigger (start) at
   unTriggerBeats, // beat positions within the pattern that are OK to untrigger (stop) at
   // mode // future - alternatives to picking the closest (un)trigger beat
@@ -115,11 +124,11 @@ function renderPatternTrigger(
   {
     start: // msec start time, absolute
     duration: // msec duration
-    event: // passed in events
+    event: // passed in event data
   }
 */
 const renderPatternEvents = function(
-  renderRange,
+  renderStartMsec,
   tempoBpm,
   renderRangeBeats,
   cycleBeats, // cycle (loop) length for pattern
@@ -142,7 +151,7 @@ const renderPatternEvents = function(
     }
 
     var timestamp = bpmUtilities.beatsToMs(tempoBpm, beatOffset);
-    var absoluteTimestamp = renderRange.start + timestamp;
+    var absoluteTimestamp = renderStartMsec + timestamp;
     
     var duration = bpmUtilities.beatsToMs(tempoBpm, noteEvent.duration);
 

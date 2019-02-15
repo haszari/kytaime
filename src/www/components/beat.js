@@ -89,7 +89,7 @@ class BeatSamplePlayer {
 
     // scheduledSlices: start time in msec
     let scheduledSlices = patternSequencer.renderPatternEvents(
-      renderRange, 
+      renderRange.start, 
       tempoBpm, 
       renderRangeBeats,
       sampleDuration, 
