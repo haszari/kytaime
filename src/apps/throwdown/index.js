@@ -3,6 +3,8 @@ import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
 
+import Hjson from 'hjson';
+
 import store from './store/store';
 
 import ThrowdownApp from './components/throwdown-app';
@@ -21,6 +23,14 @@ const throwdownApp = new ThrowdownApp();
 
 /// -----------------------------------------------------------------------------------------------
 // hard-coded test data
+
+const testSongFile = '/data/20190217--manas.hjson';
+window.fetch( testSongFile )
+  .then( response => response.text() )
+  .then( text => {
+    const songData = Hjson.parse( text );
+    console.log( songData );
+  } );
 
 // throwdownApp.push( new BasslinePlayer() );
 throwdownApp.push( new MidiLoopPlayer( {

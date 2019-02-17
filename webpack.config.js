@@ -32,10 +32,18 @@ const Config = {
   },
   devServer: {
     before: function(app, server) {
+      // serve iTunes library for samples/media
       app.use(
         '/media', 
         express.static(
           path.join( process.env.HOME, '/Music/iTunes/iTunes Media/Music' )
+        )
+      );
+      // serve hjson song data from src
+      app.use(
+        '/data', 
+        express.static(
+          path.join( __dirname, '/src/data' )
         )
       );
     },

@@ -1,4 +1,5 @@
 {
+  version: 1
   samples: {
     beat-main: {
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
