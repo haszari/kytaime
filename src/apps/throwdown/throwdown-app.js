@@ -5,14 +5,9 @@ import store from './store/store';
 import transportActions from './store/transport/actions';
 
 import sequencer from '@kytaime/sequencer/sequencer';
-import renderNotePattern from '@kytaime/render-note-pattern';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiOutputs from '@kytaime/midi-outputs';
-
-// metronome/test pattern
-// import { hats, kick, beat, bassline } from '@kytaime/example-patterns';
-import { hats } from '@kytaime/data/example-patterns';
 
 import getChannelForPart from './get-channel-for-part';
 
@@ -84,21 +79,6 @@ class ThrowdownApp {
     //   `start=(${ renderRangeBeats.start }, ${ renderRange.start }) ` +
     //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
     // );
-    
-    // render built-in metronome pattern
-    const currentPhraseLength = 4;
-    const drumchannel = 0;
-    const triggered = true;
-    const playing = true;
-    renderNotePattern( 
-      renderRange.start, 
-      this.tempoBpm, 
-      renderRangeBeats, 
-      currentPhraseLength,
-      this.midiOutPort, 
-      hats, // {notes, duration, startBeats, endBeats }
-      drumchannel, triggered, playing
-    );
 
     // get children to render themselves
     this.children.map( ( child ) => {
@@ -202,6 +182,7 @@ class ThrowdownApp {
   // main
 
   loadData( throwdownData ) {
+    // make loop players for each midi / audio resource
     _.each( throwdownData.resources, ( resource, key ) => {
       if ( resource.notes ) {
         const channel = getChannelForPart( resource.part || key );
@@ -209,6 +190,18 @@ class ThrowdownApp {
           channel: channel, 
           notes: resource.notes,
           duration: resource.duration,
+          startBeats: resource.startBeats,
+          endBeats: resource.endBeats,
+        } ) );
+      }
+    } );
+    _.each( throwdownData.resources, ( resource, key ) => {
+      if ( resource.file ) {
+        // const channel = getChannelForPart( resource.part || key );
+        this.push( new SampleSlicePlayer( {
+          audioFile: resource.file,
+          tempoBpm: resource.tempo, 
+          sampleDuration: resource.duration,
           startBeats: resource.startBeats,
           endBeats: resource.endBeats,
         } ) );
