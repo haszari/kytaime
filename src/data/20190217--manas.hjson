@@ -1,0 +1,179 @@
+{
+  samples: {
+    beat-main: {
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
+      tempo: 132, 
+      duration: 4,      
+    }
+    beat-step: {
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a',
+      tempo: 132, 
+      duration: 4,      
+      startBeats: [ -0.5 ]
+    }
+    voc: {
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a',
+      tempo: 132,
+      duration: 32
+    }
+  }
+  midi: {
+    sub: {
+      duration: 4,
+      endBeats: [ 1 ]
+      notes: [
+        {
+          "note": 33,
+          "velocity": 100,
+          "duration": 1,
+          "start": 1
+        },
+        {
+          "note": 45,
+          "velocity": 100,
+          "duration": 1,
+          "start": 2
+        },
+        {
+          "note": 45,
+          "velocity": 100,
+          "duration": 0.6666666666666665,
+          "start": 3
+        },
+        {
+          "note": 46,
+          "velocity": 100,
+          "duration": 0.4583333333333335,
+          "start": 3.5
+        }
+      ]
+    }
+    arp: {
+      duration: 64,
+      startBeats: [ 0, 0.5 ]
+      endBeats: [ 0, 15 ]
+      notes: [
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 0.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 1.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 2.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 3.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 4.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 5.5
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 6.5
+        },
+        {
+          "note": 70,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 7.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 8.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 9.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 10.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 11.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 12.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 13.5
+        },
+        {
+          "note": 77,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 14.5
+        },
+        {
+          "note": 76,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 15.5
+        },
+      ]
+    }
+  }
+  sections: {
+    intro: {
+      bars: 8
+      patterns: [
+        beat-step
+        voc
+      ]
+    }
+    main: {
+      bars: 8
+      patterns: [
+        beat-main
+        sub
+        voc
+      ]
+    }
+    build: {
+      bars: 8
+      patterns: [
+        arp
+        voc
+      ]
+    }
+  } 
+}
