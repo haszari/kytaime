@@ -9,9 +9,18 @@ class MidiLoopPlayer {
     this.throwdownRender = this.throwdownRender.bind(this);
   }
 
+  getNotePattern() {
+    return {
+      notes: this.props.notes,
+      duration: this.props.duration,
+      startBeats: this.props.startBeats,
+      endBeats: this.props.endBeats,
+    }
+  }
+
   throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {
     const currentPhraseLength = this.props.pattern.duration;
-    const channel = this.props.midiChannel;
+    const channel = this.props.channel;
     // let { triggered, playing } = this.state;
     var triggered = true;
     var playing = true;
@@ -22,7 +31,7 @@ class MidiLoopPlayer {
       renderBeats,
       currentPhraseLength,
       midiOutPort, 
-      this.props.pattern, // {notes, duration, startBeats, endBeats }
+      this.getNotePattern(), // {notes, duration, startBeats, endBeats }
       channel, 
       triggered, 
       playing
@@ -31,7 +40,7 @@ class MidiLoopPlayer {
 }
 
 MidiLoopPlayer.defaultProps = {
-  midiChannel: 2,
+  midiChannel: 0,
   pattern: [],
 };
 

@@ -2,11 +2,13 @@
   version: 1
   resources: {
     beat-main: {
+      part: beat,
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
       tempo: 132, 
       duration: 4,      
     }
     beat-step: {
+      part: beat,
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a',
       tempo: 132, 
       duration: 4,      
@@ -48,7 +50,7 @@
       ]
     }
     arp: {
-      duration: 64,
+      duration: 16,
       startBeats: [ 0, 0.5 ]
       endBeats: [ 0, 15 ]
       notes: [

@@ -74,7 +74,7 @@ const renderNotePattern = function(
       var note = { 
          port: midiOutPort, 
 
-         channel: patternChannel - 1,
+         channel: patternChannel,
          note: noteEvent.note,
 
          velocity: noteEvent.velocity, 

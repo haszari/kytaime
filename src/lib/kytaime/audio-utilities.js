@@ -38,6 +38,7 @@ const connectToStereoOutChannel = function(audioContext, audioSourceNode, audioD
 // Used to set up standard instrument routings.
 // TODO this logic should be factored out to a shared module & used for audio and midi.
 // see also midiUtilities.channelMap
+// superceded by getChannelForPart in throwdown app – this is too custom to be in the lib
 const connectToChannelForPart = function(audioContext, audioSourceNode, audioDestinationNode, partName) {
   // default - drums, percussion, etc
   let outputChannelPairOffset = 0;

@@ -1,8 +1,8 @@
 import _ from 'lodash'; 
 
-import store from '../store/store';
+import store from './store/store';
 
-import transportActions from '../store/transport/actions';
+import transportActions from './store/transport/actions';
 
 import sequencer from '@kytaime/sequencer/sequencer';
 import renderNotePattern from '@kytaime/render-note-pattern';
@@ -13,6 +13,11 @@ import midiOutputs from '@kytaime/midi-outputs';
 // metronome/test pattern
 // import { hats, kick, beat, bassline } from '@kytaime/example-patterns';
 import { hats } from '@kytaime/data/example-patterns';
+
+import getChannelForPart from './get-channel-for-part';
+
+import MidiLoopPlayer from './components/midi-loop-player';
+import SampleSlicePlayer from './components/sample-slice-player';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core
@@ -82,7 +87,7 @@ class ThrowdownApp {
     
     // render built-in metronome pattern
     const currentPhraseLength = 4;
-    const drumchannel = 1;
+    const drumchannel = 0;
     const triggered = true;
     const playing = true;
     renderNotePattern( 
@@ -195,6 +200,21 @@ class ThrowdownApp {
 
   /// -----------------------------------------------------------------------------------------------
   // main
+
+  loadData( throwdownData ) {
+    _.each( throwdownData.resources, ( resource, key ) => {
+      if ( resource.notes ) {
+        const channel = getChannelForPart( resource.part || key );
+        this.push( new MidiLoopPlayer( {
+          channel: channel, 
+          notes: resource.notes,
+          duration: resource.duration,
+          startBeats: resource.startBeats,
+          endBeats: resource.endBeats,
+        } ) );
+      }
+    } );
+  }
 
   startTransport() {
     sequencer.start();

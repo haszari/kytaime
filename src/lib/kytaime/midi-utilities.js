@@ -9,6 +9,7 @@ const drumMap = {
 
 // TODO this logic should be factored out to a shared module & used for audio and midi.
 // see also connectToChannelForPart
+// superceded by getChannelForPart in throwdown app – this is too custom to be in the lib
 const channelMap = {
    drums: 0, 
    bass: 1, 
