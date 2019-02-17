@@ -3,13 +3,13 @@ import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
 
-import store from './src/www/store/store';
+import store from './store/store';
 
-import ThrowdownApp from './src/www/components/throwdown-app';
-import MidiLoopPlayer from './src/www/components/midi-loop-player';
-import SampleSlicePlayer from './src/www/components/sample-slice-player';
+import ThrowdownApp from './components/throwdown-app';
+import MidiLoopPlayer from './components/midi-loop-player';
+import SampleSlicePlayer from './components/sample-slice-player';
 
-import TempoDrop from './src/www/components/tempo-drop/component.jsx';
+import TempoDrop from './components/tempo-drop/component.jsx';
 
 
 /// -----------------------------------------------------------------------------------------------
