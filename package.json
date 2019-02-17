@@ -35,6 +35,7 @@
     "worker-loader": "^2.0.0"
   },
   "dependencies": {
+    "hjson": "^3.1.2",
     "midievents": "^2.0.0",
     "midifile": "^2.0.0"
   }
