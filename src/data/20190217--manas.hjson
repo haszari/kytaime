@@ -1,6 +1,6 @@
 {
   version: 1
-  samples: {
+  resources: {
     beat-main: {
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
       tempo: 132, 
@@ -17,8 +17,6 @@
       tempo: 132,
       duration: 32
     }
-  }
-  midi: {
     sub: {
       duration: 4,
       endBeats: [ 1 ]
