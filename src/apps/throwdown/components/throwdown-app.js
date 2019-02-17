@@ -196,12 +196,12 @@ class ThrowdownApp {
   /// -----------------------------------------------------------------------------------------------
   // main
 
-  // startTransport() {
-  //   sequencer.start();
-  // }
-  // stopTransport() {
-  //   sequencer.stop();
-  // }
+  startTransport() {
+    sequencer.start();
+  }
+  stopTransport() {
+    sequencer.stop();
+  }
   toggleTransport() {
     if ( sequencer.isPlaying() ) {
       sequencer.stop();

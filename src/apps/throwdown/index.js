@@ -9,6 +9,7 @@ import ThrowdownApp from './components/throwdown-app';
 import MidiLoopPlayer from './components/midi-loop-player';
 import SampleSlicePlayer from './components/sample-slice-player';
 
+import PlayButton from './components/play-button.jsx';
 import TempoDrop from './components/tempo-drop/component.jsx';
 
 
@@ -142,7 +143,23 @@ function observeStore(store, select, onChange) {
   return unsubscribe;
 }
 
-// hook up transport tempo, beat sample player to state
+observeStore(
+  store, 
+  // transport component could provide this selector
+  ( state ) => {
+    return state.transport.isPlaying
+  }, 
+  ( isPlaying ) => {
+    if ( isPlaying ) {
+      throwdownApp.startTransport();
+    }
+    else {
+      throwdownApp.stopTransport();
+    }
+  }
+);
+
+// hook up transport tempo to state
 observeStore(
   store, 
   // transport component could provide this selector
@@ -153,8 +170,6 @@ observeStore(
     throwdownApp.setTempo( tempo )
   }
 );
-
-// hook up transport next tempo to state
 observeStore(
   store, 
   // transport component could provide this selector
@@ -173,6 +188,7 @@ function App() {
   return (
     <Provider store={ store }>
       <h1>Bam</h1>
+      <PlayButton />
       <TempoDrop />
     </Provider>
   );
