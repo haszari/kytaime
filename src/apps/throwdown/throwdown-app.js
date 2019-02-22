@@ -180,6 +180,7 @@ class ThrowdownApp {
   /// -----------------------------------------------------------------------------------------------
   // importing / loading data
   // the logic for conventional channels, etc etc is in here or player-factory.js
+
   loadAllPatternsAsLoops( throwdownData ) {
     // make loop players for each midi / audio resource
     _.each( throwdownData.patterns, ( resource, key ) => {
@@ -192,7 +193,7 @@ class ThrowdownApp {
 
   loadData( throwdownData ) {
     // each section is a bunch of patterns which can be triggered on / off as a bunch
-    _.each( throwdownData.sections, ( section, key ) => {
+    this.sections = _.map( throwdownData.sections, ( section, key ) => {
         var patterns = section.patterns.map( 
           patternSlug => throwdownData.patterns[ patternSlug ]
         );
@@ -202,8 +203,14 @@ class ThrowdownApp {
           duration: section.bars * 4,
           patterns,
         }
-        this.push( new SectionPlayer( sectionData ) );
+        return new SectionPlayer( sectionData );
     } );
+
+    // add em all as playable things
+    this.children = this.sections;
+
+    // pick a random one to play
+    _.sample( this.sections ).triggered = true;
   }
 
   /// -----------------------------------------------------------------------------------------------

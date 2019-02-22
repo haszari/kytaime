@@ -13,7 +13,7 @@ class SectionPlayer {
     this.props = _.defaults( props, SectionPlayer.defaultProps );
 
     this.playing = false;
-    this.triggered = true;
+    this.triggered = false;
 
     this.players = [];
 
@@ -31,7 +31,7 @@ class SectionPlayer {
     }, MIN_PHRASE_LENGTH );
   }
 
-  throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
+  throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
     let triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm, 
       renderRangeBeats,
@@ -41,8 +41,18 @@ class SectionPlayer {
     );
 
     this.playing = triggerInfo.isPlaying;
+
+    console.log( `${ this.props.slug } t=${ this.triggered } p=${ this.playing }` );
   
-    this.players.map( player => player.throwdownRender( renderRange, tempoBpm, renderRangeBeats ) )
+    // temporary - this really needs to be passed down to patterns as triggered: false
+    // so they can finish playing, etc
+    if ( ! this.playing ) {
+      return;
+    }
+
+    this.players.map( 
+      player => player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) 
+    );
   }
 }
 
