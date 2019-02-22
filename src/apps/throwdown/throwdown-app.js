@@ -9,10 +9,9 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiOutputs from '@kytaime/midi-outputs';
 
-import getChannelForPart from './get-channel-for-part';
+import playerFactory from './player-factory';
 
-import MidiLoopPlayer from './components/midi-loop-player';
-import SampleSlicePlayer from './components/sample-slice-player';
+import SectionPlayer from './components/section/section-player';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core
@@ -179,35 +178,36 @@ class ThrowdownApp {
   }
 
   /// -----------------------------------------------------------------------------------------------
-  // main
-
-  loadData( throwdownData ) {
+  // importing / loading data
+  // the logic for conventional channels, etc etc is in here or player-factory.js
+  loadAllPatternsAsLoops( throwdownData ) {
     // make loop players for each midi / audio resource
-    _.each( throwdownData.resources, ( resource, key ) => {
-      if ( resource.notes ) {
-        const channel = getChannelForPart( resource.part || key );
-        this.push( new MidiLoopPlayer( {
-          channel: channel, 
-          notes: resource.notes,
-          duration: resource.duration,
-          startBeats: resource.startBeats,
-          endBeats: resource.endBeats,
-        } ) );
-      }
-    } );
-    _.each( throwdownData.resources, ( resource, key ) => {
-      if ( resource.file ) {
-        // const channel = getChannelForPart( resource.part || key );
-        this.push( new SampleSlicePlayer( {
-          audioFile: resource.file,
-          tempoBpm: resource.tempo, 
-          sampleDuration: resource.duration,
-          startBeats: resource.startBeats,
-          endBeats: resource.endBeats,
-        } ) );
+    _.each( throwdownData.patterns, ( resource, key ) => {
+      const pattern = playerFactory.playerFromFilePatternData( resource, key );
+      if ( pattern ) {
+        this.push( pattern );
       }
     } );
   }
+
+  loadData( throwdownData ) {
+    // each section is a bunch of patterns which can be triggered on / off as a bunch
+    _.each( throwdownData.sections, ( section, key ) => {
+        var patterns = section.patterns.map( 
+          patternSlug => throwdownData.patterns[ patternSlug ]
+        );
+        patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
+        const sectionData = {
+          slug: key, 
+          duration: section.bars * 4,
+          patterns,
+        }
+        this.push( new SectionPlayer( sectionData ) );
+    } );
+  }
+
+  /// -----------------------------------------------------------------------------------------------
+  // main
 
   startTransport() {
     sequencer.start();

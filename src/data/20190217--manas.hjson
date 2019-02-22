@@ -1,21 +1,15 @@
 {
   version: 1
-  resources: {
-    beat-main: {
-      part: beat,
-      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
-      tempo: 132, 
-      duration: 4,      
-    }
+  patterns: {
     beat-step: {
-      part: beat,
-      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a',
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a'
       tempo: 132, 
       duration: 4,      
       startBeats: [ -0.5 ]
     }
     voc: {
-      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a',
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a'
       tempo: 132,
       duration: 32
     }
