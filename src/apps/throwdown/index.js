@@ -1,3 +1,5 @@
+import _ from 'lodash'; 
+
 import React from 'react';
 import { render } from 'react-dom';
 
@@ -12,6 +14,7 @@ import ThrowdownApp from './throwdown-app';
 import PlayButton from './components/play-button.jsx';
 import TempoDrop from './components/tempo-drop/component.jsx';
 
+import throwdownActions from './components/throwdown/actions';
 
 /// -----------------------------------------------------------------------------------------------
 // app audio engine / service
@@ -24,11 +27,26 @@ const throwdownApp = new ThrowdownApp();
 
 const testSongFile = '/data/20190217--manas.hjson';
 
+function importThrowdownData( throwdownData ) {
+  _.map( throwdownData.patterns, ( pattern, key ) => {
+    store.dispatch( throwdownActions.addPattern( {
+      slug: key, 
+      ...pattern
+    } ) );
+  } );
+  _.map( throwdownData.sections, ( section, key ) => {
+    store.dispatch( throwdownActions.addSection( {
+      slug: key, 
+      ...section
+    } ) );
+  } );
+}
+
 window.fetch( testSongFile )
   .then( response => response.text() )
   .then( text => {
     const songData = Hjson.parse( text );
-    throwdownApp.loadData( songData );
+    importThrowdownData( songData );
   } );
 
 /// -----------------------------------------------------------------------------------------------
