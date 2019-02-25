@@ -26,7 +26,7 @@ const Config = {
       {
         test: /\.js$|\.jsx$/,
         exclude: /node_modules/,
-        use: ['babel-loader?presets[]=react,env', 'eslint-loader?fix=true&emitWarning=true']
+        use: ['babel-loader', 'eslint-loader?fix=true&emitWarning=true']
       }
     ]
   },
