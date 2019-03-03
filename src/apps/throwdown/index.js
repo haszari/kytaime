@@ -8,11 +8,14 @@ import { Provider } from 'react-redux';
 import Hjson from 'hjson';
 
 import store from './store/store';
+import observeStore from '@lib/observe-redux-store';
 
 import ThrowdownApp from './throwdown-app';
 
 import PlayButton from './components/play-button.jsx';
+import DeckSectionsTriggers from './components/throwdown/deck-sections-triggers.jsx';
 import TempoDrop from './components/tempo-drop/component.jsx';
+
 
 import throwdownActions from './components/throwdown/actions';
 
@@ -28,12 +31,8 @@ const throwdownApp = new ThrowdownApp();
 const testSongFile = '/data/20190217--manas.hjson';
 
 function importThrowdownData( throwdownData ) {
-  _.map( throwdownData.patterns, ( pattern, key ) => {
-    store.dispatch( throwdownActions.addPattern( {
-      slug: key, 
-      ...pattern
-    } ) );
-  } );
+  throwdownApp.importPatterns( throwdownData.patterns );
+  
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
       slug: key, 
@@ -51,24 +50,6 @@ window.fetch( testSongFile )
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
-
-// (thanks to https://github.com/reduxjs/redux/issues/303#issuecomment-125184409)
-// this should be moved into a lib folder
-function observeStore(store, select, onChange) {
-  let currentState;
-
-  function handleChange() {
-    let nextState = select(store.getState());
-    if (nextState !== currentState) {
-      currentState = nextState;
-      onChange(currentState);
-    }
-  }
-
-  let unsubscribe = store.subscribe(handleChange);
-  handleChange();
-  return unsubscribe;
-}
 
 observeStore(
   store, 
@@ -117,6 +98,7 @@ function App() {
       <h1>Bam</h1>
       <PlayButton />
       <TempoDrop />
+      <DeckSectionsTriggers />
     </Provider>
   );
 }

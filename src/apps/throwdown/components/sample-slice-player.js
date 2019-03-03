@@ -19,8 +19,8 @@ class SampleSlicePlayer {
 
     this.playing = false;
 
-    this.loaded = false;
-    this.loading = false;
+    // this.loaded = false;
+    // this.loading = false;
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
@@ -35,7 +35,7 @@ class SampleSlicePlayer {
     let rate = transportBpm / tempoBpm;
 
     let player = audioDestinationNode.context.createBufferSource();
-    player.buffer = this.buffer;
+    player.buffer = this.props.buffer;
     player.playbackRate.value = rate;
 
     player.loop = false;
@@ -52,18 +52,18 @@ class SampleSlicePlayer {
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
-    if ( ! this.loaded && ! this.loading ) {
-      this.loading = true;
-      this.loaded = new Promise( ( resolve, reject ) => {      
-        audioUtilities.loadSample( this.props.audioFile, renderRange.audioContext, (buffer) => {
-          console.log( 'sample decoded, ready to play' );
-          this.buffer = buffer;
-          resolve();
-        } );
-      } );
-    }
+    // if ( ! this.loaded && ! this.loading ) {
+    //   this.loading = true;
+    //   this.loaded = new Promise( ( resolve, reject ) => {      
+    //     audioUtilities.loadSample( this.props.audioFile, renderRange.audioContext, (buffer) => {
+    //       console.log( 'sample decoded, ready to play' );
+    //       this.buffer = buffer;
+    //       resolve();
+    //     } );
+    //   } );
+    // }
 
-    if ( ! this.buffer ) {
+    if ( ! this.props.buffer ) {
       return;
     }
 

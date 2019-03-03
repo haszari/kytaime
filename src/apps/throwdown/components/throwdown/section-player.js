@@ -5,11 +5,13 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 import playerFactory from '../../player-factory';
 
+// import throwdownActions from './actions';
+
 // this needs to be shared, or a user option/runtime param
 const MIN_PHRASE_LENGTH = 4;
 
 class SectionPlayer {
-  constructor(props) {
+  constructor( props, buffers ) {
     this.props = _.defaults( props, SectionPlayer.defaultProps );
 
     this.playing = false;
@@ -18,7 +20,7 @@ class SectionPlayer {
     this.players = [];
 
    _.each( props.patterns, ( resource, key ) => {
-      const pattern = playerFactory.playerFromFilePatternData( resource, key );
+      const pattern = playerFactory.playerFromFilePatternData( resource, resource.slug, buffers );
       if ( pattern ) {
         this.players.push( pattern );
       }

@@ -2,20 +2,39 @@ import _ from 'lodash';
 
 import store from './store/store';
 
+
+// import observeReduxStore from '@lib/observe-redux-store';
+
 import transportActions from './store/transport/actions';
+
+import throwdownActions from './components/throwdown/actions';
+import throwdownSelectors from './components/throwdown/selectors';
 
 import sequencer from '@kytaime/sequencer/sequencer';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiOutputs from '@kytaime/midi-outputs';
+import audioUtilities from '@kytaime/audio-utilities';
 
 // import playerFactory from './player-factory';
 
-import SectionPlayer from './components/section/section-player';
+import SectionPlayer from './components/throwdown/section-player';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core
 
+function ensureAudioBuffered( audioContext, buffers, filename ) {
+  if ( _.find( buffers, { file: filename } ) ) {
+    return;
+  }
+  audioUtilities.loadSample( filename, audioContext, ( buffer ) => {
+    console.log( `sample decoded, ready to play ${ filename }` );
+    store.dispatch( throwdownActions.addAudioBuffer( {
+      file: filename,
+      buffer: buffer,
+    } ) );
+  } );
+}
 
 class ThrowdownApp {
   constructor(props) {
@@ -23,6 +42,9 @@ class ThrowdownApp {
     this.tempoBpm = 120;
     this.lastRenderEndBeat = 0;
     this.midiOutPort = null;
+
+    // we DO need to bind this
+    // this.importThrowdown = this.importThrowdown.bind( this )
 
     // do we need to do all this binding?
     this.toggleTransport = this.toggleTransport.bind( this );
@@ -37,14 +59,28 @@ class ThrowdownApp {
     // I believe we need to nudge the channel count so we can use em all
     sequencer.audioContext.destination.channelCount = sequencer.audioContext.destination.maxChannelCount;
 
-    this.tempoParam = sequencer.audioContext.createConstantSource();
-    this.tempoParam.start();
+    store.dispatch( throwdownActions.setAudioContext( sequencer.audioContext ) );
 
     this.renderIndex = 0;
 
     this.openMidiOutput( "IAC Driver Bus 1" );
+
+    // observeReduxStore( store, throwdownSelectors.getThrowdown, this.importThrowdown );
   }
 
+  importPatterns( patterns ) {
+    const buffers = throwdownSelectors.getBuffers( store.getState() );
+
+    _.map( patterns, ( pattern, key ) => {
+      store.dispatch( throwdownActions.addPattern( {
+        slug: key, 
+        ...pattern
+      } ) );
+      if ( pattern.file ) {
+        ensureAudioBuffered( sequencer.audioContext, buffers, pattern.file );
+      }
+    } );  
+  }
   openMidiOutput(requestedPortName) {
     midiOutputs.openMidiOutput({
       deviceName: requestedPortName,
@@ -58,16 +94,68 @@ class ThrowdownApp {
     });
   }
 
-  push( throwdownItem ) {
-    this.children.push( throwdownItem );
-  }
-
   setTempo( tempoBpm ) {
     this.tempoBpm = tempoBpm;
   }
 
   setNextTempo( nextTempoBpm ) {
     this.nextTempoBpm = nextTempoBpm;
+  }
+
+  // Ensure that we have players for each deck and pattern currently triggered or playing in state
+  // Currently making new ones each time – may retain them across renders,
+  // add new ones as needed, and update props from state
+  updateDeck( state ) {
+    const allSections = throwdownSelectors.getSections( state );
+    const allPatterns = throwdownSelectors.getPatterns( state );
+    const allBuffers = throwdownSelectors.getBuffers( state );
+    const deckState = throwdownSelectors.getDeck( state );
+
+    // instantiate players for ALL sections
+    const sectionPlayers = _.map( allSections, ( section, key ) => {
+        var patterns = section.patterns.map( 
+          patternSlug => _.find( allPatterns, { slug: patternSlug } )
+        );
+        patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
+        const sectionData = {
+          slug: section.slug, 
+          duration: section.bars * 4,
+          patterns,
+        }
+        const player = new SectionPlayer( sectionData, allBuffers );
+
+        // sync relevant props (which things are triggered, playing) from state
+        player.triggered = ( section.slug === deckState.triggeredSection );
+        player.playing = ( section.slug === deckState.playingSection );
+        
+        return player;
+    } );
+
+    // add em all as playable things
+    this.children = sectionPlayers;
+  }
+
+  updateDeckPlayState( ) {
+    var playingSection = null;
+    // const triggeredSection = null;
+    this.children.map( sectionPlayer => {
+      if ( sectionPlayer.playing ) {
+        playingSection = sectionPlayer.props.slug;
+      }
+      // if ( sectionPlayer.triggered ) {
+      //   triggeredSection = sectionPlayer.props.slug;
+      // }
+    } );
+    store.dispatch( throwdownActions.setDeckPlayingSection( {
+      sectionSlug: playingSection
+    } ) );
+    // store.dispatch( throwdownActions.setDeckTriggeredSection( {
+    //   sectionSlug: triggeredSection
+    // } ) );
+  }
+
+  push( throwdownItem ) {
+    this.children.push( throwdownItem );
   }
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
@@ -86,11 +174,18 @@ class ThrowdownApp {
       }
     } );   
 
+    this.updateDeckPlayState();
+
     this.lastRenderEndBeat = renderRangeBeats.end; 
   }
 
   sequencerCallback( renderRange ) {
     this.renderIndex++;
+
+    // this will remake all the players every time
+    // in future it should make new ones + update props
+    // we're hooking this up manually here, on each render - but we could equally use observeReduxStore
+    this.updateDeck( store.getState() );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;
@@ -138,6 +233,8 @@ class ThrowdownApp {
       tempoChangePhrase,
       [ { start: 0, duration: 1 } ],
     );
+
+
 
     // const tempoChangeAbsoluteBeat = tempoDropInfo.triggerOnset + Math.ceil( renderRange.start.beat / tempoChangePhrase ) * tempoChangePhrase;
     var renderRangeCurrent = _.cloneDeep( renderRange );
