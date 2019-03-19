@@ -2,6 +2,7 @@
 import _ from 'lodash';
 
 import renderNotePattern from '@kytaime/render-note-pattern';
+import midiUtilities from '@kytaime/midi-utilities';
 
 class MidiLoopPlayer {
   constructor(props) {
@@ -10,8 +11,19 @@ class MidiLoopPlayer {
   }
 
   getNotePattern() {
+    // convert any named drum hits into general midi
+    const notes = this.props.notes.map( noteEvent => {
+      if ( midiUtilities.drumMap[ noteEvent.note ] ) {
+        return {
+          ...noteEvent,
+          note: midiUtilities.drumMap[ noteEvent.note ], 
+        };
+      }
+      return noteEvent;
+    } );
+
     return {
-      notes: this.props.notes,
+      notes: notes,
       duration: this.props.duration,
       startBeats: this.props.startBeats,
       endBeats: this.props.endBeats,

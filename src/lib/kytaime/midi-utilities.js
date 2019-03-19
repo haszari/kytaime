@@ -4,7 +4,10 @@ const drumMap = {
    stick: 37,
    snare: 38,
    clap: 39,
-   hat: 42
+   hat: 42,
+   hatPedal: 44,
+   hatOpen: 46,
+   ride: 51
 };
 
 // TODO this logic should be factored out to a shared module & used for audio and midi.
