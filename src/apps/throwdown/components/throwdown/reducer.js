@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { createReducer } from 'redux-starter-kit';
 
 import actions from './actions';
