@@ -1,0 +1,46 @@
+{
+  version: 1
+  patterns: {
+    beat: {
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180309--sweets-from-a-stranger--beat.mp3'
+      tempo: 95 
+      duration: 4      
+      startBeats: [-1, 0, 0.5, 1],
+      endBeats: [-0.5, 0, 0.5],
+    }
+    sub: {
+      part: sub
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180309--sweets-from-a-stranger--bass-dry.mp3'
+      tempo: 95 
+      duration: 8
+      startBeats: [-2.75, 0, 0.75],
+      endBeats: [0, 2.5],
+    }
+    lead: {
+      part: synth
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180309--sweets-from-a-stranger--lead-dry.mp3'
+      tempo: 95 
+      duration: 16      
+      startBeats: [-9, 0, 7],
+    }
+    stab: {
+      part: fx
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180309--sweets-from-a-stranger--bip-dry.mp3'
+      tempo: 95 
+      duration: 16
+      startBeats: [-1.25, 0],
+    }
+  }
+  sections: {
+    main: {
+      bars: 4
+      patterns: [
+        beat
+        sub
+        lead
+        stab
+      ]
+    }
+  } 
+}
