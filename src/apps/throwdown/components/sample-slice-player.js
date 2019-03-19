@@ -41,12 +41,12 @@ class SampleSlicePlayer {
     player.loop = false;
 
     if (audioDestinationNode.channelCount > 2)
-      audioUtilities.connectToChannelForPart(this.audioContext, player, audioDestinationNode, this.part);    
+      audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel );
     else
-      player.connect(audioDestinationNode);
+      player.connect( audioDestinationNode );
  
-    player.start(startTimestamp, startBeat * secPerBeat);
-    player.stop(stopTimestamp);
+    player.start( startTimestamp, startBeat * secPerBeat );
+    player.stop( stopTimestamp );
 
     this.player = player;
   }

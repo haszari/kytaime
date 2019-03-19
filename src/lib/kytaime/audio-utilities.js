@@ -6,8 +6,6 @@ Audio utilities:
 - routing audio by convention based on part name (aka instrument => mixer channel)
 */
 
-import _ from 'lodash';
-
 // Download and decode audio from url, callback is passed an AudioBuffer.
 // see also AudioContext::decodeAudioData
 const loadSample =  function(url, audioContext, callback) {
@@ -34,27 +32,7 @@ const connectToStereoOutChannel = function(audioContext, audioSourceNode, audioD
   splitter.connect(merger, 1, (channelPairIndex * 2) + 1);
 }
 
-// Connect the audioSourceNode to a stereo pair on audioDestinationNode based on the part name.
-// Used to set up standard instrument routings.
-// TODO this logic should be factored out to a shared module & used for audio and midi.
-// see also midiUtilities.channelMap
-// superceded by getChannelForPart in throwdown app – this is too custom to be in the lib
-const connectToChannelForPart = function(audioContext, audioSourceNode, audioDestinationNode, partName) {
-  // default - drums, percussion, etc
-  let outputChannelPairOffset = 0;
-
-  if (_.includes(['sub', 'bass', 'ridge'], partName)) 
-    outputChannelPairOffset = 1;
-  else if (_.includes(['synth', 'chords', 'uplands'], partName)) 
-    outputChannelPairOffset = 2;
-  if (_.includes(['lead', 'pad', 'fx', 'voc', 'vox', 'vocal', 'hills'], partName)) 
-    outputChannelPairOffset = 3;
-
-  connectToStereoOutChannel(audioContext, audioSourceNode, audioDestinationNode, outputChannelPairOffset);    
-}
-
 export default {
   loadSample,
   connectToStereoOutChannel,
-  connectToChannelForPart,
 }
