@@ -8,8 +8,9 @@ import transportActions from '../transport/actions';
 function TempoDropComponent( props ) {
   return (
     <input 
+      className="next-tempo"
       type="number" min="75" max="300"
-      value={ props.dropTempo }
+      value={ props.dropTempo.toFixed( 1 ) }
       onChange={ props.onChange }
     />
   );

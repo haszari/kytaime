@@ -9,10 +9,13 @@ const transportReducer = createReducer( {
   currentBeat: 0,
 }, {
   [ actions.setTempo ]: ( state, action ) => {
-    state.tempo = parseInt( action.payload );
+    state.tempo = parseFloat( action.payload );
   },
   [ actions.setNextTempo ]: ( state, action ) => {
-    state.nextTempo = parseInt( action.payload );
+    state.nextTempo = parseFloat( action.payload );
+  },
+  [ actions.adjustNextTempo ]: ( state, action ) => {
+    state.nextTempo = state.nextTempo + action.payload;
   },
   [ actions.togglePlayback ]: ( state, action ) => {
     state.isPlaying = ! state.isPlaying;

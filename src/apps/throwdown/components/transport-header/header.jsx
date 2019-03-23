@@ -20,7 +20,7 @@ function HeaderTransportBarComponent( props ) {
         <span style={{ fontWeight: "bold" }}>{ currentTriggerLength }</span><span style={{ fontSize: 'smaller' }}>{ currentPhraseIfNeeded }</span>
       </th>
       <th style={{ borderRight: "1px solid #bbb" }}><TempoDrop /></th>
-      <th style={{ fontWeight: "bold" }}>{ props.tempo } bpm</th>
+      <th style={{ fontWeight: "bold" }}>{ props.tempo.toFixed( 1 ) } bpm</th>
       <th style={{ textAlign: "left" }}><PlayButton /></th>
     </tr>
   );

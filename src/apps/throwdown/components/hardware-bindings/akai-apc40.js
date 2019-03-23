@@ -6,18 +6,36 @@ import store from '../../store/store';
 
 import transportActions from '../transport/actions';
 
+function getSpread64OffsetValue( value ) {
+  if ( value > 63 && value < 128)
+    return -( 128 - value );
+  if ( value > 0 && value < 64)
+    return ( value );
+  return 0;
+}
+
 function onMidiMessage( event ) {
   const message = MIDIMessage( event );
   console.log( message );
 
-  switch ( message.messageType ) {
-    case 'noteon': {
-      switch ( message.key ) {
-        case 91: {
-          store.dispatch( 
-            transportActions.togglePlayback()
-          );
-        }
+  if ( message.messageType == 'noteon' ) {
+    switch ( message.key ) {
+      case 91: {
+        store.dispatch( 
+          transportActions.togglePlayback()
+        );
+      }
+    }
+  }
+
+  if ( message.messageType == 'controlchange' ) {
+    switch ( message.controllerNumber ) {
+      case 47: {
+        store.dispatch( 
+          transportActions.adjustNextTempo( 
+            getSpread64OffsetValue( message.controllerValue ) * 0.1
+          )
+        );
       }
     }
   }

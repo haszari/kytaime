@@ -11,6 +11,13 @@ body {
   user-select: none;
 }
 
+input {
+  background: transparent;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+}
+
 th {
   font-weight: normal;
   min-width: 100px;
@@ -27,4 +34,9 @@ th {
 .playback-progress-progress {
   background: #888;
   height: 4px;
+}
+
+.next-tempo {
+  width: 70px;
+  text-align: right;
 }
