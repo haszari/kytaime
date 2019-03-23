@@ -3,8 +3,8 @@ import { createReducer } from 'redux-starter-kit';
 import actions from './actions';
 
 const transportReducer = createReducer( {
-  nextTempo: 150,
-  tempo: 120,
+  nextTempo: 95,
+  tempo: 95,
   isPlaying: false,
 }, {
   [ actions.setTempo ]: ( state, action ) => {
