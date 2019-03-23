@@ -206,7 +206,7 @@ class ThrowdownApp {
     };
 
     // drop tempo changes mod what
-    const tempoChangePhrase = 16;
+    const tempoChangePhrase = throwdownSelectors.getTriggerLoop( store.getState() );
     const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != this.tempo;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
       this.tempoBpm, // we may not need this whole blob - can we expand out to the minimum params we need?
