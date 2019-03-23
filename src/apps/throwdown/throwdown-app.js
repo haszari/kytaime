@@ -5,7 +5,7 @@ import store from './store/store';
 
 // import observeReduxStore from '@lib/observe-redux-store';
 
-import transportActions from './store/transport/actions';
+import transportActions from './components/transport/actions';
 
 import throwdownActions from './components/throwdown/actions';
 import throwdownSelectors from './components/throwdown/selectors';

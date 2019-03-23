@@ -12,12 +12,13 @@ import observeStore from '@lib/observe-redux-store';
 
 import ThrowdownApp from './throwdown-app';
 
-import PlayButton from './components/play-button.jsx';
+import Header from './components/transport-header/header.jsx';
 import DeckSectionsTriggers from './components/throwdown/deck-sections-triggers.jsx';
-import TempoDrop from './components/tempo-drop/component.jsx';
 
 
 import throwdownActions from './components/throwdown/actions';
+
+import './style/style.scss';
 
 /// -----------------------------------------------------------------------------------------------
 // app audio engine / service
@@ -28,7 +29,9 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-const testSongFile = '/data/20190217--manas.hjson';
+// const testSongFile = '/data/20190217--manas.hjson';
+const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
+// const testSongFile = 'data/20190306--its-not-real.hjson';
 
 function importThrowdownData( throwdownData ) {
   throwdownApp.importPatterns( throwdownData.patterns );
@@ -82,7 +85,7 @@ observeStore(
   store, 
   // transport component could provide this selector
   ( state ) => {
-    return state.tempoDrop.nextTempo
+    return state.transport.nextTempo
   }, 
   ( nextTempo ) => {
     throwdownApp.setNextTempo( nextTempo )
@@ -95,10 +98,10 @@ observeStore(
 function App() {
   return (
     <Provider store={ store }>
-      <h1>Bam</h1>
-      <PlayButton />
-      <TempoDrop />
-      <DeckSectionsTriggers />
+      <table cellSpacing="0" >
+        <Header />
+        <DeckSectionsTriggers />
+      </table>
     </Provider>
   );
 }

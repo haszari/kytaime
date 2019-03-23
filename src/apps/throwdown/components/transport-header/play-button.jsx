@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import transportActions from '../store/transport/actions';
+import transportActions from '../transport/actions';
 
 function PlayButtonComponent( props ) {
   const label = props.isPlaying ? "Stop" : "Play";
@@ -34,6 +34,6 @@ const mapDispatchToProps = dispatch => {
 const PlayButton = connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlayButtonComponent)
+)(PlayButtonComponent);
 
 export default PlayButton;
