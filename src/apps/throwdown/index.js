@@ -100,9 +100,15 @@ function App() {
   return (
     <Provider store={ store }>
       <table cellSpacing="0" >
-        <Header />
-        <PlaybackProgress />
-        <DeckSectionsTriggers />
+        <tbody>
+          <Header />
+          <PlaybackProgress />
+          <tr>
+            <td>
+              <DeckSectionsTriggers />
+            </td>
+          </tr>
+        </tbody>
       </table>
     </Provider>
   );
