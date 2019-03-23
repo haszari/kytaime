@@ -9,7 +9,7 @@ import TempoDrop from './tempo-drop.jsx';
 function HeaderTransportBarComponent( props ) {
   return (
     <tr className="header">
-      <th>/32</th>
+      <th>32</th>
       <th style={{ borderRight: "1px solid #bbb" }}><TempoDrop /></th>
       <th>{ props.tempo } bpm</th>
       <th style={{ textAlign: "left" }}><PlayButton /></th>
