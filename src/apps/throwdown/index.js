@@ -43,6 +43,11 @@ function importThrowdownData( throwdownData ) {
       ...section
     } ) );
   } );
+
+  const sectionSlugs = _.keys( throwdownData.sections );
+  store.dispatch( throwdownActions.setDeckTriggeredSection( {
+      sectionSlug: _.sample( sectionSlugs )
+    } ) );
 }
 
 window.fetch( testSongFile )
