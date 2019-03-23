@@ -110,7 +110,8 @@ class ThrowdownApp {
     const allPatterns = throwdownSelectors.getPatterns( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
     const deckState = throwdownSelectors.getDeck( state );
-    const phraseLoop = throwdownSelectors.getPhraseLoop( state );
+    const triggerLoop = throwdownSelectors.getTriggerLoop( state );
+
 
     // instantiate players for ALL sections
     const sectionPlayers = _.map( allSections, ( section, key ) => {
@@ -123,7 +124,7 @@ class ThrowdownApp {
           duration: section.bars * 4,
           buffers: allBuffers,
           patterns,
-          phraseLoop, 
+          triggerLoop,
         }
         const player = new SectionPlayer( sectionProps );
 

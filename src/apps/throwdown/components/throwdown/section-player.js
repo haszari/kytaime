@@ -31,7 +31,7 @@ class SectionPlayer {
       renderRangeBeats,
       this.triggered,
       this.playing, 
-      this.props.phraseLoop,
+      this.props.triggerLoop,
     );
 
     this.playing = triggerInfo.isPlaying;

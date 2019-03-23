@@ -11,6 +11,8 @@ const throwdownReducer = createReducer( {
   patterns: [],
   sections: [],
 
+  deferAllTriggers: false,
+
   // one hard-coded deck for now – will be an array of decks later
   deck: {
     triggeredSection: null,
@@ -66,6 +68,10 @@ const throwdownReducer = createReducer( {
       
       patterns: action.payload.patterns,
     } );
+  },
+
+  [ actions.setDeferAllTriggers ]: ( state, action ) => {
+    state.deferAllTriggers = action.payload;
   },
 
   // sequencer/playback state

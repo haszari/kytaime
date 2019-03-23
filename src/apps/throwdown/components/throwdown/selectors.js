@@ -26,6 +26,12 @@ const getPhraseLoop = createSelector(
   getPhraseLoopFromPatterns,
 );
 
+
+const getTriggerLoop = createSelector( 
+  [ 'throwdown.deferAllTriggers', getPhraseLoop ],
+  ( deferAllTriggers, phraseLoop ) => ( deferAllTriggers ? Infinity : phraseLoop ),
+);
+
 const getPhraseProgress = createSelector( 
   [ getPhraseLoop, 'transport.currentBeat' ],
   ( phraseLoop, currentBeat ) => {
@@ -41,5 +47,6 @@ export default {
   getDeck,
   getBuffers,
   getPhraseLoop,
+  getTriggerLoop,
   getPhraseProgress,
 };
