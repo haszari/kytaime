@@ -318,6 +318,7 @@ class ThrowdownApp {
   }
   stopTransport() {
     sequencer.stop();
+    this.lastRenderEndBeat = 0;
   }
   toggleTransport() {
     if ( sequencer.isPlaying() ) {
