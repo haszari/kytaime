@@ -6,6 +6,7 @@ const addAudioBuffer = createAction( 'throwdown/addAudioBuffer' );
 
 // "drop" infrastructure, kinda transportish
 const setDeferAllTriggers = createAction( 'throwdown/setDeferAllTriggers' );
+const toggleDeferAllTriggers = createAction( 'throwdown/toggleDeferAllTriggers' );
 
 // song data
 const addPattern = createAction( 'throwdown/addPattern' );
@@ -21,6 +22,7 @@ export default {
   addAudioBuffer,
 
   setDeferAllTriggers,
+  toggleDeferAllTriggers,
 
   addPattern,
   addSection,

@@ -73,6 +73,10 @@ const throwdownReducer = createReducer( {
   [ actions.setDeferAllTriggers ]: ( state, action ) => {
     state.deferAllTriggers = action.payload;
   },
+  [ actions.toggleDeferAllTriggers ]: ( state, action ) => {
+    state.deferAllTriggers = ! state.deferAllTriggers;
+  },
+
 
   // sequencer/playback state
   [ actions.setDeckTriggeredSection ]: ( state, action ) => {

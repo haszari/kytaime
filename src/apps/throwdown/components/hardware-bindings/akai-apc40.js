@@ -5,6 +5,7 @@ import midiPorts from '@kytaime/midi-ports';
 import store from '../../store/store';
 
 import transportActions from '../transport/actions';
+import throwdownActions from '../throwdown/actions';
 
 function getSpread64OffsetValue( value ) {
   if ( value > 63 && value < 128)
@@ -23,6 +24,11 @@ function onMidiMessage( event ) {
       case 91: {
         store.dispatch( 
           transportActions.togglePlayback()
+        );
+      }
+      case 93: {
+        store.dispatch( 
+          throwdownActions.toggleDeferAllTriggers()
         );
       }
     }
