@@ -13,12 +13,14 @@ import throwdownSelectors from './components/throwdown/selectors';
 import sequencer from '@kytaime/sequencer/sequencer';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
-import midiOutputs from '@kytaime/midi-outputs';
+import midiPorts from '@kytaime/midi-ports';
 import audioUtilities from '@kytaime/audio-utilities';
 
 // import playerFactory from './player-factory';
 
 import SectionPlayer from './components/throwdown/section-player';
+
+import './components/hardware-bindings/akai-apc40';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core
@@ -82,7 +84,7 @@ class ThrowdownApp {
     } );  
   }
   openMidiOutput(requestedPortName) {
-    midiOutputs.openMidiOutput({
+    midiPorts.openMidiOutput({
       deviceName: requestedPortName,
       callback: function(info) {
        if (info.port) {
@@ -329,6 +331,7 @@ class ThrowdownApp {
   stopTransport() {
     sequencer.stop();
     this.lastRenderEndBeat = 0;
+    store.dispatch( transportActions.setCurrentBeat( this.lastRenderEndBeat ) );
   }
   toggleTransport() {
     if ( sequencer.isPlaying() ) {
