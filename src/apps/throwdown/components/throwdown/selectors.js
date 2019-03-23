@@ -26,6 +26,14 @@ const getPhraseLoop = createSelector(
   getPhraseLoopFromPatterns,
 );
 
+const getPhraseProgress = createSelector( 
+  [ getPhraseLoop, 'transport.currentBeat' ],
+  ( phraseLoop, currentBeat ) => {
+    return ( currentBeat % phraseLoop ) / phraseLoop;
+  },
+);
+
+
 export default {
   getThrowdown,
   getSections,
@@ -33,4 +41,5 @@ export default {
   getDeck,
   getBuffers,
   getPhraseLoop,
+  getPhraseProgress,
 };

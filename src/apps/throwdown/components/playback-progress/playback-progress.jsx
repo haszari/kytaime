@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import throwdownSelectors from '../throwdown/selectors';
+
 function PlaybackProgressComponent( props ) {
-  const phraseProgressPercent = 18.0/32.0 * 100;
+  const phraseProgressPercent = props.phraseProgress * 100;
   return (
     <tr>
       <td colSpan="99" className="playback-progress-container"><div 
@@ -22,7 +24,7 @@ PlaybackProgressComponent.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    isPlaying: state.transport.isPlaying,
+    phraseProgress: throwdownSelectors.getPhraseProgress( state ),
   }
 }
 
