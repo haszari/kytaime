@@ -11,9 +11,9 @@ import throwdownSelectors from '../throwdown/selectors';
 function HeaderTransportBarComponent( props ) {
   return (
     <tr className="header">
-      <th>{ props.phraseLoop }</th>
+      <th style={{ fontWeight: "bold" }}>{ props.phraseLoop }</th>
       <th style={{ borderRight: "1px solid #bbb" }}><TempoDrop /></th>
-      <th>{ props.tempo } bpm</th>
+      <th style={{ fontWeight: "bold" }}>{ props.tempo } bpm</th>
       <th style={{ textAlign: "left" }}><PlayButton /></th>
     </tr>
   );
