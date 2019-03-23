@@ -13,6 +13,7 @@ import observeStore from '@lib/observe-redux-store';
 import ThrowdownApp from './throwdown-app';
 
 import Header from './components/transport-header/header.jsx';
+import PlaybackProgress from './components/playback-progress/playback-progress.jsx';
 import DeckSectionsTriggers from './components/throwdown/deck-sections-triggers.jsx';
 
 
@@ -100,6 +101,7 @@ function App() {
     <Provider store={ store }>
       <table cellSpacing="0" >
         <Header />
+        <PlaybackProgress />
         <DeckSectionsTriggers />
       </table>
     </Provider>

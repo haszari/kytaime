@@ -7,7 +7,7 @@ import actions from './actions';
 const throwdownReducer = createReducer( {
   audioContext: null, 
   buffers: [],
-
+  
   patterns: [],
   sections: [],
 

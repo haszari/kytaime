@@ -180,6 +180,12 @@ class ThrowdownApp {
     this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end; 
+
+    setTimeout(() => {
+      store.dispatch( 
+        transportActions.setCurrentBeat( this.lastRenderEndBeat )
+      );
+    }, ( renderRange.end ) / 1000 );
   }
 
   sequencerCallback( renderRange ) {

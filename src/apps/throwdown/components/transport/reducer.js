@@ -3,9 +3,10 @@ import { createReducer } from 'redux-starter-kit';
 import actions from './actions';
 
 const transportReducer = createReducer( {
-  nextTempo: 95,
-  tempo: 95,
+  nextTempo: 135,
+  tempo: 135,
   isPlaying: false,
+  currentBeat: 0,
 }, {
   [ actions.setTempo ]: ( state, action ) => {
     state.tempo = parseInt( action.payload );
@@ -16,6 +17,10 @@ const transportReducer = createReducer( {
   [ actions.togglePlayback ]: ( state, action ) => {
     state.isPlaying = ! state.isPlaying;
   },
+  [ actions.setCurrentBeat ]: ( state, action ) => {
+    state.currentBeat= action.payload;
+  },
+
 } );
 
 export default transportReducer;

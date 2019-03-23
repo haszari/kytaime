@@ -18,6 +18,12 @@ th {
   padding: 0.5em;
 }
 
-.header {
+.header,
+.playback-progress-container {
   background: #ccc;
+}
+
+.playback-progress-progress {
+  background: #888;
+  height: 4px;
 }
