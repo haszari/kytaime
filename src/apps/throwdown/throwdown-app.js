@@ -110,6 +110,7 @@ class ThrowdownApp {
     const allPatterns = throwdownSelectors.getPatterns( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
     const deckState = throwdownSelectors.getDeck( state );
+    const phraseLoop = throwdownSelectors.getPhraseLoop( state );
 
     // instantiate players for ALL sections
     const sectionPlayers = _.map( allSections, ( section, key ) => {
@@ -117,12 +118,14 @@ class ThrowdownApp {
           patternSlug => _.find( allPatterns, { slug: patternSlug } )
         );
         patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
-        const sectionData = {
+        const sectionProps = {
           slug: section.slug, 
           duration: section.bars * 4,
+          buffers: allBuffers,
           patterns,
+          phraseLoop, 
         }
-        const player = new SectionPlayer( sectionData, allBuffers );
+        const player = new SectionPlayer( sectionProps );
 
         // sync relevant props (which things are triggered, playing) from state
         player.triggered = ( section.slug === deckState.triggeredSection );

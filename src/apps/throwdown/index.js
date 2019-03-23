@@ -29,8 +29,8 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-// const testSongFile = '/data/20190217--manas.hjson';
-const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
+const testSongFile = '/data/20190217--manas.hjson';
+// const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
 // const testSongFile = 'data/20190306--its-not-real.hjson';
 
 function importThrowdownData( throwdownData ) {

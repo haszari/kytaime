@@ -7,11 +7,9 @@ import playerFactory from '../../player-factory';
 
 // import throwdownActions from './actions';
 
-// this needs to be shared, or a user option/runtime param
-const MIN_PHRASE_LENGTH = 4;
 
 class SectionPlayer {
-  constructor( props, buffers ) {
+  constructor( props ) {
     this.props = _.defaults( props, SectionPlayer.defaultProps );
 
     this.playing = false;
@@ -20,17 +18,11 @@ class SectionPlayer {
     this.players = [];
 
    _.each( props.patterns, ( resource, key ) => {
-      const pattern = playerFactory.playerFromFilePatternData( resource, resource.slug, buffers );
+      const pattern = playerFactory.playerFromFilePatternData( resource, resource.slug, props.buffers );
       if ( pattern ) {
         this.players.push( pattern );
       }
     } );
-  }
-
-  getPhraseDuration() {
-    return _.reduce( this.props.patterns, ( phrase, patternData ) => {
-      return Math.max( phrase, patternData.duration );
-    }, MIN_PHRASE_LENGTH );
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
@@ -39,7 +31,7 @@ class SectionPlayer {
       renderRangeBeats,
       this.triggered,
       this.playing, 
-      this.getPhraseDuration(),
+      this.props.phraseLoop,
     );
 
     this.playing = triggerInfo.isPlaying;
@@ -62,6 +54,7 @@ SectionPlayer.defaultProps = {
   slug: '',
   duration: 4,
   patterns: [],
+  buffers: [],
 };
 
 
