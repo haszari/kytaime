@@ -20,6 +20,7 @@ function PlaybackProgressComponent( props ) {
 PlaybackProgressComponent.propTypes = {
   togglePlayback: PropTypes.func,
   isPlaying: PropTypes.bool,
+  phraseProgress: PropTypes.number,
 }
 
 const mapStateToProps = state => {
