@@ -73,6 +73,7 @@ function importThrowdownFile( deckSlug, file ) {
 }
 
 importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
+importThrowdownFile( 'noyu', '/data/20190325--noyu.hjson' );
 importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
 // importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
 
