@@ -51,7 +51,7 @@ function getDeckSection( state, deckSlug, sectionSlug ) {
   if ( ! deckState ) 
     return;
 
-  return _.find( deckState, 
+  return _.find( deckState.sections, 
     section => ( section.slug === sectionSlug )
   );
 }
@@ -63,7 +63,7 @@ function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
     return;
 
   const patterns = section.patterns.map(
-    patternSlug => _.find( allPatterns, { slug: patternSlug } )
+    patternSlug => _.find( allPatterns, { songSlug: deckSlug, slug: patternSlug } )
   );
   return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
 }

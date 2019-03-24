@@ -30,25 +30,25 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-function addThrowdownDeck( deckSlug, throwdownData ) {
-  throwdownApp.importPatterns( throwdownData.patterns );
+function addThrowdownDeck( songSlug, throwdownData ) {
+  throwdownApp.importPatterns( songSlug, throwdownData.patterns );
 
   store.dispatch( throwdownActions.addDeck( {
-    deckSlug: deckSlug,
+    deckSlug: songSlug,
   } ) ); 
   
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
-      deckSlug: deckSlug,
+      deckSlug: songSlug,
       slug: key, 
       ...section
     } ) );
   } );
 
-  // trigger a random build
+  // trigger a random section
   const sectionSlugs = _.keys( throwdownData.sections );
   store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    deckSlug: deckSlug,
+    deckSlug: songSlug,
     sectionSlug: _.sample( sectionSlugs )
   } ) );
 

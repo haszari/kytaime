@@ -70,11 +70,12 @@ class ThrowdownApp {
     // observeReduxStore( store, throwdownSelectors.getThrowdown, this.importThrowdown );
   }
 
-  importPatterns( patterns ) {
+  importPatterns( songSlug, patterns ) {
     const buffers = throwdownSelectors.getBuffers( store.getState() );
 
     _.map( patterns, ( pattern, key ) => {
       store.dispatch( throwdownActions.addPattern( {
+        songSlug, 
         slug: key, 
         ...pattern
       } ) );
@@ -109,7 +110,6 @@ class ThrowdownApp {
   // add new ones as needed, and update props from state
   generateTemporaryDeckPlayers( state ) {
     // const allSections = throwdownSelectors.getSections( state );
-    const allPatterns = throwdownSelectors.getPatterns( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
     const allDecks = throwdownSelectors.getDecks( state );
     const triggerLoop = throwdownSelectors.getTriggerLoop( state );
@@ -117,10 +117,8 @@ class ThrowdownApp {
     // instantiate players for ALL sections
     this.temporaryDecks = _.map( allDecks, ( deckState ) => {
       const sectionPlayers = _.map( deckState.sections, ( section ) => {
-        var patterns = section.patterns.map( 
-          patternSlug => _.find( allPatterns, { slug: patternSlug } )
-        );
-        patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
+        var patterns = throwdownSelectors.getDeckSectionPatterns( state, deckState.slug, section.slug ); 
+
         const sectionProps = {
           slug: section.slug, 
           duration: section.bars * 4,
@@ -145,9 +143,9 @@ class ThrowdownApp {
   }
 
   updateDeckPlayState( ) {
-    var playingSection = null;
     // const triggeredSection = null;
     this.temporaryDecks.map( deck => {
+      var playingSection = null;
       deck.sectionPlayers.map( sectionPlayer => {
         if ( sectionPlayer.playing ) {
           playingSection = sectionPlayer.props.slug;

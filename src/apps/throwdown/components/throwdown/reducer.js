@@ -102,7 +102,7 @@ const throwdownReducer = createReducer( {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( ! deck ) return;
 
-    // pass no slug to clear triggered section
+    // pass no slug to clear playing section
     deck.playingSection = action.payload.sectionSlug;
   },
 
