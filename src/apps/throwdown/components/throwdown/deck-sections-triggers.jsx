@@ -66,7 +66,7 @@ function DeckSectionsTriggersComponent( props ) {
         <SectionTrigger 
           key={ section.slug }
           triggered={ props.deckState.triggeredSection === section.slug }
-          playing={ false }
+          playing={ props.deckState.playingSection === section.slug }
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
           hue={ props.deckState.hue }
