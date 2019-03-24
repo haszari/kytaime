@@ -58,6 +58,7 @@ SectionTrigger.propTypes = {
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = hueToBackgroundColour( props.deckState.hue );
   const edgeColour = hueToBorderColour( props.deckState.hue );
+  const deckSlug = props.deckState.slug;
 
   const sections = props.deckState.sections.map( 
     ( section ) => {
@@ -86,7 +87,7 @@ function DeckSectionsTriggersComponent( props ) {
         {/* deck tempo, title, metadata */}
         <div style={{ 
           fontWeight: 'bold'
-        }}>test</div>
+        }}>{ deckSlug }</div>
       </td>
       { sections }
     </tr>

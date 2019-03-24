@@ -30,20 +30,16 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-const testSongFile = '/data/20190217--manas.hjson';
-// const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
-// const testSongFile = 'data/20190306--its-not-real.hjson';
-
-function importThrowdownData( throwdownData ) {
+function addThrowdownDeck( deckSlug, throwdownData ) {
   throwdownApp.importPatterns( throwdownData.patterns );
 
   store.dispatch( throwdownActions.addDeck( {
-    deckSlug: 'test',
+    deckSlug: deckSlug,
   } ) ); 
   
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
-      deckSlug: 'test',
+      deckSlug: deckSlug,
       slug: key, 
       ...section
     } ) );
@@ -52,23 +48,32 @@ function importThrowdownData( throwdownData ) {
   // trigger a random build
   const sectionSlugs = _.keys( throwdownData.sections );
   store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    deckSlug: 'test',
+    deckSlug: deckSlug,
     sectionSlug: _.sample( sectionSlugs )
   } ) );
 
   // hard code build for testing
-  store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    deckSlug: 'test',
-    sectionSlug: 'build',
-  } ) );
+  // store.dispatch( throwdownActions.setDeckTriggeredSection( {
+  //   deckSlug: 'test',
+  //   sectionSlug: 'build',
+  // } ) );
 }
 
-window.fetch( testSongFile )
-  .then( response => response.text() )
-  .then( text => {
-    const songData = Hjson.parse( text );
-    importThrowdownData( songData );
-  } );
+// const testSongFile = '/data/20190217--manas.hjson';
+// const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
+// const testSongFile = 'data/20190306--its-not-real.hjson';
+
+function importThrowdownFile( deckSlug, file ) {
+  window.fetch( file )
+    .then( response => response.text() )
+    .then( text => {
+      const songData = Hjson.parse( text );
+      addThrowdownDeck( deckSlug, songData );
+    } );
+}
+
+importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
+importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
