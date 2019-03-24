@@ -59,7 +59,7 @@ function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = hueToBackgroundColour( props.deckState.hue );
   const edgeColour = hueToBorderColour( props.deckState.hue );
 
-  const sections = props.sections.map( 
+  const sections = props.deckState.sections.map( 
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
       return ( 
@@ -95,17 +95,15 @@ function DeckSectionsTriggersComponent( props ) {
 }
 
 DeckSectionsTriggersComponent.propTypes = {
-  sections: PropTypes.array,
+  // sections: PropTypes.array,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
 }
 
 const mapStateToProps = state => {
-  const sections = throwdownSelectors.getSections( state );
   const deckState = throwdownSelectors.getDeck( state );
 
   return {
-    sections,
     deckState,
   }
 }

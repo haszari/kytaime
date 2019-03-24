@@ -2,23 +2,25 @@ import { createReducer } from 'redux-starter-kit';
 
 import actions from './actions';
 
-// import audioUtilities from '@kytaime/audio-utilities';
+function deckDefaults() {
+  return {
+    hue: Math.random() * 360,
+    triggeredSection: null,
+    playingSection: null, 
+    sections: [],
+  }
+}
 
 const throwdownReducer = createReducer( {
   audioContext: null, 
   buffers: [],
   
   patterns: [],
-  sections: [],
 
   deferAllTriggers: false,
 
   // one hard-coded deck for now – will be an array of decks later
-  deck: {
-    hue: Math.random() * 360,
-    triggeredSection: null,
-    playingSection: null, 
-  },
+  deck: deckDefaults(),
 }, {
   [ actions.setAudioContext ]: ( state, action ) => {
     state.audioContext = action.payload;
@@ -32,37 +34,13 @@ const throwdownReducer = createReducer( {
 
   // song state
   [ actions.addPattern ]: ( state, action ) => {
-    // var patternData = {
-    //   slug: action.payload.slug,
-
-    //   channel: action.payload.channel, 
-    //   duration: action.payload.duration, 
-    //   startBeats: action.payload.startBeats, 
-    //   endBeats: action.payload.endBeats, 
-      
-    //   notes: action.payload.notes, 
-    //   // slices: action.payload.notes, 
-      
-    //   audioFile: action.payload.file, 
-    //   tempoBpm: action.payload.tempo, 
-    // };
     const patternData = action.payload;
     state.patterns.push( patternData );
-
-    // if ( patternData.file && ! _.find( state.buffers, { slug: patternData.file } ) ) {
-    //   // ensureAudioBuffered( state.audioContext, patternData.file )
-    //   audioUtilities.loadSample( patternData.file, state.audioContext, ( buffer ) => {
-    //     console.log( `sample decoded, ready to play ${ patternData.file }` );
-    //     // maybe we should just dispatch addAudioBuffer here?
-    //     state.buffers.push( {
-    //       file: patternData.file,
-    //       buffer: buffer,
-    //     } );
-    //   } );
-    // }
   },
   [ actions.addSection ]: ( state, action ) => {
-    state.sections.push( {
+    const deck = state.deck;
+
+    deck.sections.push( {
       slug: action.payload.slug,
 
       duration: action.payload.bars * 4,

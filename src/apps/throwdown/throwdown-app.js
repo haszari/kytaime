@@ -108,7 +108,7 @@ class ThrowdownApp {
   // Currently making new ones each time – may retain them across renders,
   // add new ones as needed, and update props from state
   updateDeck( state ) {
-    const allSections = throwdownSelectors.getSections( state );
+    // const allSections = throwdownSelectors.getSections( state );
     const allPatterns = throwdownSelectors.getPatterns( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
     const deckState = throwdownSelectors.getDeck( state );
@@ -116,7 +116,7 @@ class ThrowdownApp {
 
 
     // instantiate players for ALL sections
-    const sectionPlayers = _.map( allSections, ( section, key ) => {
+    const sectionPlayers = _.map( deckState.sections, ( section, key ) => {
         var patterns = section.patterns.map( 
           patternSlug => _.find( allPatterns, { slug: patternSlug } )
         );
@@ -285,42 +285,6 @@ class ThrowdownApp {
 
     this.nextTempoBpm = null;
   }
-
-  /// -----------------------------------------------------------------------------------------------
-  // importing / loading data
-  // the logic for conventional channels, etc etc is in here or player-factory.js
-
-  // loadAllPatternsAsLoops( throwdownData ) {
-  //   // make loop players for each midi / audio resource
-  //   _.each( throwdownData.patterns, ( resource, key ) => {
-  //     const pattern = playerFactory.playerFromFilePatternData( resource, key );
-  //     if ( pattern ) {
-  //       this.push( pattern );
-  //     }
-  //   } );
-  // }
-
-  // loadData( throwdownData ) {
-  //   // each section is a bunch of patterns which can be triggered on / off as a bunch
-  //   this.sections = _.map( throwdownData.sections, ( section, key ) => {
-  //       var patterns = section.patterns.map( 
-  //         patternSlug => throwdownData.patterns[ patternSlug ]
-  //       );
-  //       patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
-  //       const sectionData = {
-  //         slug: key, 
-  //         duration: section.bars * 4,
-  //         patterns,
-  //       }
-  //       return new SectionPlayer( sectionData );
-  //   } );
-
-  //   // add em all as playable things
-  //   this.children = this.sections;
-
-  //   // pick a random one to play
-  //   _.sample( this.sections ).triggered = true;
-  // }
 
   /// -----------------------------------------------------------------------------------------------
   // main
