@@ -54,7 +54,7 @@ class ThrowdownApp {
     this.setNextTempo = this.setNextTempo.bind( this );
     this.renderTimePeriod = this.renderTimePeriod.bind( this );
 
-    this.children = [];
+    this.temporaryDecks = [];
 
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
@@ -107,16 +107,16 @@ class ThrowdownApp {
   // Ensure that we have players for each deck and pattern currently triggered or playing in state
   // Currently making new ones each time – may retain them across renders,
   // add new ones as needed, and update props from state
-  updateDeck( state ) {
+  generateTemporaryDeckPlayers( state ) {
     // const allSections = throwdownSelectors.getSections( state );
     const allPatterns = throwdownSelectors.getPatterns( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
-    const deckState = throwdownSelectors.getDeck( state );
+    const allDecks = throwdownSelectors.getDecks( state );
     const triggerLoop = throwdownSelectors.getTriggerLoop( state );
 
-
     // instantiate players for ALL sections
-    const sectionPlayers = _.map( deckState.sections, ( section, key ) => {
+    this.temporaryDecks = _.map( allDecks, ( deckState ) => {
+      const sectionPlayers = _.map( deckState.sections, ( section ) => {
         var patterns = section.patterns.map( 
           patternSlug => _.find( allPatterns, { slug: patternSlug } )
         );
@@ -135,33 +135,29 @@ class ThrowdownApp {
         player.playing = ( section.slug === deckState.playingSection );
         
         return player;
-    } );
+      } );
 
-    // add em all as playable things
-    this.children = sectionPlayers;
+      return { 
+        deckSlug: deckState.slug,
+        sectionPlayers,
+      }
+    } );
   }
 
   updateDeckPlayState( ) {
     var playingSection = null;
     // const triggeredSection = null;
-    this.children.map( sectionPlayer => {
-      if ( sectionPlayer.playing ) {
-        playingSection = sectionPlayer.props.slug;
-      }
-      // if ( sectionPlayer.triggered ) {
-      //   triggeredSection = sectionPlayer.props.slug;
-      // }
+    this.temporaryDecks.map( deck => {
+      deck.sectionPlayers.map( sectionPlayer => {
+        if ( sectionPlayer.playing ) {
+          playingSection = sectionPlayer.props.slug;
+        }
+      } );
+      store.dispatch( throwdownActions.setDeckPlayingSection( {
+        deckSlug: deck.deckSlug, 
+        sectionSlug: playingSection
+      } ) );
     } );
-    store.dispatch( throwdownActions.setDeckPlayingSection( {
-      sectionSlug: playingSection
-    } ) );
-    // store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    //   sectionSlug: triggeredSection
-    // } ) );
-  }
-
-  push( throwdownItem ) {
-    this.children.push( throwdownItem );
   }
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
@@ -174,10 +170,12 @@ class ThrowdownApp {
     // );
 
     // get children to render themselves
-    this.children.map( ( child ) => {
-      if ( child.throwdownRender ) {
-        child.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
-      }
+    this.temporaryDecks.map( deck => {
+      deck.sectionPlayers.map( sectionPlayer => {
+        if ( sectionPlayer.throwdownRender ) {
+          sectionPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
+        }
+      } );   
     } );   
 
     this.updateDeckPlayState();
@@ -197,7 +195,7 @@ class ThrowdownApp {
     // this will remake all the players every time
     // in future it should make new ones + update props
     // we're hooking this up manually here, on each render - but we could equally use observeReduxStore
-    this.updateDeck( store.getState() );
+    this.generateTemporaryDeckPlayers( store.getState() );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;

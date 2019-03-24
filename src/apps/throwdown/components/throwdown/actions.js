@@ -10,9 +10,10 @@ const toggleDeferAllTriggers = createAction( 'throwdown/toggleDeferAllTriggers' 
 
 // song data
 const addPattern = createAction( 'throwdown/addPattern' );
-const addSection = createAction( 'throwdown/addSection' );
 
 // deck state
+const addDeck = createAction( 'throwdown/addDeck' );
+const addSection = createAction( 'throwdown/addSection' );
 const setDeckTriggeredSection = createAction( 'throwdown/setDeckTriggeredSection' );
 const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
 
@@ -25,8 +26,9 @@ export default {
   toggleDeferAllTriggers,
 
   addPattern,
-  addSection,
 
+  addDeck,
+  addSection,
   setDeckTriggeredSection,
   setDeckPlayingSection,
 };

@@ -14,7 +14,7 @@ import ThrowdownApp from './throwdown-app';
 
 import Header from './components/transport-header/header.jsx';
 import PlaybackProgress from './components/playback-progress/playback-progress.jsx';
-import DeckSectionsTriggers from './components/throwdown/deck-sections-triggers.jsx';
+import Decks from './components/throwdown/decks.jsx';
 
 
 import throwdownActions from './components/throwdown/actions';
@@ -36,18 +36,31 @@ const testSongFile = '/data/20190217--manas.hjson';
 
 function importThrowdownData( throwdownData ) {
   throwdownApp.importPatterns( throwdownData.patterns );
+
+  store.dispatch( throwdownActions.addDeck( {
+    deckSlug: 'test',
+  } ) ); 
   
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
+      deckSlug: 'test',
       slug: key, 
       ...section
     } ) );
   } );
 
+  // trigger a random build
   const sectionSlugs = _.keys( throwdownData.sections );
   store.dispatch( throwdownActions.setDeckTriggeredSection( {
-      sectionSlug: _.sample( sectionSlugs )
-    } ) );
+    deckSlug: 'test',
+    sectionSlug: _.sample( sectionSlugs )
+  } ) );
+
+  // hard code build for testing
+  store.dispatch( throwdownActions.setDeckTriggeredSection( {
+    deckSlug: 'test',
+    sectionSlug: 'build',
+  } ) );
 }
 
 window.fetch( testSongFile )
@@ -108,7 +121,7 @@ function App() {
         <tbody>
           <Header />
           <PlaybackProgress />
-          <DeckSectionsTriggers />
+          <Decks />
         </tbody>
       </table>
     </Provider>

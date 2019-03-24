@@ -95,24 +95,25 @@ function DeckSectionsTriggersComponent( props ) {
 }
 
 DeckSectionsTriggersComponent.propTypes = {
-  // sections: PropTypes.array,
+  slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
 }
 
-const mapStateToProps = state => {
-  const deckState = throwdownSelectors.getDeck( state );
+const mapStateToProps = ( state, ownProps ) => {
+  const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
 
   return {
     deckState,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = ( dispatch, ownProps ) => {
   return {
     onSetTriggeredSection: ( sectionSlug ) => {
       dispatch(
         actions.setDeckTriggeredSection( {
+          deckSlug: ownProps.slug,
           sectionSlug 
         } ) 
       )

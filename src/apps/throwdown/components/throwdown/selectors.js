@@ -8,7 +8,7 @@ const getSections = createSelector( [ 'throwdown.sections' ] );
 const getPatterns = createSelector( [ 'throwdown.patterns' ] );
 const getBuffers = createSelector( [ 'throwdown.buffers' ] );
 
-const getDeck = createSelector( [ 'throwdown.deck' ] );
+const getDecks = createSelector( [ 'throwdown.decks' ] );
 
 // this could be a user option/runtime param
 const MIN_PHRASE_LENGTH = 4;
@@ -39,11 +39,18 @@ const getPhraseProgress = createSelector(
   },
 );
 
+function getDeck( state, deckSlug ) {
+  return _.find( getDecks( state ), 
+    deck => ( deck.slug === deckSlug )
+  );
+}
+
 
 export default {
   getThrowdown,
   getSections,
   getPatterns,
+  getDecks,
   getDeck,
   getBuffers,
   getPhraseLoop,

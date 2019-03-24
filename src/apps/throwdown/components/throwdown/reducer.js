@@ -1,14 +1,23 @@
+import _ from 'lodash';
+
 import { createReducer } from 'redux-starter-kit';
 
 import actions from './actions';
 
-function deckDefaults() {
+function createDeck() {
   return {
+    slug: '',
     hue: Math.random() * 360,
     triggeredSection: null,
     playingSection: null, 
     sections: [],
   }
+}
+
+function getDeck( state, deckSlug ) {
+  return _.find( state.decks, 
+    deck => ( deck.slug === deckSlug )
+  );
 }
 
 const throwdownReducer = createReducer( {
@@ -19,8 +28,7 @@ const throwdownReducer = createReducer( {
 
   deferAllTriggers: false,
 
-  // one hard-coded deck for now – will be an array of decks later
-  deck: deckDefaults(),
+  decks: []
 }, {
   [ actions.setAudioContext ]: ( state, action ) => {
     state.audioContext = action.payload;
@@ -32,21 +40,10 @@ const throwdownReducer = createReducer( {
     } );
   },
 
-  // song state
+  // patterns (may be used in multiple deck sections)
   [ actions.addPattern ]: ( state, action ) => {
     const patternData = action.payload;
     state.patterns.push( patternData );
-  },
-  [ actions.addSection ]: ( state, action ) => {
-    const deck = state.deck;
-
-    deck.sections.push( {
-      slug: action.payload.slug,
-
-      duration: action.payload.bars * 4,
-      
-      patterns: action.payload.patterns,
-    } );
   },
 
   [ actions.setDeferAllTriggers ]: ( state, action ) => {
@@ -56,15 +53,42 @@ const throwdownReducer = createReducer( {
     state.deferAllTriggers = ! state.deferAllTriggers;
   },
 
+  // decks
+  [ actions.addDeck ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( deck ) return;
 
-  // sequencer/playback state
+    state.decks.push( {
+      ...createDeck(),
+      slug: action.payload.deckSlug,
+    } );
+  },
+
+  [ actions.addSection ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
+    deck.sections.push( {
+      slug: action.payload.slug,
+
+      duration: action.payload.bars * 4,
+      
+      patterns: action.payload.patterns,
+    } );
+  },
   [ actions.setDeckTriggeredSection ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
     // pass no slug to clear triggered section
-    state.deck.triggeredSection = action.payload.sectionSlug;
+    deck.triggeredSection = action.payload.sectionSlug;
   },
   [ actions.setDeckPlayingSection ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
     // pass no slug to clear triggered section
-    state.deck.playingSection = action.payload.sectionSlug;
+    deck.playingSection = action.payload.sectionSlug;
   },
 
 } );
