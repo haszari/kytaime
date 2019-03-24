@@ -13,7 +13,7 @@ import observeStore from '@lib/observe-redux-store';
 import ThrowdownApp from './throwdown-app';
 
 import Header from './components/transport-header/header.jsx';
-import PlaybackProgress from './components/playback-progress/playback-progress.jsx';
+import HeaderPlaybackProgress from './components/playback-progress/header-progress.jsx';
 import Decks from './components/throwdown/decks.jsx';
 
 
@@ -74,7 +74,7 @@ function importThrowdownFile( deckSlug, file ) {
 
 importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
 importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
-importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
+// importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
@@ -126,7 +126,7 @@ function App() {
       <table cellSpacing="0" >
         <tbody>
           <Header />
-          <PlaybackProgress />
+          <HeaderPlaybackProgress backgroundColour="#ccc" progressColour="#888" />
           <Decks />
         </tbody>
       </table>

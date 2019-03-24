@@ -1,18 +1,21 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
-
-import throwdownSelectors from '../throwdown/selectors';
-
 function PlaybackProgressComponent( props ) {
-  const phraseProgressPercent = props.phraseProgress * 100;
+  const phraseProgressPercent = props.progressPercent;
   return (
-    <tr>
-      <td colSpan="99" className="playback-progress-container"><div 
-        className="playback-progress-progress" 
-        style={{ width: `${ phraseProgressPercent }%` }}
-      ></div></td>
+    <tr style={{ backgroundColor: props.backgroundColour }}>
+      <td 
+        colSpan="99" 
+        className="playback-progress-container" >
+        <div 
+          className="playback-progress-progress" 
+          style={{ 
+            width: `${ phraseProgressPercent }%`,
+            backgroundColor: props.progressColour,
+          }}
+        ></div>
+      </td>
     </tr>
   );
 }
@@ -20,23 +23,9 @@ function PlaybackProgressComponent( props ) {
 PlaybackProgressComponent.propTypes = {
   togglePlayback: PropTypes.func,
   isPlaying: PropTypes.bool,
-  phraseProgress: PropTypes.number,
+  progressPercent: PropTypes.number,
+  backgroundColour: PropTypes.string,
+  progressColour: PropTypes.string,
 }
 
-const mapStateToProps = state => {
-  return {
-    phraseProgress: throwdownSelectors.getPhraseProgress( state ),
-  }
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-  }
-}
-
-const PlaybackProgress = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(PlaybackProgressComponent);
-
-export default PlaybackProgress;
+export default PlaybackProgressComponent;

@@ -32,14 +32,16 @@ td {
   padding: 5px 5px 2px 5px;
 }
 
-.header,
-.playback-progress-container {
+.header {
   background: #ccc;
   padding: 0;
 }
 
+.playback-progress-container {
+  padding: 0;
+}
+
 .playback-progress-progress {
-  background: #888;
   height: 4px;
 }
 

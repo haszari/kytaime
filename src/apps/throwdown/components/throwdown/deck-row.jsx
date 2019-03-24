@@ -1,5 +1,3 @@
-import Color from 'color'; 
-
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -9,23 +7,7 @@ import throwdownSelectors from './selectors';
 
 import actions from './actions';
 
-function hueToBackgroundColour( hue ) {
- return Color.hsl(
-    Math.floor( hue ), 75, 75,
-  ).hex();
-} 
-
-function hueToBorderColour( hue ) {
- return Color.hsl(
-    Math.floor( hue ), 75, 50,
-  ).hex();
-} 
-
-function hueToProgressColour( hue ) {
- return Color.hsl(
-    Math.floor( hue ), 75, 25,
-  ).hex();
-} 
+import deckColours from './deck-colours';
 
 function SectionTrigger( props ) {
   const styles = {};
@@ -56,8 +38,8 @@ SectionTrigger.propTypes = {
 }
 
 function DeckSectionsTriggersComponent( props ) {
-  const backgroundColour = hueToBackgroundColour( props.deckState.hue );
-  const edgeColour = hueToBorderColour( props.deckState.hue );
+  const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue );
+  const edgeColour = deckColours.hueToBorderColour( props.deckState.hue );
   const deckSlug = props.deckState.slug;
 
   const sections = props.deckState.sections.map( 

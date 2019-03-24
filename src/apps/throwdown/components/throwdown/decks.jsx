@@ -5,16 +5,17 @@ import { connect } from 'react-redux';
 
 import throwdownSelectors from './selectors';
 
+import DeckProgress from '../playback-progress/deck-progress.jsx';
 import DeckRow from './deck-row.jsx';
 
 function DecksComponent( props ) {
   const deckRows = props.decks.map( 
     ( deck ) => {
       return ( 
-        <DeckRow 
-          key={ deck.slug }
-          slug={ deck.slug }
-        />
+        <React.Fragment key={ deck.slug } >
+          <DeckRow slug={ deck.slug } />
+          <DeckProgress deckSlug={ deck.slug } backgroundColour="#ccc" progressColour="#888" />
+        </React.Fragment>
       );
     }
   );
@@ -22,7 +23,6 @@ function DecksComponent( props ) {
     <React.Fragment>
       { deckRows }
     </React.Fragment>
-
   );
 }
 

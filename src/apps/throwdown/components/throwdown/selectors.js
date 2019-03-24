@@ -89,6 +89,13 @@ function getDeckPhraseLoop( state, deckSlug ) {
   return getPhraseLoopFromPatterns( patterns );
 }
 
+const getDeckPhraseProgress = createSelector( 
+  [ getDeckPhraseLoop, 'transport.currentBeat' ],
+  ( phraseLoop, currentBeat ) => {
+    return ( currentBeat % phraseLoop ) / phraseLoop;
+  },
+);
+
 export default {
   getBuffers,
   
@@ -98,6 +105,7 @@ export default {
   getDecks,
   getDeck,
   getDeckPhraseLoop,
+  getDeckPhraseProgress,
   getDeckSection,
   getDeckSectionPatterns,
   getAllDeckPatterns,
