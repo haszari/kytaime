@@ -21,7 +21,7 @@ function HeaderTransportBarComponent( props ) {
       </th>
       <th style={{ borderRight: "1px solid #bbb" }}><TempoDrop /></th>
       <th style={{ fontWeight: "bold" }}>{ props.tempo.toFixed( 1 ) } bpm</th>
-      <th style={{ textAlign: "left" }}><PlayButton /></th>
+      <th style={{ textAlign: "left" }} colSpan="99"><PlayButton /></th>
     </tr>
   );
 }

@@ -108,11 +108,7 @@ function App() {
         <tbody>
           <Header />
           <PlaybackProgress />
-          <tr>
-            <td>
-              <DeckSectionsTriggers />
-            </td>
-          </tr>
+          <DeckSectionsTriggers />
         </tbody>
       </table>
     </Provider>

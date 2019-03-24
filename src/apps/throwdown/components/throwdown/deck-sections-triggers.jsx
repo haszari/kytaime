@@ -1,4 +1,4 @@
-// import _ from 'lodash'; 
+import Color from 'color'; 
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -9,6 +9,24 @@ import throwdownSelectors from './selectors';
 
 import actions from './actions';
 
+function hueToBackgroundColour( hue ) {
+ return Color.hsl(
+    Math.floor( hue ), 75, 75,
+  ).hex();
+} 
+
+function hueToBorderColour( hue ) {
+ return Color.hsl(
+    Math.floor( hue ), 75, 50,
+  ).hex();
+} 
+
+function hueToProgressColour( hue ) {
+ return Color.hsl(
+    Math.floor( hue ), 75, 25,
+  ).hex();
+} 
+
 function SectionTrigger( props ) {
   const styles = {};
   styles.fontWeight = props.playing ? 'bold' : 'normal';
@@ -18,14 +36,14 @@ function SectionTrigger( props ) {
     props.triggered ? null : props.slug
   );
   return (
-    <div>
+    <td>
       <span 
         onClick={ toggleTrigger }
         style={ styles }
       >
         { props.slug }
       </span>
-    </div>
+    </td>
   );
 }
 
@@ -34,9 +52,13 @@ SectionTrigger.propTypes = {
   triggered: PropTypes.bool,
   onSetTriggeredSection: PropTypes.func,
   slug: PropTypes.string,
+  hue: PropTypes.number,
 }
 
 function DeckSectionsTriggersComponent( props ) {
+  const backgroundColour = hueToBackgroundColour( props.deckState.hue );
+  const edgeColour = hueToBorderColour( props.deckState.hue );
+
   const sections = props.sections.map( 
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
@@ -47,14 +69,28 @@ function DeckSectionsTriggersComponent( props ) {
           playing={ false }
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
+          hue={ props.deckState.hue }
         />
       );
     }
   );
   return (
-    <div>
+    <tr className="deck-row" style={{ backgroundColor: backgroundColour }}>
+      <td>
+       {/* deck phrase length */}
+      </td>
+      <td style={{ 
+        borderRight: `1px solid ${ edgeColour }`,
+        backgroundColor: backgroundColour,
+      }}>
+        {/* deck tempo, title, metadata */}
+        <div style={{ 
+          fontWeight: 'bold'
+        }}>test</div>
+      </td>
       { sections }
-    </div>
+    </tr>
+
   );
 }
 

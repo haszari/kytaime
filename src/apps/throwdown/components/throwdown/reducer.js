@@ -15,6 +15,7 @@ const throwdownReducer = createReducer( {
 
   // one hard-coded deck for now – will be an array of decks later
   deck: {
+    hue: Math.random() * 360,
     triggeredSection: null,
     playingSection: null, 
   },

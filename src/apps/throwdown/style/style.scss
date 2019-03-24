@@ -22,7 +22,14 @@ th {
   font-weight: normal;
   min-width: 100px;
   text-align: right;
-  padding: 0.5em;
+  padding: 5px 5px 2px  5px;
+}
+
+td {
+  min-width: 100px;
+  text-align: right;
+  vertical-align: bottom;
+  padding: 5px 5px 2px 5px;
 }
 
 .header,
