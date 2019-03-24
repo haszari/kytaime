@@ -5,7 +5,7 @@ import store from './store/store';
 
 // import observeReduxStore from '@lib/observe-redux-store';
 
-import transportActions from './store/transport/actions';
+import transportActions from './components/transport/actions';
 
 import throwdownActions from './components/throwdown/actions';
 import throwdownSelectors from './components/throwdown/selectors';
@@ -13,12 +13,14 @@ import throwdownSelectors from './components/throwdown/selectors';
 import sequencer from '@kytaime/sequencer/sequencer';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
-import midiOutputs from '@kytaime/midi-outputs';
+import midiPorts from '@kytaime/midi-ports';
 import audioUtilities from '@kytaime/audio-utilities';
 
 // import playerFactory from './player-factory';
 
 import SectionPlayer from './components/throwdown/section-player';
+
+import './components/hardware-bindings/akai-apc40';
 
 /// -----------------------------------------------------------------------------------------------
 // sequencer core
@@ -52,7 +54,7 @@ class ThrowdownApp {
     this.setNextTempo = this.setNextTempo.bind( this );
     this.renderTimePeriod = this.renderTimePeriod.bind( this );
 
-    this.children = [];
+    this.temporaryDecks = [];
 
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
@@ -68,11 +70,12 @@ class ThrowdownApp {
     // observeReduxStore( store, throwdownSelectors.getThrowdown, this.importThrowdown );
   }
 
-  importPatterns( patterns ) {
+  importPatterns( songSlug, patterns ) {
     const buffers = throwdownSelectors.getBuffers( store.getState() );
 
     _.map( patterns, ( pattern, key ) => {
       store.dispatch( throwdownActions.addPattern( {
+        songSlug, 
         slug: key, 
         ...pattern
       } ) );
@@ -82,7 +85,7 @@ class ThrowdownApp {
     } );  
   }
   openMidiOutput(requestedPortName) {
-    midiOutputs.openMidiOutput({
+    midiPorts.openMidiOutput({
       deviceName: requestedPortName,
       callback: function(info) {
        if (info.port) {
@@ -105,57 +108,54 @@ class ThrowdownApp {
   // Ensure that we have players for each deck and pattern currently triggered or playing in state
   // Currently making new ones each time – may retain them across renders,
   // add new ones as needed, and update props from state
-  updateDeck( state ) {
-    const allSections = throwdownSelectors.getSections( state );
-    const allPatterns = throwdownSelectors.getPatterns( state );
+  generateTemporaryDeckPlayers( state ) {
+    // const allSections = throwdownSelectors.getSections( state );
     const allBuffers = throwdownSelectors.getBuffers( state );
-    const deckState = throwdownSelectors.getDeck( state );
+    const allDecks = throwdownSelectors.getDecks( state );
+    const triggerLoop = throwdownSelectors.getTriggerLoop( state );
 
     // instantiate players for ALL sections
-    const sectionPlayers = _.map( allSections, ( section, key ) => {
-        var patterns = section.patterns.map( 
-          patternSlug => _.find( allPatterns, { slug: patternSlug } )
-        );
-        patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
-        const sectionData = {
+    this.temporaryDecks = _.map( allDecks, ( deckState ) => {
+      const sectionPlayers = _.map( deckState.sections, ( section ) => {
+        var patterns = throwdownSelectors.getDeckSectionPatterns( state, deckState.slug, section.slug ); 
+
+        const sectionProps = {
           slug: section.slug, 
           duration: section.bars * 4,
+          buffers: allBuffers,
           patterns,
+          triggerLoop,
         }
-        const player = new SectionPlayer( sectionData, allBuffers );
+        const player = new SectionPlayer( sectionProps );
 
         // sync relevant props (which things are triggered, playing) from state
         player.triggered = ( section.slug === deckState.triggeredSection );
         player.playing = ( section.slug === deckState.playingSection );
         
         return player;
-    } );
+      } );
 
-    // add em all as playable things
-    this.children = sectionPlayers;
+      return { 
+        deckSlug: deckState.slug,
+        sectionPlayers,
+      }
+    } );
   }
 
   updateDeckPlayState( ) {
-    var playingSection = null;
     // const triggeredSection = null;
-    this.children.map( sectionPlayer => {
-      if ( sectionPlayer.playing ) {
-        playingSection = sectionPlayer.props.slug;
-      }
-      // if ( sectionPlayer.triggered ) {
-      //   triggeredSection = sectionPlayer.props.slug;
-      // }
+    this.temporaryDecks.map( deck => {
+      var playingSection = null;
+      deck.sectionPlayers.map( sectionPlayer => {
+        if ( sectionPlayer.playing ) {
+          playingSection = sectionPlayer.props.slug;
+        }
+      } );
+      store.dispatch( throwdownActions.setDeckPlayingSection( {
+        deckSlug: deck.deckSlug, 
+        sectionSlug: playingSection
+      } ) );
     } );
-    store.dispatch( throwdownActions.setDeckPlayingSection( {
-      sectionSlug: playingSection
-    } ) );
-    // store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    //   sectionSlug: triggeredSection
-    // } ) );
-  }
-
-  push( throwdownItem ) {
-    this.children.push( throwdownItem );
   }
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
@@ -168,15 +168,23 @@ class ThrowdownApp {
     // );
 
     // get children to render themselves
-    this.children.map( ( child ) => {
-      if ( child.throwdownRender ) {
-        child.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
-      }
+    this.temporaryDecks.map( deck => {
+      deck.sectionPlayers.map( sectionPlayer => {
+        if ( sectionPlayer.throwdownRender ) {
+          sectionPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
+        }
+      } );   
     } );   
 
     this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end; 
+
+    setTimeout(() => {
+      store.dispatch( 
+        transportActions.setCurrentBeat( this.lastRenderEndBeat )
+      );
+    }, ( renderRange.end ) / 1000 );
   }
 
   sequencerCallback( renderRange ) {
@@ -185,7 +193,7 @@ class ThrowdownApp {
     // this will remake all the players every time
     // in future it should make new ones + update props
     // we're hooking this up manually here, on each render - but we could equally use observeReduxStore
-    this.updateDeck( store.getState() );
+    this.generateTemporaryDeckPlayers( store.getState() );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;
@@ -196,7 +204,7 @@ class ThrowdownApp {
     };
 
     // drop tempo changes mod what
-    const tempoChangePhrase = 16;
+    const tempoChangePhrase = throwdownSelectors.getTriggerLoop( store.getState() );
     const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != this.tempo;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
       this.tempoBpm, // we may not need this whole blob - can we expand out to the minimum params we need?
@@ -275,42 +283,6 @@ class ThrowdownApp {
   }
 
   /// -----------------------------------------------------------------------------------------------
-  // importing / loading data
-  // the logic for conventional channels, etc etc is in here or player-factory.js
-
-  // loadAllPatternsAsLoops( throwdownData ) {
-  //   // make loop players for each midi / audio resource
-  //   _.each( throwdownData.patterns, ( resource, key ) => {
-  //     const pattern = playerFactory.playerFromFilePatternData( resource, key );
-  //     if ( pattern ) {
-  //       this.push( pattern );
-  //     }
-  //   } );
-  // }
-
-  // loadData( throwdownData ) {
-  //   // each section is a bunch of patterns which can be triggered on / off as a bunch
-  //   this.sections = _.map( throwdownData.sections, ( section, key ) => {
-  //       var patterns = section.patterns.map( 
-  //         patternSlug => throwdownData.patterns[ patternSlug ]
-  //       );
-  //       patterns = _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
-  //       const sectionData = {
-  //         slug: key, 
-  //         duration: section.bars * 4,
-  //         patterns,
-  //       }
-  //       return new SectionPlayer( sectionData );
-  //   } );
-
-  //   // add em all as playable things
-  //   this.children = this.sections;
-
-  //   // pick a random one to play
-  //   _.sample( this.sections ).triggered = true;
-  // }
-
-  /// -----------------------------------------------------------------------------------------------
   // main
 
   startTransport() {
@@ -318,6 +290,8 @@ class ThrowdownApp {
   }
   stopTransport() {
     sequencer.stop();
+    this.lastRenderEndBeat = 0;
+    store.dispatch( transportActions.setCurrentBeat( this.lastRenderEndBeat ) );
   }
   toggleTransport() {
     if ( sequencer.isPlaying() ) {

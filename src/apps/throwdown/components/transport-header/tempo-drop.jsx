@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
-import actions from './actions';
+import transportActions from '../transport/actions';
 
 function TempoDropComponent( props ) {
   return (
-    <div>
-      <label>
-        Next tempo { props.dropTempo } bpm
-        <input type="range" min="75" max="300" value={ props.dropTempo } onChange={ props.onChange }/>
-      </label>
-    </div>
+    <input 
+      className="next-tempo"
+      type="number" min="75" max="300"
+      value={ props.dropTempo.toFixed( 1 ) }
+      onChange={ props.onChange }
+    />
   );
 }
 
@@ -24,7 +24,7 @@ TempoDropComponent.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    dropTempo: state.tempoDrop.nextTempo,
+    dropTempo: state.transport.nextTempo,
     currentTempo: state.transport.tempo,
   }
 }
@@ -32,7 +32,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     onChange: event => {
-      dispatch( actions.setNextTempo( event.target.value ) )
+      dispatch( transportActions.setNextTempo( event.target.value ) )
     }
   }
 }

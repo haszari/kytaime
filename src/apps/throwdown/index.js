@@ -12,12 +12,14 @@ import observeStore from '@lib/observe-redux-store';
 
 import ThrowdownApp from './throwdown-app';
 
-import PlayButton from './components/play-button.jsx';
-import DeckSectionsTriggers from './components/throwdown/deck-sections-triggers.jsx';
-import TempoDrop from './components/tempo-drop/component.jsx';
+import Header from './components/transport-header/header.jsx';
+import HeaderPlaybackProgress from './components/playback-progress/header-progress.jsx';
+import Decks from './components/throwdown/decks.jsx';
 
 
 import throwdownActions from './components/throwdown/actions';
+
+import './style/style.scss';
 
 /// -----------------------------------------------------------------------------------------------
 // app audio engine / service
@@ -28,25 +30,51 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-const testSongFile = '/data/20190217--manas.hjson';
+function addThrowdownDeck( songSlug, throwdownData ) {
+  throwdownApp.importPatterns( songSlug, throwdownData.patterns );
 
-function importThrowdownData( throwdownData ) {
-  throwdownApp.importPatterns( throwdownData.patterns );
+  store.dispatch( throwdownActions.addDeck( {
+    deckSlug: songSlug,
+  } ) ); 
   
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
+      deckSlug: songSlug,
       slug: key, 
       ...section
     } ) );
   } );
+
+  // trigger a random section
+  const sectionSlugs = _.keys( throwdownData.sections );
+  store.dispatch( throwdownActions.setDeckTriggeredSection( {
+    deckSlug: songSlug,
+    sectionSlug: _.sample( sectionSlugs )
+  } ) );
+
+  // hard code build for testing
+  // store.dispatch( throwdownActions.setDeckTriggeredSection( {
+  //   deckSlug: 'test',
+  //   sectionSlug: 'build',
+  // } ) );
 }
 
-window.fetch( testSongFile )
-  .then( response => response.text() )
-  .then( text => {
-    const songData = Hjson.parse( text );
-    importThrowdownData( songData );
-  } );
+// const testSongFile = '/data/20190217--manas.hjson';
+// const testSongFile = 'data/20190306--sweets-from-a-stranger.hjson';
+// const testSongFile = 'data/20190306--its-not-real.hjson';
+
+function importThrowdownFile( deckSlug, file ) {
+  window.fetch( file )
+    .then( response => response.text() )
+    .then( text => {
+      const songData = Hjson.parse( text );
+      addThrowdownDeck( deckSlug, songData );
+    } );
+}
+
+importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
+importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
+// importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
@@ -82,7 +110,7 @@ observeStore(
   store, 
   // transport component could provide this selector
   ( state ) => {
-    return state.tempoDrop.nextTempo
+    return state.transport.nextTempo
   }, 
   ( nextTempo ) => {
     throwdownApp.setNextTempo( nextTempo )
@@ -95,10 +123,13 @@ observeStore(
 function App() {
   return (
     <Provider store={ store }>
-      <h1>Bam</h1>
-      <PlayButton />
-      <TempoDrop />
-      <DeckSectionsTriggers />
+      <table cellSpacing="0" >
+        <tbody>
+          <Header />
+          <HeaderPlaybackProgress backgroundColour="#ccc" progressColour="#888" />
+          <Decks />
+        </tbody>
+      </table>
     </Provider>
   );
 }

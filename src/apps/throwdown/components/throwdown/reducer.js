@@ -1,21 +1,34 @@
+import _ from 'lodash';
+
 import { createReducer } from 'redux-starter-kit';
 
 import actions from './actions';
 
-// import audioUtilities from '@kytaime/audio-utilities';
+function createDeck() {
+  return {
+    slug: '',
+    hue: Math.random() * 360,
+    triggeredSection: null,
+    playingSection: null, 
+    sections: [],
+  }
+}
+
+function getDeck( state, deckSlug ) {
+  return _.find( state.decks, 
+    deck => ( deck.slug === deckSlug )
+  );
+}
 
 const throwdownReducer = createReducer( {
   audioContext: null, 
   buffers: [],
-
+  
   patterns: [],
-  sections: [],
 
-  // one hard-coded deck for now – will be an array of decks later
-  deck: {
-    triggeredSection: null,
-    playingSection: null, 
-  },
+  deferAllTriggers: false,
+
+  decks: []
 }, {
   [ actions.setAudioContext ]: ( state, action ) => {
     state.audioContext = action.payload;
@@ -27,39 +40,35 @@ const throwdownReducer = createReducer( {
     } );
   },
 
-  // song state
+  // patterns (may be used in multiple deck sections)
   [ actions.addPattern ]: ( state, action ) => {
-    // var patternData = {
-    //   slug: action.payload.slug,
-
-    //   channel: action.payload.channel, 
-    //   duration: action.payload.duration, 
-    //   startBeats: action.payload.startBeats, 
-    //   endBeats: action.payload.endBeats, 
-      
-    //   notes: action.payload.notes, 
-    //   // slices: action.payload.notes, 
-      
-    //   audioFile: action.payload.file, 
-    //   tempoBpm: action.payload.tempo, 
-    // };
     const patternData = action.payload;
     state.patterns.push( patternData );
-
-    // if ( patternData.file && ! _.find( state.buffers, { slug: patternData.file } ) ) {
-    //   // ensureAudioBuffered( state.audioContext, patternData.file )
-    //   audioUtilities.loadSample( patternData.file, state.audioContext, ( buffer ) => {
-    //     console.log( `sample decoded, ready to play ${ patternData.file }` );
-    //     // maybe we should just dispatch addAudioBuffer here?
-    //     state.buffers.push( {
-    //       file: patternData.file,
-    //       buffer: buffer,
-    //     } );
-    //   } );
-    // }
   },
+
+  [ actions.setDeferAllTriggers ]: ( state, action ) => {
+    state.deferAllTriggers = action.payload;
+  },
+  [ actions.toggleDeferAllTriggers ]: ( state, action ) => {
+    state.deferAllTriggers = ! state.deferAllTriggers;
+  },
+
+  // decks
+  [ actions.addDeck ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( deck ) return;
+
+    state.decks.push( {
+      ...createDeck(),
+      slug: action.payload.deckSlug,
+    } );
+  },
+
   [ actions.addSection ]: ( state, action ) => {
-    state.sections.push( {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
+    deck.sections.push( {
       slug: action.payload.slug,
 
       duration: action.payload.bars * 4,
@@ -68,15 +77,35 @@ const throwdownReducer = createReducer( {
     } );
   },
 
-  // sequencer/playback state
   [ actions.setDeckTriggeredSection ]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
     // pass no slug to clear triggered section
-    state.deck.triggeredSection = action.payload.sectionSlug;
+    deck.triggeredSection = action.payload.sectionSlug;
   },
+  [ actions.toggleDeckTriggeredSection ]: ( state, action ) => {
+    const deck = state.decks[ action.payload.deckIndex ];
+    if ( ! deck ) return;
+
+    const section = deck.sections[ action.payload.sectionIndex ];
+    const sectionSlug = section ? section.slug : '';
+    if (deck.triggeredSection !== sectionSlug) {
+      deck.triggeredSection = sectionSlug;
+    }
+    else {
+      deck.triggeredSection = null;
+    }
+  },
+
   [ actions.setDeckPlayingSection ]: ( state, action ) => {
-    // pass no slug to clear triggered section
-    state.deck.playingSection = action.payload.sectionSlug;
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
+    // pass no slug to clear playing section
+    deck.playingSection = action.payload.sectionSlug;
   },
+
 
 } );
 

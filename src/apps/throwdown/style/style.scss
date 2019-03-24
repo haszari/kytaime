@@ -1,0 +1,51 @@
+// @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+// @import url('https://fonts.googleapis.com/css?family=Lato');
+// @import url('https://fonts.googleapis.com/css?family=Roboto');
+html {
+//   font-family: 'Titillium Web', sans-serif;
+  // font-family: 'Lato', sans-serif;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  user-select: none;
+}
+
+input {
+  background: transparent;
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1em;
+}
+
+th {
+  font-weight: normal;
+  min-width: 100px;
+  text-align: right;
+  padding: 5px 5px 2px  5px;
+}
+
+td {
+  min-width: 100px;
+  text-align: right;
+  vertical-align: bottom;
+  padding: 5px 5px 2px 5px;
+}
+
+.header {
+  background: #ccc;
+  padding: 0;
+}
+
+.playback-progress-container {
+  padding: 0;
+}
+
+.playback-progress-progress {
+  height: 4px;
+}
+
+.next-tempo {
+  width: 70px;
+  text-align: right;
+}
