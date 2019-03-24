@@ -21,16 +21,16 @@ function onMidiMessage( event ) {
 
   if ( message.messageType == 'noteon' ) {
     switch ( message.key ) {
-      case 91: {
+      case 91:
         store.dispatch( 
           transportActions.togglePlayback()
         );
-      }
-      case 93: {
+        break;
+      case 93:
         store.dispatch( 
           throwdownActions.toggleDeferAllTriggers()
         );
-      }
+        break;
     }
   }
 
