@@ -71,7 +71,11 @@ function DeckSectionsTriggersComponent( props ) {
           fontWeight: 'bold'
         }}>{ deckSlug }</div>
       </td>
+      
       { sections }
+
+      {/* this is here to expand the background to full width */}
+      <td colSpan="99"></td> 
     </tr>
 
   );
