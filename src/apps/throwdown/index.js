@@ -74,6 +74,7 @@ function importThrowdownFile( deckSlug, file ) {
 
 importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
 importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
+importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store

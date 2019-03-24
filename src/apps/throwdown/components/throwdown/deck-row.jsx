@@ -78,7 +78,7 @@ function DeckSectionsTriggersComponent( props ) {
   return (
     <tr className="deck-row" style={{ backgroundColor: backgroundColour }}>
       <td>
-       {/* deck phrase length */}
+       { props.phraseLoop }
       </td>
       <td style={{ 
         borderRight: `1px solid ${ edgeColour }`,
@@ -99,13 +99,16 @@ DeckSectionsTriggersComponent.propTypes = {
   slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
+  phraseLoop: PropTypes.number
 }
 
 const mapStateToProps = ( state, ownProps ) => {
   const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
+  const phraseLoop = throwdownSelectors.getDeckPhraseLoop( state, ownProps.slug );
 
   return {
     deckState,
+    phraseLoop,
   }
 }
 
