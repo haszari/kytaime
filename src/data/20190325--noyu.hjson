@@ -6,7 +6,7 @@
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170816--padscape-stemprep--noyu-alpine-beat.mp3'
       tempo: 120 
       duration: 32      
-      endBeats: [-1],
+      endBeats: [-1]
     }
     bass: {
       part: bass
