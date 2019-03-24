@@ -32,6 +32,15 @@ function onMidiMessage( event ) {
         );
         break;
     }
+
+    if ( message.key >= 53 && message.key <= 57 ) {
+      store.dispatch( 
+        throwdownActions.toggleDeckTriggeredSection({
+          deckIndex: message.key - 53,
+          sectionIndex: message.channel
+        } )
+      );
+    }
   }
 
   if ( message.messageType == 'controlchange' ) {

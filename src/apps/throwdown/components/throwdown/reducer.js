@@ -76,6 +76,7 @@ const throwdownReducer = createReducer( {
       patterns: action.payload.patterns,
     } );
   },
+
   [ actions.setDeckTriggeredSection ]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( ! deck ) return;
@@ -83,6 +84,20 @@ const throwdownReducer = createReducer( {
     // pass no slug to clear triggered section
     deck.triggeredSection = action.payload.sectionSlug;
   },
+  [ actions.toggleDeckTriggeredSection ]: ( state, action ) => {
+    const deck = state.decks[ action.payload.deckIndex ];
+    if ( ! deck ) return;
+
+    const section = deck.sections[ action.payload.sectionIndex ];
+    const sectionSlug = section ? section.slug : '';
+    if (deck.triggeredSection !== sectionSlug) {
+      deck.triggeredSection = sectionSlug;
+    }
+    else {
+      deck.triggeredSection = null;
+    }
+  },
+
   [ actions.setDeckPlayingSection ]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( ! deck ) return;
@@ -90,6 +105,7 @@ const throwdownReducer = createReducer( {
     // pass no slug to clear triggered section
     deck.playingSection = action.payload.sectionSlug;
   },
+
 
 } );
 

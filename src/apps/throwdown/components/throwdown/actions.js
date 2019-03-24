@@ -16,7 +16,7 @@ const addDeck = createAction( 'throwdown/addDeck' );
 const addSection = createAction( 'throwdown/addSection' );
 const setDeckTriggeredSection = createAction( 'throwdown/setDeckTriggeredSection' );
 const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
-
+const toggleDeckTriggeredSection = createAction( 'throwdown/toggleDeckTriggeredSection' );
 
 export default {
   setAudioContext,
@@ -31,4 +31,5 @@ export default {
   addSection,
   setDeckTriggeredSection,
   setDeckPlayingSection,
+  toggleDeckTriggeredSection,
 };
