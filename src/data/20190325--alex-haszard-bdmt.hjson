@@ -1,0 +1,62 @@
+{
+  version: 1
+  patterns: {
+    drums: {
+      part: beat
+      file: '/media/Alex%20Haszard/Haszari%20Renders%20-%20Alex%20Haszard%20Stems/20190325--alex-haszard--bdmt-drums.wav'
+      tempo: 145 
+      duration: 16      
+    }
+    bass: {
+      part: bass
+      file: '/media/Alex%20Haszard/Haszari%20Renders%20-%20Alex%20Haszard%20Stems/20190325--alex-haszard--bdmt-bass.wav'
+      tempo: 145 
+      duration: 16
+    }
+    melody: {
+      part: lead
+      file: '/media/Alex%20Haszard/Haszari%20Renders%20-%20Alex%20Haszard%20Stems/20190325--alex-haszard--bdmt-melody.wav'
+      tempo: 145 
+      duration: 8   
+      endBeats: [-1]   
+    }
+    texture: {
+      part: texture
+      file: '/media/Alex%20Haszard/Haszari%20Renders%20-%20Alex%20Haszard%20Stems/20190325--alex-haszard--bdmt-textures.wav'
+      tempo: 145 
+      duration: 8
+    }
+  }
+  sections: {
+    intro: {
+      bars: 4
+      patterns: [
+        drums
+        texture
+      ]
+    }
+    break: {
+      bars: 4
+      patterns: [
+        melody
+        texture
+      ]
+    }
+    main: {
+      bars: 4
+      patterns: [
+        drums
+        bass
+        melody
+        texture
+      ]
+    }
+    outro: {
+      bars: 4
+      patterns: [
+        drums
+        bass
+      ]
+    }
+  } 
+}

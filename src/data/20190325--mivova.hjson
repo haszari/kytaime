@@ -1,0 +1,61 @@
+{
+  version: 1
+  patterns: {
+    beat: {
+      part: beat
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--beat.mp3
+      tempo: 122 
+      duration: 64
+    }
+    sub: {
+      part: sub
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--sub.mp3
+      tempo: 122 
+      duration: 64
+    }
+    voc: {
+      part: voc
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--voc.mp3
+      tempo: 122 
+      duration: 64  
+    }
+    pad: {
+      part: lead
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--lead.mp3
+      tempo: 122 
+      duration: 64
+    }
+  }
+  sections: {
+    intro: {
+      bars: 4
+      patterns: [
+        beat
+        sub
+      ]
+    }
+    break: {
+      bars: 4
+      patterns: [
+        voc
+        pad
+      ]
+    }
+    main: {
+      bars: 4
+      patterns: [
+        beat
+        sub
+        voc
+        pad
+      ]
+    }
+    outro: {
+      bars: 4
+      patterns: [
+        beat
+        pad
+      ]
+    }
+  } 
+}
