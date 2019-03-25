@@ -1,0 +1,68 @@
+{
+  version: 1
+  patterns: {
+    beat: {
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--maenyb-beat-alpine.m4a'
+      tempo: 133 
+      duration: 4
+    }
+    sub: {
+      part: sub
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-sub.mp3'
+      tempo: 133 
+      duration: 8
+    }
+    chords: {
+      part: chords
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-chords.mp3'
+      tempo: 133 
+      duration: 8   
+    }
+    lead: {
+      part: lead
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170703-stemcells-padscape-a3-stemprep--maenyb-lead.mp3'
+      tempo: 133 
+      duration: 32
+    }
+  }
+  sections: {
+    intro: {
+      bars: 4
+      patterns: [
+        beat
+        chords
+      ]
+    }
+    break: {
+      bars: 4
+      patterns: [
+        chords
+        lead
+      ]
+    }
+    drumbass: {
+      bars: 4
+      patterns: [
+        beat
+        sub
+      ]
+    }
+    main: {
+      bars: 4
+      patterns: [
+        beat
+        sub
+        chords
+        lead
+      ]
+    }
+    outro: {
+      bars: 4
+      patterns: [
+        beat
+        lead
+      ]
+    }
+  } 
+}

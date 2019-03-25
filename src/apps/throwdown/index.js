@@ -46,11 +46,11 @@ function addThrowdownDeck( songSlug, throwdownData ) {
   } );
 
   // trigger a random section
-  const sectionSlugs = _.keys( throwdownData.sections );
-  store.dispatch( throwdownActions.setDeckTriggeredSection( {
-    deckSlug: songSlug,
-    sectionSlug: _.sample( sectionSlugs )
-  } ) );
+  // const sectionSlugs = _.keys( throwdownData.sections );
+  // store.dispatch( throwdownActions.setDeckTriggeredSection( {
+  //   deckSlug: songSlug,
+  //   sectionSlug: _.sample( sectionSlugs )
+  // } ) );
 
   // hard code build for testing
   // store.dispatch( throwdownActions.setDeckTriggeredSection( {
@@ -73,8 +73,13 @@ function importThrowdownFile( deckSlug, file ) {
 }
 
 importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
+importThrowdownFile( 'noyu', '/data/20190325--noyu.hjson' );
+importThrowdownFile( 'axbdmt', '/data/20190325--alex-haszard-bdmt.hjson' );
 importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
-// importThrowdownFile( 'itsnotreal', 'data/20190306--its-not-real.hjson' );
+importThrowdownFile( 'maenyb', 'data/20190325--maenyb.hjson' );
+importThrowdownFile( 'shedout', 'data/20190325--shedout.hjson' );
+importThrowdownFile( 'mivova', 'data/20190325--mivova.hjson' );
+importThrowdownFile( 'kufca', 'data/20190325--kufca.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
