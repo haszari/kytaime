@@ -82,7 +82,10 @@ function getAllDeckPatterns( state, deckSlug ) {
 
   const sectionPatterns = deckState.sections.map( section => {
     var patterns = section.patterns.map( 
-      patternSlug => _.find( allPatterns, { slug: patternSlug } )
+      patternSlug => _.find( allPatterns, { 
+        slug: patternSlug,
+        songSlug: deckState.slug,
+      } )
     );
     return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
   } );
