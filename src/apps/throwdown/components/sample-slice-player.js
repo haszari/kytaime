@@ -10,6 +10,8 @@ class SampleSlicePlayer {
     this.updateProps( props );
 
     this.playing = false;
+    this.parentTriggered = false;
+    this.parentPhraseLength = 4;
   }
 
   updateProps( props ) {
@@ -22,6 +24,14 @@ class SampleSlicePlayer {
         beat: 0,
       }];
     }
+  }
+
+  setParentTriggered( triggered ) {
+    this.parentTriggered = triggered;
+  }
+
+  setParentPhrase( parentPhraseLength ) {
+    this.parentPhraseLength = parentPhraseLength;
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
@@ -66,14 +76,14 @@ class SampleSlicePlayer {
 
     let { sampleDuration } = this.props;
 
-    var triggered = true;
+    var triggered = true && this.parentTriggered;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm, 
       renderRangeBeats,
       triggered,
       this.playing, 
-      sampleDuration,
+      this.parentPhraseLength,
     );
 
     this.playing = triggerInfo.isPlaying;

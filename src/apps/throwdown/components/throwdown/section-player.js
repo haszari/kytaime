@@ -54,12 +54,16 @@ class SectionPlayer {
   
     // temporary - this really needs to be passed down to patterns as triggered: false
     // so they can finish playing, etc
-    if ( ! this.props.playing ) {
-      return;
-    }
+    // if ( ! this.props.playing ) {
+    //   return;
+    // }
 
     _.each( this.patternPlayers,  
-      player => player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) 
+      player => {
+        player.setParentTriggered( this.props.triggered );
+        player.setParentPhrase( this.props.triggerLoop );
+        player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
+      }
     );
   }
 }

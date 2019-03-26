@@ -18,6 +18,7 @@
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a'
       tempo: 132,
       duration: 32
+      startBeats: [ -4 ] 
     }
     sub: {
       duration: 4,
