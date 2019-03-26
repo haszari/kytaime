@@ -154,6 +154,12 @@
     }
   }
   sections: {
+    beat: {
+      bars: 8
+      patterns: [
+        beat-step
+      ]
+    }
     intro: {
       bars: 8
       patterns: [
