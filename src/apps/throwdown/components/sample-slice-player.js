@@ -7,6 +7,12 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 class SampleSlicePlayer {
   constructor(props) {
+    this.updateProps( props );
+
+    this.playing = false;
+  }
+
+  updateProps( props ) {
     this.props = _.defaults( props, SampleSlicePlayer.defaultProps );
 
     if ( ! this.props.slices || ! this.props.slices.length  ) {
@@ -16,11 +22,6 @@ class SampleSlicePlayer {
         beat: 0,
       }];
     }
-
-    this.playing = false;
-
-    // this.loaded = false;
-    // this.loading = false;
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
@@ -51,26 +52,20 @@ class SampleSlicePlayer {
     this.player = player;
   }
 
-  throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
-    // if ( ! this.loaded && ! this.loading ) {
-    //   this.loading = true;
-    //   this.loaded = new Promise( ( resolve, reject ) => {      
-    //     audioUtilities.loadSample( this.props.audioFile, renderRange.audioContext, (buffer) => {
-    //       console.log( 'sample decoded, ready to play' );
-    //       this.buffer = buffer;
-    //       resolve();
-    //     } );
-    //   } );
-    // }
+  stopPlayback() {
+    if ( this.player ) {
+      this.player.stop();
+      this.player = null;
+    }
+  }
 
+  throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
     if ( ! this.props.buffer ) {
       return;
     }
 
     let { sampleDuration } = this.props;
 
-    // note this loops forever unless we have triggered = false 
-    // so the stop logic is not being tested
     var triggered = true;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
@@ -82,7 +77,6 @@ class SampleSlicePlayer {
     );
 
     this.playing = triggerInfo.isPlaying;
-    // this.updatePlayingState( this.playing );
 
     let filteredSlices = _.filter(this.props.slices, function(sliceEvent) {
       return bpmUtilities.valueInWrappedBeatRange(
@@ -106,6 +100,7 @@ class SampleSlicePlayer {
     // const renderEventTime = (time) => (time) / 1000;
 
     _.map(scheduledSlices, (sliceRenderInfo) => {
+      // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
       const startTime = renderEventTime(sliceRenderInfo.start);
       const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
       this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );

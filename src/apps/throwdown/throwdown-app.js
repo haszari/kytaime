@@ -2,9 +2,6 @@ import _ from 'lodash';
 
 import store from './store/store';
 
-
-// import observeReduxStore from '@lib/observe-redux-store';
-
 import transportActions from './components/transport/actions';
 
 import throwdownActions from './components/throwdown/actions';
@@ -15,8 +12,6 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiPorts from '@kytaime/midi-ports';
 import audioUtilities from '@kytaime/audio-utilities';
-
-// import playerFactory from './player-factory';
 
 import SectionPlayer from './components/throwdown/section-player';
 
@@ -54,7 +49,8 @@ class ThrowdownApp {
     this.setNextTempo = this.setNextTempo.bind( this );
     this.renderTimePeriod = this.renderTimePeriod.bind( this );
 
-    this.temporaryDecks = [];
+    // array of { deckSlug: sectionSlug: sectionPlayer: }
+    this.deckSectionPlayers = [];
 
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
@@ -66,8 +62,6 @@ class ThrowdownApp {
     this.renderIndex = 0;
 
     this.openMidiOutput( "IAC Driver Bus 1" );
-
-    // observeReduxStore( store, throwdownSelectors.getThrowdown, this.importThrowdown );
   }
 
   importPatterns( songSlug, patterns ) {
@@ -105,18 +99,18 @@ class ThrowdownApp {
     this.nextTempoBpm = nextTempoBpm;
   }
 
-  // Ensure that we have players for each deck and pattern currently triggered or playing in state
-  // Currently making new ones each time – may retain them across renders,
-  // add new ones as needed, and update props from state
-  generateTemporaryDeckPlayers( state ) {
-    // const allSections = throwdownSelectors.getSections( state );
+  // creates new decks and players to match state
+  // will reuse existing decks, matching based on deck+section slug
+  updateDeckPlayers( state ) {
     const allBuffers = throwdownSelectors.getBuffers( state );
     const allDecks = throwdownSelectors.getDecks( state );
     const triggerLoop = throwdownSelectors.getTriggerLoop( state );
 
-    // instantiate players for ALL sections
-    this.temporaryDecks = _.map( allDecks, ( deckState ) => {
-      const sectionPlayers = _.map( deckState.sections, ( section ) => {
+    const deckSectionPlayers = this.deckSectionPlayers;
+
+    // { deckSlug: sectionSlug: sectionPlayer: }
+    _.map( allDecks, ( deckState ) => {
+      _.map( deckState.sections, ( section ) => {
         var patterns = throwdownSelectors.getDeckSectionPatterns( state, deckState.slug, section.slug ); 
 
         const sectionProps = {
@@ -125,41 +119,67 @@ class ThrowdownApp {
           buffers: allBuffers,
           patterns,
           triggerLoop,
+
+          // these are now props, in temporary approach they are this.members
+          triggered: ( section.slug === deckState.triggeredSection ),
+          playing: ( section.slug === deckState.playingSection ),
         }
-        const player = new SectionPlayer( sectionProps );
 
-        // sync relevant props (which things are triggered, playing) from state
-        player.triggered = ( section.slug === deckState.triggeredSection );
-        player.playing = ( section.slug === deckState.playingSection );
-        
-        return player;
+        var sectionDeckItem = _.find( deckSectionPlayers, { 
+          sectionSlug: section.slug,
+          deckSlug: deckState.slug,
+        } );
+
+        if ( sectionDeckItem ) {
+          sectionDeckItem.sectionPlayer.updateProps( sectionProps );
+        }
+        else {
+          deckSectionPlayers.push( {
+            sectionSlug: section.slug,
+            deckSlug: deckState.slug,
+            sectionPlayer: new SectionPlayer( sectionProps ),
+          } );
+        }
       } );
-
-      return { 
-        deckSlug: deckState.slug,
-        sectionPlayers,
-      }
     } );
   }
 
-  updateDeckPlayState( ) {
-    // const triggeredSection = null;
-    this.temporaryDecks.map( deck => {
-      var playingSection = null;
-      deck.sectionPlayers.map( sectionPlayer => {
-        if ( sectionPlayer.playing ) {
-          playingSection = sectionPlayer.props.slug;
-        }
-      } );
+  updateDeckPlayState_fromDeckPlayers( state ) {
+    const allDecks = throwdownSelectors.getDecks( state );
+    // init defaults (so when nothing is playing, we send a message for that)
+    var playingSectionByDeck = _.map( allDecks, ( deckState ) => { 
+      return { 
+        deckSlug: deckState.slug,
+        playingSection: null,
+      } 
+    } );
+    playingSectionByDeck = _.keyBy( playingSectionByDeck, 'deckSlug' );
+
+    // loop over all decks, finding the playing section
+    this.deckSectionPlayers.map( deckSectionPlayer => {
+      if ( deckSectionPlayer.sectionPlayer.props.playing ) {
+        playingSectionByDeck[ deckSectionPlayer.deckSlug ].playingSection = deckSectionPlayer.sectionPlayer.props.slug;
+      }
+    } );
+
+    // now send all the messages
+    _.map( playingSectionByDeck, deckSectionInfo => {
       store.dispatch( throwdownActions.setDeckPlayingSection( {
-        deckSlug: deck.deckSlug, 
-        sectionSlug: playingSection
+        deckSlug: deckSectionInfo.deckSlug, 
+        sectionSlug: deckSectionInfo.playingSection
       } ) );
     } );
   }
 
+  stopAllPlayers() {
+    this.deckSectionPlayers.map( deckSectionItem => {
+      if ( deckSectionItem.sectionPlayer.stopPlayback ) {
+        deckSectionItem.sectionPlayer.stopPlayback();
+      }
+    } );       
+  }
+
   renderTimePeriod( renderRange, renderRangeBeats ) {
-    // console.log(renderRange);
     // console.log( 
     //   `--- app renderTimePeriod ` +
     //   `current=(${ this.lastRenderEndBeat })` +
@@ -167,16 +187,13 @@ class ThrowdownApp {
     //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
     // );
 
-    // get children to render themselves
-    this.temporaryDecks.map( deck => {
-      deck.sectionPlayers.map( sectionPlayer => {
-        if ( sectionPlayer.throwdownRender ) {
-          sectionPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
-        }
-      } );   
+    this.deckSectionPlayers.map( deckSectionItem => {
+      if ( deckSectionItem.sectionPlayer.throwdownRender ) {
+        deckSectionItem.sectionPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
+      }
     } );   
+    this.updateDeckPlayState_fromDeckPlayers( store.getState() );
 
-    this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end; 
 
@@ -190,10 +207,7 @@ class ThrowdownApp {
   sequencerCallback( renderRange ) {
     this.renderIndex++;
 
-    // this will remake all the players every time
-    // in future it should make new ones + update props
-    // we're hooking this up manually here, on each render - but we could equally use observeReduxStore
-    this.generateTemporaryDeckPlayers( store.getState() );
+    this.updateDeckPlayers( store.getState() );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;
@@ -242,18 +256,11 @@ class ThrowdownApp {
       [ { start: 0, duration: 1 } ],
     );
 
-
-
-    // const tempoChangeAbsoluteBeat = tempoDropInfo.triggerOnset + Math.ceil( renderRange.start.beat / tempoChangePhrase ) * tempoChangePhrase;
     var renderRangeCurrent = _.cloneDeep( renderRange );
     var renderRangeNext = _.cloneDeep( renderRange );
     renderRangeCurrent.end = tempoChangeEvent[0].start;
     renderRangeNext.start = tempoChangeEvent[0].start;
     renderRangeNext.tempoBpm = this.nextTempoBpm;
-
-    // there's something broken for when we render renderRangeNext - when tempo changes
-    // the first audio sample slice is out by a little bit, presumably the length of renderRangeCurrent
-    // renderRangeNext.audioContextTimeOffsetMsec += renderRangeCurrent.end.time - renderRangeCurrent.start.time;
 
     var newTempo = this.nextTempoBpm;
     chunkBeats = bpmUtilities.msToBeats( this.tempoBpm, renderRangeCurrent.end - renderRangeCurrent.start );
@@ -270,7 +277,6 @@ class ThrowdownApp {
       start: this.lastRenderEndBeat, 
       end: this.lastRenderEndBeat + chunkBeats,
     } );
-
 
     // update the UI at the appropriate time
     setTimeout(() => {
@@ -291,6 +297,7 @@ class ThrowdownApp {
   stopTransport() {
     sequencer.stop();
     this.lastRenderEndBeat = 0;
+    this.stopAllPlayers();
     store.dispatch( transportActions.setCurrentBeat( this.lastRenderEndBeat ) );
   }
   toggleTransport() {
