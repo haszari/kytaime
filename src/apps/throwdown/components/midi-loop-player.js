@@ -36,6 +36,10 @@ class MidiLoopPlayer {
     }
   }
 
+  stopPlayback() {
+    // we just let the current notes die
+  }
+
   throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {
     const currentPhraseLength = this.props.pattern.duration;
     const channel = this.props.channel;

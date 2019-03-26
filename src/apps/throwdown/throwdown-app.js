@@ -171,6 +171,13 @@ class ThrowdownApp {
     } );
   }
 
+  stopAllPlayers() {
+    this.deckSectionPlayers.map( deckSectionItem => {
+      if ( deckSectionItem.sectionPlayer.stopPlayback ) {
+        deckSectionItem.sectionPlayer.stopPlayback();
+      }
+    } );       
+  }
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
     // console.log( 
@@ -290,6 +297,7 @@ class ThrowdownApp {
   stopTransport() {
     sequencer.stop();
     this.lastRenderEndBeat = 0;
+    this.stopAllPlayers();
     store.dispatch( transportActions.setCurrentBeat( this.lastRenderEndBeat ) );
   }
   toggleTransport() {

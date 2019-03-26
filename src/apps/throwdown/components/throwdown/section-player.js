@@ -32,6 +32,13 @@ class SectionPlayer {
     } );
   }
 
+  stopPlayback() {
+    // stop pattern players
+    _.each( this.patternPlayers,  
+      player => player.stopPlayback() 
+    );
+  }
+
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
     let triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm, 

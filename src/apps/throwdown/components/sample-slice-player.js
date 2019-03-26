@@ -24,7 +24,6 @@ class SampleSlicePlayer {
     }
   }
 
-
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
     // console.log( 
     //   `-- beat playSliceAt ` +
@@ -51,6 +50,13 @@ class SampleSlicePlayer {
     player.stop( stopTimestamp );
 
     this.player = player;
+  }
+
+  stopPlayback() {
+    if ( this.player ) {
+      this.player.stop();
+      this.player = null;
+    }
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
@@ -94,7 +100,7 @@ class SampleSlicePlayer {
     // const renderEventTime = (time) => (time) / 1000;
 
     _.map(scheduledSlices, (sliceRenderInfo) => {
-      console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
+      // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
       const startTime = renderEventTime(sliceRenderInfo.start);
       const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
       this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );
