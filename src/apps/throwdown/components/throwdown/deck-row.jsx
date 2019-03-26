@@ -41,6 +41,8 @@ function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue );
   const edgeColour = deckColours.hueToBorderColour( props.deckState.hue );
   const deckSlug = props.deckState.slug;
+  const isTriggered = props.deckState.triggeredSection;
+  const isPlaying = props.deckState.playingSection;
 
   const sections = props.deckState.sections.map( 
     ( section ) => {
@@ -68,7 +70,8 @@ function DeckSectionsTriggersComponent( props ) {
       }}>
         {/* deck tempo, title, metadata */}
         <div style={{ 
-          fontWeight: 'bold'
+          fontWeight: isPlaying ? 'bold' : 'normal',
+          fontStyle: isTriggered ? 'italic' : 'normal',
         }}>{ deckSlug }</div>
       </td>
       

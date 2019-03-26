@@ -21,12 +21,18 @@ function getPhraseLoopFromPatterns( patterns ) {
 
 // this is the same for section | deck | global right now
 // in future they will be different
-// and it includes ALL patterns, not just those that are triggered/playing
-const getPhraseLoop = createSelector( 
-  [ 'throwdown.patterns' ],
-  getPhraseLoopFromPatterns,
-);
-
+function getPhraseLoop( state ) {
+  const decks = getDecks( state );
+  const relevantDecks = _.filter( decks, deck => {
+    return ( deck.playingSection || deck.triggeredSection );
+  } );
+  const relevantPhraseLoop = _.map( relevantDecks, deck => {
+    return getDeckPhraseLoop( state, deck.slug );
+  } );
+  return _.reduce( relevantPhraseLoop, ( phrase, deckPhrase ) => {
+    return Math.max( phrase, deckPhrase );
+  }, MIN_PHRASE_LENGTH );
+}
 
 const getTriggerLoop = createSelector( 
   [ 'throwdown.deferAllTriggers', getPhraseLoop ],
@@ -76,7 +82,10 @@ function getAllDeckPatterns( state, deckSlug ) {
 
   const sectionPatterns = deckState.sections.map( section => {
     var patterns = section.patterns.map( 
-      patternSlug => _.find( allPatterns, { slug: patternSlug } )
+      patternSlug => _.find( allPatterns, { 
+        slug: patternSlug,
+        songSlug: deckState.slug,
+      } )
     );
     return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
   } );
