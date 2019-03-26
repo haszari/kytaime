@@ -36,7 +36,7 @@ class SectionPlayer {
 
     this.playing = triggerInfo.isPlaying;
 
-    console.log( `${ this.props.slug } t=${ this.triggered } p=${ this.playing }` );
+    // console.log( `${ this.props.slug } t=${ this.props.triggered } p=${ this.props.playing }` );
   
     // temporary - this really needs to be passed down to patterns as triggered: false
     // so they can finish playing, etc
