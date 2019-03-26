@@ -6,9 +6,15 @@ import midiUtilities from '@kytaime/midi-utilities';
 
 class MidiLoopPlayer {
   constructor(props) {
-    this.props = _.defaults( props, MidiLoopPlayer.defaultProps );
+    this.updateProps( props );
+    
     this.throwdownRender = this.throwdownRender.bind(this);
   }
+
+  updateProps( props ) {
+    this.props = _.defaults( props, MidiLoopPlayer.defaultProps );
+  }
+
 
   getNotePattern() {
     // convert any named drum hits into general midi

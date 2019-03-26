@@ -10,17 +10,24 @@ import playerFactory from '../../player-factory';
 
 class SectionPlayer {
   constructor( props ) {
+
+    this.patternPlayers = {};
+
+    this.updateProps( props );
+  }
+
+  updateProps( props ) {
     this.props = _.defaults( props, SectionPlayer.defaultProps );
 
-    this.playing = false;
-    this.triggered = false;
-
-    this.players = [];
-
-   _.each( props.patterns, ( resource, key ) => {
-      const pattern = playerFactory.playerFromFilePatternData( resource, resource.slug, props.buffers );
-      if ( pattern ) {
-        this.players.push( pattern );
+    // create/update players for each pattern
+    _.each( props.patterns, ( pattern ) => {
+      var patternPlayer = this.patternPlayers[ pattern.slug ];
+      if ( ! patternPlayer ) {
+        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
+        this.patternPlayers[ pattern.slug ] = patternPlayer;
+      }
+      else {
+        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
       }
     } );
   }
@@ -29,22 +36,22 @@ class SectionPlayer {
     let triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm, 
       renderRangeBeats,
-      this.triggered,
-      this.playing, 
+      this.props.triggered,
+      this.props.playing, 
       this.props.triggerLoop,
     );
 
-    this.playing = triggerInfo.isPlaying;
+    this.props.playing = triggerInfo.isPlaying;
 
-    console.log( `${ this.props.slug } t=${ this.triggered } p=${ this.playing }` );
+    console.log( `${ this.props.slug } t=${ this.props.triggered } p=${ this.props.playing }` );
   
     // temporary - this really needs to be passed down to patterns as triggered: false
     // so they can finish playing, etc
-    if ( ! this.playing ) {
+    if ( ! this.props.playing ) {
       return;
     }
 
-    this.players.map( 
+    _.each( this.patternPlayers,  
       player => player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) 
     );
   }
