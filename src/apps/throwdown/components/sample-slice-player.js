@@ -84,6 +84,8 @@ class SampleSlicePlayer {
       triggered,
       this.playing, 
       this.parentPhraseLength,
+      this.props.startBeats,
+      this.props.endBeats,
     );
 
     this.playing = triggerInfo.isPlaying;

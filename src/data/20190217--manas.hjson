@@ -1,28 +1,63 @@
 {
   version: 1
   patterns: {
-    beat-main: {
-      part: beat
-      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
-      tempo: 132, 
-      duration: 4,      
-    }
     beat-step: {
       part: beat
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a'
       tempo: 132, 
       duration: 4,      
-      startBeats: [ -0.5 ]
+      slices: [
+        {
+          start: 0
+          beat: 0
+          duration: 1
+        }
+        {
+          start: 1
+          beat: 1
+          duration: 1
+        }
+        {
+          start: 2
+          beat: 2
+          duration: 1
+        }
+        {
+          start: 3
+          beat: 3
+          duration: 1
+        }
+      ]
+      startBeats: [ 2 ]
+      endBeats: [ 1 ]
+    }
+    beat-main: {
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-alpine.m4a'
+      tempo: 132, 
+      duration: 4
     }
     voc: {
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a'
       tempo: 132,
       duration: 32
-      startBeats: [ -4 ] 
+      startBeats: [ 16, 28 ] 
+      slices: [
+        {
+          start: 16
+          duration: 4
+          beat: 16
+        }
+        {
+          start: 28
+          duration: 4
+          beat: 28
+        }
+      ]
     }
     sub: {
       duration: 4,
-      endBeats: [ 1 ]
+      endBeats: [ 2 ]
       notes: [
         {
           "note": 33,
@@ -161,27 +196,46 @@
         beat-step
       ]
     }
-    intro: {
+    voc: {
       bars: 8
       patterns: [
-        beat-step
         voc
       ]
     }
-    main: {
+    bass: {
       bars: 8
       patterns: [
-        beat-main
         sub
-        voc
       ]
     }
-    build: {
-      bars: 8
-      patterns: [
-        arp
-        voc
-      ]
-    }
+    # beatbass: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     sub
+    #   ]
+    # }
+    # build: {
+    #   bars: 8
+    #   patterns: [
+    #     arp
+    #     voc
+    #   ]
+    # }
+    # main: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     sub
+    #     voc
+    #   ]
+    # }
+    # outro: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     voc
+    #   ]
+    # }
   } 
 }
