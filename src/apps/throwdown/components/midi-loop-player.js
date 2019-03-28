@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 
-import renderNotePattern from '@kytaime/render-note-pattern';
+import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiUtilities from '@kytaime/midi-utilities';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
@@ -12,7 +12,6 @@ class MidiLoopPlayer {
     this.playing = false;
     this.parentTriggered = false;
     this.parentPhraseLength = 4;
-    // this.throwdownRender = this.throwdownRender.bind(this);
   }
 
   updateProps( props ) {
@@ -54,6 +53,8 @@ class MidiLoopPlayer {
   throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {
     // const currentPhraseLength = this.props.pattern.duration;
     const channel = this.props.channel;
+    const patternDuration = this.props.duration;
+
     // let { triggered, playing } = this.state;
     var triggered = true && this.parentTriggered;
 
@@ -68,17 +69,47 @@ class MidiLoopPlayer {
     );
     this.playing = triggerInfo.isPlaying;
 
-    renderNotePattern( 
-      renderMsec.start, 
-      tempoBpm, 
-      renderBeats,
-      this.props.pattern.duration,
-      midiOutPort, 
-      this.getNotePattern(), // {notes, duration, startBeats, endBeats }
-      channel, 
-      triggered, 
-      this.playing
-    );
+    let pattern = this.getNotePattern();
+
+    let filteredNotes = _.filter(pattern.notes, function( event ) {
+      return bpmUtilities.valueInWrappedBeatRange(
+        event.start, 
+        triggerInfo.startBeat % patternDuration, 
+        triggerInfo.endBeat % patternDuration, 
+        patternDuration
+      );
+    });
+
+    var renderStartMsec = renderMsec.start;
+
+    var renderStart = (renderBeats.start % patternDuration);
+    var renderEnd = (renderBeats.end % patternDuration);
+
+    _.each( filteredNotes, _.partial( function( noteEvent, patternDuration, channel ) {
+      var beatOffset = noteEvent.start - renderStart;
+
+      // account for crossing loop boundary
+      if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
+         beatOffset += patternDuration;
+      }
+
+      var timestamp = bpmUtilities.beatsToMs(tempoBpm, beatOffset);
+
+      var note = { 
+         port: midiOutPort, 
+
+         channel: channel,
+         note: noteEvent.note,
+
+         velocity: noteEvent.velocity, 
+         duration: bpmUtilities.beatsToMs(tempoBpm, noteEvent.duration), 
+         timestamp: renderStartMsec + timestamp
+      };
+      // console.log(note.timestamp);
+
+      midiUtilities.renderNote(note);
+   }, _, patternDuration, channel));
+
   }
 }
 
