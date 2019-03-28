@@ -46,6 +46,7 @@ class SectionPlayer {
       this.props.triggered,
       this.props.playing, 
       this.props.triggerLoop,
+      // start beats and end beats for section .. is that a thing??
     );
 
     this.props.playing = triggerInfo.isPlaying;
@@ -54,12 +55,16 @@ class SectionPlayer {
   
     // temporary - this really needs to be passed down to patterns as triggered: false
     // so they can finish playing, etc
-    if ( ! this.props.playing ) {
-      return;
-    }
+    // if ( ! this.props.playing ) {
+    //   return;
+    // }
 
     _.each( this.patternPlayers,  
-      player => player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) 
+      player => {
+        player.setParentTriggered( this.props.triggered );
+        player.setParentPhrase( this.props.triggerLoop );
+        player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
+      }
     );
   }
 }

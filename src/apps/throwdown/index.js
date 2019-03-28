@@ -73,13 +73,13 @@ function importThrowdownFile( deckSlug, file ) {
 }
 
 importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
-importThrowdownFile( 'noyu', '/data/20190325--noyu.hjson' );
-importThrowdownFile( 'axbdmt', '/data/20190325--alex-haszard-bdmt.hjson' );
-importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
-importThrowdownFile( 'maenyb', 'data/20190325--maenyb.hjson' );
-importThrowdownFile( 'shedout', 'data/20190325--shedout.hjson' );
-importThrowdownFile( 'mivova', 'data/20190325--mivova.hjson' );
-importThrowdownFile( 'kufca', 'data/20190325--kufca.hjson' );
+// importThrowdownFile( 'noyu', '/data/20190325--noyu.hjson' );
+// importThrowdownFile( 'axbdmt', '/data/20190325--alex-haszard-bdmt.hjson' );
+// importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
+// importThrowdownFile( 'maenyb', 'data/20190325--maenyb.hjson' );
+// importThrowdownFile( 'shedout', 'data/20190325--shedout.hjson' );
+// importThrowdownFile( 'mivova', 'data/20190325--mivova.hjson' );
+// importThrowdownFile( 'kufca', 'data/20190325--kufca.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
