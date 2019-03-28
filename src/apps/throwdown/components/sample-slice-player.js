@@ -5,6 +5,40 @@ import audioUtilities from '@kytaime/audio-utilities';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
+function autogenerateSlices( startBeats, endBeats, duration ) {
+  // We used to generate one slice for whole thing ...
+  // this.props.slices = [{
+  //   start: 0, 
+  //   duration: this.props.sampleDuration,
+  //   beat: 0,
+  // }];
+
+  // ...now, we add a slice for each unique start/endbeat across duration.
+  // We do this so that start/endbeats work correctly for triggering.
+  // If this pattern has manually set slices then it's up to the user 
+  // to ensure that the slices support the ends/starts they have set :)
+  var slices = [];
+
+  var cuts = [ 0, startBeats, endBeats, duration ];
+  cuts = _.flatten( cuts );
+  cuts = _.sortBy( cuts );
+  cuts = _.sortedUniq( cuts );
+
+  for ( var i=1; i<cuts.length; i++) {
+    const slice = {
+      start: cuts[ i-1 ],
+      end: cuts[ i ],
+    };
+    slices.push( {
+      start: slice.start, 
+      duration: slice.end - slice.start,
+      beat: slice.start,
+    } );
+  }
+
+  return slices;
+}
+
 class SampleSlicePlayer {
   constructor(props) {
     this.updateProps( props );
@@ -18,11 +52,7 @@ class SampleSlicePlayer {
     this.props = _.defaults( props, SampleSlicePlayer.defaultProps );
 
     if ( ! this.props.slices || ! this.props.slices.length  ) {
-      this.props.slices = [{
-        start: 0, 
-        duration: this.props.sampleDuration,
-        beat: 0,
-      }];
+      this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
     }
   }
 

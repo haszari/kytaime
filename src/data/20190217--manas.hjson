@@ -4,30 +4,8 @@
     beat-step: {
       part: beat
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-beat-step-alpine.m4a'
-      tempo: 132, 
-      duration: 4,      
-      slices: [
-        {
-          start: 0
-          beat: 0
-          duration: 1
-        }
-        {
-          start: 1
-          beat: 1
-          duration: 1
-        }
-        {
-          start: 2
-          beat: 2
-          duration: 1
-        }
-        {
-          start: 3
-          beat: 3
-          duration: 1
-        }
-      ]
+      tempo: 132
+      duration: 4
       startBeats: [ 2 ]
       endBeats: [ 1 ]
     }
@@ -42,45 +20,33 @@
       tempo: 132,
       duration: 32
       startBeats: [ 16, 28 ] 
-      slices: [
-        {
-          start: 16
-          duration: 4
-          beat: 16
-        }
-        {
-          start: 28
-          duration: 4
-          beat: 28
-        }
-      ]
     }
     sub: {
-      duration: 4,
+      duration: 4
       endBeats: [ 2 ]
       notes: [
         {
           "note": 33,
-          "velocity": 100,
-          "duration": 1,
+          "velocity": 100
+          "duration": 1
           "start": 1
         },
         {
-          "note": 45,
-          "velocity": 100,
-          "duration": 1,
+          "note": 45
+          "velocity": 100
+          "duration": 1
           "start": 2
         },
         {
-          "note": 45,
-          "velocity": 100,
-          "duration": 0.6666666666666665,
+          "note": 45
+          "velocity": 100
+          "duration": 0.6666666666666665
           "start": 3
         },
         {
-          "note": 46,
-          "velocity": 100,
-          "duration": 0.4583333333333335,
+          "note": 46
+          "velocity": 100
+          "duration": 0.4583333333333335
           "start": 3.5
         }
       ]
@@ -208,34 +174,34 @@
         sub
       ]
     }
-    # beatbass: {
-    #   bars: 8
-    #   patterns: [
-    #     beat-step
-    #     sub
-    #   ]
-    # }
-    # build: {
-    #   bars: 8
-    #   patterns: [
-    #     arp
-    #     voc
-    #   ]
-    # }
-    # main: {
-    #   bars: 8
-    #   patterns: [
-    #     beat-step
-    #     sub
-    #     voc
-    #   ]
-    # }
-    # outro: {
-    #   bars: 8
-    #   patterns: [
-    #     beat-step
-    #     voc
-    #   ]
-    # }
+    beatbass: {
+      bars: 8
+      patterns: [
+        beat-step
+        sub
+      ]
+    }
+    build: {
+      bars: 8
+      patterns: [
+        arp
+        voc
+      ]
+    }
+    main: {
+      bars: 8
+      patterns: [
+        beat-step
+        sub
+        voc
+      ]
+    }
+    outro: {
+      bars: 8
+      patterns: [
+        beat-step
+        voc
+      ]
+    }
   } 
 }
