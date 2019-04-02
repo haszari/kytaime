@@ -38,6 +38,8 @@ export default {
       return midiOutPorts;
    },
 
+   // Open a midi device for output. 
+   // If there's no device with that name, nothing is returned.
    openMidiInput: function( options ) {
       var requestedDeviceName = options.deviceName;
       var callback = options.callback;
@@ -50,11 +52,10 @@ export default {
          port: null,
       };
 
-      // get midi device .. and store in a global
       var access = navigator.requestMIDIAccess();
       access.then(function(midiAccess) { 
          midiAccess.inputs.forEach( function(port, key) { 
-            if (!successInfo.port || port.name == requestedDeviceName) {
+            if ( port.name === requestedDeviceName ) {
                successInfo.port = port;
             }
          });
@@ -63,6 +64,9 @@ export default {
       });
    },
 
+   // Open a midi device for output. 
+   // If a device matches the name you requested, you'll get that, 
+   // otherwise you'll get the first device.
    openMidiOutput: function( options ) {
       var requestedDeviceName = options.deviceName;
       var callback = options.callback;
@@ -75,11 +79,10 @@ export default {
          port: null,
       };
 
-      // get midi device .. and store in a global
       var access = navigator.requestMIDIAccess();
       access.then(function(midiAccess) { 
          midiAccess.outputs.forEach( function(port, key) { 
-            if (!successInfo.port || port.name == requestedDeviceName) {
+            if ( port.name === requestedDeviceName ) {
                successInfo.port = port;
             }
          });
