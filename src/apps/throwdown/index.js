@@ -144,3 +144,7 @@ render(
   document.getElementById('app')
 );
 
+// disable default drag handling on doc
+document.addEventListener('dragover', event => event.preventDefault())
+document.addEventListener('drop', event => event.preventDefault())
+
