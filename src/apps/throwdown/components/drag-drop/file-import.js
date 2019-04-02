@@ -67,8 +67,8 @@ function addThrowdownDeck( songSlug, throwdownData ) {
   // } ) );
 }
 
-function importThrowdownFile( deckSlug, file ) {
-  window.fetch( file )
+function importThrowdownFile( deckSlug, fileUrl ) {
+  window.fetch( fileUrl )
     .then( response => response.text() )
     .then( text => {
       const songData = Hjson.parse( text );
@@ -76,4 +76,12 @@ function importThrowdownFile( deckSlug, file ) {
     } );
 }
 
-export default importThrowdownFile;
+function importThrowdownData( deckSlug, hjsonBlob ) {
+  addThrowdownDeck( deckSlug, hjsonBlob );
+}
+
+
+export default { 
+  importThrowdownFile,
+  importThrowdownData,
+};

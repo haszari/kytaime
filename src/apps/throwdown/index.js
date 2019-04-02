@@ -12,7 +12,8 @@ import Header from './components/transport-header/header.jsx';
 import HeaderPlaybackProgress from './components/playback-progress/header-progress.jsx';
 import Decks from './components/throwdown/decks.jsx';
 
-import importThrowdownFile from './components/file-import/file-import';
+import fileImport from './components/drag-drop/file-import';
+import GhostDeck from './components/drag-drop/ghost-deck.jsx';
 
 import './style/style.scss';
 
@@ -24,14 +25,14 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
+fileImport.importThrowdownFile( 'manas', '/data/20190217--manas.hjson' );
 // importThrowdownFile( 'noyu', '/data/20190325--noyu.hjson' );
 // importThrowdownFile( 'axbdmt', '/data/20190325--alex-haszard-bdmt.hjson' );
 // importThrowdownFile( 'sweets', 'data/20190306--sweets-from-a-stranger.hjson' );
 // importThrowdownFile( 'maenyb', 'data/20190325--maenyb.hjson' );
 // importThrowdownFile( 'shedout', 'data/20190325--shedout.hjson' );
 // importThrowdownFile( 'mivova', 'data/20190325--mivova.hjson' );
-importThrowdownFile( 'kufca', 'data/20190325--kufca.hjson' );
+fileImport.importThrowdownFile( 'kufca', 'data/20190325--kufca.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store
@@ -85,6 +86,7 @@ function App() {
           <Header />
           <HeaderPlaybackProgress backgroundColour="#ccc" progressColour="#888" />
           <Decks />
+          <GhostDeck />
         </tbody>
       </table>
     </Provider>
@@ -96,7 +98,4 @@ render(
   document.getElementById('app')
 );
 
-// disable default drag handling on doc
-document.addEventListener('dragover', event => event.preventDefault())
-document.addEventListener('drop', event => event.preventDefault())
 

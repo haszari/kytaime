@@ -49,3 +49,16 @@ td {
   width: 70px;
   text-align: right;
 }
+
+.deck-row-drophint {
+  background: transparent;
+}
+
+.deck-row-drophint td {
+  padding: 0;
+  height: 30px;
+}
+
+.deck-row-drophint.deck-row-drophint-highlighted {
+  background: #eee;
+}
