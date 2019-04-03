@@ -38,7 +38,22 @@ function importPatterns( songSlug, patterns ) {
   } );  
 }
 
-function addThrowdownDeck( songSlug, throwdownData ) {
+function getUniqueImportSlug( slug, filename ) {
+  // ahem, need wurd() lib!
+  var uniqueSlug = slug || filename || 'new_' + Math.round( Math.random() * 99999 ) + '_guy';
+
+  // you're not leaving until you're unique
+  const decks = throwdownSelectors.getDecks( store.getState() );
+  while ( _.includes( _.map( decks, 'slug' ), uniqueSlug ) ) {
+    uniqueSlug += Math.round( Math.random() * 99 )
+  }
+
+  return uniqueSlug;
+}
+
+function addThrowdownDeck( filename, throwdownData ) {
+  const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
+
   importPatterns( songSlug, throwdownData.patterns );
 
   store.dispatch( throwdownActions.addDeck( {
@@ -52,32 +67,19 @@ function addThrowdownDeck( songSlug, throwdownData ) {
       ...section
     } ) );
   } );
-
-  // trigger a random section
-  // const sectionSlugs = _.keys( throwdownData.sections );
-  // store.dispatch( throwdownActions.setDeckTriggeredSection( {
-  //   deckSlug: songSlug,
-  //   sectionSlug: _.sample( sectionSlugs )
-  // } ) );
-
-  // hard code build for testing
-  // store.dispatch( throwdownActions.setDeckTriggeredSection( {
-  //   deckSlug: 'test',
-  //   sectionSlug: 'build',
-  // } ) );
 }
 
-function importThrowdownFile( deckSlug, fileUrl ) {
+function importThrowdownFile( fileUrl ) {
   window.fetch( fileUrl )
     .then( response => response.text() )
     .then( text => {
       const songData = Hjson.parse( text );
-      addThrowdownDeck( deckSlug, songData );
+      addThrowdownDeck( fileUrl, songData );
     } );
 }
 
-function importThrowdownData( deckSlug, hjsonBlob ) {
-  addThrowdownDeck( deckSlug, hjsonBlob );
+function importThrowdownData( filename, hjsonBlob ) {
+  addThrowdownDeck( filename, hjsonBlob );
 }
 
 

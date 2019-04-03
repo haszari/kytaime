@@ -1,5 +1,6 @@
 {
   version: 1
+  slug: maenyb
   patterns: {
     beat: {
       part: beat

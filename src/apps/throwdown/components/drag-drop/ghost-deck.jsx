@@ -64,15 +64,21 @@ document.addEventListener('dragleave', resetDragState );
 
 document.addEventListener('drop', event => { 
   event.preventDefault(); 
+
+  // should really loop and import each file as new deck
   if (event.dataTransfer.files.length >= 1) {
+    const filename = event.dataTransfer.files[0].name;
     const fileReader = new FileReader();
+
     fileReader.onloadend = ( loadedEvent ) => {
       const importRaw = loadedEvent.currentTarget.result;
       var importContent = Hjson.parse( importRaw );
-      fileImport.importThrowdownData( 'dropped', importContent );
+      fileImport.importThrowdownData( filename, importContent );
     }
+
     fileReader.readAsText( event.dataTransfer.files[0] );
   }
+
   resetDragState();
 } );
 

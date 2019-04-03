@@ -1,5 +1,6 @@
 {
   version: 1
+  slug: noyu
   patterns: {
     beat: {
       part: beat
