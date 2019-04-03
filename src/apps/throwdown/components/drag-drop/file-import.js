@@ -51,13 +51,14 @@ function getUniqueImportSlug( slug, filename ) {
   return uniqueSlug;
 }
 
-function addThrowdownDeck( filename, throwdownData ) {
+function addThrowdownDeck( filename, throwdownData, replaceDeckRowSlug ) {
   const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
 
   importPatterns( songSlug, throwdownData.patterns );
 
   store.dispatch( throwdownActions.addDeck( {
     deckSlug: songSlug,
+    replaceDeckSlug: replaceDeckRowSlug
   } ) ); 
   
   _.map( throwdownData.sections, ( section, key ) => {
@@ -67,6 +68,8 @@ function addThrowdownDeck( filename, throwdownData ) {
       ...section
     } ) );
   } );
+
+  return songSlug;
 }
 
 function importThrowdownFile( fileUrl ) {
@@ -78,10 +81,9 @@ function importThrowdownFile( fileUrl ) {
     } );
 }
 
-function importThrowdownData( filename, hjsonBlob ) {
-  addThrowdownDeck( filename, hjsonBlob );
+function importThrowdownData( filename, hjsonBlob, replaceDeckRowSlug ) {
+  addThrowdownDeck( filename, hjsonBlob, replaceDeckRowSlug );
 }
-
 
 export default { 
   importThrowdownFile,

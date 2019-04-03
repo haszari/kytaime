@@ -1,8 +1,8 @@
 import Color from 'color'; 
 
-function hueToBackgroundColour( hue ) {
+function hueToBackgroundColour( hue, highlighted ) {
  return Color.hsl(
-    Math.floor( hue ), 75, 90,
+    Math.floor( hue ), 75, highlighted ? 85 : 90,
   ).hex();
 } 
 

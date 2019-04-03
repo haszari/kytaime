@@ -52,7 +52,7 @@ const GhostDeck = connect(
 document.addEventListener('dragover', event => {
   event.preventDefault();
   store.dispatch( actions.setDropHighlight( {
-    addNew: true,
+    dropHighlightAddNew: true,
   } ) );
 } );
 
