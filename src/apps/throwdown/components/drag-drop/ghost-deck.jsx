@@ -109,17 +109,17 @@ const BackgroundDropTarget = connect(
 
         // should really loop and import each file as new deck
         // this blob should be a method
-        if (event.dataTransfer.files.length >= 1) {
-          const filename = event.dataTransfer.files[0].name;
+        for ( var i=0; i<event.dataTransfer.files.length; i++) {
+          const file = event.dataTransfer.files[i];
           const fileReader = new FileReader();
 
           fileReader.onloadend = ( loadedEvent ) => {
             const importRaw = loadedEvent.currentTarget.result;
             var importContent = Hjson.parse( importRaw );
-            fileImport.importThrowdownData( filename, importContent, ownProps.slug );
+            fileImport.importThrowdownData( file.name, importContent, ownProps.slug );
           }
 
-          fileReader.readAsText( event.dataTransfer.files[0] );
+          fileReader.readAsText( file );
         }
 
         // share this aka resetDragState
