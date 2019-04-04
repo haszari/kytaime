@@ -56,30 +56,92 @@ document.addEventListener('dragover', event => {
   } ) );
 } );
 
+function BackgroundDropTargetComponent( props ) {
+  var classes = "background-target ";
+  if ( props.highlighted ) {
+    classes += "background-target-highlighted ";
+  }
+
+  return (
+    <div 
+      className={ classes }
+      onDragOver={ props.onDragOver }
+      onDragLeave={ props.onDragLeave }
+      onDrop={ props.onDrop }
+      >
+    </div>
+  );
+}
+
+BackgroundDropTargetComponent.propTypes = {
+  highlighted: PropTypes.bool,
+  onDragOver: PropTypes.func,
+  onDragLeave: PropTypes.func,
+  onDrop: PropTypes.func,
+}
+
 function resetDragState( event ) {
   store.dispatch( actions.setDropHighlight() );
 }
-document.addEventListener('dragend', resetDragState );
-document.addEventListener('dragleave', resetDragState );
 
-document.addEventListener('drop', event => { 
-  event.preventDefault(); 
-
-  // should really loop and import each file as new deck
-  if (event.dataTransfer.files.length >= 1) {
-    const filename = event.dataTransfer.files[0].name;
-    const fileReader = new FileReader();
-
-    fileReader.onloadend = ( loadedEvent ) => {
-      const importRaw = loadedEvent.currentTarget.result;
-      var importContent = Hjson.parse( importRaw );
-      fileImport.importThrowdownData( filename, importContent );
+const BackgroundDropTarget = connect(
+  ( state, ownProps ) => {
+    const dragState = selectors.getDragDrop( state, ownProps.slug );
+    
+    return {
+      highlighted: dragState.dropHighlightAddNew
     }
+  },
+  ( dispatch, ownProps ) => {
+    return {
+      onDragOver: event => {
+        event.preventDefault();
+        dispatch( actions.setDropHighlight( {
+          dropHighlightAddNew: true,
+        } ) );
+      },
 
-    fileReader.readAsText( event.dataTransfer.files[0] );
+      onDragLeave: resetDragState,
+      
+      onDrop: event => { 
+        event.preventDefault(); 
+        event.stopPropagation();
+
+        // should really loop and import each file as new deck
+        // this blob should be a method
+        if (event.dataTransfer.files.length >= 1) {
+          const filename = event.dataTransfer.files[0].name;
+          const fileReader = new FileReader();
+
+          fileReader.onloadend = ( loadedEvent ) => {
+            const importRaw = loadedEvent.currentTarget.result;
+            var importContent = Hjson.parse( importRaw );
+            fileImport.importThrowdownData( filename, importContent, ownProps.slug );
+          }
+
+          fileReader.readAsText( event.dataTransfer.files[0] );
+        }
+
+        // share this aka resetDragState
+        resetDragState();
+      },
+    }
   }
+)(BackgroundDropTargetComponent)
 
-  resetDragState();
+document.addEventListener('dragover', event => {
+  event.preventDefault();
+  store.dispatch( actions.setDropHighlight( {
+    dropHighlightAddNew: true,
+  } ) );
 } );
 
-export default GhostDeck;
+// prevent dropping file from triggering browser behaviour (e.g. navigate to file)
+document.addEventListener('dragend', event => event.preventDefault() );
+document.addEventListener('dragleave', event => event.preventDefault() );
+document.addEventListener('drop', event => event.preventDefault() );
+
+export default {
+  GhostDeck,
+  BackgroundDropTarget,
+};

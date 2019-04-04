@@ -13,7 +13,7 @@ import HeaderPlaybackProgress from './components/playback-progress/header-progre
 import Decks from './components/throwdown/decks.jsx';
 
 import fileImport from './components/drag-drop/file-import';
-import GhostDeck from './components/drag-drop/ghost-deck.jsx';
+import importDrop from './components/drag-drop/ghost-deck.jsx';
 
 import './style/style.scss';
 
@@ -81,12 +81,13 @@ observeStore(
 function App() {
   return (
     <Provider store={ store }>
-      <table cellSpacing="0" >
+      <importDrop.BackgroundDropTarget />
+      <table className="throwdown-container" cellSpacing="0" >
         <tbody>
           <Header />
           <HeaderPlaybackProgress backgroundColour="#ccc" progressColour="#888" />
           <Decks />
-          <GhostDeck />
+          <importDrop.GhostDeck />
         </tbody>
       </table>
     </Provider>
