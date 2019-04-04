@@ -1,5 +1,6 @@
 {
   version: 1
+  slug: it's not real
   patterns: {
     beat0: {
       part: beat

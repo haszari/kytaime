@@ -58,10 +58,23 @@ const throwdownReducer = createReducer( {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( deck ) return;
 
-    state.decks.push( {
+    const newDeck = {
       ...createDeck(),
       slug: action.payload.deckSlug,
-    } );
+    };
+
+    const shuntedDeck = getDeck( state, action.payload.replaceDeckSlug );
+    const insertPosition = _.findIndex( state.decks, { slug: action.payload.replaceDeckSlug } );
+    if ( action.payload.replaceDeckSlug && insertPosition !== -1 ) {
+      // if we're "replacing" a deck row, reorder decks so added one is in that slot
+      state.decks.splice( insertPosition, 0, newDeck );
+      _.remove( state.decks, shuntedDeck );
+      state.decks.push( shuntedDeck );
+    }
+    else {
+      // otherwise just add at the end of the list
+      state.decks.push( newDeck );
+    }
   },
 
   [ actions.addSection ]: ( state, action ) => {
@@ -70,9 +83,7 @@ const throwdownReducer = createReducer( {
 
     deck.sections.push( {
       slug: action.payload.slug,
-
-      duration: action.payload.bars * 4,
-      
+      duration: action.payload.bars * 4,      
       patterns: action.payload.patterns,
     } );
   },

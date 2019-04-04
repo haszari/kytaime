@@ -11,27 +11,10 @@ import sequencer from '@kytaime/sequencer/sequencer';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiPorts from '@kytaime/midi-ports';
-import audioUtilities from '@kytaime/audio-utilities';
 
 import SectionPlayer from './components/throwdown/section-player';
 
 import './components/hardware-bindings/akai-apc40';
-
-/// -----------------------------------------------------------------------------------------------
-// sequencer core
-
-function ensureAudioBuffered( audioContext, buffers, filename ) {
-  if ( _.find( buffers, { file: filename } ) ) {
-    return;
-  }
-  audioUtilities.loadSample( filename, audioContext, ( buffer ) => {
-    console.log( `sample decoded, ready to play ${ filename }` );
-    store.dispatch( throwdownActions.addAudioBuffer( {
-      file: filename,
-      buffer: buffer,
-    } ) );
-  } );
-}
 
 class ThrowdownApp {
   constructor(props) {
@@ -64,20 +47,6 @@ class ThrowdownApp {
     this.openMidiOutput( "IAC Driver Bus 1" );
   }
 
-  importPatterns( songSlug, patterns ) {
-    const buffers = throwdownSelectors.getBuffers( store.getState() );
-
-    _.map( patterns, ( pattern, key ) => {
-      store.dispatch( throwdownActions.addPattern( {
-        songSlug, 
-        slug: key, 
-        ...pattern
-      } ) );
-      if ( pattern.file ) {
-        ensureAudioBuffered( sequencer.audioContext, buffers, pattern.file );
-      }
-    } );  
-  }
   openMidiOutput(requestedPortName) {
     midiPorts.openMidiOutput({
       deviceName: requestedPortName,

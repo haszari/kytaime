@@ -18,6 +18,11 @@ input {
   font-size: 1em;
 }
 
+.throwdown-container {
+  // this allows us to underlay .background-target for catching events 
+  position: relative;
+}
+
 th {
   font-weight: normal;
   min-width: 100px;
@@ -48,4 +53,30 @@ td {
 .next-tempo {
   width: 70px;
   text-align: right;
+}
+
+.deck-row-drophint {
+  background: transparent;
+}
+
+.deck-row-drophint td {
+  padding: 0;
+  height: 30px;
+}
+
+.deck-row-drophint.deck-row-drophint-highlighted {
+  background: #eee;
+}
+
+
+.background-target {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.background-target.background-target-highlighted {
+  background: #eee;
 }

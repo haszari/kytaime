@@ -3,11 +3,17 @@ import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
 
+import Hjson from 'hjson';
+
 import throwdownSelectors from './selectors';
+import dragDropSelectors from '../drag-drop/selectors';
 
 import actions from './actions';
+import dragDropActions from '../drag-drop/actions';
 
 import deckColours from './deck-colours';
+
+import fileImport from '../drag-drop/file-import';
 
 function SectionTrigger( props ) {
   const styles = {};
@@ -38,7 +44,7 @@ SectionTrigger.propTypes = {
 }
 
 function DeckSectionsTriggersComponent( props ) {
-  const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue );
+  const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
   const edgeColour = deckColours.hueToBorderColour( props.deckState.hue );
   const deckSlug = props.deckState.slug;
   const isTriggered = props.deckState.triggeredSection;
@@ -60,9 +66,14 @@ function DeckSectionsTriggersComponent( props ) {
     }
   );
   return (
-    <tr className="deck-row" style={{ backgroundColor: backgroundColour }}>
+    <tr 
+      className="deck-row" style={{ backgroundColor: backgroundColour }}
+      onDragOver={ props.onDragOver }
+      onDragLeave={ props.onDragLeave }
+      onDrop={ props.onDrop }
+      >
       <td>
-       { props.phraseLoop }
+       { props.phraseLoop }{ props.highlighted }
       </td>
       <td style={{ 
         borderRight: `1px solid ${ edgeColour }`,
@@ -88,16 +99,24 @@ DeckSectionsTriggersComponent.propTypes = {
   slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
-  phraseLoop: PropTypes.number
+  phraseLoop: PropTypes.number,
+
+  highlighted: PropTypes.bool,
+
+  onDragOver: PropTypes.func,
+  onDragLeave: PropTypes.func,
+  onDrop: PropTypes.func,
 }
 
 const mapStateToProps = ( state, ownProps ) => {
   const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
   const phraseLoop = throwdownSelectors.getDeckPhraseLoop( state, ownProps.slug );
+  const dragState = dragDropSelectors.getDragDrop( state );
 
   return {
     deckState,
     phraseLoop,
+    highlighted: dragState.dropHighlightDeck === ownProps.slug
   }
 }
 
@@ -110,7 +129,45 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
           sectionSlug 
         } ) 
       )
-    }
+    },
+
+    onDragOver: event => {
+      event.preventDefault();
+      dispatch( dragDropActions.setDropHighlight( {
+        dropHighlightDeck: ownProps.slug,
+      } ) );
+    },
+
+    onDragLeave: event => {
+      event.preventDefault();
+      dispatch( dragDropActions.setDropHighlight( {
+        dropHighlightDeck: '',
+      } ) );
+    },
+    
+    onDrop: event => { 
+      event.preventDefault(); 
+      event.stopPropagation();
+
+      // should really loop and import each file as new deck
+      // this blob should be a method
+      if (event.dataTransfer.files.length >= 1) {
+        const filename = event.dataTransfer.files[0].name;
+        const fileReader = new FileReader();
+
+        fileReader.onloadend = ( loadedEvent ) => {
+          const importRaw = loadedEvent.currentTarget.result;
+          var importContent = Hjson.parse( importRaw );
+          fileImport.importThrowdownData( filename, importContent, ownProps.slug );
+        }
+
+        fileReader.readAsText( event.dataTransfer.files[0] );
+      }
+
+      // share this aka resetDragState
+      dispatch( dragDropActions.setDropHighlight() );
+    },
+
   }
 }
 
