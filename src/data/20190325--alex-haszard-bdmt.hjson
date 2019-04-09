@@ -1,5 +1,6 @@
 {
   version: 1
+  slug: axbdmt
   patterns: {
     drums: {
       part: beat
