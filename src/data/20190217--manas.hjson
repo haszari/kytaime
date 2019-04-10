@@ -157,24 +157,24 @@
     }
   }
   sections: {
-    beat: {
-      bars: 8
-      patterns: [
-        beat-step
-      ]
-    }
-    voc: {
-      bars: 8
-      patterns: [
-        voc
-      ]
-    }
-    bass: {
-      bars: 8
-      patterns: [
-        sub
-      ]
-    }
+    # beat: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #   ]
+    # }
+    # voc: {
+    #   bars: 8
+    #   patterns: [
+    #     voc
+    #   ]
+    # }
+    # bass: {
+    #   bars: 8
+    #   patterns: [
+    #     sub
+    #   ]
+    # }
     beatbass: {
       bars: 8
       patterns: [
@@ -201,7 +201,7 @@
       bars: 8
       patterns: [
         beat-step
-        voc
+        arp
       ]
     }
   } 

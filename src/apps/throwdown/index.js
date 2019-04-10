@@ -32,7 +32,7 @@ fileImport.importThrowdownFile( '/data/20190217--manas.hjson' );
 // importThrowdownFile( 'data/20190325--maenyb.hjson' );
 // importThrowdownFile( 'data/20190325--shedout.hjson' );
 // importThrowdownFile( 'data/20190325--mivova.hjson' );
-fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
+// fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 
 /// -----------------------------------------------------------------------------------------------
 // bind sequencer/transport to store

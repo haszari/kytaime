@@ -12,7 +12,8 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiPorts from '@kytaime/midi-ports';
 
-import SectionPlayer from './components/throwdown/section-player';
+// import SectionPlayer from './components/throwdown/section-player';
+import DeckPlayer from './components/throwdown/deck-player';
 
 import './components/hardware-bindings/akai-apc40';
 
@@ -34,7 +35,7 @@ class ThrowdownApp {
 
     // array of { deckSlug: sectionSlug: sectionPlayer: }
     // this.deckSectionPlayers = [];
-    this.deckPlayers = [];
+    this.deckPlayers = {};
 
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
@@ -91,8 +92,8 @@ class ThrowdownApp {
           triggerLoop,
 
           // these are now props, in temporary approach they are this.members
-          // triggered: ( section.slug === deckState.triggeredSection ),
-          // playing: ( section.slug === deckState.playingSection ),
+          triggeredSection: deckState.triggeredSection,
+          playingSection: deckState.playingSection,
         }
 
         var deckItem = deckPlayers[ deckState.slug ];
@@ -101,24 +102,25 @@ class ThrowdownApp {
           deckItem.updateProps( deckProps );
         }
         else {
-          deckPlayers[ deckState.slug ] = new SectionPlayer( deckProps );
+          deckPlayers[ deckState.slug ] = new DeckPlayer( deckProps );
         }
 
       // _.map( deckState.sections, ( section ) => {
 
       // } );
     } );
+
+    // console.log( this.deckPlayers );
   }
 
-  updateDeckPlayState_fromDeckPlayers( state ) {
+  updateDeckPlayState_fromDeckPlayers() {
     // const allDecks = throwdownSelectors.getDecks( state );
 
     _.map( this.deckPlayers, deckPlayer => {
       store.dispatch( throwdownActions.setDeckPlayingSection( {
-        deckSlug: deckPlayer.slug, 
+        deckSlug: deckPlayer.props.slug, 
         sectionSlug: deckPlayer.props.playingSection
       } ) );
-
     } );
 
     // // init defaults (so when nothing is playing, we send a message for that)
@@ -147,7 +149,7 @@ class ThrowdownApp {
   }
 
   stopAllPlayers() {
-    this.deckPlayers.map( deckPlayer => {
+    _.map( this.deckPlayers, deckPlayer => {
       deckPlayer.stopPlayback();
     } );       
   }
@@ -160,12 +162,12 @@ class ThrowdownApp {
     //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
     // );
 
-    this.deckPlayers.map( deckPlayer => {
+    _.map( this.deckPlayers, deckPlayer => {
       // if ( deckSectionItem.sectionPlayer.throwdownRender ) {
-        deckPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
+        deckPlayer.throwdownRender( renderRange, this.tempoBpm, renderRangeBeats, this.midiOutPort );
       // }
     } );   
-    this.updateDeckPlayState_fromDeckPlayers( store.getState() );
+    this.updateDeckPlayState_fromDeckPlayers();
 
 
     this.lastRenderEndBeat = renderRangeBeats.end; 
