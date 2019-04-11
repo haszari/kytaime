@@ -52,6 +52,14 @@ function getDeck( state, deckSlug ) {
   );
 }
 
+function getDeckSections( state, deckSlug ) {
+  const deckState = getDeck( state, deckSlug );
+  if ( ! deckState ) 
+    return;
+
+  return deckState.sections;
+}
+
 function getDeckSection( state, deckSlug, sectionSlug ) {
   const deckState = getDeck( state, deckSlug );
   if ( ! deckState ) 
@@ -115,6 +123,7 @@ export default {
   getDeck,
   getDeckPhraseLoop,
   getDeckPhraseProgress,
+  getDeckSections,
   getDeckSection,
   getDeckSectionPatterns,
   getAllDeckPatterns,

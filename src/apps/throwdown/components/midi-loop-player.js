@@ -48,6 +48,7 @@ class MidiLoopPlayer {
 
   stopPlayback() {
     // we just let the current notes die
+    this.playing = false;
   }
 
   throwdownRender( renderMsec, tempoBpm, renderBeats, midiOutPort ) {

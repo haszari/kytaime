@@ -20,7 +20,7 @@
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a'
       tempo: 132,
       duration: 32
-      startBeats: [ 16, 28 ] 
+      startBeats: [ 28 ] 
     }
     sub: {
       duration: 4
@@ -54,8 +54,8 @@
     }
     arp: {
       duration: 16,
-      startBeats: [ 0, 0.5 ]
-      endBeats: [ 0, 15 ]
+      # startBeats: [ 0, 0.5 ]
+      # endBeats: [ 0, 15 ]
       notes: [
         {
           "note": 69,
@@ -157,24 +157,24 @@
     }
   }
   sections: {
-    beat: {
-      bars: 8
-      patterns: [
-        beat-step
-      ]
-    }
-    voc: {
-      bars: 8
-      patterns: [
-        voc
-      ]
-    }
-    bass: {
-      bars: 8
-      patterns: [
-        sub
-      ]
-    }
+    # beat: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #   ]
+    # }
+    # voc: {
+    #   bars: 8
+    #   patterns: [
+    #     voc
+    #   ]
+    # }
+    # bass: {
+    #   bars: 8
+    #   patterns: [
+    #     sub
+    #   ]
+    # }
     beatbass: {
       bars: 8
       patterns: [
@@ -194,6 +194,7 @@
       patterns: [
         beat-step
         sub
+        arp
         voc
       ]
     }
@@ -201,7 +202,7 @@
       bars: 8
       patterns: [
         beat-step
-        voc
+        arp
       ]
     }
   } 

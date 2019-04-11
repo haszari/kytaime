@@ -12,7 +12,8 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiPorts from '@kytaime/midi-ports';
 
-import SectionPlayer from './components/throwdown/section-player';
+// import SectionPlayer from './components/throwdown/section-player';
+import DeckPlayer from './components/throwdown/deck-player';
 
 import './components/hardware-bindings/akai-apc40';
 
@@ -33,7 +34,8 @@ class ThrowdownApp {
     this.renderTimePeriod = this.renderTimePeriod.bind( this );
 
     // array of { deckSlug: sectionSlug: sectionPlayer: }
-    this.deckSectionPlayers = [];
+    // this.deckSectionPlayers = [];
+    this.deckPlayers = {};
 
     sequencer.setRenderCallback( 'throwdown', this.sequencerCallback );
 
@@ -75,76 +77,80 @@ class ThrowdownApp {
     const allDecks = throwdownSelectors.getDecks( state );
     const triggerLoop = throwdownSelectors.getTriggerLoop( state );
 
-    const deckSectionPlayers = this.deckSectionPlayers;
+    const deckPlayers = this.deckPlayers;
 
     // { deckSlug: sectionSlug: sectionPlayer: }
     _.map( allDecks, ( deckState ) => {
-      _.map( deckState.sections, ( section ) => {
-        var patterns = throwdownSelectors.getDeckSectionPatterns( state, deckState.slug, section.slug ); 
+        var patterns = throwdownSelectors.getAllDeckPatterns( state, deckState.slug ); 
+        var sections = throwdownSelectors.getDeckSections( state, deckState.slug ); 
 
-        const sectionProps = {
-          slug: section.slug, 
-          duration: section.bars * 4,
+        const deckProps = {
+          slug: deckState.slug, 
           buffers: allBuffers,
           patterns,
+          sections,
           triggerLoop,
 
           // these are now props, in temporary approach they are this.members
-          triggered: ( section.slug === deckState.triggeredSection ),
-          playing: ( section.slug === deckState.playingSection ),
+          triggeredSection: deckState.triggeredSection,
+          playingSection: deckState.playingSection,
         }
 
-        var sectionDeckItem = _.find( deckSectionPlayers, { 
-          sectionSlug: section.slug,
-          deckSlug: deckState.slug,
-        } );
+        var deckItem = deckPlayers[ deckState.slug ];
 
-        if ( sectionDeckItem ) {
-          sectionDeckItem.sectionPlayer.updateProps( sectionProps );
+        if ( deckItem ) {
+          deckItem.updateProps( deckProps );
         }
         else {
-          deckSectionPlayers.push( {
-            sectionSlug: section.slug,
-            deckSlug: deckState.slug,
-            sectionPlayer: new SectionPlayer( sectionProps ),
-          } );
+          deckPlayers[ deckState.slug ] = new DeckPlayer( deckProps );
         }
-      } );
+
+      // _.map( deckState.sections, ( section ) => {
+
+      // } );
     } );
+
+    // console.log( this.deckPlayers );
   }
 
-  updateDeckPlayState_fromDeckPlayers( state ) {
-    const allDecks = throwdownSelectors.getDecks( state );
-    // init defaults (so when nothing is playing, we send a message for that)
-    var playingSectionByDeck = _.map( allDecks, ( deckState ) => { 
-      return { 
-        deckSlug: deckState.slug,
-        playingSection: null,
-      } 
-    } );
-    playingSectionByDeck = _.keyBy( playingSectionByDeck, 'deckSlug' );
+  updateDeckPlayState_fromDeckPlayers() {
+    // const allDecks = throwdownSelectors.getDecks( state );
 
-    // loop over all decks, finding the playing section
-    this.deckSectionPlayers.map( deckSectionPlayer => {
-      if ( deckSectionPlayer.sectionPlayer.props.playing ) {
-        playingSectionByDeck[ deckSectionPlayer.deckSlug ].playingSection = deckSectionPlayer.sectionPlayer.props.slug;
-      }
-    } );
-
-    // now send all the messages
-    _.map( playingSectionByDeck, deckSectionInfo => {
+    _.map( this.deckPlayers, deckPlayer => {
       store.dispatch( throwdownActions.setDeckPlayingSection( {
-        deckSlug: deckSectionInfo.deckSlug, 
-        sectionSlug: deckSectionInfo.playingSection
+        deckSlug: deckPlayer.props.slug, 
+        sectionSlug: deckPlayer.props.playingSection
       } ) );
     } );
+
+    // // init defaults (so when nothing is playing, we send a message for that)
+    // var playingSectionByDeck = _.map( allDecks, ( deckState ) => { 
+    //   return { 
+    //     deckSlug: deckState.slug,
+    //     playingSection: null,
+    //   } 
+    // } );
+    // playingSectionByDeck = _.keyBy( playingSectionByDeck, 'deckSlug' );
+
+    // // loop over all decks, finding the playing section
+    // this.deckSectionPlayers.map( deckSectionPlayer => {
+    //   if ( deckSectionPlayer.sectionPlayer.props.playing ) {
+    //     playingSectionByDeck[ deckSectionPlayer.deckSlug ].playingSection = deckSectionPlayer.sectionPlayer.props.slug;
+    //   }
+    // } );
+
+    // // now send all the messages
+    // _.map( playingSectionByDeck, deckSectionInfo => {
+    //   store.dispatch( throwdownActions.setDeckPlayingSection( {
+    //     deckSlug: deckSectionInfo.deckSlug, 
+    //     sectionSlug: deckSectionInfo.playingSection
+    //   } ) );
+    // } );
   }
 
   stopAllPlayers() {
-    this.deckSectionPlayers.map( deckSectionItem => {
-      if ( deckSectionItem.sectionPlayer.stopPlayback ) {
-        deckSectionItem.sectionPlayer.stopPlayback();
-      }
+    _.map( this.deckPlayers, deckPlayer => {
+      deckPlayer.stopPlayback();
     } );       
   }
 
@@ -156,12 +162,12 @@ class ThrowdownApp {
     //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
     // );
 
-    this.deckSectionPlayers.map( deckSectionItem => {
-      if ( deckSectionItem.sectionPlayer.throwdownRender ) {
-        deckSectionItem.sectionPlayer.throwdownRender( renderRange, this.tempo, renderRangeBeats, this.midiOutPort );
-      }
+    _.map( this.deckPlayers, deckPlayer => {
+      // if ( deckSectionItem.sectionPlayer.throwdownRender ) {
+        deckPlayer.throwdownRender( renderRange, this.tempoBpm, renderRangeBeats, this.midiOutPort );
+      // }
     } );   
-    this.updateDeckPlayState_fromDeckPlayers( store.getState() );
+    this.updateDeckPlayState_fromDeckPlayers();
 
 
     this.lastRenderEndBeat = renderRangeBeats.end; 
