@@ -95,6 +95,7 @@ class SampleSlicePlayer {
   stopPlayback() {
     if ( this.player ) {
       this.player.stop();
+      this.playing = false;
       this.player = null;
     }
   }
