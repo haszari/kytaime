@@ -1,0 +1,57 @@
+{
+  version: 1
+  slug: beats
+  patterns: {
+    // shed out 
+    shedout-beat: {
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20190427--radialhead-shedout-steppybeat.mp3'
+      tempo: 129
+      duration: 32
+    }
+    shedout-synth: {
+      part: synth
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20190427--radialhead-shedout-tromboner.mp3'
+      tempo: 129
+      duration: 8   
+    }
+    shedout-sub: {
+      part: sub
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-shedout-sub-ridge.m4a'
+      tempo: 129
+      duration: 64
+    }
+
+    // mivova
+    mivova-beat: {
+      part: beat
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--beat.mp3
+      tempo: 122 
+      duration: 64
+    }
+    mivova-sub: {
+      part: sub
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--sub.mp3
+      tempo: 122 
+      duration: 64
+    }
+
+  }
+  sections: {
+   shedout: {
+      bars: 4
+      patterns: [
+        shedout-beat
+        shedout-tromboner
+        shedout-sub
+      ]
+    }
+    mivova: {
+      bars: 4
+      patterns: [
+        mivova-beat
+        mivova-sub
+      ]
+    }
+  } 
+}

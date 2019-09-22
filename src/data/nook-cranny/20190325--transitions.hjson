@@ -1,0 +1,22 @@
+{
+  version: 1
+  slug: transitions
+  patterns: {
+    shedout-tromboner: {
+      part: synth
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20190427--radialhead-shedout-tromboner-fill.mp3'
+      tempo: 129
+      duration: 64
+      startBeats: [ 56 ]
+      endBeats: [ 32 ]
+    }
+  }
+  sections: {
+    shedout: {
+      bars: 4
+      patterns: [
+        tromboner
+      ]
+    }
+  } 
+}
