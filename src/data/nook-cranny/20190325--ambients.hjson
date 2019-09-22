@@ -1,0 +1,48 @@
+{
+  version: 1
+  slug: ambients
+  patterns: {
+    // shed out
+    shedout-lead: {
+      part: lead
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-shedout-uplands-gliss.m4a'
+      tempo: 129
+      duration: 64   
+    }
+    shedout-texture: {
+      part: texture
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--radialhead-shedout-hils-trash.m4a'
+      tempo: 129
+      duration: 64
+    }
+    // mivova
+    mivova-voc: {
+      part: voc
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--voc.mp3
+      tempo: 122 
+      duration: 64  
+    }
+    mivova-pad: {
+      part: lead
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--lead.mp3
+      tempo: 122 
+      duration: 64
+    }
+  }
+  sections: {
+    shedout: {
+      bars: 4
+      patterns: [
+        shedout-texture
+        shedout-lead
+      ]
+    }
+    mivova: {
+      bars: 4
+      patterns: [
+        mivova-voc
+        mivova-pad
+      ]
+    }
+  } 
+}

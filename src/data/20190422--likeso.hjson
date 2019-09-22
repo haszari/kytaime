@@ -1,0 +1,48 @@
+{
+  version: 1
+  slug: likeso
+  patterns: {
+    beat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20170103-padscape-tubasy-drums-alpine.m4a'
+      tempo: 122
+      duration: 2
+    }
+    hat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20170103-padscape-tubasy-drums-uplands.m4a'
+      tempo: 122
+      duration: 2
+    }
+    bass: {
+      part: bass
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20170103-padscape-tubasy-sub-ridge.m4a'
+      tempo: 122
+      duration: 8
+    }
+    pad: {
+      part: pad
+      file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20170103-padscape-tubasy-synth-hills.m4a'
+      tempo: 122
+      duration: 32
+    }
+  }
+  sections: {
+    beat: {
+      bars: 8
+      patterns: [
+        beat
+        hat
+      ]
+    }
+    main: {
+      bars: 8
+      patterns: [
+        beat
+        hat
+        bass
+        pad
+      ]
+    }
+  } 
+}

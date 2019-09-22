@@ -1,0 +1,49 @@
+{
+  version: 1
+  slug: squelch
+  patterns: {
+    beat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20100701--squelch-stem-beat.m4a'
+      offset: 6.293
+      tempo: 133.4
+      duration: 16
+    }
+    bass: {
+      part: bass
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20100701--squelch-stem-bass.m4a'
+      offset: 6.293
+      tempo: 133.4
+      duration: 16
+      slices: [
+        {
+          beat: 64
+          start: 0
+          duration: 16
+        }
+      ]
+    }
+    beep: {
+      part: synth
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20190422--squelch-stem-bleeps-short-stereo.m4a'
+      tempo: 133.4
+      duration: 32
+    }
+  }
+  sections: {
+    beat: {
+      bars: 8
+      patterns: [
+        beat
+      ]
+    }
+    main: {
+      bars: 8
+      patterns: [
+        beat
+        bass
+        beep
+      ]
+    }
+  } 
+}

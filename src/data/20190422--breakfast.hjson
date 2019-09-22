@@ -1,0 +1,81 @@
+{
+  version: 1
+  slug: breakfast
+  patterns: {
+    kick: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20180504--Haszari--OtherPeopleAreHavingBreakfast-stems-Kick.m4a'
+      tempo: 130
+      offset: 33.246
+      duration: 4
+    }
+    hat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20180504--Haszari--OtherPeopleAreHavingBreakfast-stems-Hat.m4a'
+      tempo: 130
+      offset: 33.246
+      duration: 4
+    }
+    perc: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20180504--Haszari--OtherPeopleAreHavingBreakfast-stems-Clap.m4a'
+      tempo: 130
+      offset: 33.246
+      duration: 16
+    }
+    breakbeat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20180504--Haszari--OtherPeopleAreHavingBreakfast-stems-PercFX.m4a'
+      tempo: 130
+      offset: 33.246
+      duration: 16
+      slices: [
+        {
+          beat: 272
+          start: 0
+          duration: 16
+        }
+      ]
+    }
+    bass: {
+      part: synth
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/20180504--Haszari--OtherPeopleAreHavingBreakfast-stems-Bassline-dry.m4a'
+      tempo: 130
+      offset: 33.246
+      duration: 16
+      slices: [
+        {
+          beat: 72
+          start: 0
+          duration: 16
+        }
+      ]
+    }
+  }
+  sections: {
+    beat: {
+      bars: 8
+      patterns: [
+        kick
+        hat
+        perc
+      ]
+    }
+    main: {
+      bars: 8
+      patterns: [
+        kick
+        hat
+        perc
+        bass
+      ]
+    }
+    build: {
+      bars: 8
+      patterns: [
+        breakbeat
+        bass
+      ]
+    }
+  } 
+}
