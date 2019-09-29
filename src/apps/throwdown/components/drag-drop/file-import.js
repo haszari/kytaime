@@ -7,25 +7,20 @@ import store from '../../store/store';
 import throwdownActions from '../throwdown/actions';
 import throwdownSelectors from '../throwdown/selectors';
 
-import sequencer from '@kytaime/sequencer/sequencer';
 import audioUtilities from '@kytaime/audio-utilities';
+import audioState from '@kytaime/audio-state';
 
-function ensureAudioBuffered( audioContext, buffers, filename ) {
-  if ( _.find( buffers, { file: filename } ) ) {
+function ensureAudioBuffered( filename ) {
+  if ( audioState.getAudioBuffer( filename ) ) {
     return;
   }
-  audioUtilities.loadSample( filename, audioContext, ( buffer ) => {
+  audioUtilities.loadSample( filename, audioState.getAudioContext(), ( buffer ) => {
     console.log( `sample decoded, ready to play ${ filename }` );
-    store.dispatch( throwdownActions.addAudioBuffer( {
-      file: filename,
-      buffer: buffer,
-    } ) );
+    audioState.addAudioBuffer( filename, buffer );
   } );
 }
 
 function importPatterns( songSlug, patterns ) {
-  const buffers = throwdownSelectors.getBuffers( store.getState() );
-
   _.map( patterns, ( pattern, key ) => {
     store.dispatch( throwdownActions.addPattern( {
       songSlug, 
@@ -33,7 +28,7 @@ function importPatterns( songSlug, patterns ) {
       ...pattern
     } ) );
     if ( pattern.file ) {
-      ensureAudioBuffered( sequencer.audioContext, buffers, pattern.file );
+      ensureAudioBuffered( pattern.file );
     }
   } );  
 }

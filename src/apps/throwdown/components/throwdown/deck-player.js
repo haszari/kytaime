@@ -5,9 +5,6 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 import playerFactory from '../../player-factory';
 
-// import throwdownActions from './actions';
-
-
 class DeckPlayer {
   constructor( props ) {
 

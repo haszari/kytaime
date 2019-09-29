@@ -1,9 +1,5 @@
 import { createAction } from 'redux-starter-kit';
 
-// shared infrastructure
-const setAudioContext = createAction( 'throwdown/setAudioContext' );
-const addAudioBuffer = createAction( 'throwdown/addAudioBuffer' );
-
 // "drop" infrastructure, kinda transportish
 const setDeferAllTriggers = createAction( 'throwdown/setDeferAllTriggers' );
 const toggleDeferAllTriggers = createAction( 'throwdown/toggleDeferAllTriggers' );
@@ -19,9 +15,6 @@ const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
 const toggleDeckTriggeredSection = createAction( 'throwdown/toggleDeckTriggeredSection' );
 
 export default {
-  setAudioContext,
-  addAudioBuffer,
-
   setDeferAllTriggers,
   toggleDeferAllTriggers,
 

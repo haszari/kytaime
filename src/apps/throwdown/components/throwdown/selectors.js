@@ -2,13 +2,13 @@ import _ from 'lodash';
 
 import { createSelector } from 'redux-starter-kit';
 
-// 'throwdown' path is hard-coded in all these AND in store.js .. how to share that?
-const getThrowdown = createSelector( [ 'throwdown' ] );
+const getThrowdown = ( state ) => { return _.get( state, 'throwdown' ) };
 
-const getPatterns = createSelector( [ 'throwdown.patterns' ] );
-const getBuffers = createSelector( [ 'throwdown.buffers' ] );
+const getPatterns = ( state ) => { return _.get( state, 'throwdown.patterns' ) };
 
-const getDecks = createSelector( [ 'throwdown.decks' ] );
+const getDecks = ( state ) => { return _.get( state, 'throwdown.decks' ) };
+
+const getTransport = ( state ) => { return _.get( state, 'transport' ) };
 
 // this could be a user option/runtime param
 const MIN_PHRASE_LENGTH = 4;
@@ -35,14 +35,14 @@ function getPhraseLoop( state ) {
 }
 
 const getTriggerLoop = createSelector( 
-  [ 'throwdown.deferAllTriggers', getPhraseLoop ],
-  ( deferAllTriggers, phraseLoop ) => ( deferAllTriggers ? Infinity : phraseLoop ),
+  [ getThrowdown, getPhraseLoop ],
+  ( throwdown, phraseLoop ) => ( throwdown.deferAllTriggers ? Infinity : phraseLoop ),
 );
 
 const getPhraseProgress = createSelector( 
-  [ getPhraseLoop, 'transport.currentBeat' ],
-  ( phraseLoop, currentBeat ) => {
-    return ( currentBeat % phraseLoop ) / phraseLoop;
+  [ getPhraseLoop, getTransport ],
+  ( phraseLoop, transport ) => {
+    return ( transport.currentBeat % phraseLoop ) / phraseLoop;
   },
 );
 
@@ -107,15 +107,13 @@ function getDeckPhraseLoop( state, deckSlug ) {
 }
 
 const getDeckPhraseProgress = createSelector( 
-  [ getDeckPhraseLoop, 'transport.currentBeat' ],
-  ( phraseLoop, currentBeat ) => {
-    return ( currentBeat % phraseLoop ) / phraseLoop;
+  [ getDeckPhraseLoop, getTransport ],
+  ( phraseLoop, transport ) => {
+    return ( transport.currentBeat % phraseLoop ) / phraseLoop;
   },
 );
 
 export default {
-  getBuffers,
-  
   getThrowdown,
   getPatterns,
 
