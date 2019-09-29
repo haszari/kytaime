@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
+import { connect, } from 'react-redux';
 
 import PlayButton from './play-button.jsx';
 import TempoDrop from './tempo-drop.jsx';
@@ -14,14 +14,14 @@ function HeaderTransportBarComponent( props ) {
   const currentPhraseIfNeeded = props.deferAllTriggers ? ` (${ props.phraseLoop })` : '';
   return (
     <tr className="header">
-      <th onClick={ 
-        props.handleDeferAllTriggers.bind( undefined, ! props.deferAllTriggers ) 
+      <th onClick={
+        props.handleDeferAllTriggers.bind( undefined, !props.deferAllTriggers )
       }>
-        <span style={{ fontWeight: "bold" }}>{ currentTriggerLength }</span><span style={{ fontSize: 'smaller' }}>{ currentPhraseIfNeeded }</span>
+        <span style={{ fontWeight: 'bold', }}>{ currentTriggerLength }</span><span style={{ fontSize: 'smaller', }}>{ currentPhraseIfNeeded }</span>
       </th>
-      <th style={{ borderRight: "1px solid #bbb" }}><TempoDrop /></th>
-      <th style={{ fontWeight: "bold" }}>{ props.tempo.toFixed( 1 ) } bpm</th>
-      <th style={{ textAlign: "left" }} colSpan="99"><PlayButton /></th>
+      <th style={{ borderRight: '1px solid #bbb', }}><TempoDrop /></th>
+      <th style={{ fontWeight: 'bold', }}>{ props.tempo.toFixed( 1 ) } bpm</th>
+      <th style={{ textAlign: 'left', }} colSpan="99"><PlayButton /></th>
     </tr>
   );
 }
@@ -31,29 +31,27 @@ HeaderTransportBarComponent.propTypes = {
   phraseLoop: PropTypes.number,
   deferAllTriggers: PropTypes.bool,
   handleDeferAllTriggers: PropTypes.func,
-}
+};
 
 const mapStateToProps = state => {
   return {
-    ...state.transport, 
+    ...state.transport,
     phraseLoop: throwdownSelectors.getPhraseLoop( state ),
-    deferAllTriggers: throwdownSelectors.getThrowdown( state ).deferAllTriggers
-  }
-}
+    deferAllTriggers: throwdownSelectors.getThrowdown( state ).deferAllTriggers,
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     handleDeferAllTriggers: defer => {
-      dispatch( throwdownActions.setDeferAllTriggers( defer ) )
-    }
-  }
-}
+      dispatch( throwdownActions.setDeferAllTriggers( defer ) );
+    },
+  };
+};
 
 const HeaderTransportBar = connect(
   mapStateToProps,
   mapDispatchToProps
-)(HeaderTransportBarComponent);
-
-
+)( HeaderTransportBarComponent );
 
 export default HeaderTransportBar;

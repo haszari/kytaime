@@ -1,7 +1,7 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, } from 'react-dom';
 
-import { Provider } from 'react-redux';
+import { Provider, } from 'react-redux';
 
 import store from './store/store';
 import observeStore from '@lib/observe-redux-store';
@@ -52,16 +52,15 @@ fileImport.importThrowdownFile( '/data/20190217--manas.hjson' );
 // bind sequencer/transport to store
 
 observeStore(
-  store, 
+  store,
   // transport component could provide this selector
   ( state ) => {
-    return state.transport.isPlaying
-  }, 
+    return state.transport.isPlaying;
+  },
   ( isPlaying ) => {
     if ( isPlaying ) {
       throwdownApp.startTransport();
-    }
-    else {
+    } else {
       throwdownApp.stopTransport();
     }
   }
@@ -69,23 +68,23 @@ observeStore(
 
 // hook up transport tempo to state
 observeStore(
-  store, 
+  store,
   // transport component could provide this selector
   ( state ) => {
-    return state.transport.tempo
-  }, 
+    return state.transport.tempo;
+  },
   ( tempo ) => {
-    throwdownApp.setTempo( tempo )
+    throwdownApp.setTempo( tempo );
   }
 );
 observeStore(
-  store, 
+  store,
   // transport component could provide this selector
   ( state ) => {
-    return state.transport.nextTempo
-  }, 
+    return state.transport.nextTempo;
+  },
   ( nextTempo ) => {
-    throwdownApp.setNextTempo( nextTempo )
+    throwdownApp.setNextTempo( nextTempo );
   }
 );
 
@@ -109,8 +108,6 @@ function App() {
 }
 
 render(
-  ( <App /> ), 
-  document.getElementById('app')
+  ( <App /> ),
+  document.getElementById( 'app' )
 );
-
-

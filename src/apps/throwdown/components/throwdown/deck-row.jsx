@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect } from 'react-redux';
+import { connect, } from 'react-redux';
 
 import Hjson from 'hjson';
 
@@ -25,7 +25,7 @@ function SectionTrigger( props ) {
   );
   return (
     <td>
-      <span 
+      <span
         onClick={ toggleTrigger }
         style={ styles }
       >
@@ -41,7 +41,7 @@ SectionTrigger.propTypes = {
   onSetTriggeredSection: PropTypes.func,
   slug: PropTypes.string,
   hue: PropTypes.number,
-}
+};
 
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
@@ -50,11 +50,11 @@ function DeckSectionsTriggersComponent( props ) {
   const isTriggered = props.deckState.triggeredSection;
   const isPlaying = props.deckState.playingSection;
 
-  const sections = props.deckState.sections.map( 
+  const sections = props.deckState.sections.map(
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
-      return ( 
-        <SectionTrigger 
+      return (
+        <SectionTrigger
           key={ section.slug }
           triggered={ props.deckState.triggeredSection === section.slug }
           playing={ props.deckState.playingSection === section.slug }
@@ -66,30 +66,30 @@ function DeckSectionsTriggersComponent( props ) {
     }
   );
   return (
-    <tr 
-      className="deck-row" style={{ backgroundColor: backgroundColour }}
+    <tr
+      className="deck-row" style={{ backgroundColor: backgroundColour, }}
       onDragOver={ props.onDragOver }
       onDragLeave={ props.onDragLeave }
       onDrop={ props.onDrop }
-      >
+    >
       <td>
-       { props.phraseLoop }{ props.highlighted }
+        { props.phraseLoop }{ props.highlighted }
       </td>
-      <td style={{ 
+      <td style={{
         borderRight: `1px solid ${ edgeColour }`,
         backgroundColor: backgroundColour,
       }}>
         {/* deck tempo, title, metadata */}
-        <div style={{ 
+        <div style={{
           fontWeight: isPlaying ? 'bold' : 'normal',
           fontStyle: isTriggered ? 'italic' : 'normal',
         }}>{ deckSlug }</div>
       </td>
-      
+
       { sections }
 
       {/* this is here to expand the background to full width */}
-      <td colSpan="99"></td> 
+      <td colSpan="99"></td>
     </tr>
 
   );
@@ -106,7 +106,7 @@ DeckSectionsTriggersComponent.propTypes = {
   onDragOver: PropTypes.func,
   onDragLeave: PropTypes.func,
   onDrop: PropTypes.func,
-}
+};
 
 const mapStateToProps = ( state, ownProps ) => {
   const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
@@ -116,9 +116,9 @@ const mapStateToProps = ( state, ownProps ) => {
   return {
     deckState,
     phraseLoop,
-    highlighted: dragState.dropHighlightDeck === ownProps.slug
-  }
-}
+    highlighted: dragState.dropHighlightDeck === ownProps.slug,
+  };
+};
 
 const mapDispatchToProps = ( dispatch, ownProps ) => {
   return {
@@ -126,9 +126,9 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
       dispatch(
         actions.setDeckTriggeredSection( {
           deckSlug: ownProps.slug,
-          sectionSlug 
-        } ) 
-      )
+          sectionSlug,
+        } )
+      );
     },
 
     onDragOver: event => {
@@ -144,14 +144,14 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
         dropHighlightDeck: '',
       } ) );
     },
-    
-    onDrop: event => { 
-      event.preventDefault(); 
+
+    onDrop: event => {
+      event.preventDefault();
       event.stopPropagation();
 
       // should really loop and import each file as new deck
       // this blob should be a method
-      if (event.dataTransfer.files.length >= 1) {
+      if ( event.dataTransfer.files.length >= 1 ) {
         const filename = event.dataTransfer.files[0].name;
         const fileReader = new FileReader();
 
@@ -159,7 +159,7 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
           const importRaw = loadedEvent.currentTarget.result;
           var importContent = Hjson.parse( importRaw );
           fileImport.importThrowdownData( filename, importContent, ownProps.slug );
-        }
+        };
 
         fileReader.readAsText( event.dataTransfer.files[0] );
       }
@@ -168,12 +168,12 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
       dispatch( dragDropActions.setDropHighlight() );
     },
 
-  }
-}
+  };
+};
 
 const DeckSectionsTriggers = connect(
   mapStateToProps,
   mapDispatchToProps
-)(DeckSectionsTriggersComponent)
+)( DeckSectionsTriggersComponent );
 
 export default DeckSectionsTriggers;

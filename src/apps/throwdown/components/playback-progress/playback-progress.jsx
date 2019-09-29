@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 function PlaybackProgressComponent( props ) {
   const phraseProgressPercent = props.progressPercent;
   return (
-    <tr style={{ backgroundColor: props.backgroundColour }}>
-      <td 
-        colSpan="99" 
+    <tr style={{ backgroundColor: props.backgroundColour, }}>
+      <td
+        colSpan="99"
         className="playback-progress-container" >
-        <div 
-          className="playback-progress-progress" 
-          style={{ 
+        <div
+          className="playback-progress-progress"
+          style={{
             width: `${ phraseProgressPercent }%`,
             backgroundColor: props.progressColour,
           }}
@@ -26,6 +26,6 @@ PlaybackProgressComponent.propTypes = {
   progressPercent: PropTypes.number,
   backgroundColour: PropTypes.string,
   progressColour: PropTypes.string,
-}
+};
 
 export default PlaybackProgressComponent;

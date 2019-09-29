@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createReducer } from 'redux-starter-kit';
+import { createReducer, } from 'redux-starter-kit';
 
 import actions from './actions';
 
@@ -9,26 +9,26 @@ function createDeck() {
     slug: '',
     hue: Math.random() * 360,
     triggeredSection: null,
-    playingSection: null, 
+    playingSection: null,
     sections: [],
-  }
+  };
 }
 
 function getDeck( state, deckSlug ) {
-  return _.find( state.decks, 
+  return _.find( state.decks,
     deck => ( deck.slug === deckSlug )
   );
 }
 
 const throwdownReducer = createReducer( {
-  audioContext: null, 
+  audioContext: null,
   buffers: [],
-  
+
   patterns: [],
 
   deferAllTriggers: false,
 
-  decks: []
+  decks: [],
 }, {
   // patterns (may be used in multiple deck sections)
   [ actions.addPattern ]: ( state, action ) => {
@@ -40,7 +40,7 @@ const throwdownReducer = createReducer( {
     state.deferAllTriggers = action.payload;
   },
   [ actions.toggleDeferAllTriggers ]: ( state, action ) => {
-    state.deferAllTriggers = ! state.deferAllTriggers;
+    state.deferAllTriggers = !state.deferAllTriggers;
   },
 
   // decks
@@ -54,14 +54,13 @@ const throwdownReducer = createReducer( {
     };
 
     const shuntedDeck = getDeck( state, action.payload.replaceDeckSlug );
-    const insertPosition = _.findIndex( state.decks, { slug: action.payload.replaceDeckSlug } );
+    const insertPosition = _.findIndex( state.decks, { slug: action.payload.replaceDeckSlug, } );
     if ( action.payload.replaceDeckSlug && insertPosition !== -1 ) {
       // if we're "replacing" a deck row, reorder decks so added one is in that slot
       state.decks.splice( insertPosition, 0, newDeck );
       _.remove( state.decks, shuntedDeck );
       state.decks.push( shuntedDeck );
-    }
-    else {
+    } else {
       // otherwise just add at the end of the list
       state.decks.push( newDeck );
     }
@@ -69,44 +68,42 @@ const throwdownReducer = createReducer( {
 
   [ actions.addSection ]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
-    if ( ! deck ) return;
+    if ( !deck ) return;
 
     deck.sections.push( {
       slug: action.payload.slug,
-      duration: action.payload.bars * 4,      
+      duration: action.payload.bars * 4,
       patterns: action.payload.patterns,
     } );
   },
 
   [ actions.setDeckTriggeredSection ]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
-    if ( ! deck ) return;
+    if ( !deck ) return;
 
     // pass no slug to clear triggered section
     deck.triggeredSection = action.payload.sectionSlug;
   },
   [ actions.toggleDeckTriggeredSection ]: ( state, action ) => {
     const deck = state.decks[ action.payload.deckIndex ];
-    if ( ! deck ) return;
+    if ( !deck ) return;
 
     const section = deck.sections[ action.payload.sectionIndex ];
     const sectionSlug = section ? section.slug : '';
-    if (deck.triggeredSection !== sectionSlug) {
+    if ( deck.triggeredSection !== sectionSlug ) {
       deck.triggeredSection = sectionSlug;
-    }
-    else {
+    } else {
       deck.triggeredSection = null;
     }
   },
 
   [ actions.setDeckPlayingSection ]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
-    if ( ! deck ) return;
+    if ( !deck ) return;
 
     // pass no slug to clear playing section
     deck.playingSection = action.payload.sectionSlug;
   },
-
 
 } );
 

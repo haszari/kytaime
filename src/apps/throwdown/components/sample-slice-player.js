@@ -8,29 +8,29 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 function autogenerateSlices( startBeats, endBeats, duration ) {
   // We used to generate one slice for whole thing ...
   // this.props.slices = [{
-  //   start: 0, 
+  //   start: 0,
   //   duration: this.props.sampleDuration,
   //   beat: 0,
   // }];
 
   // ...now, we add a slice for each unique start/endbeat across duration.
   // We do this so that start/endbeats work correctly for triggering.
-  // If this pattern has manually set slices then it's up to the user 
+  // If this pattern has manually set slices then it's up to the user
   // to ensure that the slices support the ends/starts they have set :)
   var slices = [];
 
-  var cuts = [ 0, startBeats, endBeats, duration ];
+  var cuts = [ 0, startBeats, endBeats, duration, ];
   cuts = _.flatten( cuts );
   cuts = _.sortBy( cuts );
   cuts = _.sortedUniq( cuts );
 
-  for ( var i=1; i<cuts.length; i++) {
+  for ( var i = 1; i < cuts.length; i++ ) {
     const slice = {
-      start: cuts[ i-1 ],
+      start: cuts[ i - 1 ],
       end: cuts[ i ],
     };
     slices.push( {
-      start: slice.start, 
+      start: slice.start,
       duration: slice.end - slice.start,
       beat: slice.start,
     } );
@@ -40,7 +40,7 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
 }
 
 class SampleSlicePlayer {
-  constructor(props) {
+  constructor( props ) {
     this.updateProps( props );
 
     this.playing = false;
@@ -51,7 +51,7 @@ class SampleSlicePlayer {
   updateProps( props ) {
     this.props = _.defaults( props, SampleSlicePlayer.defaultProps );
 
-    if ( ! this.props.slices || ! this.props.slices.length  ) {
+    if ( !this.props.slices || !this.props.slices.length ) {
       this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
     }
   }
@@ -65,14 +65,14 @@ class SampleSlicePlayer {
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
-    // console.log( 
+    // console.log(
     //   `-- beat playSliceAt ` +
     //   `start=(${ startBeat }, ${ startTimestamp }) `
     // );
 
-    let { tempoBpm } = this.props;
-    
-    let secPerBeat = (60 / tempoBpm);
+    let { tempoBpm, } = this.props;
+
+    let secPerBeat = ( 60 / tempoBpm );
     let rate = transportBpm / tempoBpm;
 
     let player = audioDestinationNode.context.createBufferSource();
@@ -81,11 +81,8 @@ class SampleSlicePlayer {
 
     player.loop = false;
 
-    if (audioDestinationNode.channelCount > 2)
-      audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel );
-    else
-      player.connect( audioDestinationNode );
- 
+    if ( audioDestinationNode.channelCount > 2 ) { audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel ); } else { player.connect( audioDestinationNode ); }
+
     player.start( startTimestamp, startBeat * secPerBeat );
     player.stop( stopTimestamp );
 
@@ -101,19 +98,19 @@ class SampleSlicePlayer {
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats ) {
-    if ( ! this.props.buffer ) {
+    if ( !this.props.buffer ) {
       return;
     }
 
-    let { sampleDuration } = this.props;
+    let { sampleDuration, } = this.props;
 
     var triggered = true && this.parentTriggered;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
-      tempoBpm, 
+      tempoBpm,
       renderRangeBeats,
       triggered,
-      this.playing, 
+      this.playing,
       this.parentPhraseLength,
       this.props.startBeats,
       this.props.endBeats,
@@ -121,52 +118,51 @@ class SampleSlicePlayer {
 
     this.playing = triggerInfo.isPlaying;
 
-    let filteredSlices = _.filter(this.props.slices, function(sliceEvent) {
+    let filteredSlices = _.filter( this.props.slices, function( sliceEvent ) {
       return bpmUtilities.valueInWrappedBeatRange(
-        sliceEvent.start, 
-        triggerInfo.startBeat % sampleDuration, 
-        triggerInfo.endBeat % sampleDuration, 
+        sliceEvent.start,
+        triggerInfo.startBeat % sampleDuration,
+        triggerInfo.endBeat % sampleDuration,
         sampleDuration
       );
-    });
+    } );
 
     // scheduledSlices: start time in msec
     let scheduledSlices = patternSequencer.renderPatternEvents(
-      renderRange.start, 
-      tempoBpm, 
+      renderRange.start,
+      tempoBpm,
       renderRangeBeats,
-      sampleDuration, 
+      sampleDuration,
       filteredSlices
     );
 
-    const renderEventTime = (time) => (time + renderRange.audioContextTimeOffsetMsec) / 1000;
+    const renderEventTime = ( time ) => ( time + renderRange.audioContextTimeOffsetMsec ) / 1000;
     // const renderEventTime = (time) => (time) / 1000;
 
-    _.map(scheduledSlices, (sliceRenderInfo) => {
+    _.map( scheduledSlices, ( sliceRenderInfo ) => {
       // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
-      const startTime = renderEventTime(sliceRenderInfo.start);
-      const stopTime = renderEventTime(sliceRenderInfo.start + sliceRenderInfo.duration);
+      const startTime = renderEventTime( sliceRenderInfo.start );
+      const stopTime = renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
       this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );
-    });
+    } );
   }
 }
 
 SampleSlicePlayer.defaultProps = {
   // audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20181110--starthere--haszari%202%20Beat.wav',
-  // tempoBpm: 150, 
+  // tempoBpm: 150,
 
   audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20190209--mivova-kytaime-test-beat.mp3',
-  tempoBpm: 122, 
+  tempoBpm: 122,
 
   sampleDuration: 4,
-  slices: [ 
+  slices: [
   // {
-    // start: 0, 
+    // start: 0,
     // duration: 4,
     // beat: 0,
-  // } 
+  // }
   ],
 };
-
 
 export default SampleSlicePlayer;
