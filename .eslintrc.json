@@ -7,7 +7,8 @@
   "rules": {
     "no-console": 0,
     "space-in-parens": [ "error", "always" ],
-    "space-before-function-paren": [ "error", "always" ]
+    "space-before-function-paren": [ "error", "always" ],
+    "semi": [ "error", "always" ]
   },
   "env": {
     "browser": true
