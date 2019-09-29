@@ -28,7 +28,7 @@
     "express": "4.17.1",
     "lodash": "4.17.15",
     "midimessage": "1.0.5",
-    "node-sass": "4.11.0",
+    "node-sass": "4.12.0",
     "react": "16.10.1",
     "react-dom": "16.10.1",
     "react-redux": "7.1.1",
