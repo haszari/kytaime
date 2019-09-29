@@ -10,9 +10,9 @@
   "author": "kytaime@cartoonbeats.com",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "7.6.0",
-    "@babel/core": "7.6.0",
-    "@babel/preset-env": "7.6.0",
+    "@babel/cli": "7.6.2",
+    "@babel/core": "7.6.2",
+    "@babel/preset-env": "7.6.2",
     "@babel/preset-react": "7.0.0",
     "babel-loader": "8.0.6",
     "color": "3.1.2",
