@@ -5,7 +5,9 @@
     "plugin:react/recommended"
   ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "space-in-parens": [ "error", "always" ],
+    "space-before-function-paren": [ "error", "always" ]
   },
   "env": {
     "browser": true
