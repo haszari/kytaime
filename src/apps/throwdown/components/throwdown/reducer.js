@@ -30,16 +30,6 @@ const throwdownReducer = createReducer( {
 
   decks: []
 }, {
-  [ actions.setAudioContext ]: ( state, action ) => {
-    state.audioContext = action.payload;
-  },
-  [ actions.addAudioBuffer ]: ( state, action ) => {
-    state.buffers.push( {
-      file: action.payload.file,
-      buffer: action.payload.buffer,
-    } );
-  },
-
   // patterns (may be used in multiple deck sections)
   [ actions.addPattern ]: ( state, action ) => {
     const patternData = action.payload;

@@ -11,6 +11,7 @@ import sequencer from '@kytaime/sequencer/sequencer';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import midiPorts from '@kytaime/midi-ports';
+import audioState from '@kytaime/audio-state';
 
 // import SectionPlayer from './components/throwdown/section-player';
 import DeckPlayer from './components/throwdown/deck-player';
@@ -42,7 +43,8 @@ class ThrowdownApp {
     // I believe we need to nudge the channel count so we can use em all
     sequencer.audioContext.destination.channelCount = sequencer.audioContext.destination.maxChannelCount;
 
-    store.dispatch( throwdownActions.setAudioContext( sequencer.audioContext ) );
+    // store.dispatch( throwdownActions.setAudioContext( sequencer.audioContext ) );
+    audioState.setAudioContext( sequencer.audioContext );
 
     this.renderIndex = 0;
 
@@ -73,7 +75,8 @@ class ThrowdownApp {
   // creates new decks and players to match state
   // will reuse existing decks, matching based on deck+section slug
   updateDeckPlayers( state ) {
-    const allBuffers = throwdownSelectors.getBuffers( state );
+    const allBuffers = audioState.getAllAudioBuffers();
+    
     const allDecks = throwdownSelectors.getDecks( state );
     const triggerLoop = throwdownSelectors.getTriggerLoop( state );
 
