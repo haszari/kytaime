@@ -1,4 +1,4 @@
-import _ from 'lodash'; 
+import _ from 'lodash';
 
 import Hjson from 'hjson';
 
@@ -23,14 +23,14 @@ function ensureAudioBuffered( filename ) {
 function importPatterns( songSlug, patterns ) {
   _.map( patterns, ( pattern, key ) => {
     store.dispatch( throwdownActions.addPattern( {
-      songSlug, 
-      slug: key, 
-      ...pattern
+      songSlug,
+      slug: key,
+      ...pattern,
     } ) );
     if ( pattern.file ) {
       ensureAudioBuffered( pattern.file );
     }
-  } );  
+  } );
 }
 
 function getUniqueImportSlug( slug, filename ) {
@@ -40,7 +40,7 @@ function getUniqueImportSlug( slug, filename ) {
   // you're not leaving until you're unique
   const decks = throwdownSelectors.getDecks( store.getState() );
   while ( _.includes( _.map( decks, 'slug' ), uniqueSlug ) ) {
-    uniqueSlug += Math.round( Math.random() * 99 )
+    uniqueSlug += Math.round( Math.random() * 99 );
   }
 
   return uniqueSlug;
@@ -53,14 +53,14 @@ function addThrowdownDeck( filename, throwdownData, replaceDeckRowSlug ) {
 
   store.dispatch( throwdownActions.addDeck( {
     deckSlug: songSlug,
-    replaceDeckSlug: replaceDeckRowSlug
-  } ) ); 
-  
+    replaceDeckSlug: replaceDeckRowSlug,
+  } ) );
+
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
       deckSlug: songSlug,
-      slug: key, 
-      ...section
+      slug: key,
+      ...section,
     } ) );
   } );
 
@@ -80,7 +80,7 @@ function importThrowdownData( filename, hjsonBlob, replaceDeckRowSlug ) {
   addThrowdownDeck( filename, hjsonBlob, replaceDeckRowSlug );
 }
 
-export default { 
+export default {
   importThrowdownFile,
   importThrowdownData,
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { render, } from 'react-dom';
 
 import importMidiFile from '@kytaime/import-midi-file';
 
@@ -13,13 +13,13 @@ class MidiImporterApp extends React.Component {
     this.state = {
       midiPatternData: undefined,
       beatOffset: 0,
-      filename: ''
-    }
+      filename: '',
+    };
   }
 
   offsetChange( event ) {
     this.setState( {
-      beatOffset: parseInt( event.currentTarget.value )
+      beatOffset: parseInt( event.currentTarget.value ),
     } );
   }
 
@@ -34,7 +34,7 @@ class MidiImporterApp extends React.Component {
         midiPatternData: patternData,
         filename: filename,
       } );
-    }
+    };
     reader.readAsArrayBuffer( event.currentTarget.files[0] );
     event.currentTarget.value = '';
   }
@@ -43,29 +43,28 @@ class MidiImporterApp extends React.Component {
     return (
       <div>
         Subtract beats: <input type="number" step='1' value={ this.state.beatOffset } onChange={ this.offsetChange } />
-        <input 
-          type="file" 
-          onChange={ this.importFile } 
+        <input
+          type="file"
+          onChange={ this.importFile }
           style={{
-              width: '100%',
-              height: '50px',
-              fontSize: '1em',
-              background: 'ghostwhite',
+            width: '100%',
+            height: '50px',
+            fontSize: '1em',
+            background: 'ghostwhite',
           }}
         />
         <br />
         <h2>{ this.state.filename }</h2>
-        <textarea 
+        <textarea
           rows="40"
-          readOnly 
-          style={{ width: '100%' }}
-          value={ this.state.midiPatternData ? JSON.stringify(this.state.midiPatternData, null, '  ') : '' }
+          readOnly
+          style={{ width: '100%', }}
+          value={ this.state.midiPatternData ? JSON.stringify( this.state.midiPatternData, null, '  ' ) : '' }
         />
         <br />
       </div>
     );
   }
-
 }
 
 /// -----------------------------------------------------------------------------------------------
@@ -81,7 +80,6 @@ function App() {
 }
 
 render(
-  ( <App /> ), 
-  document.getElementById('app')
+  ( <App /> ),
+  document.getElementById( 'app' )
 );
-

@@ -6,9 +6,9 @@ import midiUtilities from '@kytaime/midi-utilities';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 class MidiLoopPlayer {
-  constructor(props) {
+  constructor( props ) {
     this.updateProps( props );
-  
+
     this.playing = false;
     this.parentTriggered = false;
     this.parentPhraseLength = 4;
@@ -32,7 +32,7 @@ class MidiLoopPlayer {
       if ( midiUtilities.drumMap[ noteEvent.note ] ) {
         return {
           ...noteEvent,
-          note: midiUtilities.drumMap[ noteEvent.note ], 
+          note: midiUtilities.drumMap[ noteEvent.note ],
         };
       }
       return noteEvent;
@@ -43,7 +43,7 @@ class MidiLoopPlayer {
       duration: this.props.duration,
       startBeats: this.props.startBeats,
       endBeats: this.props.endBeats,
-    }
+    };
   }
 
   stopPlayback() {
@@ -60,10 +60,10 @@ class MidiLoopPlayer {
     var triggered = true && this.parentTriggered;
 
     let triggerInfo = patternSequencer.renderPatternTrigger(
-      tempoBpm, 
+      tempoBpm,
       renderBeats,
       triggered,
-      this.playing, 
+      this.playing,
       this.parentPhraseLength,
       this.props.startBeats,
       this.props.endBeats,
@@ -72,45 +72,44 @@ class MidiLoopPlayer {
 
     let pattern = this.getNotePattern();
 
-    let filteredNotes = _.filter(pattern.notes, function( event ) {
+    let filteredNotes = _.filter( pattern.notes, function( event ) {
       return bpmUtilities.valueInWrappedBeatRange(
-        event.start, 
-        triggerInfo.startBeat % patternDuration, 
-        triggerInfo.endBeat % patternDuration, 
+        event.start,
+        triggerInfo.startBeat % patternDuration,
+        triggerInfo.endBeat % patternDuration,
         patternDuration
       );
-    });
+    } );
 
     var renderStartMsec = renderMsec.start;
 
-    var renderStart = (renderBeats.start % patternDuration);
-    var renderEnd = (renderBeats.end % patternDuration);
+    var renderStart = ( renderBeats.start % patternDuration );
+    var renderEnd = ( renderBeats.end % patternDuration );
 
     _.each( filteredNotes, _.partial( function( noteEvent, patternDuration, channel ) {
       var beatOffset = noteEvent.start - renderStart;
 
       // account for crossing loop boundary
-      if ((renderEnd < renderStart) && (noteEvent.start < renderStart)) {
-         beatOffset += patternDuration;
+      if ( ( renderEnd < renderStart ) && ( noteEvent.start < renderStart ) ) {
+        beatOffset += patternDuration;
       }
 
-      var timestamp = bpmUtilities.beatsToMs(tempoBpm, beatOffset);
+      var timestamp = bpmUtilities.beatsToMs( tempoBpm, beatOffset );
 
-      var note = { 
-         port: midiOutPort, 
+      var note = {
+        port: midiOutPort,
 
-         channel: channel,
-         note: noteEvent.note,
+        channel: channel,
+        note: noteEvent.note,
 
-         velocity: noteEvent.velocity, 
-         duration: bpmUtilities.beatsToMs(tempoBpm, noteEvent.duration), 
-         timestamp: renderStartMsec + timestamp
+        velocity: noteEvent.velocity,
+        duration: bpmUtilities.beatsToMs( tempoBpm, noteEvent.duration ),
+        timestamp: renderStartMsec + timestamp,
       };
       // console.log(note.timestamp);
 
-      midiUtilities.renderNote(note);
-   }, _, patternDuration, channel));
-
+      midiUtilities.renderNote( note );
+    }, _, patternDuration, channel ) );
   }
 }
 
@@ -118,6 +117,5 @@ MidiLoopPlayer.defaultProps = {
   midiChannel: 0,
   pattern: [],
 };
-
 
 export default MidiLoopPlayer;

@@ -7,7 +7,6 @@ import playerFactory from '../../player-factory';
 
 class DeckPlayer {
   constructor( props ) {
-
     this.patternPlayers = {};
 
     this.updateProps( props );
@@ -19,11 +18,10 @@ class DeckPlayer {
     // create/update one player for each pattern
     _.each( props.patterns, ( pattern ) => {
       var patternPlayer = this.patternPlayers[ pattern.slug ];
-      if ( ! patternPlayer ) {
+      if ( !patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
         this.patternPlayers[ pattern.slug ] = patternPlayer;
-      }
-      else {
+      } else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
       }
     } );
@@ -31,8 +29,8 @@ class DeckPlayer {
 
   stopPlayback() {
     // stop pattern players
-    _.each( this.patternPlayers,  
-      player => player.stopPlayback() 
+    _.each( this.patternPlayers,
+      player => player.stopPlayback()
     );
   }
 
@@ -40,10 +38,10 @@ class DeckPlayer {
     // console.log( `DeckPlayer render ${ renderRangeBeats.start } ${ renderRangeBeats.end }` );
 
     // get sections that we need to evaluate triggering:
-    // the playing one (if any) 
+    // the playing one (if any)
     // and the triggered one (if any)
-    const playingSection = _.find( this.props.sections, { slug: this.props.playingSection } );
-    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection } );
+    const playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
+    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection, } );
 
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
@@ -52,7 +50,7 @@ class DeckPlayer {
     // we'll pass this down to the patterns so they know how to behave
     if ( playingSection ) {
       const triggerInfo = patternSequencer.renderPatternTrigger(
-        tempoBpm, 
+        tempoBpm,
         renderRangeBeats,
         ( playingSection.slug == this.props.triggeredSection ),
         ( playingSection.slug == this.props.playingSection ),
@@ -63,16 +61,16 @@ class DeckPlayer {
       }
     }
 
-    if ( triggeredSection ) {    
+    if ( triggeredSection ) {
       const triggerInfo = patternSequencer.renderPatternTrigger(
-        tempoBpm, 
+        tempoBpm,
         renderRangeBeats,
         ( triggeredSection.slug == this.props.triggeredSection ),
         ( triggeredSection.slug == this.props.playingSection ),
         this.props.triggerLoop,
       );
       if ( triggerInfo.isPlaying ) {
-        currentPlayingSection = triggeredSection.slug;  
+        currentPlayingSection = triggeredSection.slug;
       }
     }
 
@@ -80,7 +78,7 @@ class DeckPlayer {
     this.props.playingSection = currentPlayingSection;
 
     // render patterns that are in the triggered/playing section
-    _.each( this.patternPlayers,  
+    _.each( this.patternPlayers,
       ( player, patternSlug ) => {
         const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
 
@@ -89,19 +87,17 @@ class DeckPlayer {
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
       }
     );
-
   }
 }
 
 DeckPlayer.defaultProps = {
   slug: '',
   patterns: [],
-  sections: [], 
+  sections: [],
   buffers: [],
   playingSection: '',
   triggeredSection: '',
   triggerLoop: 4,
 };
-
 
 export default DeckPlayer;

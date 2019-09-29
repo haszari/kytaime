@@ -1,4 +1,4 @@
-import { createReducer } from 'redux-starter-kit';
+import { createReducer, } from 'redux-starter-kit';
 
 import actions from './actions';
 
@@ -18,10 +18,10 @@ const transportReducer = createReducer( {
     state.nextTempo = state.nextTempo + action.payload;
   },
   [ actions.togglePlayback ]: ( state, action ) => {
-    state.isPlaying = ! state.isPlaying;
+    state.isPlaying = !state.isPlaying;
   },
   [ actions.setCurrentBeat ]: ( state, action ) => {
-    state.currentBeat= action.payload;
+    state.currentBeat = action.payload;
   },
 
 } );
