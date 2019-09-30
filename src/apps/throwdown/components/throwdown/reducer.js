@@ -31,20 +31,20 @@ const throwdownReducer = createReducer( {
   decks: [],
 }, {
   // patterns (may be used in multiple deck sections)
-  [ actions.addPattern ]: ( state, action ) => {
+  [actions.addPattern]: ( state, action ) => {
     const patternData = action.payload;
     state.patterns.push( patternData );
   },
 
-  [ actions.setDeferAllTriggers ]: ( state, action ) => {
+  [actions.setDeferAllTriggers]: ( state, action ) => {
     state.deferAllTriggers = action.payload;
   },
-  [ actions.toggleDeferAllTriggers ]: ( state, action ) => {
+  [actions.toggleDeferAllTriggers]: ( state, action ) => {
     state.deferAllTriggers = !state.deferAllTriggers;
   },
 
   // decks
-  [ actions.addDeck ]: ( state, action ) => {
+  [actions.addDeck]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( deck ) return;
 
@@ -66,7 +66,7 @@ const throwdownReducer = createReducer( {
     }
   },
 
-  [ actions.addSection ]: ( state, action ) => {
+  [actions.addSection]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( !deck ) return;
 
@@ -77,18 +77,18 @@ const throwdownReducer = createReducer( {
     } );
   },
 
-  [ actions.setDeckTriggeredSection ]: ( state, action ) => {
+  [actions.setDeckTriggeredSection]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( !deck ) return;
 
     // pass no slug to clear triggered section
     deck.triggeredSection = action.payload.sectionSlug;
   },
-  [ actions.toggleDeckTriggeredSection ]: ( state, action ) => {
-    const deck = state.decks[ action.payload.deckIndex ];
+  [actions.toggleDeckTriggeredSection]: ( state, action ) => {
+    const deck = state.decks[action.payload.deckIndex];
     if ( !deck ) return;
 
-    const section = deck.sections[ action.payload.sectionIndex ];
+    const section = deck.sections[action.payload.sectionIndex];
     const sectionSlug = section ? section.slug : '';
     if ( deck.triggeredSection !== sectionSlug ) {
       deck.triggeredSection = sectionSlug;
@@ -97,7 +97,7 @@ const throwdownReducer = createReducer( {
     }
   },
 
-  [ actions.setDeckPlayingSection ]: ( state, action ) => {
+  [actions.setDeckPlayingSection]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( !deck ) return;
 

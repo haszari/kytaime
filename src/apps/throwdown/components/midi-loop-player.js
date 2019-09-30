@@ -29,10 +29,10 @@ class MidiLoopPlayer {
   getNotePattern() {
     // convert any named drum hits into general midi
     const notes = this.props.notes.map( noteEvent => {
-      if ( midiUtilities.drumMap[ noteEvent.note ] ) {
+      if ( midiUtilities.drumMap[noteEvent.note] ) {
         return {
           ...noteEvent,
-          note: midiUtilities.drumMap[ noteEvent.note ],
+          note: midiUtilities.drumMap[noteEvent.note],
         };
       }
       return noteEvent;
@@ -59,7 +59,7 @@ class MidiLoopPlayer {
     // let { triggered, playing } = this.state;
     var triggered = true && this.parentTriggered;
 
-    let triggerInfo = patternSequencer.renderPatternTrigger(
+    const triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm,
       renderBeats,
       triggered,
@@ -70,9 +70,9 @@ class MidiLoopPlayer {
     );
     this.playing = triggerInfo.isPlaying;
 
-    let pattern = this.getNotePattern();
+    const pattern = this.getNotePattern();
 
-    let filteredNotes = _.filter( pattern.notes, function( event ) {
+    const filteredNotes = _.filter( pattern.notes, function( event ) {
       return bpmUtilities.valueInWrappedBeatRange(
         event.start,
         triggerInfo.startBeat % patternDuration,

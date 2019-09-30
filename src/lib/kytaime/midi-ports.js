@@ -5,7 +5,7 @@ Utilities for accessing Web MIDI output devices.
 - open a named device for sending midi events to
 */
 
-let midiOutPorts = []; let midiInPorts = [];
+const midiOutPorts = []; const midiInPorts = [];
 
 function getMidiPorts() {
   var access = navigator.requestMIDIAccess();

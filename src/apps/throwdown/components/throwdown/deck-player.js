@@ -17,10 +17,10 @@ class DeckPlayer {
 
     // create/update one player for each pattern
     _.each( props.patterns, ( pattern ) => {
-      var patternPlayer = this.patternPlayers[ pattern.slug ];
+      var patternPlayer = this.patternPlayers[pattern.slug];
       if ( !patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
-        this.patternPlayers[ pattern.slug ] = patternPlayer;
+        this.patternPlayers[pattern.slug] = patternPlayer;
       } else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
       }

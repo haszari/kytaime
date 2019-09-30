@@ -8,19 +8,19 @@ const transportReducer = createReducer( {
   isPlaying: false,
   currentBeat: 0,
 }, {
-  [ actions.setTempo ]: ( state, action ) => {
+  [actions.setTempo]: ( state, action ) => {
     state.tempo = parseFloat( action.payload );
   },
-  [ actions.setNextTempo ]: ( state, action ) => {
+  [actions.setNextTempo]: ( state, action ) => {
     state.nextTempo = parseFloat( action.payload );
   },
-  [ actions.adjustNextTempo ]: ( state, action ) => {
+  [actions.adjustNextTempo]: ( state, action ) => {
     state.nextTempo = state.nextTempo + action.payload;
   },
-  [ actions.togglePlayback ]: ( state, action ) => {
+  [actions.togglePlayback]: ( state, action ) => {
     state.isPlaying = !state.isPlaying;
   },
-  [ actions.setCurrentBeat ]: ( state, action ) => {
+  [actions.setCurrentBeat]: ( state, action ) => {
     state.currentBeat = action.payload;
   },
 

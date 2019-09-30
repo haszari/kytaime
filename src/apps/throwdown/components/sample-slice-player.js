@@ -26,8 +26,8 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
 
   for ( var i = 1; i < cuts.length; i++ ) {
     const slice = {
-      start: cuts[ i - 1 ],
-      end: cuts[ i ],
+      start: cuts[i - 1],
+      end: cuts[i],
     };
     slices.push( {
       start: slice.start,
@@ -70,12 +70,12 @@ class SampleSlicePlayer {
     //   `start=(${ startBeat }, ${ startTimestamp }) `
     // );
 
-    let { tempoBpm, } = this.props;
+    const { tempoBpm, } = this.props;
 
-    let secPerBeat = ( 60 / tempoBpm );
-    let rate = transportBpm / tempoBpm;
+    const secPerBeat = ( 60 / tempoBpm );
+    const rate = transportBpm / tempoBpm;
 
-    let player = audioDestinationNode.context.createBufferSource();
+    const player = audioDestinationNode.context.createBufferSource();
     player.buffer = this.props.buffer;
     player.playbackRate.value = rate;
 
@@ -102,11 +102,11 @@ class SampleSlicePlayer {
       return;
     }
 
-    let { sampleDuration, } = this.props;
+    const { sampleDuration, } = this.props;
 
     var triggered = true && this.parentTriggered;
 
-    let triggerInfo = patternSequencer.renderPatternTrigger(
+    const triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm,
       renderRangeBeats,
       triggered,
@@ -118,7 +118,7 @@ class SampleSlicePlayer {
 
     this.playing = triggerInfo.isPlaying;
 
-    let filteredSlices = _.filter( this.props.slices, function( sliceEvent ) {
+    const filteredSlices = _.filter( this.props.slices, function( sliceEvent ) {
       return bpmUtilities.valueInWrappedBeatRange(
         sliceEvent.start,
         triggerInfo.startBeat % sampleDuration,
@@ -128,7 +128,7 @@ class SampleSlicePlayer {
     } );
 
     // scheduledSlices: start time in msec
-    let scheduledSlices = patternSequencer.renderPatternEvents(
+    const scheduledSlices = patternSequencer.renderPatternEvents(
       renderRange.start,
       tempoBpm,
       renderRangeBeats,
