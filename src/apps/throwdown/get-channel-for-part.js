@@ -67,7 +67,7 @@ const channelConventions_four_channels = {
 
 const getChannelForPart = function( partName ) {
   // conventions for midi instruments or mixer channels
-  const channel = channelConventions_four_channels[ partName ];
+  const channel = channelConventions_four_channels[partName];
   if ( _.isNumber( channel ) ) {
     return channel;
   } else {

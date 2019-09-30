@@ -24,8 +24,8 @@ const loadSample = function( url, audioContext, callback ) {
 // Used for setting up multi out for mixing externally.
 const connectToStereoOutChannel = function( audioContext, audioSourceNode, audioDestinationNode, channelPairIndex ) {
   // is there a problem with maxChannelCount??
-  let merger = audioContext.createChannelMerger( audioDestinationNode.maxChannelCount );
-  let splitter = audioContext.createChannelSplitter( 2 );
+  const merger = audioContext.createChannelMerger( audioDestinationNode.maxChannelCount );
+  const splitter = audioContext.createChannelSplitter( 2 );
   audioSourceNode.connect( splitter );
   merger.connect( audioDestinationNode );
   splitter.connect( merger, 0, ( channelPairIndex * 2 ) + 0 );

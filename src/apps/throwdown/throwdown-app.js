@@ -99,12 +99,12 @@ class ThrowdownApp {
         playingSection: deckState.playingSection,
       };
 
-      var deckItem = deckPlayers[ deckState.slug ];
+      var deckItem = deckPlayers[deckState.slug];
 
       if ( deckItem ) {
         deckItem.updateProps( deckProps );
       } else {
-        deckPlayers[ deckState.slug ] = new DeckPlayer( deckProps );
+        deckPlayers[deckState.slug] = new DeckPlayer( deckProps );
       }
 
       // _.map( deckState.sections, ( section ) => {
@@ -270,12 +270,14 @@ class ThrowdownApp {
   startTransport() {
     sequencer.start();
   }
+
   stopTransport() {
     sequencer.stop();
     this.lastRenderEndBeat = 0;
     this.stopAllPlayers();
     store.dispatch( transportActions.setCurrentBeat( this.lastRenderEndBeat ) );
   }
+
   toggleTransport() {
     if ( sequencer.isPlaying() ) {
       sequencer.stop();

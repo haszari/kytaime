@@ -45,7 +45,7 @@ function renderPatternTrigger(
 
   // defaults for our return value, what we provide to client
   // render time range in global transport beats
-  let renderInfo = {
+  const renderInfo = {
     isPlaying: isPlaying,
     tempoBpm: tempoBpm,
     startBeat: undefined,
@@ -138,8 +138,8 @@ const renderPatternEvents = function(
   debug = debug || false;
 
   // start and end of render range in pattern-beats
-  let renderStart = ( renderRangeBeats.start % cycleBeats );
-  let renderEnd = ( renderRangeBeats.end % cycleBeats );
+  const renderStart = ( renderRangeBeats.start % cycleBeats );
+  const renderEnd = ( renderRangeBeats.end % cycleBeats );
 
   // loop over the events, calculate sequence time info, map to new array
   return _.map( events, function( noteEvent ) {

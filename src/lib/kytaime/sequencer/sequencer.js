@@ -12,7 +12,7 @@ import _ from 'lodash';
 
 var WorkerSetInterval = require( './setInterval.worker' );
 
-let AudioContext = window.AudioContext || window.webkitAudioContext;
+const AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
 audioContext = new AudioContext(); // this will start "paused"
 
@@ -43,7 +43,7 @@ const webWorkerTimerMessage = 'kytaime-sequencer-update';
 //   end: renderEnd, // render period end time in milliseconds
 // }
 
-let renderCallbacks = {};
+const renderCallbacks = {};
 
 function setRenderCallback( callbackId, callbackFunction ) {
   renderCallbacks[callbackId] = callbackFunction;
