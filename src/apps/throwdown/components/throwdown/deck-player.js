@@ -21,7 +21,8 @@ class DeckPlayer {
       if ( !patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
         this.patternPlayers[pattern.slug] = patternPlayer;
-      } else {
+      }
+      else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
       }
     } );

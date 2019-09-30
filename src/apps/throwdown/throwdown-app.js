@@ -103,7 +103,8 @@ class ThrowdownApp {
 
       if ( deckItem ) {
         deckItem.updateProps( deckProps );
-      } else {
+      }
+      else {
         deckPlayers[deckState.slug] = new DeckPlayer( deckProps );
       }
 
@@ -281,7 +282,8 @@ class ThrowdownApp {
   toggleTransport() {
     if ( sequencer.isPlaying() ) {
       sequencer.stop();
-    } else {
+    }
+    else {
       sequencer.start();
     }
   }

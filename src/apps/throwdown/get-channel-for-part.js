@@ -70,7 +70,8 @@ const getChannelForPart = function( partName ) {
   const channel = channelConventions_four_channels[partName];
   if ( _.isNumber( channel ) ) {
     return channel;
-  } else {
+  }
+  else {
     return 1;
   }
 };

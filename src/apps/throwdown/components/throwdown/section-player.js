@@ -7,10 +7,8 @@ import playerFactory from '../../player-factory';
 
 // import throwdownActions from './actions';
 
-
 class SectionPlayer {
   constructor( props ) {
-
     this.patternPlayers = {};
 
     this.updateProps( props );
@@ -21,10 +19,10 @@ class SectionPlayer {
 
     // create/update players for each pattern
     _.each( props.patterns, ( pattern ) => {
-      var patternPlayer = this.patternPlayers[ pattern.slug ];
+      var patternPlayer = this.patternPlayers[pattern.slug];
       if ( ! patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
-        this.patternPlayers[ pattern.slug ] = patternPlayer;
+        this.patternPlayers[pattern.slug] = patternPlayer;
       }
       else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
@@ -34,17 +32,17 @@ class SectionPlayer {
 
   stopPlayback() {
     // stop pattern players
-    _.each( this.patternPlayers,  
-      player => player.stopPlayback() 
+    _.each( this.patternPlayers,
+      player => player.stopPlayback()
     );
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
-    let triggerInfo = patternSequencer.renderPatternTrigger(
-      tempoBpm, 
+    const triggerInfo = patternSequencer.renderPatternTrigger(
+      tempoBpm,
       renderRangeBeats,
       this.props.triggered,
-      this.props.playing, 
+      this.props.playing,
       this.props.triggerLoop,
       // start beats and end beats for section .. is that a thing??
     );
@@ -52,14 +50,14 @@ class SectionPlayer {
     this.props.playing = triggerInfo.isPlaying;
 
     // console.log( `${ this.props.slug } t=${ this.props.triggered } p=${ this.props.playing }` );
-  
+
     // temporary - this really needs to be passed down to patterns as triggered: false
     // so they can finish playing, etc
     // if ( ! this.props.playing ) {
     //   return;
     // }
 
-    _.each( this.patternPlayers,  
+    _.each( this.patternPlayers,
       player => {
         player.setParentTriggered( this.props.triggered );
         player.setParentPhrase( this.props.triggerLoop );
@@ -75,6 +73,5 @@ SectionPlayer.defaultProps = {
   patterns: [],
   buffers: [],
 };
-
 
 export default SectionPlayer;

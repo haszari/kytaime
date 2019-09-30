@@ -60,7 +60,8 @@ const throwdownReducer = createReducer( {
       state.decks.splice( insertPosition, 0, newDeck );
       _.remove( state.decks, shuntedDeck );
       state.decks.push( shuntedDeck );
-    } else {
+    }
+    else {
       // otherwise just add at the end of the list
       state.decks.push( newDeck );
     }
@@ -92,7 +93,8 @@ const throwdownReducer = createReducer( {
     const sectionSlug = section ? section.slug : '';
     if ( deck.triggeredSection !== sectionSlug ) {
       deck.triggeredSection = sectionSlug;
-    } else {
+    }
+    else {
       deck.triggeredSection = null;
     }
   },

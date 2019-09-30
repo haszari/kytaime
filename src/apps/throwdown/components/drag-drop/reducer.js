@@ -10,10 +10,12 @@ const fileImportReducer = createReducer( {
     if ( action.payload && action.payload.dropHighlightDeck ) {
       state.dropHighlightDeck = action.payload.dropHighlightDeck;
       state.dropHighlightAddNew = false;
-    } else if ( action.payload && action.payload.dropHighlightAddNew ) {
+    }
+    else if ( action.payload && action.payload.dropHighlightAddNew ) {
       state.dropHighlightDeck = '';
       state.dropHighlightAddNew = true;
-    } else {
+    }
+    else {
       state.dropHighlightDeck = '';
       state.dropHighlightAddNew = false;
     }

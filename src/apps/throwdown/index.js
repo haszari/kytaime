@@ -60,7 +60,8 @@ observeStore(
   ( isPlaying ) => {
     if ( isPlaying ) {
       throwdownApp.startTransport();
-    } else {
+    }
+    else {
       throwdownApp.stopTransport();
     }
   }
