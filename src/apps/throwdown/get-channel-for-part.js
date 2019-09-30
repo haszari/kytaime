@@ -1,20 +1,20 @@
 import _ from 'lodash';
 
 // const channelConventions_six_channels = {
-//   drums: 0, 
-//   beat: 0, 
-//   kick: 0, 
-//   hat: 0, 
-//   snare: 0, 
-//   clap: 0, 
-//   perc: 0, 
-  
-//   bass: 1, 
-//   sub: 1, 
+//   drums: 0,
+//   beat: 0,
+//   kick: 0,
+//   hat: 0,
+//   snare: 0,
+//   clap: 0,
+//   perc: 0,
 
-//   chords: 2, 
-//   pad: 2, 
-  
+//   bass: 1,
+//   sub: 1,
+
+//   chords: 2,
+//   pad: 2,
+
 //   lead: 3,
 //   synth: 3,
 //   melody: 3,
@@ -25,7 +25,7 @@ import _ from 'lodash';
 //   vocal: 4,
 //   voc: 4,
 //   sample: 4,
-  
+
 //   texture: 5,
 //   fx: 5,
 // };
@@ -33,23 +33,23 @@ import _ from 'lodash';
 // we only have four pairs in Ableton Live Intro, so let's use them more carefully
 const channelConventions_four_channels = {
   // percussion of any kind
-  drums: 0, 
-  beat: 0, 
-  kick: 0, 
-  hat: 0, 
-  snare: 0, 
-  clap: 0, 
-  perc: 0, 
-  
-  // sub bass 
-  bass: 1, 
-  sub: 1, 
+  drums: 0,
+  beat: 0,
+  kick: 0,
+  hat: 0,
+  snare: 0,
+  clap: 0,
+  perc: 0,
+
+  // sub bass
+  bass: 1,
+  sub: 1,
 
   // synth chords pad lead whatever
-  chords: 2, 
+  chords: 2,
 
-  pad: 2, 
-  
+  pad: 2,
+
   lead: 2,
   synth: 2,
   melody: 2,
@@ -70,10 +70,9 @@ const getChannelForPart = function( partName ) {
   const channel = channelConventions_four_channels[ partName ];
   if ( _.isNumber( channel ) ) {
     return channel;
-  }
-  else {
+  } else {
     return 1;
   }
-}
+};
 
 export default getChannelForPart;

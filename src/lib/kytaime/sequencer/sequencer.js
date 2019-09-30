@@ -1,38 +1,38 @@
 /*
 Kytaime sequencer core.
 
-Doesn't sequence anything on its own, but sets up everything so an app 
+Doesn't sequence anything on its own, but sets up everything so an app
 can sequence midi and audio reliably and accurately.
 
-This doesn't provide any tempo / beat / pattern sequencing. Use this in 
+This doesn't provide any tempo / beat / pattern sequencing. Use this in
 conjunction with pattern-sequencer.
 */
 
-import _ from 'lodash'; 
+import _ from 'lodash';
 
-var WorkerSetInterval = require('./setInterval.worker');
+var WorkerSetInterval = require( './setInterval.worker' );
 
 let AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
 audioContext = new AudioContext(); // this will start "paused"
 
-//-----------------------------------------------
-//--- render interval settings ---
+// -----------------------------------------------
+// --- render interval settings ---
 
 // How often we ideally want to call our note renderer (milliseconds).
 const renderInterval = 200;
-// We render a slightly longer period of notes to cover any potential 
+// We render a slightly longer period of notes to cover any potential
 // sloppy timing between render callbacks.
 const renderOverlap = renderInterval * 0.2;
 
 // A string message used to identify our web worker interval callback.
 const webWorkerTimerMessage = 'kytaime-sequencer-update';
 
-//-----------------------------------------------
-//--- render callbacks ---
+// -----------------------------------------------
+// --- render callbacks ---
 
 // Client app can set up as many render callbacks as they like.
-// This library will call these, and pass them all they need to 
+// This library will call these, and pass them all they need to
 // render accurately sequenced midi and audio.
 
 // Render callback is passed an object:
@@ -45,16 +45,16 @@ const webWorkerTimerMessage = 'kytaime-sequencer-update';
 
 let renderCallbacks = {};
 
-function setRenderCallback(callbackId, callbackFunction) {
-   renderCallbacks[callbackId] = callbackFunction;
+function setRenderCallback( callbackId, callbackFunction ) {
+  renderCallbacks[callbackId] = callbackFunction;
 }
 
-function removeRenderCallback(callbackId) {
-   setRenderCallback(callbackId, undefined);
+function removeRenderCallback( callbackId ) {
+  setRenderCallback( callbackId, undefined );
 }
 
-//-----------------------------------------------
-//--- internal sequencer state ---
+// -----------------------------------------------
+// --- internal sequencer state ---
 
 var state = {
   isPlaying: false,
@@ -62,15 +62,14 @@ var state = {
   intervalId: null,
 };
 
-//-----------------------------------------------
-//--- internal sequencer render callback ---
+// -----------------------------------------------
+// --- internal sequencer render callback ---
 
-// Determines the exact time period that should be rendered and 
+// Determines the exact time period that should be rendered and
 // calls through to any registered renderCallbacks.
 
 var updateTransport = function() {
-  audioContext.resume().then(function() {
-
+  audioContext.resume().then( function() {
     // get the current time in milliseconds (since page/app began)
     var now = window.performance.now();
 
@@ -83,19 +82,18 @@ var updateTransport = function() {
     // we're getting ahead of ourselves, chill out
     // time keeps on slipping, slipping
     // into the future
-    if (chunkMs <= 0)
-      return;
+    if ( chunkMs <= 0 ) { return; }
 
     // determine an approx difference between midi now and audio now, so midi and audio beats line up
     var audioNow = audioContext.currentTime;
     var offsetMilliseconds = audioNow * 1000 - now;
 
     // tell the client(s) to do their thing
-    _.map(renderCallbacks, (renderFunc, id) => {
+    _.map( renderCallbacks, ( renderFunc, id ) => {
       renderFunc( {
         audioContext: audioContext,
 
-        audioContextTimeOffsetMsec: offsetMilliseconds, 
+        audioContextTimeOffsetMsec: offsetMilliseconds,
 
         start: renderStart,
         end: renderEnd,
@@ -104,54 +102,54 @@ var updateTransport = function() {
 
     // update state
     state.lastRenderEndTime = renderEnd;
-  });
+  } );
 };
 
-//-----------------------------------------------
-//--- timer machinery ---
+// -----------------------------------------------
+// --- timer machinery ---
 
 // this calls us reliably often - like setInterval but more reliable & consistent
 
-var worker = new WorkerSetInterval;
+var worker = new WorkerSetInterval();
 // worker.postMessage();
-worker.addEventListener('message', function(e) {
-   // console.log('Worker said: ', e.data);
-   if (e.data == webWorkerTimerMessage) {
-      updateTransport();
-   }
-}, false);
+worker.addEventListener( 'message', function( e ) {
+  // console.log('Worker said: ', e.data);
+  if ( e.data == webWorkerTimerMessage ) {
+    updateTransport();
+  }
+}, false );
 
-//-----------------------------------------------
-//--- sequencer interface – start & stop, play state ---
+// -----------------------------------------------
+// --- sequencer interface – start & stop, play state ---
 
 // note that 'start' & 'stop' are hard-coded in setInterval.worker.js
 
 var startTempoClock = function() {
   state.isPlaying = true;
 
-  // let's start the tempoclock NOW      
+  // let's start the tempoclock NOW
   state.lastRenderEndTime = window.performance.now();
   updateTransport();
 
   // now loop forever
-  worker.postMessage({
-    type: "start", 
+  worker.postMessage( {
+    type: 'start',
     interval: renderInterval,
-    message: webWorkerTimerMessage
-  });
+    message: webWorkerTimerMessage,
+  } );
 };
 
 var stopTempoClock = function() {
   // kill timer
-  worker.postMessage({
-    type: "stop"
-  });
+  worker.postMessage( {
+    type: 'stop',
+  } );
 
   // reset state
   state = {
     isPlaying: false,
     lastRenderEndTime: 0,
-    intervalId: null
+    intervalId: null,
   };
 };
 
@@ -159,8 +157,8 @@ var isPlaying = function() {
   return state.isPlaying;
 };
 
-//-----------------------------------------------
-//--- export quality ---
+// -----------------------------------------------
+// --- export quality ---
 
 export default {
   start: startTempoClock,

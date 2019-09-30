@@ -1,14 +1,14 @@
 import _ from 'lodash';
 
-import { createSelector } from 'redux-starter-kit';
+import { createSelector, } from 'redux-starter-kit';
 
-const getThrowdown = ( state ) => { return _.get( state, 'throwdown' ) };
+const getThrowdown = ( state ) => { return _.get( state, 'throwdown' ); };
 
-const getPatterns = ( state ) => { return _.get( state, 'throwdown.patterns' ) };
+const getPatterns = ( state ) => { return _.get( state, 'throwdown.patterns' ); };
 
-const getDecks = ( state ) => { return _.get( state, 'throwdown.decks' ) };
+const getDecks = ( state ) => { return _.get( state, 'throwdown.decks' ); };
 
-const getTransport = ( state ) => { return _.get( state, 'transport' ) };
+const getTransport = ( state ) => { return _.get( state, 'transport' ); };
 
 // this could be a user option/runtime param
 const MIN_PHRASE_LENGTH = 4;
@@ -34,38 +34,36 @@ function getPhraseLoop( state ) {
   }, MIN_PHRASE_LENGTH );
 }
 
-const getTriggerLoop = createSelector( 
-  [ getThrowdown, getPhraseLoop ],
+const getTriggerLoop = createSelector(
+  [ getThrowdown, getPhraseLoop, ],
   ( throwdown, phraseLoop ) => ( throwdown.deferAllTriggers ? Infinity : phraseLoop ),
 );
 
-const getPhraseProgress = createSelector( 
-  [ getPhraseLoop, getTransport ],
+const getPhraseProgress = createSelector(
+  [ getPhraseLoop, getTransport, ],
   ( phraseLoop, transport ) => {
     return ( transport.currentBeat % phraseLoop ) / phraseLoop;
   },
 );
 
 function getDeck( state, deckSlug ) {
-  return _.find( getDecks( state ), 
+  return _.find( getDecks( state ),
     deck => ( deck.slug === deckSlug )
   );
 }
 
 function getDeckSections( state, deckSlug ) {
   const deckState = getDeck( state, deckSlug );
-  if ( ! deckState ) 
-    return;
+  if ( !deckState ) { return; }
 
   return deckState.sections;
 }
 
 function getDeckSection( state, deckSlug, sectionSlug ) {
   const deckState = getDeck( state, deckSlug );
-  if ( ! deckState ) 
-    return;
+  if ( !deckState ) { return; }
 
-  return _.find( deckState.sections, 
+  return _.find( deckState.sections,
     section => ( section.slug === sectionSlug )
   );
 }
@@ -73,11 +71,10 @@ function getDeckSection( state, deckSlug, sectionSlug ) {
 function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
   const allPatterns = getPatterns( state );
   const section = getDeckSection( state, deckSlug, sectionSlug );
-  if ( ! section ) 
-    return;
+  if ( !section ) { return; }
 
   const patterns = section.patterns.map(
-    patternSlug => _.find( allPatterns, { songSlug: deckSlug, slug: patternSlug } )
+    patternSlug => _.find( allPatterns, { songSlug: deckSlug, slug: patternSlug, } )
   );
   return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
 }
@@ -85,12 +82,11 @@ function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
 function getAllDeckPatterns( state, deckSlug ) {
   const allPatterns = getPatterns( state );
   const deckState = getDeck( state, deckSlug );
-  if ( ! deckState ) 
-    return;
+  if ( !deckState ) { return; }
 
   const sectionPatterns = deckState.sections.map( section => {
-    var patterns = section.patterns.map( 
-      patternSlug => _.find( allPatterns, { 
+    var patterns = section.patterns.map(
+      patternSlug => _.find( allPatterns, {
         slug: patternSlug,
         songSlug: deckState.slug,
       } )
@@ -106,8 +102,8 @@ function getDeckPhraseLoop( state, deckSlug ) {
   return getPhraseLoopFromPatterns( patterns );
 }
 
-const getDeckPhraseProgress = createSelector( 
-  [ getDeckPhraseLoop, getTransport ],
+const getDeckPhraseProgress = createSelector(
+  [ getDeckPhraseLoop, getTransport, ],
   ( phraseLoop, transport ) => {
     return ( transport.currentBeat % phraseLoop ) / phraseLoop;
   },
@@ -125,7 +121,7 @@ export default {
   getDeckSection,
   getDeckSectionPatterns,
   getAllDeckPatterns,
-  
+
   getPhraseLoop,
   getTriggerLoop,
   getPhraseProgress,

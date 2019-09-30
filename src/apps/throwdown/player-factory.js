@@ -9,7 +9,7 @@ function getPlayerProps( patternData, buffers ) {
   var channel = patternData.channel || getChannelForPart( patternData.part );
   if ( patternData.notes ) {
     return {
-      channel: channel, 
+      channel: channel,
       notes: patternData.notes,
       duration: patternData.duration,
       startBeats: patternData.startBeats,
@@ -18,15 +18,15 @@ function getPlayerProps( patternData, buffers ) {
   }
   if ( patternData.file ) {
     // const channel = getChannelForPart( resource.part || key );
-    const stateBuffer = _.find( buffers, { file: patternData.file } );
-    if ( ! stateBuffer ) {
+    const stateBuffer = _.find( buffers, { file: patternData.file, } );
+    if ( !stateBuffer ) {
       return null;
     }
     return {
       channel: channel,
       audioFile: patternData.file,
       buffer: stateBuffer.buffer,
-      tempoBpm: patternData.tempo, 
+      tempoBpm: patternData.tempo,
       sampleDuration: patternData.duration,
       startBeats: patternData.startBeats,
       endBeats: patternData.endBeats,
@@ -38,7 +38,7 @@ function getPlayerProps( patternData, buffers ) {
 
 function playerFromFilePatternData( patternData, buffers ) {
   const props = getPlayerProps( patternData, buffers );
-  if ( ! props ) {
+  if ( !props ) {
     return null;
   }
 
