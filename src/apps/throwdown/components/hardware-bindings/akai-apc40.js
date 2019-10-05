@@ -17,7 +17,7 @@ function onMidiMessage( event ) {
   const message = MIDIMessage( event );
   console.log( message );
 
-  if ( message.messageType == 'noteon' ) {
+  if ( message.messageType === 'noteon' ) {
     switch ( message.key ) {
       case 91:
         store.dispatch(
@@ -41,7 +41,7 @@ function onMidiMessage( event ) {
     }
   }
 
-  if ( message.messageType == 'controlchange' ) {
+  if ( message.messageType === 'controlchange' ) {
     switch ( message.controllerNumber ) {
       case 47: {
         store.dispatch(

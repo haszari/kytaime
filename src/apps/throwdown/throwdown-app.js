@@ -107,48 +107,18 @@ class ThrowdownApp {
       else {
         deckPlayers[deckState.slug] = new DeckPlayer( deckProps );
       }
-
-      // _.map( deckState.sections, ( section ) => {
-
-      // } );
     } );
 
     // console.log( this.deckPlayers );
   }
 
-  updateDeckPlayState_fromDeckPlayers() {
-    // const allDecks = throwdownSelectors.getDecks( state );
-
+  updateDeckPlayState() {
     _.map( this.deckPlayers, deckPlayer => {
       store.dispatch( throwdownActions.setDeckPlayingSection( {
         deckSlug: deckPlayer.props.slug,
         sectionSlug: deckPlayer.props.playingSection,
       } ) );
     } );
-
-    // // init defaults (so when nothing is playing, we send a message for that)
-    // var playingSectionByDeck = _.map( allDecks, ( deckState ) => {
-    //   return {
-    //     deckSlug: deckState.slug,
-    //     playingSection: null,
-    //   }
-    // } );
-    // playingSectionByDeck = _.keyBy( playingSectionByDeck, 'deckSlug' );
-
-    // // loop over all decks, finding the playing section
-    // this.deckSectionPlayers.map( deckSectionPlayer => {
-    //   if ( deckSectionPlayer.sectionPlayer.props.playing ) {
-    //     playingSectionByDeck[ deckSectionPlayer.deckSlug ].playingSection = deckSectionPlayer.sectionPlayer.props.slug;
-    //   }
-    // } );
-
-    // // now send all the messages
-    // _.map( playingSectionByDeck, deckSectionInfo => {
-    //   store.dispatch( throwdownActions.setDeckPlayingSection( {
-    //     deckSlug: deckSectionInfo.deckSlug,
-    //     sectionSlug: deckSectionInfo.playingSection
-    //   } ) );
-    // } );
   }
 
   stopAllPlayers() {
@@ -166,11 +136,9 @@ class ThrowdownApp {
     // );
 
     _.map( this.deckPlayers, deckPlayer => {
-      // if ( deckSectionItem.sectionPlayer.throwdownRender ) {
       deckPlayer.throwdownRender( renderRange, this.tempoBpm, renderRangeBeats, this.midiOutPort );
-      // }
     } );
-    this.updateDeckPlayState_fromDeckPlayers();
+    this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end;
 
@@ -196,7 +164,7 @@ class ThrowdownApp {
 
     // drop tempo changes mod what
     const tempoChangePhrase = throwdownSelectors.getTriggerLoop( store.getState() );
-    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm != this.tempo;
+    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm !== this.tempo;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
       this.tempoBpm, // we may not need this whole blob - can we expand out to the minimum params we need?
       renderBeats,

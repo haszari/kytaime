@@ -45,18 +45,18 @@ function convertMidiToObject( midiFile, offset ) {
     return event;
   } );
   var noteOns = _.filter( allEvents, event => {
-    return ( event.subtype == MIDIEvents.EVENT_MIDI_NOTE_ON );
+    return ( event.subtype === MIDIEvents.EVENT_MIDI_NOTE_ON );
   } );
   var noteOffs = _.filter( allEvents, event => {
-    if ( event.subtype == MIDIEvents.EVENT_MIDI_NOTE_OFF ) { return true; }
+    if ( event.subtype === MIDIEvents.EVENT_MIDI_NOTE_OFF ) { return true; }
     return (
-      ( event.subtype == MIDIEvents.EVENT_MIDI_NOTE_ON ) &&
-         ( event.param2 == 0 )
+      ( event.subtype === MIDIEvents.EVENT_MIDI_NOTE_ON ) &&
+         ( event.param2 === 0 )
     );
   } );
   _.each( noteOns, noteOnEvent => {
     var subsequentNoteOffs = _.filter( noteOffs, noteOffEvent => {
-      if ( noteOffEvent.param1 != noteOnEvent.param1 ) { return false; }
+      if ( noteOffEvent.param1 !== noteOnEvent.param1 ) { return false; }
       return ( noteOffEvent.playTime > noteOnEvent.playTime );
     } );
     subsequentNoteOffs = _.sortBy( subsequentNoteOffs, 'playTime' );

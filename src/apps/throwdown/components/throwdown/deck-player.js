@@ -53,8 +53,8 @@ class DeckPlayer {
       const triggerInfo = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( playingSection.slug == this.props.triggeredSection ),
-        ( playingSection.slug == this.props.playingSection ),
+        ( playingSection.slug === this.props.triggeredSection ),
+        ( playingSection.slug === this.props.playingSection ),
         this.props.triggerLoop,
       );
       if ( triggerInfo.isPlaying ) {
@@ -66,8 +66,8 @@ class DeckPlayer {
       const triggerInfo = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( triggeredSection.slug == this.props.triggeredSection ),
-        ( triggeredSection.slug == this.props.playingSection ),
+        ( triggeredSection.slug === this.props.triggeredSection ),
+        ( triggeredSection.slug === this.props.playingSection ),
         this.props.triggerLoop,
       );
       if ( triggerInfo.isPlaying ) {

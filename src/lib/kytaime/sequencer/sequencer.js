@@ -114,7 +114,7 @@ var worker = new WorkerSetInterval();
 // worker.postMessage();
 worker.addEventListener( 'message', function( e ) {
   // console.log('Worker said: ', e.data);
-  if ( e.data == webWorkerTimerMessage ) {
+  if ( e.data === webWorkerTimerMessage ) {
     updateTransport();
   }
 }, false );

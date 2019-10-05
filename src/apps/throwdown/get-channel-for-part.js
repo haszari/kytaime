@@ -31,7 +31,7 @@ import _ from 'lodash';
 // };
 
 // we only have four pairs in Ableton Live Intro, so let's use them more carefully
-const channelConventions_four_channels = {
+const channelConventionsFourChannels = {
   // percussion of any kind
   drums: 0,
   beat: 0,
@@ -67,7 +67,7 @@ const channelConventions_four_channels = {
 
 const getChannelForPart = function( partName ) {
   // conventions for midi instruments or mixer channels
-  const channel = channelConventions_four_channels[partName];
+  const channel = channelConventionsFourChannels[partName];
   if ( _.isNumber( channel ) ) {
     return channel;
   }

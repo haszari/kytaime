@@ -22,10 +22,10 @@ var startCallbacks = function( renderInterval, message ) {
 
 self.addEventListener( 'message', function( e ) {
   // note that 'start' & 'stop' are hard-coded in sequencer.js
-  if ( e.data.type == 'start' ) {
+  if ( e.data.type === 'start' ) {
     startCallbacks( e.data.interval, e.data.message );
   }
-  else if ( e.data.type == 'stop' ) {
+  else if ( e.data.type === 'stop' ) {
     stopCallbacks();
   }
 }, false );
