@@ -10,6 +10,12 @@ import _ from 'lodash';
 
 import bpmUtilities from './bpm-utilities';
 
+// We need a modulus func that works well with negative numbers,
+// so we can wrap a trigger beat around a range (loop length).
+function modulus( beat, range ) {
+  return ( beat % range + range ) % range;
+}
+
 /***
   renderPatternTrigger
   Provides the ability to trigger (start, drop) and untrigger (stop) patterns (loops, midi patterns, beats).
@@ -42,6 +48,9 @@ function renderPatternTrigger(
   triggerBeats = triggerBeats || [ 0, ];
   unTriggerBeats = unTriggerBeats || [ 0, ];
   // mode = 'closest'; // we don't support modes yet!
+
+  triggerBeats = _.map( triggerBeats, beat => modulus( beat, triggerQuant ) );
+  unTriggerBeats = _.map( unTriggerBeats, beat => modulus( beat, triggerQuant ) );
 
   // defaults for our return value, what we provide to client
   // render time range in global transport beats
@@ -169,4 +178,5 @@ const renderPatternEvents = function(
 export default {
   renderPatternTrigger,
   renderPatternEvents,
+  modulus,
 };
