@@ -28,13 +28,6 @@
     }
   }
   sections: {
-    beat: {
-      bars: 8
-      patterns: [
-        beat
-        hat
-      ]
-    }
     main: {
       bars: 8
       patterns: [
