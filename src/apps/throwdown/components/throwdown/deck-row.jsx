@@ -15,33 +15,7 @@ import deckColours from './deck-colours';
 
 import fileImport from '../drag-drop/file-import';
 
-function SectionTrigger( props ) {
-  const styles = {};
-  styles.fontWeight = props.playing ? 'bold' : 'normal';
-  styles.fontStyle = props.triggered ? 'italic' : 'normal';
-  const toggleTrigger = props.onSetTriggeredSection.bind(
-    null,
-    props.triggered ? null : props.slug
-  );
-  return (
-    <td>
-      <span
-        onClick={ toggleTrigger }
-        style={ styles }
-      >
-        { props.slug }
-      </span>
-    </td>
-  );
-}
-
-SectionTrigger.propTypes = {
-  playing: PropTypes.bool,
-  triggered: PropTypes.bool,
-  onSetTriggeredSection: PropTypes.func,
-  slug: PropTypes.string,
-  hue: PropTypes.number,
-};
+import SectionTrigger from './section.jsx';
 
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
