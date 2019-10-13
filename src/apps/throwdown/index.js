@@ -50,7 +50,7 @@ fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );
 // importThrowdownFile( 'data/20190325--mivova.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 
-const initialTempo = 124;
+const initialTempo = 122;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );
