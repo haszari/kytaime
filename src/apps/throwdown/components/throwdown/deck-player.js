@@ -49,6 +49,7 @@ class DeckPlayer {
 
     // run triggering for playing & triggered sections
     // we'll pass this down to the patterns so they know how to behave
+    // these two ifs should be a function??
     if ( playingSection ) {
       const triggerInfo = patternSequencer.renderPatternTrigger(
         tempoBpm,
