@@ -51,11 +51,11 @@
       patterns: [
         beat
         hat
-        # bass
+        bass
         bass-lite
         pad-lite
-        # pad
-        # pad-dense
+        pad
+        pad-dense
       ]
     }
   } 

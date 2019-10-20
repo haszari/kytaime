@@ -102,6 +102,8 @@ class DeckPlayer {
     // this is used by parent (throwdown) to send message to update UI
     this.props.playingSection = currentPlayingSection;
 
+    const partsPlayingPattern = currentPlayingSection ? _.map( currentPlayingSection.parts, 'part' ) : [];
+
     // render patterns that are in the triggered/playing section
     // this needs to change to get the _triggered_ patterns in the section(s), as they now have multiple alternative patterns
     _.each( this.patternPlayers,
@@ -122,15 +124,27 @@ class DeckPlayer {
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
 
         if ( player.playing ) {
-          store.dispatch( throwdownActions.setDeckSectionPartPlayingPattern( {
-            deckSlug: deckSlug,
-            sectionSlug: currentPlayingSection,
-            partSlug: getInstrumentPartForPattern( patternSlug, this.props.patterns, ),
-            patternSlug: patternSlug,
-          } ) );
+          const patternPart = _.find( this.props.patterns, { slug: patternSlug, } );
+          const partToUpdate = _.find( partsPlayingPattern, { part: patternPart.part, } );
+          if ( ! partToUpdate ) {
+            partsPlayingPattern.push( { part: patternPart.part, playingPattern: patternPart.slug, } );
+          }
+          else {
+            partToUpdate.playingPattern = patternSlug;
+          }
         }
       }
     );
+
+    // now update the playing patterns in the current part
+    partsPlayingPattern.map( part => {
+      store.dispatch( throwdownActions.setDeckSectionPartPlayingPattern( {
+        deckSlug: deckSlug,
+        sectionSlug: currentPlayingSection,
+        partSlug: part.part,
+        patternSlug: part.playingPattern,
+      } ) );
+    } );
   }
 }
 

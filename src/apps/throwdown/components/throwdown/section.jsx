@@ -23,6 +23,10 @@ function PartTriggers( props ) {
               className='pattern'
               key={ patternSlug }
               style={ patternStyles }
+              onClick={ function() {
+                console.log( 'part pattern clicked' );
+                props.onSetPartTriggeredSection.bind( null, props.part, patternSlug )();
+              } }
             >
               { patternSlug }
             </div>
@@ -38,6 +42,7 @@ PartTriggers.propTypes = {
   patterns: PropTypes.array,
   triggeredPattern: PropTypes.string,
   playingPattern: PropTypes.string,
+  onSetPartTriggeredSection: PropTypes.func,
 };
 
 function SectionTrigger( props ) {
@@ -46,7 +51,14 @@ function SectionTrigger( props ) {
     null,
     props.triggered ? null : props.slug
   );
-  const parts = props.parts.map( part => PartTriggers( part ) );
+  const sectionSlug = props.slug;
+  const parts = props.parts.map( part => {
+    const partProps = {
+      onSetPartTriggeredSection: props.onSetPartTriggeredSection.bind( null, sectionSlug ),
+      ...part,
+    };
+    return PartTriggers( partProps );
+  } );
   return (
     <td className='section-container'>
       <div
@@ -67,6 +79,7 @@ SectionTrigger.propTypes = {
   playing: PropTypes.bool,
   triggered: PropTypes.bool,
   onSetTriggeredSection: PropTypes.func,
+  onSetPartTriggeredSection: PropTypes.func,
   slug: PropTypes.string,
   hue: PropTypes.number,
   parts: PropTypes.array,
