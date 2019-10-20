@@ -14,12 +14,24 @@ function createDeck() {
   };
 }
 
-// interesting that this is a different kind of selector
-// doesn't need to go down into .throwdown`
+// interesting that these are a different kind of selector
+// they start at state.throwdown ..
+// this tells me that I am architecting my selectors wrong??
+// or not conventional to use them in reducer??
+
 function getDeck( state, deckSlug ) {
   return _.find( state.decks,
     deck => ( deck.slug === deckSlug )
   );
+}
+function getDeckSectionPart( state, deckSlug, sectionSlug, partSlug ) {
+  const deck = getDeck( state, deckSlug );
+  if ( ! deck ) { return; }
+
+  const section = _.find( deck.sections, { slug: sectionSlug, } );
+  if ( ! section ) { return; }
+
+  return _.find( section.parts, { part: partSlug, } );
 }
 
 const throwdownReducer = createReducer( {
@@ -135,6 +147,19 @@ const throwdownReducer = createReducer( {
 
     // pass no slug to clear playing section
     deck.playingSection = action.payload.sectionSlug;
+  },
+
+  [actions.setDeckSectionPartPlayingPattern]: ( state, action ) => {
+    const part = getDeckSectionPart(
+      state,
+      action.payload.deckSlug,
+      action.payload.sectionSlug,
+      action.payload.partSlug,
+    );
+    if ( ! part ) return;
+
+    // // pass no slug to clear playing section
+    part.playingPattern = action.payload.patternSlug;
   },
 
 } );

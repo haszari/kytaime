@@ -14,6 +14,9 @@ const setDeckTriggeredSection = createAction( 'throwdown/setDeckTriggeredSection
 const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
 const toggleDeckTriggeredSection = createAction( 'throwdown/toggleDeckTriggeredSection' );
 
+// section + part state
+const setDeckSectionPartPlayingPattern = createAction( 'throwdown/setDeckSectionPartPlayingPattern' );
+
 export default {
   setDeferAllTriggers,
   toggleDeferAllTriggers,
@@ -25,4 +28,6 @@ export default {
   setDeckTriggeredSection,
   setDeckPlayingSection,
   toggleDeckTriggeredSection,
+
+  setDeckSectionPartPlayingPattern,
 };

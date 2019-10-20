@@ -5,6 +5,17 @@ import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
 import playerFactory from '../../player-factory';
 
+import throwdownActions from './actions';
+import store from '../../store/store';
+
+function getInstrumentPartForPattern( patternSlug, patterns ) {
+  const pattern = _.find( patterns, { slug: patternSlug, } );
+  if ( ! pattern ) {
+    return '';
+  }
+  return pattern.part;
+}
+
 class DeckPlayer {
   constructor( props ) {
     this.patternPlayers = {};
@@ -57,6 +68,8 @@ class DeckPlayer {
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
 
+    const deckSlug = this.props.slug;
+
     // run triggering for playing & triggered sections
     // we'll pass this down to the patterns so they know how to behave
     // these two ifs should be a function??
@@ -107,6 +120,15 @@ class DeckPlayer {
         player.setTriggered( isTriggered );
 
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
+
+        if ( player.playing ) {
+          store.dispatch( throwdownActions.setDeckSectionPartPlayingPattern( {
+            deckSlug: deckSlug,
+            sectionSlug: currentPlayingSection,
+            partSlug: getInstrumentPartForPattern( patternSlug, this.props.patterns, ),
+            patternSlug: patternSlug,
+          } ) );
+        }
       }
     );
   }
