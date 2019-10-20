@@ -33,7 +33,7 @@ th {
 td {
   min-width: 100px;
   text-align: right;
-  vertical-align: bottom;
+  vertical-align: top;
   padding: 5px 5px 2px 5px;
 }
 
@@ -68,6 +68,30 @@ td {
   background: #eee;
 }
 
+.section-container {
+  text-align: left;
+}
+.section {
+  font-size: 110%;
+  margin-bottom: 0.25em;
+}
+
+.parts {
+  display: flex; 
+  flex-direction: row; 
+  align-items: flex-start;  
+}
+.part {
+  display: inline-block;
+  padding-right: 0.5em;
+}
+.part-slug {
+  margin-bottom: 0.25em;
+}
+
+.pattern {
+  font-size: 90%;
+}
 
 .background-target {
   position: absolute;

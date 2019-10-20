@@ -9,14 +9,28 @@ function SectionTrigger( props ) {
     null,
     props.triggered ? null : props.slug
   );
+  const parts = props.parts.map( part => (
+    <div className='part' key={ part.part }>
+      <div className='part-slug'>{ part.part }</div>
+      { part.patterns.map( patternSlug => (
+        <div className='pattern' key={ patternSlug }>
+          { patternSlug }
+        </div>
+      ) ) }
+    </div>
+  ) );
   return (
-    <td>
-      <span
+    <td className='section-container'>
+      <div
         onClick={ toggleTrigger }
         style={ styles }
+        className='section'
       >
         { props.slug }
-      </span>
+      </div>
+      <div className='parts'>
+        { parts }
+      </div>
     </td>
   );
 }
@@ -27,6 +41,7 @@ SectionTrigger.propTypes = {
   onSetTriggeredSection: PropTypes.func,
   slug: PropTypes.string,
   hue: PropTypes.number,
+  parts: PropTypes.array,
 };
 
 export default SectionTrigger;

@@ -35,6 +35,7 @@ function DeckSectionsTriggersComponent( props ) {
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
           hue={ props.deckState.hue }
+          parts={ section.parts }
         />
       );
     }
