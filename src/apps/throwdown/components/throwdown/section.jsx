@@ -1,24 +1,52 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function SectionTrigger( props ) {
+function triggerStyling( triggered, playing ) {
   const styles = {};
-  styles.fontWeight = props.playing ? 'bold' : 'normal';
-  styles.fontStyle = props.triggered ? 'italic' : 'normal';
+  styles.fontWeight = playing ? 'bold' : 'normal';
+  styles.fontStyle = triggered ? 'italic' : 'normal';
+  return styles;
+}
+
+function PartTriggers( props ) {
+  return (
+    <div className='part' key={ props.part }>
+      <div className='part-slug'>{ props.part }</div>
+      {
+        props.patterns.map( patternSlug => {
+          const patternStyles = triggerStyling(
+            patternSlug === props.triggeredPattern,
+            patternSlug === props.playingPattern,
+          );
+          return (
+            <div
+              className='pattern'
+              key={ patternSlug }
+              style={ patternStyles }
+            >
+              { patternSlug }
+            </div>
+          );
+        } )
+      }
+    </div>
+  );
+}
+
+PartTriggers.propTypes = {
+  part: PropTypes.string,
+  patterns: PropTypes.array,
+  triggeredPattern: PropTypes.string,
+  playingPattern: PropTypes.string,
+};
+
+function SectionTrigger( props ) {
+  const styles = triggerStyling( props.triggered, props.playing );
   const toggleTrigger = props.onSetTriggeredSection.bind(
     null,
     props.triggered ? null : props.slug
   );
-  const parts = props.parts.map( part => (
-    <div className='part' key={ part.part }>
-      <div className='part-slug'>{ part.part }</div>
-      { part.patterns.map( patternSlug => (
-        <div className='pattern' key={ patternSlug }>
-          { patternSlug }
-        </div>
-      ) ) }
-    </div>
-  ) );
+  const parts = props.parts.map( part => PartTriggers( part ) );
   return (
     <td className='section-container'>
       <div
