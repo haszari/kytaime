@@ -15,7 +15,7 @@ class DeckPlayer {
   updateProps( props ) {
     this.props = _.defaults( props, DeckPlayer.defaultProps );
 
-    // create/update one player for each pattern
+    // create/update one player for each pattern in this deck
     _.each( props.patterns, ( pattern ) => {
       var patternPlayer = this.patternPlayers[pattern.slug];
       if ( !patternPlayer ) {
@@ -33,6 +33,16 @@ class DeckPlayer {
     _.each( this.patternPlayers,
       player => player.stopPlayback()
     );
+  }
+
+  isPatternTriggeredInSectionParts( patternSlug, sectionData ) {
+    if ( ! sectionData ) {
+      return false;
+    }
+
+    return sectionData.parts.find( part => {
+      return ( part.triggeredPattern === patternSlug );
+    } );
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
@@ -80,12 +90,22 @@ class DeckPlayer {
     this.props.playingSection = currentPlayingSection;
 
     // render patterns that are in the triggered/playing section
+    // this needs to change to get the _triggered_ patterns in the section(s), as they now have multiple alternative patterns
     _.each( this.patternPlayers,
       ( player, patternSlug ) => {
+        // Is this pattern in a section that's triggered, i.e. parent is triggered?
+        // This allows us to trigger/untrigger a whole section (multiple patterns) as a unit.
         const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
-
         player.setParentTriggered( isInTriggeredSection );
         player.setParentPhrase( this.props.triggerLoop );
+
+        // Is this pattern triggered (selected) within the section (within the part)?
+        // This allows us to load up a section with alternative patterns
+        // for each part/instrument (e.g. different beats) and toggle between them.
+        const isTriggered = this.isPatternTriggeredInSectionParts( patternSlug, triggeredSection ) ||
+          this.isPatternTriggeredInSectionParts( patternSlug, playingSection );
+        player.setTriggered( isTriggered );
+
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
       }
     );
