@@ -34,6 +34,7 @@ function DeckSectionsTriggersComponent( props ) {
           playing={ props.deckState.playingSection === section.slug }
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
+          onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
           hue={ props.deckState.hue }
           parts={ section.parts }
         />
@@ -74,6 +75,8 @@ DeckSectionsTriggersComponent.propTypes = {
   slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
+  onSetPartTriggeredSection: PropTypes.func,
+
   phraseLoop: PropTypes.number,
 
   highlighted: PropTypes.bool,
@@ -102,6 +105,17 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
         actions.setDeckTriggeredSection( {
           deckSlug: ownProps.slug,
           sectionSlug,
+        } )
+      );
+    },
+
+    onSetPartTriggeredSection: ( sectionSlug, partSlug, patternSlug ) => {
+      dispatch(
+        actions.setDeckSectionPartTriggeredPattern( {
+          deckSlug: ownProps.slug,
+          partSlug,
+          sectionSlug,
+          patternSlug,
         } )
       );
     },

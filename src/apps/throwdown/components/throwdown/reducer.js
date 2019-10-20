@@ -158,8 +158,19 @@ const throwdownReducer = createReducer( {
     );
     if ( ! part ) return;
 
-    // // pass no slug to clear playing section
     part.playingPattern = action.payload.patternSlug;
+  },
+
+  [actions.setDeckSectionPartTriggeredPattern]: ( state, action ) => {
+    const part = getDeckSectionPart(
+      state,
+      action.payload.deckSlug,
+      action.payload.sectionSlug,
+      action.payload.partSlug,
+    );
+    if ( ! part ) return;
+
+    part.triggeredPattern = action.payload.patternSlug;
   },
 
 } );
