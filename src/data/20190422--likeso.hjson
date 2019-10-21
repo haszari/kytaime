@@ -46,14 +46,21 @@
     }
   }
   sections: {
-    likeso: {
-      bars: 8
+    lite: {
       patterns: [
         beat
         hat
         bass
         bass-lite
         pad-lite
+        pad
+      ]
+    }
+    main: {
+      patterns: [
+        beat
+        hat
+        bass
         pad
         pad-dense
       ]

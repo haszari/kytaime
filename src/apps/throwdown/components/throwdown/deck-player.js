@@ -8,14 +8,6 @@ import playerFactory from '../../player-factory';
 import throwdownActions from './actions';
 import store from '../../store/store';
 
-function getInstrumentPartForPattern( patternSlug, patterns ) {
-  const pattern = _.find( patterns, { slug: patternSlug, } );
-  if ( ! pattern ) {
-    return '';
-  }
-  return pattern.part;
-}
-
 class DeckPlayer {
   constructor( props ) {
     this.patternPlayers = {};

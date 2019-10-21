@@ -98,7 +98,7 @@ const throwdownReducer = createReducer( {
     // generate state array for patterns x parts (instruments)
     const partsPatterns = _.map( sectionPartSlugs, partSlug => {
       const patternData = _.filter( state.patterns, ( pattern, slug ) => {
-        return ( pattern.part === partSlug );
+        return ( pattern.part === partSlug ) && _.includes( patternsInSection, pattern.slug );
       } );
       const patterns = _.map( patternData, 'slug' );
       return {
