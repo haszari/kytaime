@@ -89,7 +89,7 @@ const throwdownReducer = createReducer( {
 
     // get a list of full pattern data for the patterns in this section (i.e. filter out others)
     const sectionPatternData = _.filter( state.patterns, ( data, slug ) => {
-      return _.find( patternsInSection, slug );
+      return _.find( patternsInSection, slug ) && ( data.songSlug === action.payload.deckSlug );
     } );
 
     // get a list of the part names in this section
