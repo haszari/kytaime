@@ -7,6 +7,9 @@ const toggleDeferAllTriggers = createAction( 'throwdown/toggleDeferAllTriggers' 
 // song data
 const addPattern = createAction( 'throwdown/addPattern' );
 
+// song + pattern state (song == deck for now)
+const setDeckPatternPlaystate = createAction( 'throwdown/setDeckPatternPlaystate' );
+
 // deck state
 const addDeck = createAction( 'throwdown/addDeck' );
 const addSection = createAction( 'throwdown/addSection' );
@@ -15,7 +18,6 @@ const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
 const toggleDeckTriggeredSection = createAction( 'throwdown/toggleDeckTriggeredSection' );
 
 // section + part state
-const setDeckSectionPartPlayingPattern = createAction( 'throwdown/setDeckSectionPartPlayingPattern' );
 const setDeckSectionPartTriggeredPattern = createAction( 'throwdown/setDeckSectionPartTriggeredPattern' );
 
 export default {
@@ -30,6 +32,7 @@ export default {
   setDeckPlayingSection,
   toggleDeckTriggeredSection,
 
-  setDeckSectionPartPlayingPattern,
+  setDeckPatternPlaystate,
+
   setDeckSectionPartTriggeredPattern,
 };

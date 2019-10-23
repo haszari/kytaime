@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -37,6 +39,7 @@ function DeckSectionsTriggersComponent( props ) {
           onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
           hue={ props.deckState.hue }
           parts={ section.parts }
+          playingPatterns={ props.playingPatterns }
         />
       );
     }
@@ -72,6 +75,8 @@ function DeckSectionsTriggersComponent( props ) {
 }
 
 DeckSectionsTriggersComponent.propTypes = {
+  playingPatterns: PropTypes.array,
+
   slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
@@ -87,11 +92,13 @@ DeckSectionsTriggersComponent.propTypes = {
 };
 
 const mapStateToProps = ( state, ownProps ) => {
+  const patterns = throwdownSelectors.getAllDeckPatterns( state, ownProps.slug );
   const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
   const phraseLoop = throwdownSelectors.getDeckPhraseLoop( state, ownProps.slug );
   const dragState = dragDropSelectors.getDragDrop( state );
 
   return {
+    playingPatterns: _.filter( patterns, { isPlaying: true, } ),
     deckState,
     phraseLoop,
     highlighted: dragState.dropHighlightDeck === ownProps.slug,

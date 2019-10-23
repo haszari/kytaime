@@ -24,6 +24,11 @@ function getDeck( state, deckSlug ) {
     deck => ( deck.slug === deckSlug )
   );
 }
+function getSongPattern( state, songSlug, patternSlug ) {
+  return _.find( state.patterns,
+    pattern => ( pattern.slug === patternSlug ) && ( pattern.songSlug === songSlug )
+  );
+}
 function getDeckSectionPart( state, deckSlug, sectionSlug, partSlug ) {
   const deck = getDeck( state, deckSlug );
   if ( ! deck ) { return; }
@@ -108,9 +113,8 @@ const throwdownReducer = createReducer( {
         part: partSlug,
         // all the slugs for the patterns within this part - these are solo/alternatives
         patterns: patterns,
-        // which pattern is triggered & playing
+        // which pattern is triggered within this part x section
         triggeredPattern: _.head( patterns ) || '',
-        playingPattern: '',
       };
     } );
 
@@ -151,16 +155,15 @@ const throwdownReducer = createReducer( {
     deck.playingSection = action.payload.sectionSlug;
   },
 
-  [actions.setDeckSectionPartPlayingPattern]: ( state, action ) => {
-    const part = getDeckSectionPart(
+  [actions.setDeckPatternPlaystate]: ( state, action ) => {
+    const pattern = getSongPattern(
       state,
-      action.payload.deckSlug,
-      action.payload.sectionSlug,
-      action.payload.partSlug,
+      action.payload.songSlug,
+      action.payload.patternSlug,
     );
-    if ( ! part ) return;
+    if ( ! pattern ) return;
 
-    part.playingPattern = action.payload.patternSlug;
+    pattern.isPlaying = action.payload.isPlaying;
   },
 
   [actions.setDeckSectionPartTriggeredPattern]: ( state, action ) => {

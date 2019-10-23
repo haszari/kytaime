@@ -88,7 +88,7 @@ function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
 function getAllDeckPatterns( state, deckSlug ) {
   const allPatterns = getPatterns( state );
   const deckState = getDeck( state, deckSlug );
-  if ( !deckState ) { return; }
+  if ( ! deckState ) { return; }
 
   const sectionPatterns = deckState.sections.map( section => {
     var patterns = section.patterns.map(

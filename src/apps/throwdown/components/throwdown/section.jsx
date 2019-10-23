@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -14,9 +16,10 @@ function PartTriggers( props ) {
       <div className='part-slug'>{ props.part }</div>
       {
         props.patterns.map( patternSlug => {
+          const patternIsPlaying = ( _.indexOf( props.playingPatterns, patternSlug ) !== -1 );
           const patternStyles = triggerStyling(
             patternSlug === props.triggeredPattern,
-            patternSlug === props.playingPattern,
+            patternIsPlaying
           );
           return (
             <div
@@ -41,20 +44,24 @@ PartTriggers.propTypes = {
   part: PropTypes.string,
   patterns: PropTypes.array,
   triggeredPattern: PropTypes.string,
-  playingPattern: PropTypes.string,
+  playingPatterns: PropTypes.string,
   onSetPartTriggeredSection: PropTypes.func,
 };
 
 function SectionTrigger( props ) {
+  const sectionSlug = props.slug;
   const styles = triggerStyling( props.triggered, props.playing );
   const toggleTrigger = props.onSetTriggeredSection.bind(
     null,
     props.triggered ? null : props.slug
   );
-  const sectionSlug = props.slug;
+
+  const playingPatternSlugs = _.map( props.playingPatterns, 'slug' );
+
   const parts = props.parts.map( part => {
     const partProps = {
       onSetPartTriggeredSection: props.onSetPartTriggeredSection.bind( null, sectionSlug ),
+      playingPatterns: playingPatternSlugs,
       ...part,
     };
     return PartTriggers( partProps );
@@ -83,6 +90,7 @@ SectionTrigger.propTypes = {
   slug: PropTypes.string,
   hue: PropTypes.number,
   parts: PropTypes.array,
+  playingPatterns: PropTypes.array,
 };
 
 export default SectionTrigger;

@@ -21,13 +21,17 @@ class DeckPlayer {
     // create/update one player for each pattern in this deck
     _.each( props.patterns, ( pattern ) => {
       var patternPlayer = this.patternPlayers[pattern.slug];
-      if ( !patternPlayer ) {
+
+      if ( ! patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
         this.patternPlayers[pattern.slug] = patternPlayer;
       }
       else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
       }
+
+      patternPlayer.setParentPhrase( props.triggerLoop );
+      patternPlayer.setPlaying( pattern.isPlaying );
     } );
   }
 
@@ -94,13 +98,11 @@ class DeckPlayer {
     // this is used by parent (throwdown) to send message to update UI
     this.props.playingSection = currentPlayingSection;
 
-    const partsPlayingPattern = currentPlayingSection ? _.map( currentPlayingSection.parts, 'part' ) : [];
+    const patternPlayStates = [];
 
     // render patterns that are in the triggered/playing section
     _.each( this.patternPlayers,
       ( player, patternSlug ) => {
-        player.setParentPhrase( this.props.triggerLoop );
-
         // Is this pattern in a section that's triggered, i.e. parent is triggered?
         // This allows us to trigger/untrigger a whole section (multiple patterns) as a unit.
         const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
@@ -116,27 +118,19 @@ class DeckPlayer {
 
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
 
-        if ( player.playing ) {
-          const patternPart = _.find( this.props.patterns, { slug: patternSlug, } );
-          const partToUpdate = _.find( partsPlayingPattern, { part: patternPart.part, } );
-          if ( ! partToUpdate ) {
-            partsPlayingPattern.push( { part: patternPart.part, playingPattern: patternPart.slug, } );
-          }
-          else {
-            partToUpdate.playingPattern = patternSlug;
-          }
-        }
+        patternPlayStates.push( {
+          // note here we are assuming deck === song
+          // this is currently how it works, but we might support different songs in same deck in future?
+          songSlug: deckSlug,
+          patternSlug: patternSlug,
+          isPlaying: player.playing,
+        } );
       }
     );
 
-    // now update the playing patterns in the current part
-    partsPlayingPattern.map( part => {
-      store.dispatch( throwdownActions.setDeckSectionPartPlayingPattern( {
-        deckSlug: deckSlug,
-        sectionSlug: currentPlayingSection,
-        partSlug: part.part,
-        patternSlug: part.playingPattern,
-      } ) );
+    // update playstate for all patterns
+    patternPlayStates.map( actionData => {
+      store.dispatch( throwdownActions.setDeckPatternPlaystate( actionData ) );
     } );
   }
 }

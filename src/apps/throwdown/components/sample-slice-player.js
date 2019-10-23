@@ -72,6 +72,10 @@ class SampleSlicePlayer {
     this.parentPhraseLength = parentPhraseLength;
   }
 
+  setPlaying( playing ) {
+    this.playing = playing;
+  }
+
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
     // console.log(
     //   `-- beat playSliceAt ` +

@@ -31,6 +31,10 @@ class MidiLoopPlayer {
     this.parentPhraseLength = parentPhraseLength;
   }
 
+  setPlaying( playing ) {
+    this.playing = playing;
+  }
+
   getNotePattern() {
     // convert any named drum hits into general midi
     const notes = this.props.notes.map( noteEvent => {
