@@ -97,14 +97,15 @@ class DeckPlayer {
     const partsPlayingPattern = currentPlayingSection ? _.map( currentPlayingSection.parts, 'part' ) : [];
 
     // render patterns that are in the triggered/playing section
-    // this needs to change to get the _triggered_ patterns in the section(s), as they now have multiple alternative patterns
     _.each( this.patternPlayers,
       ( player, patternSlug ) => {
+        player.setParentPhrase( this.props.triggerLoop );
+
         // Is this pattern in a section that's triggered, i.e. parent is triggered?
         // This allows us to trigger/untrigger a whole section (multiple patterns) as a unit.
         const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
-        player.setParentTriggered( isInTriggeredSection );
-        player.setParentPhrase( this.props.triggerLoop );
+        const isInPlayingSection = playingSection ? _.includes( playingSection.patterns, patternSlug ) : false;
+        player.setParentTriggered( isInTriggeredSection || isInPlayingSection );
 
         // Is this pattern triggered (selected) within the section (within the part)?
         // This allows us to load up a section with alternative patterns
