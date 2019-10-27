@@ -1,5 +1,5 @@
 
-// I think this file is unused right now?
+// This file / module is not used
 
 import _ from 'lodash';
 

@@ -27,7 +27,6 @@ function PartTriggers( props ) {
               key={ patternSlug }
               style={ patternStyles }
               onClick={ function() {
-                console.log( 'part pattern clicked' );
                 props.onSetPartTriggeredSection.bind( null, props.part, patternSlug )();
               } }
             >

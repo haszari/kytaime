@@ -47,13 +47,15 @@ class DeckPlayer {
       return false;
     }
 
-    return sectionData.parts.find( part => {
+    return ( undefined !== sectionData.parts.find( part => {
       return ( part.triggeredPattern === patternSlug );
-    } );
+    } ) );
   }
 
-  throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
-    // console.log( `DeckPlayer render ${ renderRangeBeats.start } ${ renderRangeBeats.end }` );
+  renderTimePeriod( renderRange, tempoBpm, startBeat, endBeat, midiOutPort ) {
+    // console.log( `DeckPlayer renderTimePeriod ${ startBeat } ${ endBeat }` );
+
+    var renderRangeBeats = { start: startBeat, end: endBeat, };
 
     // get sections that we need to evaluate triggering:
     // the playing one (if any)
@@ -69,34 +71,42 @@ class DeckPlayer {
     // run triggering for playing & triggered sections
     // we'll pass this down to the patterns so they know how to behave
     // these two ifs should be a function??
+    var currentSectionTrigger = null;
+    var nextSectionTrigger = null;
     if ( playingSection ) {
-      const triggerInfo = patternSequencer.renderPatternTrigger(
+      currentSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
         ( playingSection.slug === this.props.triggeredSection ),
         ( playingSection.slug === this.props.playingSection ),
         this.props.triggerLoop,
       );
-      if ( triggerInfo.isPlaying ) {
+      if ( currentSectionTrigger.isPlaying ) {
         currentPlayingSection = playingSection.slug;
       }
     }
 
     if ( triggeredSection ) {
-      const triggerInfo = patternSequencer.renderPatternTrigger(
+      nextSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
         ( triggeredSection.slug === this.props.triggeredSection ),
         ( triggeredSection.slug === this.props.playingSection ),
         this.props.triggerLoop,
       );
-      if ( triggerInfo.isPlaying ) {
+      if ( nextSectionTrigger.isPlaying ) {
         currentPlayingSection = triggeredSection.slug;
       }
     }
 
     // this is used by parent (throwdown) to send message to update UI
+    const sectionTransition = ( this.props.playingSection !== currentPlayingSection );
     this.props.playingSection = currentPlayingSection;
+
+    // If there's a section transition, render the first chunk (before transition) and return.
+    if ( sectionTransition && currentSectionTrigger ) {
+      renderRangeBeats.end = currentSectionTrigger.triggerOffset;
+    }
 
     const patternPlayStates = [];
 
@@ -106,8 +116,8 @@ class DeckPlayer {
         // Is this pattern in a section that's triggered, i.e. parent is triggered?
         // This allows us to trigger/untrigger a whole section (multiple patterns) as a unit.
         const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
-        const isInPlayingSection = playingSection ? _.includes( playingSection.patterns, patternSlug ) : false;
-        player.setParentTriggered( isInTriggeredSection || isInPlayingSection );
+        // const isInPlayingSection = playingSection ? _.includes( playingSection.patterns, patternSlug ) : false;
+        player.setParentTriggered( isInTriggeredSection );
 
         // Is this pattern triggered (selected) within the section (within the part)?
         // This allows us to load up a section with alternative patterns
@@ -116,14 +126,18 @@ class DeckPlayer {
           this.isPatternTriggeredInSectionParts( patternSlug, playingSection );
         player.setTriggered( isTriggered );
 
+        // const wasPlaying = player.playing;
+
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
 
+        const stillPlaying = player.playing;
+        // console.log( `play ${ patternSlug } inTriggeredSection=${ isInTriggeredSection } isTriggered=${ isTriggered } was=${ wasPlaying } now=${ stillPlaying }` );
         patternPlayStates.push( {
           // note here we are assuming deck === song
           // this is currently how it works, but we might support different songs in same deck in future?
           songSlug: deckSlug,
           patternSlug: patternSlug,
-          isPlaying: player.playing,
+          isPlaying: stillPlaying,
         } );
       }
     );
@@ -132,6 +146,23 @@ class DeckPlayer {
     patternPlayStates.map( actionData => {
       store.dispatch( throwdownActions.setDeckPatternPlaystate( actionData ) );
     } );
+
+    return renderRangeBeats.end;
+  }
+
+  throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
+    // console.log( `DeckPlayer render ${ renderRangeBeats.start } ${ renderRangeBeats.end }` );
+
+    // The state may need to change during the render, e.g across a section transition.
+    // This loop allows renderTimePeriod to split the render range as needed.
+    // If we don't do this, the outgoing section patterns don't get a chance to render
+    // their untrigger, and they continue playing when they shouldn't :)
+    var { start, end, } = renderRangeBeats;
+    var renderEnd = start;
+    do {
+      renderEnd = this.renderTimePeriod( renderRange, tempoBpm, start, end, midiOutPort );
+      start = renderEnd;
+    } while ( renderEnd < renderRangeBeats.end );
   }
 }
 
