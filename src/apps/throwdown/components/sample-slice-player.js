@@ -21,7 +21,7 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
 
   // Start and end beats may be negative - wrap to length
   startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  endBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
   var cuts = [ 0, startBeats, endBeats, duration, ];
   cuts = _.flatten( cuts );
   cuts = _.sortBy( cuts );
