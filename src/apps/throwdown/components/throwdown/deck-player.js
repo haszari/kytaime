@@ -165,7 +165,7 @@ class DeckPlayer {
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
-    console.log( `--- DeckPlayer render ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
+    // console.log( `--- DeckPlayer render ${ tempoBpm }bpm ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     // The state may need to change during the render, e.g across a section transition.
     // This loop allows renderTimePeriod to split the render range as needed.

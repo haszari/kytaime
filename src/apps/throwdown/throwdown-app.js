@@ -129,7 +129,7 @@ class ThrowdownApp {
 
   renderTimePeriod( renderRange, renderRangeBeats ) {
     // console.log(
-    //   `--- app renderTimePeriod ` +
+    //   '--- app renderTimePeriod ' +
     //   `current=(${ this.lastRenderEndBeat })` +
     //   `start=(${ renderRangeBeats.start }, ${ renderRange.start }) ` +
     //   `end=(${ renderRangeBeats.end }, ${ renderRange.end }) `
@@ -164,7 +164,7 @@ class ThrowdownApp {
 
     // drop tempo changes mod what
     const tempoChangePhrase = throwdownSelectors.getTriggerLoop( store.getState() );
-    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm !== this.tempo;
+    const newTempoIncoming = this.nextTempoBpm && this.nextTempoBpm !== this.tempoBpm;
     const tempoDropInfo = patternSequencer.renderPatternTrigger(
       this.tempoBpm, // we may not need this whole blob - can we expand out to the minimum params we need?
       renderBeats,
@@ -181,7 +181,7 @@ class ThrowdownApp {
     }
 
     // console.log(
-    //   `----------`
+    //   '---------- tempo change'
     // );
     // const tempoChangeInfo = tempoChangeThisRender ? `newTempo=(${ this.nextTempoBpm }, ${ tempoDropInfo.triggerOnset })` : '';
     // console.log(
@@ -217,7 +217,7 @@ class ThrowdownApp {
     } );
 
     chunkBeats = bpmUtilities.msToBeats( this.nextTempoBpm, renderRangeNext.end - renderRangeNext.start );
-    this.tempo = newTempo;
+    this.tempoBpm = newTempo;
     this.renderTimePeriod( renderRangeNext, {
       start: this.lastRenderEndBeat,
       end: this.lastRenderEndBeat + chunkBeats,
