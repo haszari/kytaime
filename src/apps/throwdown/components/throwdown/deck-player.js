@@ -59,7 +59,7 @@ class DeckPlayer {
     // get sections that we need to evaluate triggering:
     // the playing one (if any)
     // and the triggered one (if any)
-    const playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
+    var playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
     const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection, } );
 
     // update props.playingSection if we are switching section
@@ -104,6 +104,7 @@ class DeckPlayer {
 
     // If there's a section transition, we'll render the first chunk (before transition) and return.
     if ( sectionTransition && currentSectionTrigger ) {
+      playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
       const sectionTransitionEvent = patternSequencer.renderPatternEvents(
         renderRange.start,
         tempoBpm,
