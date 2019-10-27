@@ -2,6 +2,7 @@
 import _ from 'lodash';
 
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
+import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 
 import playerFactory from '../../player-factory';
 
@@ -53,8 +54,6 @@ class DeckPlayer {
   }
 
   renderTimePeriod( renderRange, tempoBpm, startBeat, endBeat, midiOutPort ) {
-    // console.log( `DeckPlayer renderTimePeriod ${ startBeat } ${ endBeat }` );
-
     var renderRangeBeats = { start: startBeat, end: endBeat, };
 
     // get sections that we need to evaluate triggering:
@@ -103,10 +102,22 @@ class DeckPlayer {
     const sectionTransition = ( this.props.playingSection !== currentPlayingSection );
     this.props.playingSection = currentPlayingSection;
 
-    // If there's a section transition, render the first chunk (before transition) and return.
+    // If there's a section transition, we'll render the first chunk (before transition) and return.
     if ( sectionTransition && currentSectionTrigger ) {
-      renderRangeBeats.end = currentSectionTrigger.triggerOffset;
+      const sectionTransitionEvent = patternSequencer.renderPatternEvents(
+        renderRange.start,
+        tempoBpm,
+        renderRangeBeats,
+        this.props.triggerLoop,
+        [ { start: 0, duration: 1, }, ],
+      );
+      renderRange = _.cloneDeep( renderRange );
+      renderRange.end = sectionTransitionEvent[0].start;
+      const thisChunkMs = renderRange.end - renderRange.start;
+      renderRangeBeats.end = renderRangeBeats.start + bpmUtilities.msToBeats( tempoBpm, thisChunkMs );
+      // console.log( `-- TRANSITION -- ${ this.props.slug }` );
     }
+    // console.log( `DeckPlayer ${ this.props.slug } renderTimePeriod ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     const patternPlayStates = [];
 
@@ -147,22 +158,30 @@ class DeckPlayer {
       store.dispatch( throwdownActions.setDeckPatternPlaystate( actionData ) );
     } );
 
-    return renderRangeBeats.end;
+    return {
+      beats: renderRangeBeats.end,
+      msec: renderRange.end,
+    };
   }
 
   throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort ) {
-    // console.log( `DeckPlayer render ${ renderRangeBeats.start } ${ renderRangeBeats.end }` );
+    console.log( `--- DeckPlayer render ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     // The state may need to change during the render, e.g across a section transition.
     // This loop allows renderTimePeriod to split the render range as needed.
     // If we don't do this, the outgoing section patterns don't get a chance to render
     // their untrigger, and they continue playing when they shouldn't :)
+    const thisRange = _.cloneDeep( renderRange );
     var { start, end, } = renderRangeBeats;
-    var renderEnd = start;
+    var renderEnd = {
+      beats: start,
+      msec: renderRange.start,
+    };
     do {
-      renderEnd = this.renderTimePeriod( renderRange, tempoBpm, start, end, midiOutPort );
-      start = renderEnd;
-    } while ( renderEnd < renderRangeBeats.end );
+      thisRange.start = renderEnd.msec;
+      renderEnd = this.renderTimePeriod( thisRange, tempoBpm, start, end, midiOutPort );
+      start = renderEnd.beats;
+    } while ( renderEnd.beats < renderRangeBeats.end );
   }
 }
 
