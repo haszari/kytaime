@@ -2,7 +2,7 @@
   version: 1
   slug: mivova
   patterns: {
-    beatr: {
+    beat: {
       part: beat
       file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20180425--mivova--padscape--beat.mp3
       tempo: 122 
@@ -28,6 +28,12 @@
     }
   }
   sections: {
+    z: {
+      bars: 4
+      patterns: [
+        pad
+      ]
+    }
     a: {
       bars: 4
       patterns: [
