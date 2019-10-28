@@ -17,8 +17,9 @@ function PartTriggers( props ) {
       {
         props.patterns.map( patternSlug => {
           const patternIsPlaying = ( _.indexOf( props.playingPatterns, patternSlug ) !== -1 );
+          const patternIsTriggered = ( patternSlug === props.triggeredPattern );
           const patternStyles = triggerStyling(
-            patternSlug === props.triggeredPattern,
+            patternIsTriggered,
             patternIsPlaying
           );
           return (
@@ -27,7 +28,7 @@ function PartTriggers( props ) {
               key={ patternSlug }
               style={ patternStyles }
               onClick={ function() {
-                props.onSetPartTriggeredSection.bind( null, props.part, patternSlug )();
+                props.onSetPartTriggeredSection.bind( null, props.part, patternIsTriggered ? null : patternSlug )();
               } }
             >
               { patternSlug }
