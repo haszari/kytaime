@@ -8,7 +8,7 @@
       tempo: 132
       duration: 4
       startBeats: [ 2 ]
-      endBeats: [ 1 ]
+      endBeats: [ 0.5 ]
     }
     beat-main: {
       part: beat
@@ -17,12 +17,14 @@
       duration: 4
     }
     voc: {
+      part: voc
       file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170709-padscape--manas-voc-hills.m4a'
       tempo: 132,
       duration: 32
       startBeats: [ -4 ] 
     }
     sub: {
+      part: sub
       duration: 4
       startBeats: [ 0, -1 ]
       endBeats: [ 2 ]
@@ -54,6 +56,7 @@
       ]
     }
     arp: {
+      part: synth
       duration: 16,
       # startBeats: [ 0, 0.5 ]
       # endBeats: [ 0, 15 ]
@@ -176,41 +179,61 @@
     #     sub
     #   ]
     # }
-    beatbass: {
+    # beatbass: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     sub
+    #   ]
+    # }
+    # build: {
+    #   bars: 8
+    #   patterns: [
+    #     arp
+    #     voc
+    #   ]
+    # }
+    # melodic: {
+    #   bars: 8
+    #   patterns: [
+    #     sub
+    #     arp
+    #   ]
+    # }
+    # main: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     sub
+    #     arp
+    #     voc
+    #   ]
+    # }
+    # outro: {
+    #   bars: 8
+    #   patterns: [
+    #     beat-step
+    #     arp
+    #   ]
+    # }
+    a: {
       bars: 8
       patterns: [
         beat-step
+        beat-main
         sub
-      ]
-    }
-    build: {
-      bars: 8
-      patterns: [
         arp
         voc
       ]
     }
-    melodic: {
-      bars: 8
-      patterns: [
-        sub
-        arp
-      ]
-    }
-    main: {
+    b: {
       bars: 8
       patterns: [
         beat-step
+        beat-main
         sub
         arp
         voc
-      ]
-    }
-    outro: {
-      bars: 8
-      patterns: [
-        beat-step
-        arp
       ]
     }
   } 

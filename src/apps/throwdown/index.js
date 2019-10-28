@@ -27,13 +27,13 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
-fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );
+// fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
+// fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--ambients.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--beats.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--transitions.hjson' );
-// fileImport.importThrowdownFile( 'data/20190217--manas.hjson' );
-fileImport.importThrowdownFile( 'data/20190306--sweets-from-a-stranger.hjson' );
+fileImport.importThrowdownFile( 'data/20190217--manas.hjson' );
+// fileImport.importThrowdownFile( 'data/20190306--sweets-from-a-stranger.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--maenyb.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--squelch.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
@@ -50,7 +50,7 @@ fileImport.importThrowdownFile( 'data/20190306--sweets-from-a-stranger.hjson' );
 // importThrowdownFile( 'data/20190325--mivova.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 
-const initialTempo = 115;
+const initialTempo = 131;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );
