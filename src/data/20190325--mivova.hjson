@@ -28,16 +28,18 @@
     }
   }
   sections: {
-    z: {
-      bars: 4
-      patterns: [
-        pad
-      ]
-    }
+    # z: {
+    #   bars: 4
+    #   patterns: [
+    #     pad
+    #   ]
+    # }
     a: {
       bars: 4
       patterns: [
         beat
+        sub
+        voc
         pad
       ]
     }
@@ -50,12 +52,12 @@
         pad
       ]
     }
-    c: {
-      bars: 4
-      patterns: [
-        beat
-        sub
-      ]
-    }
+    # c: {
+    #   bars: 4
+    #   patterns: [
+    #     beat
+    #     sub
+    #   ]
+    # }
   } 
 }
