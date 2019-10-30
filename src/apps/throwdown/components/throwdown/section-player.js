@@ -1,4 +1,6 @@
 
+// This file / module is not used
+
 import _ from 'lodash';
 
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';

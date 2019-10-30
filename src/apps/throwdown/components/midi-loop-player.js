@@ -9,6 +9,7 @@ class MidiLoopPlayer {
   constructor( props ) {
     this.updateProps( props );
 
+    this.triggered = false;
     this.playing = false;
     this.parentTriggered = false;
     this.parentPhraseLength = 4;
@@ -18,12 +19,20 @@ class MidiLoopPlayer {
     this.props = _.defaults( props, MidiLoopPlayer.defaultProps );
   }
 
+  setTriggered( triggered ) {
+    this.triggered = triggered;
+  }
+
   setParentTriggered( triggered ) {
     this.parentTriggered = triggered;
   }
 
   setParentPhrase( parentPhraseLength ) {
     this.parentPhraseLength = parentPhraseLength;
+  }
+
+  setPlaying( playing ) {
+    this.playing = playing;
   }
 
   getNotePattern() {
@@ -57,7 +66,7 @@ class MidiLoopPlayer {
     const patternDuration = this.props.duration;
 
     // let { triggered, playing } = this.state;
-    var triggered = true && this.parentTriggered;
+    var triggered = this.triggered && this.parentTriggered;
 
     const triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm,

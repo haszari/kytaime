@@ -28,21 +28,13 @@
     }
   }
   sections: {
-    intro: {
-      bars: 4
-      patterns: [
-        beat
-        sub
-      ]
-    }
-    break: {
-      bars: 4
-      patterns: [
-        voc
-        pad
-      ]
-    }
-    main: {
+    # z: {
+    #   bars: 4
+    #   patterns: [
+    #     pad
+    #   ]
+    # }
+    a: {
       bars: 4
       patterns: [
         beat
@@ -51,12 +43,21 @@
         pad
       ]
     }
-    outro: {
+    b: {
       bars: 4
       patterns: [
         beat
+        sub
+        voc
         pad
       ]
     }
+    # c: {
+    #   bars: 4
+    #   patterns: [
+    #     beat
+    #     sub
+    #   ]
+    # }
   } 
 }

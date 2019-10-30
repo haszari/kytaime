@@ -21,7 +21,7 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
 
   // Start and end beats may be negative - wrap to length
   startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  endBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
   var cuts = [ 0, startBeats, endBeats, duration, ];
   cuts = _.flatten( cuts );
   cuts = _.sortBy( cuts );
@@ -46,6 +46,7 @@ class SampleSlicePlayer {
   constructor( props ) {
     this.updateProps( props );
 
+    this.triggered = true;
     this.playing = false;
     this.parentTriggered = false;
     this.parentPhraseLength = 4;
@@ -59,12 +60,20 @@ class SampleSlicePlayer {
     }
   }
 
+  setTriggered( triggered ) {
+    this.triggered = triggered;
+  }
+
   setParentTriggered( triggered ) {
     this.parentTriggered = triggered;
   }
 
   setParentPhrase( parentPhraseLength ) {
     this.parentPhraseLength = parentPhraseLength;
+  }
+
+  setPlaying( playing ) {
+    this.playing = playing;
   }
 
   playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
@@ -108,7 +117,7 @@ class SampleSlicePlayer {
 
     const { sampleDuration, } = this.props;
 
-    var triggered = true && this.parentTriggered;
+    var triggered = this.triggered && this.parentTriggered;
 
     const triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm,

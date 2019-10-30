@@ -28,21 +28,16 @@
     }
   }
   sections: {
-    ambient: {
-      bars: 4
-      patterns: [
-        texture
-        lead
-      ]
-    }
-    drumbass: {
+    a: {
       bars: 4
       patterns: [
         beat
         sub
+        texture
+        lead
       ]
     }
-    main: {
+    b: {
       bars: 4
       patterns: [
         beat

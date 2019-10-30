@@ -10,6 +10,12 @@ const getDecks = ( state ) => { return _.get( state, 'throwdown.decks' ); };
 
 const getTransport = ( state ) => { return _.get( state, 'transport' ); };
 
+function getPattern( state, patternSlug ) {
+  return _.find( state.patterns,
+    pattern => ( pattern.slug === patternSlug )
+  );
+}
+
 // this could be a user option/runtime param
 const MIN_PHRASE_LENGTH = 4;
 
@@ -82,7 +88,7 @@ function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
 function getAllDeckPatterns( state, deckSlug ) {
   const allPatterns = getPatterns( state );
   const deckState = getDeck( state, deckSlug );
-  if ( !deckState ) { return; }
+  if ( ! deckState ) { return; }
 
   const sectionPatterns = deckState.sections.map( section => {
     var patterns = section.patterns.map(
@@ -112,6 +118,7 @@ const getDeckPhraseProgress = createSelector(
 export default {
   getThrowdown,
   getPatterns,
+  getPattern,
 
   getDecks,
   getDeck,

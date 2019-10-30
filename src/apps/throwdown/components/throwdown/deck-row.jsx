@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -15,33 +17,7 @@ import deckColours from './deck-colours';
 
 import fileImport from '../drag-drop/file-import';
 
-function SectionTrigger( props ) {
-  const styles = {};
-  styles.fontWeight = props.playing ? 'bold' : 'normal';
-  styles.fontStyle = props.triggered ? 'italic' : 'normal';
-  const toggleTrigger = props.onSetTriggeredSection.bind(
-    null,
-    props.triggered ? null : props.slug
-  );
-  return (
-    <td>
-      <span
-        onClick={ toggleTrigger }
-        style={ styles }
-      >
-        { props.slug }
-      </span>
-    </td>
-  );
-}
-
-SectionTrigger.propTypes = {
-  playing: PropTypes.bool,
-  triggered: PropTypes.bool,
-  onSetTriggeredSection: PropTypes.func,
-  slug: PropTypes.string,
-  hue: PropTypes.number,
-};
+import SectionTrigger from './section.jsx';
 
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
@@ -60,7 +36,10 @@ function DeckSectionsTriggersComponent( props ) {
           playing={ props.deckState.playingSection === section.slug }
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
+          onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
           hue={ props.deckState.hue }
+          parts={ section.parts }
+          playingPatterns={ props.playingPatterns }
         />
       );
     }
@@ -96,9 +75,13 @@ function DeckSectionsTriggersComponent( props ) {
 }
 
 DeckSectionsTriggersComponent.propTypes = {
+  playingPatterns: PropTypes.array,
+
   slug: PropTypes.string,
   deckState: PropTypes.object,
   onSetTriggeredSection: PropTypes.func,
+  onSetPartTriggeredSection: PropTypes.func,
+
   phraseLoop: PropTypes.number,
 
   highlighted: PropTypes.bool,
@@ -109,11 +92,13 @@ DeckSectionsTriggersComponent.propTypes = {
 };
 
 const mapStateToProps = ( state, ownProps ) => {
+  const patterns = throwdownSelectors.getAllDeckPatterns( state, ownProps.slug );
   const deckState = throwdownSelectors.getDeck( state, ownProps.slug );
   const phraseLoop = throwdownSelectors.getDeckPhraseLoop( state, ownProps.slug );
   const dragState = dragDropSelectors.getDragDrop( state );
 
   return {
+    playingPatterns: _.filter( patterns, { isPlaying: true, } ),
     deckState,
     phraseLoop,
     highlighted: dragState.dropHighlightDeck === ownProps.slug,
@@ -127,6 +112,17 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
         actions.setDeckTriggeredSection( {
           deckSlug: ownProps.slug,
           sectionSlug,
+        } )
+      );
+    },
+
+    onSetPartTriggeredSection: ( sectionSlug, partSlug, patternSlug ) => {
+      dispatch(
+        actions.setDeckSectionPartTriggeredPattern( {
+          deckSlug: ownProps.slug,
+          partSlug,
+          sectionSlug,
+          patternSlug,
         } )
       );
     },
