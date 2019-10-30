@@ -25,9 +25,13 @@ Audio loops are loaded from local iTunes Media library. MIDI / note patterns are
 If you want to experiment with this, you'll need to hack the hjson data, set up your own audio loops etc, and edit `index.js` to load your songs into decks at launch.
 
 ### Why?
-I wanted to experiment with a more fluid style of sequencing. Similar to Ableton and other pattern-grid based approaches, but encode more musically-relevant info into the pattern data so pattern triggering always sounds nice and appropriate.
+I wanted to experiment with a more fluid style of sequencing. Similar to Ableton Live and other pattern-grid based approaches, but encode more musically-relevant info into the pattern data so it's easy to experiment with different arrangements live.
 
-The goal is to make it easier to experiment and jam with loop-based musical material without it sounding stale and repetitive, and to free the performer from worrying about triggering or hitting notes at the exact right moment, to allow more room for experimenting with mix and arrangement live.
+Goals: 
+
+- Make it easy to experiment and jam with loop-based musical material without it sounding stale and repetitive.
+- Free the performer from having to toggle patterns at the exact right moment (or always quantised to loop boundaries).
+- Allow for more experimentation with synthesis, effects, mix and arrangement live.
 
 ### How to build
 - install node.js
