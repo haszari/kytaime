@@ -2,6 +2,7 @@
   "name": "kytaime-throwdown",
   "version": "1.0.0",
   "description": "MIDI & audio jamming sequencer",
+  "repository": "https://github.com/haszari/kytaime",
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --port 3876",
