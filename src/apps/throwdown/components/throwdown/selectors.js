@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createSelector, } from 'redux-starter-kit';
+import { createSelector } from 'redux-starter-kit';
 
 const getThrowdown = ( state ) => { return _.get( state, 'throwdown' ); };
 
@@ -41,15 +41,15 @@ function getPhraseLoop( state ) {
 }
 
 const getTriggerLoop = createSelector(
-  [ getThrowdown, getPhraseLoop, ],
-  ( throwdown, phraseLoop ) => ( throwdown.deferAllTriggers ? Infinity : phraseLoop ),
+  [ getThrowdown, getPhraseLoop ],
+  ( throwdown, phraseLoop ) => ( throwdown.deferAllTriggers ? Infinity : phraseLoop )
 );
 
 const getPhraseProgress = createSelector(
-  [ getPhraseLoop, getTransport, ],
+  [ getPhraseLoop, getTransport ],
   ( phraseLoop, transport ) => {
     return ( transport.currentBeat % phraseLoop ) / phraseLoop;
-  },
+  }
 );
 
 function getDeck( state, deckSlug ) {
@@ -80,7 +80,7 @@ function getDeckSectionPatterns( state, deckSlug, sectionSlug ) {
   if ( !section ) { return; }
 
   const patterns = section.patterns.map(
-    patternSlug => _.find( allPatterns, { songSlug: deckSlug, slug: patternSlug, } )
+    patternSlug => _.find( allPatterns, { songSlug: deckSlug, slug: patternSlug } )
   );
   return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
 }
@@ -109,10 +109,10 @@ function getDeckPhraseLoop( state, deckSlug ) {
 }
 
 const getDeckPhraseProgress = createSelector(
-  [ getDeckPhraseLoop, getTransport, ],
+  [ getDeckPhraseLoop, getTransport ],
   ( phraseLoop, transport ) => {
     return ( transport.currentBeat % phraseLoop ) / phraseLoop;
-  },
+  }
 );
 
 export default {

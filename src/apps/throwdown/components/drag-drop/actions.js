@@ -1,4 +1,4 @@
-import { createAction, } from 'redux-starter-kit';
+import { createAction } from 'redux-starter-kit';
 
 const setDropHighlight = createAction( 'fileImport/setDropHighlight' );
 

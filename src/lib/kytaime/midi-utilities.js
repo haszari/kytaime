@@ -26,12 +26,12 @@ const channelMap = {
 const renderNote = function( options ) {
   // options: port, channel, noteNumber, velocity, duration, timestamp
   options.port.send(
-    [ 0x90 + options.channel, options.note, options.velocity, ],
+    [ 0x90 + options.channel, options.note, options.velocity ],
     options.timestamp
   );
   // note off
   options.port.send(
-    [ 0x80 + options.channel, options.note, options.velocity, ],
+    [ 0x80 + options.channel, options.note, options.velocity ],
     options.timestamp + options.duration
   );
 };
@@ -39,7 +39,7 @@ const renderNote = function( options ) {
 const renderController = function( options ) {
   // options: port, channel, controller, value, timestamp
   options.port.send(
-    [ 0xB0 + options.channel, options.controller, options.value, ],
+    [ 0xB0 + options.channel, options.controller, options.value ],
     options.timestamp
   );
 };

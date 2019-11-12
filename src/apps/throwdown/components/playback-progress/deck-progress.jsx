@@ -1,4 +1,4 @@
-import { connect, } from 'react-redux';
+import { connect } from 'react-redux';
 
 import throwdownSelectors from '../throwdown/selectors';
 import PlaybackProgressComponent from './playback-progress.jsx';

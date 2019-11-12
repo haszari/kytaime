@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, } from 'react-dom';
+import { render } from 'react-dom';
 
 import importMidiFile from '@kytaime/import-midi-file';
 
@@ -58,7 +58,7 @@ class MidiImporterApp extends React.Component {
         <textarea
           rows="40"
           readOnly
-          style={{ width: '100%', }}
+          style={{ width: '100%' }}
           value={ this.state.midiPatternData ? JSON.stringify( this.state.midiPatternData, null, '  ' ) : '' }
         />
         <br />

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createReducer, } from 'redux-starter-kit';
+import { createReducer } from 'redux-starter-kit';
 
 import actions from './actions';
 
@@ -33,10 +33,10 @@ function getDeckSectionPart( state, deckSlug, sectionSlug, partSlug ) {
   const deck = getDeck( state, deckSlug );
   if ( ! deck ) { return; }
 
-  const section = _.find( deck.sections, { slug: sectionSlug, } );
+  const section = _.find( deck.sections, { slug: sectionSlug } );
   if ( ! section ) { return; }
 
-  return _.find( section.parts, { part: partSlug, } );
+  return _.find( section.parts, { part: partSlug } );
 }
 
 const throwdownReducer = createReducer( {
@@ -73,7 +73,7 @@ const throwdownReducer = createReducer( {
     };
 
     const shuntedDeck = getDeck( state, action.payload.replaceDeckSlug );
-    const insertPosition = _.findIndex( state.decks, { slug: action.payload.replaceDeckSlug, } );
+    const insertPosition = _.findIndex( state.decks, { slug: action.payload.replaceDeckSlug } );
     if ( action.payload.replaceDeckSlug && insertPosition !== -1 ) {
       // if we're "replacing" a deck row, reorder decks so added one is in that slot
       state.decks.splice( insertPosition, 0, newDeck );
@@ -162,7 +162,7 @@ const throwdownReducer = createReducer( {
     const pattern = getSongPattern(
       state,
       action.payload.songSlug,
-      action.payload.patternSlug,
+      action.payload.patternSlug
     );
     if ( ! pattern ) return;
 
@@ -174,7 +174,7 @@ const throwdownReducer = createReducer( {
       state,
       action.payload.deckSlug,
       action.payload.sectionSlug,
-      action.payload.partSlug,
+      action.payload.partSlug
     );
     if ( ! part ) return;
 

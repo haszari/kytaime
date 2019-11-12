@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import Hjson from 'hjson';
 
-import { connect, } from 'react-redux';
+import { connect } from 'react-redux';
 
 import store from '../../store/store';
 

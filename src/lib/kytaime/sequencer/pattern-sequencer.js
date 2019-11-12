@@ -40,13 +40,13 @@ function renderPatternTrigger(
   isTriggered, isPlaying, // current state
   triggerQuant, // what cycle length we want to trigger within, aka the loop length
   triggerBeats, // beat positions within the pattern that are OK to trigger (start) at
-  unTriggerBeats, // beat positions within the pattern that are OK to untrigger (stop) at
+  unTriggerBeats // beat positions within the pattern that are OK to untrigger (stop) at
   // mode // future - alternatives to picking the closest (un)trigger beat
 ) {
   // defaults
   triggerQuant = triggerQuant || 4;
-  triggerBeats = triggerBeats || [ 0, ];
-  unTriggerBeats = unTriggerBeats || [ 0, ];
+  triggerBeats = triggerBeats || [ 0 ];
+  unTriggerBeats = unTriggerBeats || [ 0 ];
   // mode = 'closest'; // we don't support modes yet!
 
   triggerBeats = _.map( triggerBeats, beat => modulus( beat, triggerQuant ) );
@@ -142,7 +142,7 @@ const renderPatternEvents = function(
   renderRangeBeats,
   cycleBeats, // cycle (loop) length for pattern
   events, // must have { start, duration } in pattern-beats, and whatever else you need to render
-  debug,
+  debug
 ) {
   debug = debug || false;
 
