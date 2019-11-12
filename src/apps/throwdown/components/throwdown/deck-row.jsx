@@ -3,7 +3,7 @@ import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { connect, } from 'react-redux';
+import { connect } from 'react-redux';
 
 import Hjson from 'hjson';
 
@@ -46,7 +46,7 @@ function DeckSectionsTriggersComponent( props ) {
   );
   return (
     <tr
-      className="deck-row" style={{ backgroundColor: backgroundColour, }}
+      className="deck-row" style={{ backgroundColor: backgroundColour }}
       onDragOver={ props.onDragOver }
       onDragLeave={ props.onDragLeave }
       onDrop={ props.onDrop }
@@ -98,7 +98,7 @@ const mapStateToProps = ( state, ownProps ) => {
   const dragState = dragDropSelectors.getDragDrop( state );
 
   return {
-    playingPatterns: _.filter( patterns, { isPlaying: true, } ),
+    playingPatterns: _.filter( patterns, { isPlaying: true } ),
     deckState,
     phraseLoop,
     highlighted: dragState.dropHighlightDeck === ownProps.slug,

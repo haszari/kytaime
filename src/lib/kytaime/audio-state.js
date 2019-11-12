@@ -6,7 +6,7 @@ Not recommended to store these in a redux / react state tree as they aren't seri
 So this is a singleton for storing these things, alongside app state in redux or elsewhere.
 */
 
-import { find, } from 'lodash';
+import { find } from 'lodash';
 
 const state = {
   audioContext: null,
@@ -25,7 +25,7 @@ function addAudioBuffer( filename, buffer ) {
 }
 
 function getAudioBuffer( filename ) {
-  return find( state.audioBuffers, { file: filename, } );
+  return find( state.audioBuffers, { file: filename } );
 }
 
 function getAllAudioBuffers() {

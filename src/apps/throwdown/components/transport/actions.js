@@ -1,4 +1,4 @@
-import { createAction, } from 'redux-starter-kit';
+import { createAction } from 'redux-starter-kit';
 
 const setTempo = createAction( 'transport/setTempo' );
 const setNextTempo = createAction( 'tempoDrop/setNextTempo' ); // payload: tempo value

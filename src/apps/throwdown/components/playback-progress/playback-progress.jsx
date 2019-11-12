@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 function PlaybackProgressComponent( props ) {
   const phraseProgressPercent = props.progressPercent;
   return (
-    <tr style={{ backgroundColor: props.backgroundColour, }}>
+    <tr style={{ backgroundColor: props.backgroundColour }}>
       <td
         colSpan="99"
         className="playback-progress-container" >

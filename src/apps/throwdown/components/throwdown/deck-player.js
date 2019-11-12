@@ -54,13 +54,13 @@ class DeckPlayer {
   }
 
   renderTimePeriod( renderRange, tempoBpm, startBeat, endBeat, midiOutPort ) {
-    var renderRangeBeats = { start: startBeat, end: endBeat, };
+    var renderRangeBeats = { start: startBeat, end: endBeat };
 
     // get sections that we need to evaluate triggering:
     // the playing one (if any)
     // and the triggered one (if any)
-    var playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
-    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection, } );
+    var playingSection = _.find( this.props.sections, { slug: this.props.playingSection } );
+    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection } );
 
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
@@ -78,7 +78,7 @@ class DeckPlayer {
         renderRangeBeats,
         ( playingSection.slug === this.props.triggeredSection ),
         ( playingSection.slug === this.props.playingSection ),
-        this.props.triggerLoop,
+        this.props.triggerLoop
       );
       if ( currentSectionTrigger.isPlaying ) {
         currentPlayingSection = playingSection.slug;
@@ -91,7 +91,7 @@ class DeckPlayer {
         renderRangeBeats,
         ( triggeredSection.slug === this.props.triggeredSection ),
         ( triggeredSection.slug === this.props.playingSection ),
-        this.props.triggerLoop,
+        this.props.triggerLoop
       );
       if ( nextSectionTrigger.isPlaying ) {
         currentPlayingSection = triggeredSection.slug;
@@ -104,13 +104,13 @@ class DeckPlayer {
 
     // If there's a section transition, we'll render the first chunk (before transition) and return.
     if ( sectionTransition && currentSectionTrigger ) {
-      playingSection = _.find( this.props.sections, { slug: this.props.playingSection, } );
+      playingSection = _.find( this.props.sections, { slug: this.props.playingSection } );
       const sectionTransitionEvent = patternSequencer.renderPatternEvents(
         renderRange.start,
         tempoBpm,
         renderRangeBeats,
         this.props.triggerLoop,
-        [ { start: 0, duration: 1, }, ],
+        [ { start: 0, duration: 1 } ]
       );
       renderRange = _.cloneDeep( renderRange );
       renderRange.end = sectionTransitionEvent[0].start;
@@ -173,7 +173,7 @@ class DeckPlayer {
     // If we don't do this, the outgoing section patterns don't get a chance to render
     // their untrigger, and they continue playing when they shouldn't :)
     const thisRange = _.cloneDeep( renderRange );
-    var { start, end, } = renderRangeBeats;
+    var { start, end } = renderRangeBeats;
     var renderEnd = {
       beats: start,
       msec: renderRange.start,

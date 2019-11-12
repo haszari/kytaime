@@ -18,7 +18,7 @@ function getPlayerProps( patternData, buffers ) {
   }
   if ( patternData.file ) {
     // const channel = getChannelForPart( resource.part || key );
-    const stateBuffer = _.find( buffers, { file: patternData.file, } );
+    const stateBuffer = _.find( buffers, { file: patternData.file } );
     if ( !stateBuffer ) {
       return null;
     }

@@ -170,7 +170,7 @@ class ThrowdownApp {
       renderBeats,
       true, // triggered, we want the new tempo to drop soon
       false, // hasn't happened yet
-      tempoChangePhrase,
+      tempoChangePhrase
     );
 
     // normal case, just render all the stuff
@@ -198,7 +198,7 @@ class ThrowdownApp {
       this.tempoBpm,
       renderBeats,
       tempoChangePhrase,
-      [ { start: 0, duration: 1, }, ],
+      [ { start: 0, duration: 1 } ]
     );
 
     var renderRangeCurrent = _.cloneDeep( renderRange );
