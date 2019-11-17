@@ -27,9 +27,10 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
-fileImport.importThrowdownFile( 'data/20190217--manas.hjson' );
-fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
+// fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
+fileImport.importThrowdownFile( 'data/20191116--jacket.hjson' );
+// fileImport.importThrowdownFile( 'data/20190217--manas.hjson' );
+// fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--maenyb.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--ambients.hjson' );
@@ -50,7 +51,7 @@ fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 // importThrowdownFile( 'data/20190325--mivova.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 
-const initialTempo = 131;
+const initialTempo = 128;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );
