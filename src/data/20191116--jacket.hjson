@@ -3,11 +3,46 @@
   slug: jacket
   patterns: {
     beat: {
-      part: beat
+      part: drums
       file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Drums.m4a'
       offset: 7.507
       tempo: 128
       duration: 8
+    }
+    hat: {
+      part: drums
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20HiHats.m4a'
+      offset: 7.507
+      tempo: 128
+      duration: 8
+    }
+    sub: {
+      part: sub
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Sub.m4a'
+      offset: 37.478
+      tempo: 128
+      duration: 32
+    }
+    bass: {
+      part: bass
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Bass.m4a'
+      offset: 82.495
+      tempo: 128
+      duration: 16
+    }
+    tabla: {
+      part: perc
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Tabla.m4a'
+      offset: 37.506
+      tempo: 128
+      duration: 8
+    }
+    pad: {
+      part: pad
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Pad.m4a'
+      offset: 37.506
+      tempo: 128
+      duration: 16
     }
     # sub: {
     #   part: sub
@@ -32,9 +67,11 @@
     a: {
       patterns: [
         beat
-        # sub
-        # texture
-        # lead
+        hat
+        sub
+        bass
+        tabla
+        pad
       ]
     }
     # b: {
