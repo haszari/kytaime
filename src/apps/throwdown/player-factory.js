@@ -26,6 +26,7 @@ function getPlayerProps( patternData, buffers ) {
       channel: channel,
       audioFile: patternData.file,
       buffer: stateBuffer.buffer,
+      offset: patternData.offset,
       tempoBpm: patternData.tempo,
       sampleDuration: patternData.duration,
       startBeats: patternData.startBeats,

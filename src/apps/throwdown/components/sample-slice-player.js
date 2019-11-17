@@ -82,7 +82,7 @@ class SampleSlicePlayer {
     //   `start=(${ startBeat }, ${ startTimestamp }) `
     // );
 
-    const { tempoBpm } = this.props;
+    const { tempoBpm, offset } = this.props;
 
     const secPerBeat = ( 60 / tempoBpm );
     const rate = transportBpm / tempoBpm;
@@ -96,7 +96,7 @@ class SampleSlicePlayer {
     if ( audioDestinationNode.channelCount > 2 ) { audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel ); }
     else { player.connect( audioDestinationNode ); }
 
-    player.start( startTimestamp, startBeat * secPerBeat );
+    player.start( startTimestamp, offset + ( startBeat * secPerBeat ) );
     player.stop( stopTimestamp );
 
     this.player = player;
@@ -167,6 +167,7 @@ SampleSlicePlayer.defaultProps = {
 
   audioFile: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/20190209--mivova-kytaime-test-beat.mp3',
   tempoBpm: 122,
+  offset: 0,
 
   sampleDuration: 4,
   slices: [
