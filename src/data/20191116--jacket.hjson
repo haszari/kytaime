@@ -3,14 +3,14 @@
   slug: jacket
   patterns: {
     beat: {
-      part: drums
+      part: beat
       file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Drums.m4a'
       offset: 7.507
       tempo: 128
       duration: 8
     }
     hat: {
-      part: drums
+      part: hat
       file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20HiHats.m4a'
       offset: 7.507
       tempo: 128
