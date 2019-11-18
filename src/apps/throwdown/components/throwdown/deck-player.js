@@ -65,8 +65,6 @@ class DeckPlayer {
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
 
-    const deckSlug = this.props.slug;
-
     // run triggering for playing & triggered sections
     // we'll pass this down to the patterns so they know how to behave
     // these two ifs should be a function??
@@ -121,6 +119,7 @@ class DeckPlayer {
     // console.log( `DeckPlayer ${ this.props.slug } renderTimePeriod ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     const patternPlayStates = [];
+    const deckSlug = this.props.slug;
 
     // render patterns that are in the triggered/playing section
     _.each( this.patternPlayers,
@@ -143,6 +142,7 @@ class DeckPlayer {
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
 
         const stillPlaying = player.playing;
+
         // console.log( `play ${ patternSlug } inTriggeredSection=${ isInTriggeredSection } isTriggered=${ isTriggered } was=${ wasPlaying } now=${ stillPlaying }` );
         patternPlayStates.push( {
           // note here we are assuming deck === song

@@ -13,6 +13,7 @@ import HeaderPlaybackProgress from './components/playback-progress/header-progre
 import Decks from './components/throwdown/decks.jsx';
 
 import transportActions from './components/transport/actions';
+import throwdownActions from './components/throwdown/actions';
 
 import fileImport from './components/drag-drop/file-import';
 import importDrop from './components/drag-drop/ghost-deck.jsx';
@@ -27,9 +28,17 @@ const throwdownApp = new ThrowdownApp();
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
+store.dispatch( throwdownActions.addDeck( {
+  deckSlug: 'A1',
+} ) );
+
+store.dispatch( throwdownActions.addDeck( {
+  deckSlug: 'B2',
+} ) );
+
 // fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
-fileImport.importThrowdownFile( 'data/20191116--jacket.hjson' );
-// fileImport.importThrowdownFile( 'data/20190217--manas.hjson' );
+fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'B2' );
 // fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--maenyb.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );

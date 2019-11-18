@@ -67,12 +67,43 @@ function addThrowdownDeck( filename, throwdownData, replaceDeckRowSlug ) {
   return songSlug;
 }
 
+function addSectionsToDeck( filename, throwdownData, deckSlug ) {
+  const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
+
+  importPatterns( songSlug, throwdownData.patterns );
+
+  // store.dispatch( throwdownActions.addDeck( {
+  //   deckSlug: songSlug,
+  //   replaceDeckSlug: replaceDeckRowSlug,
+  // } ) );
+
+  _.map( throwdownData.sections, ( section, key ) => {
+    store.dispatch( throwdownActions.addSection( {
+      songSlug: songSlug,
+      deckSlug: deckSlug,
+      slug: `${ songSlug }-${ key }`,
+      ...section,
+    } ) );
+  } );
+
+  return deckSlug;
+}
+
 function importThrowdownFile( fileUrl ) {
   window.fetch( fileUrl )
     .then( response => response.text() )
     .then( text => {
       const songData = Hjson.parse( text );
       addThrowdownDeck( fileUrl, songData );
+    } );
+}
+
+function importThrowdownFileToDeck( fileUrl, deckSlug ) {
+  window.fetch( fileUrl )
+    .then( response => response.text() )
+    .then( text => {
+      const songData = Hjson.parse( text );
+      addSectionsToDeck( fileUrl, songData, deckSlug );
     } );
 }
 
@@ -83,4 +114,5 @@ function importThrowdownData( filename, hjsonBlob, replaceDeckRowSlug ) {
 export default {
   importThrowdownFile,
   importThrowdownData,
+  importThrowdownFileToDeck,
 };

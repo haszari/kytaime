@@ -94,7 +94,7 @@ const throwdownReducer = createReducer( {
 
     // get a list of full pattern data for the patterns in this section (i.e. filter out others)
     const sectionPatternData = _.filter( state.patterns, ( data ) => {
-      const sameSong = ( data.songSlug === action.payload.deckSlug );
+      const sameSong = ( data.songSlug === action.payload.songSlug );
       const inThisSection = ( _.indexOf( patternsInSection, data.slug ) !== -1 );
       return sameSong && inThisSection;
     } );
@@ -105,7 +105,7 @@ const throwdownReducer = createReducer( {
     // generate state array for patterns x parts (instruments)
     const partsPatterns = _.map( sectionPartSlugs, partSlug => {
       const patternData = _.filter( state.patterns, ( pattern, slug ) => {
-        const songMatch = ( pattern.songSlug === action.payload.deckSlug );
+        const songMatch = ( pattern.songSlug === action.payload.songSlug );
         const partMatch = ( pattern.part === partSlug );
         const sectionMatch = _.includes( patternsInSection, pattern.slug );
         return songMatch && partMatch && sectionMatch;
@@ -123,6 +123,7 @@ const throwdownReducer = createReducer( {
 
     deck.sections.push( {
       slug: action.payload.slug,
+      songSlug: action.payload.songSlug,
       duration: action.payload.bars * 4,
       patterns: action.payload.patterns,
       parts: partsPatterns,
@@ -135,6 +136,7 @@ const throwdownReducer = createReducer( {
 
     // pass no slug to clear triggered section
     deck.triggeredSection = action.payload.sectionSlug;
+    deck.triggeredSong = action.payload.songSlug;
   },
   [actions.toggleDeckTriggeredSection]: ( state, action ) => {
     const deck = state.decks[action.payload.deckIndex];
