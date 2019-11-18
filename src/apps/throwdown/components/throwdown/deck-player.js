@@ -9,6 +9,16 @@ import playerFactory from '../../player-factory';
 import throwdownActions from './actions';
 import store from '../../store/store';
 
+function findSongSection( sections, songSection ) {
+  if ( ! songSection || ! songSection.song || ! songSection.section ) {
+    return null;
+  }
+  return _.find( sections, {
+    slug: songSection.section,
+    songSlug: songSection.song,
+  } );
+}
+
 class DeckPlayer {
   constructor( props ) {
     this.patternPlayers = {};
@@ -25,6 +35,7 @@ class DeckPlayer {
 
       if ( ! patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
+        patternPlayer.songSlug = pattern.songSlug;
         this.patternPlayers[pattern.slug] = patternPlayer;
       }
       else {
@@ -59,8 +70,9 @@ class DeckPlayer {
     // get sections that we need to evaluate triggering:
     // the playing one (if any)
     // and the triggered one (if any)
-    var playingSection = _.find( this.props.sections, { slug: this.props.playingSection } );
-    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection } );
+
+    var playingSection = findSongSection( this.props.sections, this.props.playingSection );
+    var triggeredSection = findSongSection( this.props.sections, this.props.triggeredSection );
 
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
@@ -74,12 +86,21 @@ class DeckPlayer {
       currentSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( playingSection.slug === this.props.triggeredSection ),
-        ( playingSection.slug === this.props.playingSection ),
+        _.isEqual( this.props.triggeredSection, {
+          song: playingSection.song,
+          section: playingSection.section,
+        } ),
+        _.isEqual( this.props.playingSection, {
+          song: playingSection.song,
+          section: playingSection.section,
+        } ),
         this.props.triggerLoop
       );
       if ( currentSectionTrigger.isPlaying ) {
-        currentPlayingSection = playingSection.slug;
+        currentPlayingSection = {
+          song: playingSection.song,
+          section: playingSection.slug,
+        };
       }
     }
 
@@ -87,17 +108,26 @@ class DeckPlayer {
       nextSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( triggeredSection.slug === this.props.triggeredSection ),
-        ( triggeredSection.slug === this.props.playingSection ),
+        _.isEqual( this.props.triggeredSection, {
+          song: triggeredSection.song,
+          section: triggeredSection.section,
+        } ),
+        _.isEqual( this.props.playingSection, {
+          song: triggeredSection.song,
+          section: triggeredSection.section,
+        } ),
         this.props.triggerLoop
       );
       if ( nextSectionTrigger.isPlaying ) {
-        currentPlayingSection = triggeredSection.slug;
+        currentPlayingSection = {
+          song: triggeredSection.song,
+          section: triggeredSection.slug,
+        };
       }
     }
 
     // this is used by parent (throwdown) to send message to update UI
-    const sectionTransition = ( this.props.playingSection !== currentPlayingSection );
+    const sectionTransition = ! _.isEqual( this.props.playingSection, currentPlayingSection );
     this.props.playingSection = currentPlayingSection;
 
     // If there's a section transition, we'll render the first chunk (before transition) and return.
@@ -147,7 +177,7 @@ class DeckPlayer {
         patternPlayStates.push( {
           // note here we are assuming deck === song
           // this is currently how it works, but we might support different songs in same deck in future?
-          songSlug: deckSlug,
+          songSlug: player.songSlug,
           patternSlug: patternSlug,
           isPlaying: stillPlaying,
         } );
