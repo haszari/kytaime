@@ -94,7 +94,7 @@ function getAllDeckPatterns( state, deckSlug ) {
     var patterns = section.patterns.map(
       patternSlug => _.find( allPatterns, {
         slug: patternSlug,
-        songSlug: deckState.slug,
+        songSlug: section.songSlug,
       } )
     );
     return _.filter( patterns ); // filter out undefined patterns, e.g. slug not present
