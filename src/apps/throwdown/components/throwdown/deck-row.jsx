@@ -122,10 +122,11 @@ const mapDispatchToProps = ( dispatch, ownProps ) => {
       );
     },
 
-    onSetPartTriggeredSection: ( sectionSlug, partSlug, patternSlug ) => {
+    onSetPartTriggeredSection: ( songSlug, sectionSlug, partSlug, patternSlug ) => {
       dispatch(
         actions.setDeckSectionPartTriggeredPattern( {
           deckSlug: ownProps.slug,
+          songSlug: songSlug,
           partSlug,
           sectionSlug,
           patternSlug,

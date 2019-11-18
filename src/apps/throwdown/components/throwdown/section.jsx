@@ -61,7 +61,7 @@ function SectionTrigger( props ) {
 
   const parts = props.parts.map( part => {
     const partProps = {
-      onSetPartTriggeredSection: props.onSetPartTriggeredSection.bind( null, sectionSlug ),
+      onSetPartTriggeredSection: props.onSetPartTriggeredSection.bind( null, props.songSlug, sectionSlug ),
       playingPatterns: playingPatternSlugs,
       ...part,
     };

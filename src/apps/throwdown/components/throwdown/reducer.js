@@ -29,7 +29,7 @@ function getSongPattern( state, songSlug, patternSlug ) {
     pattern => ( pattern.slug === patternSlug ) && ( pattern.songSlug === songSlug )
   );
 }
-function getDeckSectionPart( state, deckSlug, sectionSlug, songSlug, partSlug ) {
+function getDeckSectionPart( state, deckSlug, songSlug, sectionSlug, partSlug ) {
   const deck = getDeck( state, deckSlug );
   if ( ! deck ) { return; }
 
