@@ -87,18 +87,18 @@ class DeckPlayer {
         tempoBpm,
         renderRangeBeats,
         _.isEqual( this.props.triggeredSection, {
-          song: playingSection.song,
-          section: playingSection.section,
+          song: playingSection.songSlug,
+          section: playingSection.slug,
         } ),
         _.isEqual( this.props.playingSection, {
-          song: playingSection.song,
-          section: playingSection.section,
+          song: playingSection.songSlug,
+          section: playingSection.slug,
         } ),
         this.props.triggerLoop
       );
       if ( currentSectionTrigger.isPlaying ) {
         currentPlayingSection = {
-          song: playingSection.song,
+          song: playingSection.songSlug,
           section: playingSection.slug,
         };
       }
@@ -109,18 +109,18 @@ class DeckPlayer {
         tempoBpm,
         renderRangeBeats,
         _.isEqual( this.props.triggeredSection, {
-          song: triggeredSection.song,
-          section: triggeredSection.section,
+          song: triggeredSection.songSlug,
+          section: triggeredSection.slug,
         } ),
         _.isEqual( this.props.playingSection, {
-          song: triggeredSection.song,
-          section: triggeredSection.section,
+          song: triggeredSection.songSlug,
+          section: triggeredSection.slug,
         } ),
         this.props.triggerLoop
       );
       if ( nextSectionTrigger.isPlaying ) {
         currentPlayingSection = {
-          song: triggeredSection.song,
+          song: triggeredSection.songSlug,
           section: triggeredSection.slug,
         };
       }
@@ -149,7 +149,7 @@ class DeckPlayer {
     // console.log( `DeckPlayer ${ this.props.slug } renderTimePeriod ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     const patternPlayStates = [];
-    const deckSlug = this.props.slug;
+    // const deckSlug = this.props.slug;
 
     // render patterns that are in the triggered/playing section
     _.each( this.patternPlayers,
