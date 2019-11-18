@@ -19,12 +19,18 @@ import fileImport from '../drag-drop/file-import';
 
 import SectionTrigger from './section.jsx';
 
+function songSectionIsValid( songSection ) {
+  if ( ! songSection ) { return false; }
+
+  return ( songSection.section && songSection.song );
+}
+
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
   const edgeColour = deckColours.hueToBorderColour( props.deckState.hue );
   const deckSlug = props.deckState.slug;
-  const isTriggered = props.deckState.triggeredSection;
-  const isPlaying = props.deckState.playingSection;
+  const isTriggered = songSectionIsValid( props.deckState.triggeredSection );
+  const isPlaying = songSectionIsValid( props.deckState.playingSection );
 
   const sections = props.deckState.sections.map(
     ( section ) => {
