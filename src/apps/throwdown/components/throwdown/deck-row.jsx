@@ -29,11 +29,16 @@ function DeckSectionsTriggersComponent( props ) {
   const sections = props.deckState.sections.map(
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
+      const songSection = {
+        section: section.slug,
+        song: section.songSlug,
+      };
       return (
         <SectionTrigger
           key={ section.slug }
-          triggered={ props.deckState.triggeredSection === section.slug }
-          playing={ props.deckState.playingSection === section.slug }
+          triggered={ _.isEqual( props.deckState.triggeredSection, songSection ) }
+          playing={ _.isEqual( props.deckState.playingSection, songSection ) }
+          songSlug={ section.songSlug }
           slug={ section.slug }
           onSetTriggeredSection={ props.onSetTriggeredSection }
           onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
@@ -107,10 +112,11 @@ const mapStateToProps = ( state, ownProps ) => {
 
 const mapDispatchToProps = ( dispatch, ownProps ) => {
   return {
-    onSetTriggeredSection: ( sectionSlug ) => {
+    onSetTriggeredSection: ( songSlug, sectionSlug ) => {
       dispatch(
         actions.setDeckTriggeredSection( {
           deckSlug: ownProps.slug,
+          songSlug,
           sectionSlug,
         } )
       );

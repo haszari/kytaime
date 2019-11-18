@@ -53,6 +53,7 @@ function SectionTrigger( props ) {
   const styles = triggerStyling( props.triggered, props.playing );
   const toggleTrigger = props.onSetTriggeredSection.bind(
     null,
+    props.triggered ? null : props.songSlug,
     props.triggered ? null : props.slug
   );
 
@@ -73,7 +74,7 @@ function SectionTrigger( props ) {
         style={ styles }
         className='section'
       >
-        { props.slug }
+        { props.songSlug } { props.slug }
       </div>
       <div className='parts'>
         { parts }
@@ -87,6 +88,7 @@ SectionTrigger.propTypes = {
   triggered: PropTypes.bool,
   onSetTriggeredSection: PropTypes.func,
   onSetPartTriggeredSection: PropTypes.func,
+  songSlug: PropTypes.string,
   slug: PropTypes.string,
   hue: PropTypes.number,
   parts: PropTypes.array,

@@ -8,8 +8,8 @@ function createDeck() {
   return {
     slug: '',
     hue: Math.random() * 360,
-    triggeredSection: null,
-    playingSection: null,
+    triggeredSection: null, // { song, section }
+    playingSection: null, // { song, section }
     sections: [],
   };
 }
@@ -29,19 +29,19 @@ function getSongPattern( state, songSlug, patternSlug ) {
     pattern => ( pattern.slug === patternSlug ) && ( pattern.songSlug === songSlug )
   );
 }
-function getDeckSectionPart( state, deckSlug, sectionSlug, partSlug ) {
+function getDeckSectionPart( state, deckSlug, sectionSlug, songSlug, partSlug ) {
   const deck = getDeck( state, deckSlug );
   if ( ! deck ) { return; }
 
-  const section = _.find( deck.sections, { slug: sectionSlug } );
+  const section = _.find( deck.sections, { slug: sectionSlug, songSlug } );
   if ( ! section ) { return; }
 
   return _.find( section.parts, { part: partSlug } );
 }
 
 const throwdownReducer = createReducer( {
-  audioContext: null,
-  buffers: [],
+  // audioContext: null,
+  // buffers: [],
 
   patterns: [],
 
@@ -135,8 +135,10 @@ const throwdownReducer = createReducer( {
     if ( ! deck ) return;
 
     // pass no slug to clear triggered section
-    deck.triggeredSection = action.payload.sectionSlug;
-    deck.triggeredSong = action.payload.songSlug;
+    deck.triggeredSection = {
+      section: action.payload.sectionSlug,
+      song: action.payload.songSlug,
+    };
   },
   [actions.toggleDeckTriggeredSection]: ( state, action ) => {
     const deck = state.decks[action.payload.deckIndex];
@@ -144,11 +146,15 @@ const throwdownReducer = createReducer( {
 
     const section = deck.sections[action.payload.sectionIndex];
     const sectionSlug = section ? section.slug : '';
-    if ( deck.triggeredSection !== sectionSlug ) {
-      deck.triggeredSection = sectionSlug;
+    const songSlug = section ? section.songSlug : '';
+    if ( ( deck.triggeredSection.section === sectionSlug ) && ( deck.triggeredSection.song === songSlug ) ) {
+      deck.triggeredSection = null;
     }
     else {
-      deck.triggeredSection = null;
+      deck.triggeredSection = {
+        song: songSlug,
+        section: sectionSlug,
+      };
     }
   },
 
@@ -156,8 +162,11 @@ const throwdownReducer = createReducer( {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( !deck ) return;
 
-    // pass no slug to clear playing section
-    deck.playingSection = action.payload.sectionSlug;
+    // pass {} to clear playing section
+    deck.playingSection = {
+      song: action.payload.songSlug,
+      section: action.payload.sectionSlug,
+    };
   },
 
   [actions.setDeckPatternPlaystate]: ( state, action ) => {
@@ -175,6 +184,7 @@ const throwdownReducer = createReducer( {
     const part = getDeckSectionPart(
       state,
       action.payload.deckSlug,
+      action.payload.songSlug,
       action.payload.sectionSlug,
       action.payload.partSlug
     );

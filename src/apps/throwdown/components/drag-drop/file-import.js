@@ -81,7 +81,7 @@ function addSectionsToDeck( filename, throwdownData, deckSlug ) {
     store.dispatch( throwdownActions.addSection( {
       songSlug: songSlug,
       deckSlug: deckSlug,
-      slug: `${ songSlug }-${ key }`,
+      slug: key,
       ...section,
     } ) );
   } );
