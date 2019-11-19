@@ -34,8 +34,7 @@
     }
   }
   sections: {
-    main: {
-      bars: 4
+    a: {
       patterns: [
         beatr
         subr
@@ -43,20 +42,13 @@
         stabr
       ]
     }
-    beat: {
-      bars: 4
+    b: {
       patterns: [
         beatr
-        stabr
-      ]
-    }
-    melo: {
-      bars: 4
-      patterns: [
         subr
         leadr
         stabr
       ]
     }
-  } 
+  }
 }

@@ -28,29 +28,7 @@
     }
   }
   sections: {
-    intro: {
-      bars: 4
-      patterns: [
-        beat
-        chords
-      ]
-    }
-    break: {
-      bars: 4
-      patterns: [
-        chords
-        lead
-      ]
-    }
-    drumbass: {
-      bars: 4
-      patterns: [
-        beat
-        sub
-      ]
-    }
-    main: {
-      bars: 4
+    a: {
       patterns: [
         beat
         sub
@@ -58,10 +36,11 @@
         lead
       ]
     }
-    outro: {
-      bars: 4
+    b: {
       patterns: [
         beat
+        sub
+        chords
         lead
       ]
     }

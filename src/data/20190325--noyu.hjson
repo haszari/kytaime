@@ -30,22 +30,15 @@
     }
   }
   sections: {
-    intro: {
-      bars: 4
+    a: {
       patterns: [
         beat
-        chords
-      ]
-    }
-    break: {
-      bars: 4
-      patterns: [
+        bass
         piano
         chords
       ]
     }
-    main: {
-      bars: 4
+    b: {
       patterns: [
         beat
         bass

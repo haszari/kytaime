@@ -36,6 +36,7 @@ store.dispatch( throwdownActions.addDeck( {
   deckSlug: 'B2',
 } ) );
 
+fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'A1' );
 fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
 fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
 fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );

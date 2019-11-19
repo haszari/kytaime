@@ -74,13 +74,15 @@
         pad
       ]
     }
-    # b: {
-    #   patterns: [
-    #     beat
-    #     sub
-    #     texture
-    #     lead
-    #   ]
-    # }
+    b: {
+      patterns: [
+        beat
+        hat
+        sub
+        bass
+        tabla
+        pad
+      ]
+    }
   } 
 }
