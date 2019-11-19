@@ -19,14 +19,14 @@
     sub: {
       part: sub
       file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Sub.m4a'
-      offset: 37.478
+      offset: 37.48
       tempo: 128
       duration: 32
     }
     bass: {
       part: bass
       file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Bass.m4a'
-      offset: 82.495
+      offset: 82.48
       tempo: 128
       duration: 16
     }
