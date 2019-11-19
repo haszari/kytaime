@@ -39,9 +39,10 @@ function DeckSectionsTriggersComponent( props ) {
         section: section.slug,
         song: section.songSlug,
       };
+      const key = `${ section.songSlug }-${ section.slug }`;
       return (
         <SectionTrigger
-          key={ section.slug }
+          key={ key }
           triggered={ _.isEqual( props.deckState.triggeredSection, songSection ) }
           playing={ _.isEqual( props.deckState.playingSection, songSection ) }
           songSlug={ section.songSlug }
