@@ -16,11 +16,11 @@ function PartTriggers( props ) {
       <div className='part-slug'>{ props.part }</div>
       {
         props.patterns.map( patternSlug => {
-          const patternIsPlaying = ( _.indexOf( props.playingPatterns, patternSlug ) !== -1 );
+          const patternNameIsPlaying = ( _.indexOf( props.playingPatterns, patternSlug ) !== -1 );
           const patternIsTriggered = ( patternSlug === props.triggeredPattern );
           const patternStyles = triggerStyling(
             patternIsTriggered,
-            patternIsPlaying
+            ( patternNameIsPlaying && props.songIsPlaying )
           );
           return (
             <div
@@ -41,6 +41,7 @@ function PartTriggers( props ) {
 }
 
 PartTriggers.propTypes = {
+  songIsPlaying: PropTypes.bool,
   part: PropTypes.string,
   patterns: PropTypes.array,
   triggeredPattern: PropTypes.string,
@@ -63,6 +64,7 @@ function SectionTrigger( props ) {
     const partProps = {
       onSetPartTriggeredSection: props.onSetPartTriggeredSection.bind( null, props.songSlug, sectionSlug ),
       playingPatterns: playingPatternSlugs,
+      songIsPlaying: ( props.songSlug === props.playingSong ),
       ...part,
     };
     return PartTriggers( partProps );
@@ -84,6 +86,8 @@ function SectionTrigger( props ) {
 }
 
 SectionTrigger.propTypes = {
+  playingSong: PropTypes.string,
+  playingSection: PropTypes.string,
   playing: PropTypes.bool,
   triggered: PropTypes.bool,
   onSetTriggeredSection: PropTypes.func,

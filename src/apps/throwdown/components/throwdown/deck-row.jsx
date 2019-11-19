@@ -32,6 +32,9 @@ function DeckSectionsTriggersComponent( props ) {
   const isTriggered = songSectionIsValid( props.deckState.triggeredSection );
   const isPlaying = songSectionIsValid( props.deckState.playingSection );
 
+  const playingSong = props.deckState.playingSection ? props.deckState.playingSection.song : null;
+  const playingSection = props.deckState.playingSection ? props.deckState.playingSection.section : null;
+
   const sections = props.deckState.sections.map(
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
@@ -47,6 +50,8 @@ function DeckSectionsTriggersComponent( props ) {
           playing={ _.isEqual( props.deckState.playingSection, songSection ) }
           songSlug={ section.songSlug }
           slug={ section.slug }
+          playingSong={ playingSong }
+          playingSection={ playingSection }
           onSetTriggeredSection={ props.onSetTriggeredSection }
           onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
           hue={ props.deckState.hue }
