@@ -71,9 +71,15 @@ const getChannelForPart = function( partName ) {
   if ( _.isNumber( channel ) ) {
     return channel;
   }
-  else {
-    return 1;
+
+  const partialMatch = _.findKey( channelConventionsFourChannels, ( channel, part ) => {
+    return partName.startsWith( part );
+  } );
+  if ( partialMatch ) {
+    return channelConventionsFourChannels[partialMatch];
   }
+
+  return 1;
 };
 
 export default getChannelForPart;

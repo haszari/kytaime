@@ -116,7 +116,8 @@ class ThrowdownApp {
     _.map( this.deckPlayers, deckPlayer => {
       store.dispatch( throwdownActions.setDeckPlayingSection( {
         deckSlug: deckPlayer.props.slug,
-        sectionSlug: deckPlayer.props.playingSection,
+        songSlug: deckPlayer.props.playingSection ? deckPlayer.props.playingSection.song : null,
+        sectionSlug: deckPlayer.props.playingSection ? deckPlayer.props.playingSection.section : null,
       } ) );
     } );
   }

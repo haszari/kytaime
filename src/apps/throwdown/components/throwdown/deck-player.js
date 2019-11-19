@@ -9,11 +9,36 @@ import playerFactory from '../../player-factory';
 import throwdownActions from './actions';
 import store from '../../store/store';
 
+function findSongSection( sections, songSection ) {
+  if ( ! songSection || ! songSection.song || ! songSection.section ) {
+    return null;
+  }
+  return _.find( sections, {
+    slug: songSection.section,
+    songSlug: songSection.song,
+  } );
+}
+
 class DeckPlayer {
   constructor( props ) {
-    this.patternPlayers = {};
+    this.patternPlayers = [];
 
     this.updateProps( props );
+  }
+
+  getPatternPlayer( songSlug, patternSlug ) {
+    return _.find( this.patternPlayers, {
+      songSlug: songSlug,
+      patternSlug: patternSlug,
+    } );
+  }
+
+  replacePatternPlayer( songSlug, patternSlug, player ) {
+    const oldPlayer = this.getPatternPlayer( songSlug, patternSlug );
+    if ( oldPlayer ) {
+      _.remove( this.patternPlayers, oldPlayer );
+    }
+    this.patternPlayers.push( player );
   }
 
   updateProps( props ) {
@@ -21,11 +46,13 @@ class DeckPlayer {
 
     // create/update one player for each pattern in this deck
     _.each( props.patterns, ( pattern ) => {
-      var patternPlayer = this.patternPlayers[pattern.slug];
+      var patternPlayer = this.getPatternPlayer( pattern.songSlug, pattern.slug );
 
       if ( ! patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
-        this.patternPlayers[pattern.slug] = patternPlayer;
+        patternPlayer.songSlug = pattern.songSlug;
+        patternPlayer.patternSlug = pattern.slug;
+        this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );
       }
       else {
         patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
@@ -43,8 +70,12 @@ class DeckPlayer {
     );
   }
 
-  isPatternTriggeredInSectionParts( patternSlug, sectionData ) {
+  isPatternTriggeredInSectionParts( songSlug, patternSlug, sectionData ) {
     if ( ! sectionData ) {
+      return false;
+    }
+
+    if ( songSlug !== sectionData.songSlug ) {
       return false;
     }
 
@@ -59,13 +90,12 @@ class DeckPlayer {
     // get sections that we need to evaluate triggering:
     // the playing one (if any)
     // and the triggered one (if any)
-    var playingSection = _.find( this.props.sections, { slug: this.props.playingSection } );
-    const triggeredSection = _.find( this.props.sections, { slug: this.props.triggeredSection } );
+
+    var playingSection = findSongSection( this.props.sections, this.props.playingSection );
+    var triggeredSection = findSongSection( this.props.sections, this.props.triggeredSection );
 
     // update props.playingSection if we are switching section
     var currentPlayingSection = null;
-
-    const deckSlug = this.props.slug;
 
     // run triggering for playing & triggered sections
     // we'll pass this down to the patterns so they know how to behave
@@ -76,12 +106,21 @@ class DeckPlayer {
       currentSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( playingSection.slug === this.props.triggeredSection ),
-        ( playingSection.slug === this.props.playingSection ),
+        _.isEqual( this.props.triggeredSection, {
+          song: playingSection.songSlug,
+          section: playingSection.slug,
+        } ),
+        _.isEqual( this.props.playingSection, {
+          song: playingSection.songSlug,
+          section: playingSection.slug,
+        } ),
         this.props.triggerLoop
       );
       if ( currentSectionTrigger.isPlaying ) {
-        currentPlayingSection = playingSection.slug;
+        currentPlayingSection = {
+          song: playingSection.songSlug,
+          section: playingSection.slug,
+        };
       }
     }
 
@@ -89,17 +128,26 @@ class DeckPlayer {
       nextSectionTrigger = patternSequencer.renderPatternTrigger(
         tempoBpm,
         renderRangeBeats,
-        ( triggeredSection.slug === this.props.triggeredSection ),
-        ( triggeredSection.slug === this.props.playingSection ),
+        _.isEqual( this.props.triggeredSection, {
+          song: triggeredSection.songSlug,
+          section: triggeredSection.slug,
+        } ),
+        _.isEqual( this.props.playingSection, {
+          song: triggeredSection.songSlug,
+          section: triggeredSection.slug,
+        } ),
         this.props.triggerLoop
       );
       if ( nextSectionTrigger.isPlaying ) {
-        currentPlayingSection = triggeredSection.slug;
+        currentPlayingSection = {
+          song: triggeredSection.songSlug,
+          section: triggeredSection.slug,
+        };
       }
     }
 
     // this is used by parent (throwdown) to send message to update UI
-    const sectionTransition = ( this.props.playingSection !== currentPlayingSection );
+    const sectionTransition = ! _.isEqual( this.props.playingSection, currentPlayingSection );
     this.props.playingSection = currentPlayingSection;
 
     // If there's a section transition, we'll render the first chunk (before transition) and return.
@@ -121,34 +169,35 @@ class DeckPlayer {
     // console.log( `DeckPlayer ${ this.props.slug } renderTimePeriod ${ renderRange.start }/${ renderRangeBeats.start } ${ renderRange.end }/${ renderRangeBeats.end }` );
 
     const patternPlayStates = [];
+    // const deckSlug = this.props.slug;
 
     // render patterns that are in the triggered/playing section
     _.each( this.patternPlayers,
-      ( player, patternSlug ) => {
+      ( player ) => {
         // Is this pattern in a section that's triggered, i.e. parent is triggered?
         // This allows us to trigger/untrigger a whole section (multiple patterns) as a unit.
-        const isInTriggeredSection = triggeredSection ? _.includes( triggeredSection.patterns, patternSlug ) : false;
-        // const isInPlayingSection = playingSection ? _.includes( playingSection.patterns, patternSlug ) : false;
+        const isInTriggeredSection = triggeredSection
+          ? _.includes( triggeredSection.patterns, player.patternSlug ) && ( player.songSlug === triggeredSection.songSlug )
+          : false;
         player.setParentTriggered( isInTriggeredSection );
 
         // Is this pattern triggered (selected) within the section (within the part)?
         // This allows us to load up a section with alternative patterns
         // for each part/instrument (e.g. different beats) and toggle between them.
-        const isTriggered = this.isPatternTriggeredInSectionParts( patternSlug, triggeredSection ) ||
-          this.isPatternTriggeredInSectionParts( patternSlug, playingSection );
-        player.setTriggered( isTriggered );
+        const isTriggeredInTriggeredSection = this.isPatternTriggeredInSectionParts( player.songSlug, player.patternSlug, triggeredSection );
+        const isTriggeredInPlayingSection = this.isPatternTriggeredInSectionParts( player.songSlug, player.patternSlug, playingSection );
+        player.setTriggered( isTriggeredInTriggeredSection || isTriggeredInPlayingSection );
 
         // const wasPlaying = player.playing;
 
         player.throwdownRender( renderRange, tempoBpm, renderRangeBeats, midiOutPort );
 
         const stillPlaying = player.playing;
+
         // console.log( `play ${ patternSlug } inTriggeredSection=${ isInTriggeredSection } isTriggered=${ isTriggered } was=${ wasPlaying } now=${ stillPlaying }` );
         patternPlayStates.push( {
-          // note here we are assuming deck === song
-          // this is currently how it works, but we might support different songs in same deck in future?
-          songSlug: deckSlug,
-          patternSlug: patternSlug,
+          songSlug: player.songSlug,
+          patternSlug: player.patternSlug,
           isPlaying: stillPlaying,
         } );
       }

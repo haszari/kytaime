@@ -19,22 +19,39 @@ import fileImport from '../drag-drop/file-import';
 
 import SectionTrigger from './section.jsx';
 
+function songSectionIsValid( songSection ) {
+  if ( ! songSection ) { return false; }
+
+  return ( songSection.section && songSection.song );
+}
+
 function DeckSectionsTriggersComponent( props ) {
   const backgroundColour = deckColours.hueToBackgroundColour( props.deckState.hue, props.highlighted );
   const edgeColour = deckColours.hueToBorderColour( props.deckState.hue );
   const deckSlug = props.deckState.slug;
-  const isTriggered = props.deckState.triggeredSection;
-  const isPlaying = props.deckState.playingSection;
+  const isTriggered = songSectionIsValid( props.deckState.triggeredSection );
+  const isPlaying = songSectionIsValid( props.deckState.playingSection );
+
+  const playingSong = props.deckState.playingSection ? props.deckState.playingSection.song : null;
+  const playingSection = props.deckState.playingSection ? props.deckState.playingSection.section : null;
 
   const sections = props.deckState.sections.map(
     ( section ) => {
       // const state = _.find( props.deckState, { 'slug': section.slug } ) || {};
+      const songSection = {
+        section: section.slug,
+        song: section.songSlug,
+      };
+      const key = `${ section.songSlug }-${ section.slug }`;
       return (
         <SectionTrigger
-          key={ section.slug }
-          triggered={ props.deckState.triggeredSection === section.slug }
-          playing={ props.deckState.playingSection === section.slug }
+          key={ key }
+          triggered={ _.isEqual( props.deckState.triggeredSection, songSection ) }
+          playing={ _.isEqual( props.deckState.playingSection, songSection ) }
+          songSlug={ section.songSlug }
           slug={ section.slug }
+          playingSong={ playingSong }
+          playingSection={ playingSection }
           onSetTriggeredSection={ props.onSetTriggeredSection }
           onSetPartTriggeredSection={ props.onSetPartTriggeredSection }
           hue={ props.deckState.hue }
@@ -107,19 +124,21 @@ const mapStateToProps = ( state, ownProps ) => {
 
 const mapDispatchToProps = ( dispatch, ownProps ) => {
   return {
-    onSetTriggeredSection: ( sectionSlug ) => {
+    onSetTriggeredSection: ( songSlug, sectionSlug ) => {
       dispatch(
         actions.setDeckTriggeredSection( {
           deckSlug: ownProps.slug,
+          songSlug,
           sectionSlug,
         } )
       );
     },
 
-    onSetPartTriggeredSection: ( sectionSlug, partSlug, patternSlug ) => {
+    onSetPartTriggeredSection: ( songSlug, sectionSlug, partSlug, patternSlug ) => {
       dispatch(
         actions.setDeckSectionPartTriggeredPattern( {
           deckSlug: ownProps.slug,
+          songSlug: songSlug,
           partSlug,
           sectionSlug,
           patternSlug,

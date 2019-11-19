@@ -1,0 +1,88 @@
+{
+  version: 1
+  slug: jacket
+  patterns: {
+    beat: {
+      part: beat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Drums.m4a'
+      offset: 7.507
+      tempo: 128
+      duration: 8
+    }
+    hat: {
+      part: hat
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20HiHats.m4a'
+      offset: 7.507
+      tempo: 128
+      duration: 8
+    }
+    sub: {
+      part: sub
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Sub.m4a'
+      offset: 37.478
+      tempo: 128
+      duration: 32
+    }
+    bass: {
+      part: bass
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Bass.m4a'
+      offset: 82.495
+      tempo: 128
+      duration: 16
+    }
+    tabla: {
+      part: perc
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Tabla.m4a'
+      offset: 37.506
+      tempo: 128
+      duration: 8
+    }
+    pad: {
+      part: pad
+      file: '/media/Haszari/Haszari%20Renders%20-%20Stems/The%20Jacket%20-%20Pad.m4a'
+      offset: 37.506
+      tempo: 128
+      duration: 16
+    }
+    # sub: {
+    #   part: sub
+    #   file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170806-kufca-padscape-sub-ridge.mp3'
+    #   tempo: 126
+    #   duration: 16
+    # }
+    # lead: {
+    #   part: lead
+    #   file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170806-kufca-padscape-lead-uplands.mp3'
+    #   tempo: 126
+    #   duration: 64   
+    # }
+    # texture: {
+    #   part: texture
+    #   file: '/media/Haszari/Haszari%20Renders%20-%20Snips%20Stems%20Padded%20Landscape/20170806-kufca-padscape-texture-hills.mp3'
+    #   tempo: 126
+    #   duration: 64
+    # }
+  }
+  sections: {
+    a: {
+      patterns: [
+        beat
+        hat
+        sub
+        bass
+        tabla
+        pad
+      ]
+    }
+    b: {
+      patterns: [
+        beat
+        hat
+        sub
+        bass
+        tabla
+        pad
+      ]
+    }
+  } 
+}

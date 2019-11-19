@@ -45,7 +45,7 @@ class SectionPlayer {
       renderRangeBeats,
       this.props.triggered,
       this.props.playing,
-      this.props.triggerLoop,
+      this.props.triggerLoop
       // start beats and end beats for section .. is that a thing??
     );
 
