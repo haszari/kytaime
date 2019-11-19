@@ -36,29 +36,22 @@ store.dispatch( throwdownActions.addDeck( {
   deckSlug: 'B2',
 } ) );
 
-// fileImport.importThrowdownFile( 'data/20190325--mivova.hjson' );
+fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
 fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
+
+fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
+fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'B2' );
+fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'B2' );
 fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'B2' );
-// fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
-// fileImport.importThrowdownFile( 'data/20190325--maenyb.hjson' );
+
 // fileImport.importThrowdownFile( 'data/20190422--likeso.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--ambients.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--beats.hjson' );
 // fileImport.importThrowdownFile( 'data/nook-cranny/20190325--transitions.hjson' );
-// fileImport.importThrowdownFile( 'data/20190306--sweets-from-a-stranger.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--squelch.hjson' );
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
-// fileImport.importThrowdownFile( 'data/20190412--the-jacket.hjson' );
-// fileImport.importThrowdownFile( '/data/20190325--noyu.hjson' );
-// fileImport.importThrowdownFile( '/data/20190325--alex-haszard-bdmt.hjson' );
-// fileImport.importThrowdownFile( '/data/20190217--manas.hjson' );
-// importThrowdownFile( '/data/20190325--noyu.hjson' );
-// importThrowdownFile( '/data/20190325--alex-haszard-bdmt.hjson' );
-// importThrowdownFile( 'data/20190306--sweets-from-a-stranger.hjson' );
-// importThrowdownFile( 'data/20190325--maenyb.hjson' );
-// importThrowdownFile( 'data/20190325--shedout.hjson' );
-// importThrowdownFile( 'data/20190325--mivova.hjson' );
-// fileImport.importThrowdownFile( 'data/20190325--kufca.hjson' );
+// fileImport.importThrowdownFile( 'data/20190325--alex-haszard-bdmt.hjson' );
 
 const initialTempo = 128;
 store.dispatch(
