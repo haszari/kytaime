@@ -55,7 +55,7 @@ class DeckPlayer {
         this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );
       }
       else {
-        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
+        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, props.deckIndex ) );
       }
 
       patternPlayer.setParentPhrase( props.triggerLoop );

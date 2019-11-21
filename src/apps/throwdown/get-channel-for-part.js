@@ -85,7 +85,7 @@ const getChannelForPart = function( partName ) {
 
 function getChannelForPartOnDeck( partName, deckIndex ) {
   const channel = getChannelForPart( partName );
-  return channel + deckIndex * channelsPerDeck;
+  return channel + ( deckIndex * channelsPerDeck );
 }
 
 export default {
