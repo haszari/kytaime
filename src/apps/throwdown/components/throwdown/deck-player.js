@@ -49,13 +49,13 @@ class DeckPlayer {
       var patternPlayer = this.getPatternPlayer( pattern.songSlug, pattern.slug );
 
       if ( ! patternPlayer ) {
-        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers );
+        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, props.deckIndex );
         patternPlayer.songSlug = pattern.songSlug;
         patternPlayer.patternSlug = pattern.slug;
         this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );
       }
       else {
-        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers ) );
+        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, props.deckIndex ) );
       }
 
       patternPlayer.setParentPhrase( props.triggerLoop );
@@ -238,6 +238,7 @@ class DeckPlayer {
 
 DeckPlayer.defaultProps = {
   slug: '',
+  deckIndex: 0,
   patterns: [],
   sections: [],
   buffers: [],

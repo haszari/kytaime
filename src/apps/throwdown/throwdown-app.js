@@ -83,12 +83,13 @@ class ThrowdownApp {
     const deckPlayers = this.deckPlayers;
 
     // { deckSlug: sectionSlug: sectionPlayer: }
-    _.map( allDecks, ( deckState ) => {
+    _.map( allDecks, ( deckState, index ) => {
       var patterns = throwdownSelectors.getAllDeckPatterns( state, deckState.slug );
       var sections = throwdownSelectors.getDeckSections( state, deckState.slug );
 
       const deckProps = {
         slug: deckState.slug,
+        deckIndex: index,
         buffers: allBuffers,
         patterns,
         sections,

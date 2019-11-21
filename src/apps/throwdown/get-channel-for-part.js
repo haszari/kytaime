@@ -31,6 +31,7 @@ import _ from 'lodash';
 // };
 
 // we only have four pairs in Ableton Live Intro, so let's use them more carefully
+const channelsPerDeck = 4;
 const channelConventionsFourChannels = {
   // percussion of any kind
   drums: 0,
@@ -82,4 +83,12 @@ const getChannelForPart = function( partName ) {
   return 1;
 };
 
-export default getChannelForPart;
+function getChannelForPartOnDeck( partName, deckIndex ) {
+  const channel = getChannelForPart( partName );
+  return channel + ( deckIndex * channelsPerDeck );
+}
+
+export default {
+  getChannelForPart,
+  getChannelForPartOnDeck,
+};
