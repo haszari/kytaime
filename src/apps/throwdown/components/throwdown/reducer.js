@@ -24,9 +24,12 @@ function getDeck( state, deckSlug ) {
     deck => ( deck.slug === deckSlug )
   );
 }
-function getSongPattern( state, songSlug, patternSlug ) {
-  return _.find( state.patterns,
-    pattern => ( pattern.slug === patternSlug ) && ( pattern.songSlug === songSlug )
+function getSongPattern( state, deckSlug, songSlug, patternSlug ) {
+  return _.find( state.patterns, {
+    deckSlug,
+    songSlug,
+    slug: patternSlug,
+  }
   );
 }
 function getDeckSectionPart( state, deckSlug, songSlug, sectionSlug, partSlug ) {
@@ -40,9 +43,6 @@ function getDeckSectionPart( state, deckSlug, songSlug, sectionSlug, partSlug ) 
 }
 
 const throwdownReducer = createReducer( {
-  // audioContext: null,
-  // buffers: [],
-
   patterns: [],
 
   deferAllTriggers: false,
@@ -52,6 +52,12 @@ const throwdownReducer = createReducer( {
   // patterns (may be used in multiple deck sections)
   [actions.addPattern]: ( state, action ) => {
     const patternData = action.payload;
+    // Overwrite patterns based on (deck, song, pattern) so we don't have duplicates.
+    _.remove( state.patterns, {
+      deckSlug: action.payload.deckSlug,
+      songSlug: action.payload.songSlug,
+      slug: action.payload.slug,
+    } );
     state.patterns.push( patternData );
   },
 
@@ -94,9 +100,9 @@ const throwdownReducer = createReducer( {
 
     // get a list of full pattern data for the patterns in this section (i.e. filter out others)
     const sectionPatternData = _.filter( state.patterns, ( data ) => {
-      const sameSong = ( data.songSlug === action.payload.songSlug );
+      const sameDeckSong = ( data.songSlug === action.payload.songSlug ) && data.deckSlug === action.payload.deckSlug;
       const inThisSection = ( _.indexOf( patternsInSection, data.slug ) !== -1 );
-      return sameSong && inThisSection;
+      return sameDeckSong && inThisSection;
     } );
 
     // get a list of the part names in this section
@@ -105,10 +111,10 @@ const throwdownReducer = createReducer( {
     // generate state array for patterns x parts (instruments)
     const partsPatterns = _.map( sectionPartSlugs, partSlug => {
       const patternData = _.filter( state.patterns, ( pattern, slug ) => {
-        const songMatch = ( pattern.songSlug === action.payload.songSlug );
+        const sameDeckSong = ( pattern.songSlug === action.payload.songSlug ) && pattern.deckSlug === action.payload.deckSlug;
         const partMatch = ( pattern.part === partSlug );
         const sectionMatch = _.includes( patternsInSection, pattern.slug );
-        return songMatch && partMatch && sectionMatch;
+        return sameDeckSong && partMatch && sectionMatch;
       } );
       const patterns = _.map( patternData, 'slug' );
       return {
@@ -172,6 +178,7 @@ const throwdownReducer = createReducer( {
   [actions.setDeckPatternPlaystate]: ( state, action ) => {
     const pattern = getSongPattern(
       state,
+      action.payload.deckSlug,
       action.payload.songSlug,
       action.payload.patternSlug
     );

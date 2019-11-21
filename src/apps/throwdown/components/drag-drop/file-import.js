@@ -20,9 +20,10 @@ function ensureAudioBuffered( filename ) {
   } );
 }
 
-function importPatterns( songSlug, patterns ) {
+function importPatterns( deckSlug, songSlug, patterns ) {
   _.map( patterns, ( pattern, key ) => {
     store.dispatch( throwdownActions.addPattern( {
+      deckSlug,
       songSlug,
       slug: key,
       ...pattern,
@@ -46,36 +47,10 @@ function getUniqueImportSlug( slug, filename ) {
   return uniqueSlug;
 }
 
-function addThrowdownDeck( filename, throwdownData, replaceDeckRowSlug ) {
-  const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
-
-  importPatterns( songSlug, throwdownData.patterns );
-
-  store.dispatch( throwdownActions.addDeck( {
-    deckSlug: songSlug,
-    replaceDeckSlug: replaceDeckRowSlug,
-  } ) );
-
-  _.map( throwdownData.sections, ( section, key ) => {
-    store.dispatch( throwdownActions.addSection( {
-      deckSlug: songSlug,
-      slug: key,
-      ...section,
-    } ) );
-  } );
-
-  return songSlug;
-}
-
 function addSectionsToDeck( filename, throwdownData, deckSlug ) {
   const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
 
-  importPatterns( songSlug, throwdownData.patterns );
-
-  // store.dispatch( throwdownActions.addDeck( {
-  //   deckSlug: songSlug,
-  //   replaceDeckSlug: replaceDeckRowSlug,
-  // } ) );
+  importPatterns( deckSlug, songSlug, throwdownData.patterns );
 
   _.map( throwdownData.sections, ( section, key ) => {
     store.dispatch( throwdownActions.addSection( {
@@ -89,15 +64,6 @@ function addSectionsToDeck( filename, throwdownData, deckSlug ) {
   return deckSlug;
 }
 
-function importThrowdownFile( fileUrl ) {
-  window.fetch( fileUrl )
-    .then( response => response.text() )
-    .then( text => {
-      const songData = Hjson.parse( text );
-      addThrowdownDeck( fileUrl, songData );
-    } );
-}
-
 function importThrowdownFileToDeck( fileUrl, deckSlug ) {
   window.fetch( fileUrl )
     .then( response => response.text() )
@@ -107,12 +73,6 @@ function importThrowdownFileToDeck( fileUrl, deckSlug ) {
     } );
 }
 
-function importThrowdownData( filename, hjsonBlob, replaceDeckRowSlug ) {
-  addThrowdownDeck( filename, hjsonBlob, replaceDeckRowSlug );
-}
-
 export default {
-  importThrowdownFile,
-  importThrowdownData,
   importThrowdownFileToDeck,
 };
