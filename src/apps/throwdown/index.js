@@ -37,16 +37,16 @@ store.dispatch( throwdownActions.addDeck( {
 } ) );
 
 fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
 
 fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'B2' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'B2' );
