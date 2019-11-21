@@ -196,6 +196,7 @@ class DeckPlayer {
 
         // console.log( `play ${ patternSlug } inTriggeredSection=${ isInTriggeredSection } isTriggered=${ isTriggered } was=${ wasPlaying } now=${ stillPlaying }` );
         patternPlayStates.push( {
+          deckSlug: this.props.slug,
           songSlug: player.songSlug,
           patternSlug: player.patternSlug,
           isPlaying: stillPlaying,

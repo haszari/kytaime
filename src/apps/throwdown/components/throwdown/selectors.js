@@ -93,6 +93,7 @@ function getAllDeckPatterns( state, deckSlug ) {
   const sectionPatterns = deckState.sections.map( section => {
     var patterns = section.patterns.map(
       patternSlug => _.find( allPatterns, {
+        deckSlug,
         slug: patternSlug,
         songSlug: section.songSlug,
       } )
