@@ -36,19 +36,20 @@ store.dispatch( throwdownActions.addDeck( {
   deckSlug: 'B2',
 } ) );
 
-fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A1' );
+
+// fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
+// fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'A1' );
 
-fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'B2' );
-fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'B2' );
+// fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'B2' );
@@ -62,7 +63,7 @@ fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'B2' );
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--alex-haszard-bdmt.hjson' );
 
-const initialTempo = 128;
+const initialTempo = 120;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );
