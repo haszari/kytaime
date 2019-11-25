@@ -40,6 +40,48 @@
         },
       ]
     }
+    midi-hats: {
+      part: drums1
+      duration: 1
+      notes: [
+        {
+          "note": 42,
+          "velocity": 100
+          "duration": 0.25
+          "start": 0
+        },
+        {
+          "note": 42,
+          "velocity": 100
+          "duration": 0.25
+          "start": 0.251
+        },
+        {
+          "note": 42,
+          "velocity": 100
+          "duration": 0.25
+          "start": 0.5
+        },
+        {
+          "note": 42,
+          "velocity": 100
+          "duration": 0.25
+          "start": 0.751
+        },
+      ]
+    }
+    midi-offhat: {
+      part: drums2
+      duration: 1
+      notes: [
+        {
+          "note": 46,
+          "velocity": 100
+          "duration": 0.40
+          "start": 0.507
+        }
+      ]
+    }
     kick: {
       part: kick
       file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-kick.m4a
@@ -75,6 +117,8 @@
     a: {
       patterns: [
         midi-kick
+        midi-hats
+        midi-offhat
         # kick
         perc
         bass
