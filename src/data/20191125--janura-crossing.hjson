@@ -2,6 +2,44 @@
   version: 1
   slug: janura
   patterns: {
+    midi-kick: {
+      part: drums
+      duration: 4
+      startBeats: [ 0, 1, 3.5 ]
+      endBeats: [ 3.5 ]
+      notes: [
+        {
+          "note": 36,
+          "velocity": 100
+          "duration": 1
+          "start": 0
+        },
+        {
+          "note": 36,
+          "velocity": 100
+          "duration": 1
+          "start": 1
+        },
+        {
+          "note": 36,
+          "velocity": 100
+          "duration": 1
+          "start": 2
+        },
+        {
+          "note": 36,
+          "velocity": 100
+          "duration": 1
+          "start": 3
+        },
+        {
+          "note": 41,
+          "velocity": 10
+          "duration": 1
+          "start": 3.75
+        },
+      ]
+    }
     kick: {
       part: kick
       file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-kick.m4a
@@ -36,7 +74,8 @@
   sections: {
     a: {
       patterns: [
-        kick
+        midi-kick
+        # kick
         perc
         bass
         rass

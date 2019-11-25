@@ -124,7 +124,8 @@ class MidiLoopPlayer {
 
 MidiLoopPlayer.defaultProps = {
   midiChannel: 0,
-  pattern: [],
+  duration: 4,
+  notes: [],
 };
 
 export default MidiLoopPlayer;
