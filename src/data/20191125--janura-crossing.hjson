@@ -2,6 +2,54 @@
   version: 1
   slug: janura
   patterns: {
+    midi-bass: {
+      part: bass1
+      duration: 4,
+      notes: [
+        {
+          note: 58,
+          velocity: 27,
+          duration: 0.4479166666666667,
+          start: 0
+        },
+        {
+          note: 53,
+          velocity: 116,
+          duration: 0.44583333333333336,
+          start: 0.48541666666666666
+        },
+        {
+          note: 53,
+          velocity: 27,
+          duration: 0.44791666666666674,
+          start: 1
+        },
+        {
+          note: 53,
+          velocity: 80,
+          duration: 0.4479166666666665,
+          start: 1.75
+        },
+        {
+          note: 63,
+          velocity: 99,
+          duration: 0.4479166666666665,
+          start: 2.5
+        },
+        {
+          note: 58,
+          velocity: 27,
+          duration: 0.4479166666666665,
+          start: 3
+        },
+        {
+          note: 58,
+          velocity: 118,
+          duration: 0.4458333333333333,
+          start: 3.4854166666666666
+        }
+      ]
+    }
     midi-kick: {
       part: drums
       duration: 4
@@ -9,34 +57,34 @@
       endBeats: [ 3.5 ]
       notes: [
         {
-          "note": 36,
-          "velocity": 100
-          "duration": 1
-          "start": 0
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 0
         },
         {
-          "note": 36,
-          "velocity": 100
-          "duration": 1
-          "start": 1
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 1
         },
         {
-          "note": 36,
-          "velocity": 100
-          "duration": 1
-          "start": 2
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 2
         },
         {
-          "note": 36,
-          "velocity": 100
-          "duration": 1
-          "start": 3
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 3
         },
         {
-          "note": 41,
-          "velocity": 10
-          "duration": 1
-          "start": 3.75
+          note: 41,
+          velocity: 10
+          duration: 1
+          start: 3.75
         },
       ]
     }
@@ -45,28 +93,28 @@
       duration: 1
       notes: [
         {
-          "note": 42,
-          "velocity": 100
-          "duration": 0.25
-          "start": 0
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0
         },
         {
-          "note": 42,
-          "velocity": 100
-          "duration": 0.25
-          "start": 0.251
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.251
         },
         {
-          "note": 42,
-          "velocity": 100
-          "duration": 0.25
-          "start": 0.5
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.5
         },
         {
-          "note": 42,
-          "velocity": 100
-          "duration": 0.25
-          "start": 0.751
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.751
         },
       ]
     }
@@ -75,10 +123,10 @@
       duration: 1
       notes: [
         {
-          "note": 46,
-          "velocity": 100
-          "duration": 0.40
-          "start": 0.507
+          note: 46,
+          velocity: 100
+          duration: 0.40
+          start: 0.507
         }
       ]
     }
@@ -121,6 +169,7 @@
         midi-offhat
         # kick
         perc
+        midi-bass
         bass
         rass
         arp
