@@ -26,15 +26,103 @@ import './style/style.scss';
 const throwdownApp = new ThrowdownApp();
 
 /// -----------------------------------------------------------------------------------------------
-// load hard-coded test data
+// set up hard-coded decks and output routing
+
+const routingConfig = {
+  numAudioChannels: 2, // perc | music
+  numMidiChannels: 3, // drums | bass | chords
+};
+
+routingConfig.midiPartMap = {
+  // percussion of any kind
+  drums: 0,
+  beat: 0,
+  kick: 0,
+  hat: 0,
+  snare: 0,
+  clap: 0,
+  perc: 0,
+
+  // sub bass
+  bass: 1,
+  sub: 1,
+
+  // synth chords pad lead whatever
+  chords: 2,
+
+  pad: 2,
+
+  lead: 2,
+  synth: 2,
+  melody: 2,
+  stab: 2,
+  arp: 2,
+  arpeggio: 2,
+
+  // vocal sample texture other misc
+  vocal: 2,
+  voc: 2,
+  sample: 2,
+  texture: 2,
+  fx: 2,
+};
+routingConfig.audioPartMap = {
+  // percussion of any kind
+  drums: 0,
+  beat: 0,
+  kick: 0,
+  hat: 0,
+  snare: 0,
+  clap: 0,
+  perc: 0,
+
+  // sub bass
+  bass: 1,
+  sub: 1,
+
+  // synth chords pad lead whatever
+  chords: 1,
+
+  pad: 1,
+
+  lead: 1,
+  synth: 1,
+  melody: 1,
+  stab: 1,
+  arp: 1,
+  arpeggio: 1,
+
+  // vocal sample texture other misc
+  vocal: 1,
+  voc: 1,
+  sample: 1,
+  texture: 1,
+  fx: 1,
+};
+
+var deckIndex = 0;
 
 store.dispatch( throwdownActions.addDeck( {
   deckSlug: 'A1',
+  routing: {
+    firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
+    firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
+    ...routingConfig,
+  },
 } ) );
+deckIndex++;
 
 store.dispatch( throwdownActions.addDeck( {
   deckSlug: 'B2',
+  routing: {
+    firstAudioChannel: routingConfig.numAudioChannels * deckIndex,
+    firstMidiChannel: routingConfig.numMidiChannels * deckIndex,
+    ...routingConfig,
+  },
 } ) );
+
+/// -----------------------------------------------------------------------------------------------
+// load hard-coded test data
 
 fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A1' );
 

@@ -4,7 +4,6 @@ import _ from 'lodash';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 
-import channelConventions from '../../get-channel-for-part';
 import playerFactory from '../../player-factory';
 
 import throwdownActions from './actions';
@@ -18,6 +17,23 @@ function findSongSection( sections, songSection ) {
     slug: songSection.section,
     songSlug: songSection.song,
   } );
+}
+
+function getPartOutputChannel( channelMap, firstChannel, partName ) {
+  // conventions for midi instruments or mixer channels
+  const channel = channelMap[partName];
+  if ( _.isNumber( channel ) ) {
+    return channel + firstChannel;
+  }
+
+  const partialMatch = _.findKey( channelMap, ( channel, part ) => {
+    return partName.startsWith( part );
+  } );
+  if ( partialMatch ) {
+    return channelMap[partialMatch] + firstChannel;
+  }
+
+  return firstChannel;
 }
 
 class DeckPlayer {
@@ -42,9 +58,32 @@ class DeckPlayer {
     this.patternPlayers.push( player );
   }
 
+  getPartAudioOutputChannel( partName ) {
+    const { routing } = this.props;
+    const { audioPartMap, firstAudioChannel } = routing;
+
+    return getPartOutputChannel( audioPartMap, firstAudioChannel, partName );
+  }
+
+  getPartMidiOutputChannel( partName ) {
+    const { routing } = this.props;
+    const { midiPartMap, firstMidiChannel } = routing;
+
+    return getPartOutputChannel( midiPartMap, firstMidiChannel, partName );
+  }
+
   getPatternPlayChannel( patternData ) {
-    // TODO this should really check if channel is defined and int, 0 channel is valid
-    return patternData.channel || channelConventions.getChannelForPartOnDeck( patternData.part, this.props.deckIndex );
+    // Allows patterns to choose their own channel.
+    // Pretty sure this is unused, dangerous legacy default :)
+    if ( _.isNumber( patternData.channel ) ) {
+      return patternData.channel;
+    }
+
+    if ( patternData.notes ) {
+      return this.getPartMidiOutputChannel( patternData.part );
+    }
+
+    return this.getPartAudioOutputChannel( patternData.part );
   }
 
   updateProps( props ) {
@@ -252,6 +291,16 @@ DeckPlayer.defaultProps = {
   playingSection: '',
   triggeredSection: '',
   triggerLoop: 4,
+
+  // magic routing options
+  routing: {
+    firstAudioChannel: 0,
+    firstMidiChannel: 0,
+    numAudioChannels: 1,
+    numMidiChannels: 1,
+    audioPartMap: {},
+    midiPartMap: {},
+  },
 };
 
 export default DeckPlayer;

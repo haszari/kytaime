@@ -76,6 +76,7 @@ const throwdownReducer = createReducer( {
     const newDeck = {
       ...createDeck(),
       slug: action.payload.deckSlug,
+      routing: action.payload.routing,
     };
 
     const shuntedDeck = getDeck( state, action.payload.replaceDeckSlug );

@@ -89,6 +89,7 @@ class ThrowdownApp {
 
       const deckProps = {
         slug: deckState.slug,
+        routing: deckState.routing,
         deckIndex: index,
         buffers: allBuffers,
         patterns,
