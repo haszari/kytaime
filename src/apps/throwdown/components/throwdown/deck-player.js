@@ -4,6 +4,7 @@ import _ from 'lodash';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 
+import channelConventions from '../../get-channel-for-part';
 import playerFactory from '../../player-factory';
 
 import throwdownActions from './actions';
@@ -41,21 +42,27 @@ class DeckPlayer {
     this.patternPlayers.push( player );
   }
 
+  getPatternPlayChannel( patternData ) {
+    // TODO this should really check if channel is defined and int, 0 channel is valid
+    return patternData.channel || channelConventions.getChannelForPartOnDeck( patternData.part, this.props.deckIndex );
+  }
+
   updateProps( props ) {
     this.props = _.defaults( props, DeckPlayer.defaultProps );
 
     // create/update one player for each pattern in this deck
     _.each( props.patterns, ( pattern ) => {
       var patternPlayer = this.getPatternPlayer( pattern.songSlug, pattern.slug );
+      const channel = this.getPatternPlayChannel( pattern );
 
       if ( ! patternPlayer ) {
-        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, props.deckIndex );
+        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, channel );
         patternPlayer.songSlug = pattern.songSlug;
         patternPlayer.patternSlug = pattern.slug;
         this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );
       }
       else {
-        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, props.deckIndex ) );
+        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, channel ) );
       }
 
       patternPlayer.setParentPhrase( props.triggerLoop );

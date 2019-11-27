@@ -1,12 +1,9 @@
 import _ from 'lodash';
 
-import channelConventions from './get-channel-for-part';
-
 import MidiLoopPlayer from './components/midi-loop-player';
 import SampleSlicePlayer from './components/sample-slice-player';
 
-function getPlayerProps( patternData, buffers, deckIndex ) {
-  var channel = patternData.channel || channelConventions.getChannelForPartOnDeck( patternData.part, deckIndex );
+function getPlayerProps( patternData, buffers, channel ) {
   if ( patternData.notes ) {
     return {
       channel: channel,
@@ -36,8 +33,8 @@ function getPlayerProps( patternData, buffers, deckIndex ) {
   return null;
 }
 
-function playerFromFilePatternData( patternData, buffers, deckIndex ) {
-  const props = getPlayerProps( patternData, buffers, deckIndex );
+function playerFromFilePatternData( patternData, buffers, channel ) {
+  const props = getPlayerProps( patternData, buffers, channel );
   if ( !props ) {
     return null;
   }
