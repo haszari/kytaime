@@ -7,19 +7,19 @@
       duration: 4,
       notes: [
         {        
-          note: 36
+          note: 60
           velocity: 100
           duration: 0.5
           start: 0.4
         }
         {        
-          note: 31
+          note: 56
           velocity: 100
           duration: 0.5
           start: 0.4
         }
         {        
-          note: 28
+          note: 53
           velocity: 100
           duration: 0.5
           start: 0.4
