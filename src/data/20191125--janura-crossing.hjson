@@ -2,6 +2,31 @@
   version: 1
   slug: janura
   patterns: {
+    midi-stab: {
+      part: chords
+      duration: 4,
+      notes: [
+        {        
+          note: 36
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+        {        
+          note: 31
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+        {        
+          note: 28
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+
+      ]
+    }
     midi-bass: {
       part: bass1
       duration: 4,
@@ -173,6 +198,7 @@
         bass
         rass
         arp
+        midi-stab
       ]
     }
   } 
