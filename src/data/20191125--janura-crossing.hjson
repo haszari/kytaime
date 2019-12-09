@@ -1,0 +1,205 @@
+{
+  version: 1
+  slug: janura
+  patterns: {
+    midi-stab: {
+      part: chords
+      duration: 4,
+      notes: [
+        {        
+          note: 60
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+        {        
+          note: 56
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+        {        
+          note: 53
+          velocity: 100
+          duration: 0.5
+          start: 0.4
+        }
+
+      ]
+    }
+    midi-bass: {
+      part: bass1
+      duration: 4,
+      notes: [
+        {
+          note: 58,
+          velocity: 27,
+          duration: 0.4479166666666667,
+          start: 0
+        },
+        {
+          note: 53,
+          velocity: 116,
+          duration: 0.44583333333333336,
+          start: 0.48541666666666666
+        },
+        {
+          note: 53,
+          velocity: 27,
+          duration: 0.44791666666666674,
+          start: 1
+        },
+        {
+          note: 53,
+          velocity: 80,
+          duration: 0.4479166666666665,
+          start: 1.75
+        },
+        {
+          note: 63,
+          velocity: 99,
+          duration: 0.4479166666666665,
+          start: 2.5
+        },
+        {
+          note: 58,
+          velocity: 27,
+          duration: 0.4479166666666665,
+          start: 3
+        },
+        {
+          note: 58,
+          velocity: 118,
+          duration: 0.4458333333333333,
+          start: 3.4854166666666666
+        }
+      ]
+    }
+    midi-kick: {
+      part: drums
+      duration: 4
+      startBeats: [ 0, 1, 3.5 ]
+      endBeats: [ 3.5 ]
+      notes: [
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 0
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 1
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 2
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 3
+        },
+        {
+          note: 41,
+          velocity: 10
+          duration: 1
+          start: 3.75
+        },
+      ]
+    }
+    midi-hats: {
+      part: drums1
+      duration: 1
+      notes: [
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0
+        },
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.251
+        },
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.5
+        },
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.751
+        },
+      ]
+    }
+    midi-offhat: {
+      part: drums2
+      duration: 1
+      notes: [
+        {
+          note: 46,
+          velocity: 100
+          duration: 0.40
+          start: 0.507
+        }
+      ]
+    }
+    kick: {
+      part: kick
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-kick.m4a
+      tempo: 120 
+      duration: 4
+    }
+    perc: {
+      part: perc
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-drums-perc.m4a
+      tempo: 120 
+      duration: 4
+    }
+    bass: {
+      part: bass
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-bass.m4a
+      tempo: 120 
+      duration: 4
+    }
+    rass: {
+      part: synth
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-rass-dry.m4a
+      tempo: 120 
+      duration: 4
+    }
+    arp: {
+      part: arp
+      file: /media/Haszari/Haszari%20Renders%20-%20Snips%20Stems/28_05_2015-janura-top-dry.m4a
+      tempo: 120 
+      duration: 4
+    }
+  }
+  sections: {
+    a: {
+      patterns: [
+        midi-kick
+        midi-hats
+        midi-offhat
+        # kick
+        perc
+        midi-bass
+        bass
+        rass
+        arp
+        midi-stab
+      ]
+    }
+  } 
+}

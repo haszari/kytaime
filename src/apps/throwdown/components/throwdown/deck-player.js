@@ -19,6 +19,23 @@ function findSongSection( sections, songSection ) {
   } );
 }
 
+function getPartOutputChannel( channelMap, firstChannel, partName ) {
+  // conventions for midi instruments or mixer channels
+  const channel = channelMap[partName];
+  if ( _.isNumber( channel ) ) {
+    return channel + firstChannel;
+  }
+
+  const partialMatch = _.findKey( channelMap, ( channel, part ) => {
+    return partName.startsWith( part );
+  } );
+  if ( partialMatch ) {
+    return channelMap[partialMatch] + firstChannel;
+  }
+
+  return firstChannel;
+}
+
 class DeckPlayer {
   constructor( props ) {
     this.patternPlayers = [];
@@ -41,21 +58,50 @@ class DeckPlayer {
     this.patternPlayers.push( player );
   }
 
+  getPartAudioOutputChannel( partName ) {
+    const { routing } = this.props;
+    const { audioPartMap, firstAudioChannel } = routing;
+
+    return getPartOutputChannel( audioPartMap, firstAudioChannel, partName );
+  }
+
+  getPartMidiOutputChannel( partName ) {
+    const { routing } = this.props;
+    const { midiPartMap, firstMidiChannel } = routing;
+
+    return getPartOutputChannel( midiPartMap, firstMidiChannel, partName );
+  }
+
+  getPatternPlayChannel( patternData ) {
+    // Allows patterns to choose their own channel.
+    // Pretty sure this is unused, dangerous legacy default :)
+    if ( _.isNumber( patternData.channel ) ) {
+      return patternData.channel;
+    }
+
+    if ( patternData.notes ) {
+      return this.getPartMidiOutputChannel( patternData.part );
+    }
+
+    return this.getPartAudioOutputChannel( patternData.part );
+  }
+
   updateProps( props ) {
     this.props = _.defaults( props, DeckPlayer.defaultProps );
 
     // create/update one player for each pattern in this deck
     _.each( props.patterns, ( pattern ) => {
       var patternPlayer = this.getPatternPlayer( pattern.songSlug, pattern.slug );
+      const channel = this.getPatternPlayChannel( pattern );
 
       if ( ! patternPlayer ) {
-        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, props.deckIndex );
+        patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, channel );
         patternPlayer.songSlug = pattern.songSlug;
         patternPlayer.patternSlug = pattern.slug;
         this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );
       }
       else {
-        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, props.deckIndex ) );
+        patternPlayer.updateProps( playerFactory.getPlayerProps( pattern, props.buffers, channel ) );
       }
 
       patternPlayer.setParentPhrase( props.triggerLoop );
@@ -245,6 +291,16 @@ DeckPlayer.defaultProps = {
   playingSection: '',
   triggeredSection: '',
   triggerLoop: 4,
+
+  // magic routing options
+  routing: {
+    firstAudioChannel: 0,
+    firstMidiChannel: 0,
+    numAudioChannels: 1,
+    numMidiChannels: 1,
+    audioPartMap: {},
+    midiPartMap: {},
+  },
 };
 
 export default DeckPlayer;
