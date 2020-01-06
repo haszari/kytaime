@@ -103,7 +103,7 @@ routingConfig.audioPartMap = {
 var deckIndex = 0;
 
 store.dispatch( throwdownActions.addDeck( {
-  deckSlug: 'A1',
+  deckSlug: 'paknsave',
   routing: {
     firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
     firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
@@ -112,19 +112,10 @@ store.dispatch( throwdownActions.addDeck( {
 } ) );
 deckIndex++;
 
-store.dispatch( throwdownActions.addDeck( {
-  deckSlug: 'B2',
-  routing: {
-    firstAudioChannel: routingConfig.numAudioChannels * deckIndex,
-    firstMidiChannel: routingConfig.numMidiChannels * deckIndex,
-    ...routingConfig,
-  },
-} ) );
-
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/edits/20200106--tesko-suicide-pak-n-save.hjson', 'paknsave' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
@@ -151,7 +142,7 @@ fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--alex-haszard-bdmt.hjson' );
 
-const initialTempo = 120;
+const initialTempo = 135;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );

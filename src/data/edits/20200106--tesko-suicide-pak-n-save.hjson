@@ -1,0 +1,67 @@
+{
+  version: 1
+  slug: tesko
+  patterns: {
+    a: {
+      part: track
+      file: "/media/Sneaker Pimps/Becoming X/02 Tesko Suicide.m4a"
+      tempo: 135.1240 
+      duration: 32
+      offset: 2.733
+      slices: [
+        {
+          start: 0
+          // breakdown first 8 - beat
+          beat: 324
+          duration: 8    
+        }
+        {
+          start: 8
+          // breakdown first 8 - beat
+          beat: 324
+          duration: 8    
+        }
+        {
+          start: 16
+          // breakdown first 8 - beat
+          beat: 324
+          duration: 8    
+        }
+        {
+          start: 24
+          // breakdown last 8 - beat with glitch fill
+          beat: 332
+          duration: 8    
+        }
+      ]
+    }
+    b: {
+      part: track
+      file: "/media/Sneaker Pimps/Becoming X/02 Tesko Suicide.m4a"
+      tempo: 135.1240 
+      duration: 32
+      offset: 2.733
+      slices: [
+        {
+          start: 0
+          // intro first 32
+          beat: 0
+          duration: 32    
+        }
+        // more to come
+      ]
+    }
+  }
+  sections: {
+    a: {
+      patterns: [
+        a
+      ]
+    }
+    b: {
+      patterns: [
+        b
+      ]
+    }
+  } 
+}
