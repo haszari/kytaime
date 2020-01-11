@@ -113,10 +113,9 @@ class SampleSlicePlayer {
     this.player = player;
   }
 
-  stopPlaybackAt( stopTimestamp ) {
+  stopCurrentNoteAt( stopTimestamp ) {
     if ( this.player ) {
       this.player.stop( stopTimestamp );
-      this.playing = false;
       this.player = null;
     }
   }
@@ -176,7 +175,7 @@ class SampleSlicePlayer {
       const startTime = renderEventTime( sliceRenderInfo.start );
 
       // stop any current slice
-      this.stopPlaybackAt( startTime );
+      this.stopCurrentNoteAt( startTime );
 
       // If this slice has a duration, calculate stop timestamp.
       const stopTime = _.isUndefined( sliceRenderInfo.duration ) ? undefined : renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
