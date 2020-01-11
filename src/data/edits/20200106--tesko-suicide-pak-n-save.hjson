@@ -13,25 +13,25 @@
           start: 0
           // breakdown first 8 - beat
           beat: 324
-          duration: 8    
+          loop: 8
         }
-        {
-          start: 8
-          // breakdown first 8 - beat
-          beat: 324
-          duration: 8    
-        }
-        {
-          start: 16
-          // breakdown first 8 - beat
-          beat: 324
-          duration: 8    
-        }
+        # {
+        #   start: 8
+        #   duration: 8    
+        #   // breakdown first 8 - beat
+        #   beat: 324
+        # }
+        # {
+        #   start: 16
+        #   duration: 8    
+        #   // breakdown first 8 - beat
+        #   beat: 324
+        # }
         {
           start: 24
+          duration: 8    
           // breakdown last 8 - beat with glitch fill
           beat: 332
-          duration: 8    
         }
       ]
     }
@@ -44,11 +44,20 @@
       slices: [
         {
           start: 0
+          loop: 32    
           // intro first 32
           beat: 0
-          duration: 32    
         }
-        // more to come
+      ]
+      variation: [
+        { 
+          // mute all playback
+          type: mute
+          // every second pattern repeat
+          every: 2
+          // starting at -4 beat, i.e mute last bar of end of previous cycle
+          start: -6
+        }
       ]
     }
   }

@@ -76,7 +76,7 @@ class SampleSlicePlayer {
     this.playing = playing;
   }
 
-  playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
+  playSliceAt( startTimestamp, stopTimestamp, startBeat, loopBeats, transportBpm, audioDestinationNode ) {
     // console.log(
     //   `-- beat playSliceAt ` +
     //   `start=(${ startBeat }, ${ startTimestamp }) `
@@ -86,20 +86,39 @@ class SampleSlicePlayer {
 
     const secPerBeat = ( 60 / tempoBpm );
     const rate = transportBpm / tempoBpm;
+    const sliceStart = offset + ( startBeat * secPerBeat );
 
     const player = audioDestinationNode.context.createBufferSource();
     player.buffer = this.props.buffer;
     player.playbackRate.value = rate;
 
-    player.loop = false;
+    player.loop = loopBeats;
+
+    if ( player.loop ) {
+      player.loopStart = sliceStart;
+      player.loopEnd = sliceStart + ( loopBeats * secPerBeat );
+    }
 
     if ( audioDestinationNode.channelCount > 2 ) { audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel ); }
     else { player.connect( audioDestinationNode ); }
 
-    player.start( startTimestamp, offset + ( startBeat * secPerBeat ) );
-    player.stop( stopTimestamp );
+    player.start( startTimestamp, sliceStart );
+
+    // Stopping is optional - if not specified, note will play until cut by another note
+    // or the pattern/transport stops this player.
+    if ( stopTimestamp ) {
+      player.stop( stopTimestamp );
+    }
 
     this.player = player;
+  }
+
+  stopPlaybackAt( stopTimestamp ) {
+    if ( this.player ) {
+      this.player.stop( stopTimestamp );
+      this.playing = false;
+      this.player = null;
+    }
   }
 
   stopPlayback() {
@@ -155,8 +174,14 @@ class SampleSlicePlayer {
     _.map( scheduledSlices, ( sliceRenderInfo ) => {
       // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
       const startTime = renderEventTime( sliceRenderInfo.start );
-      const stopTime = renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
-      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );
+
+      // stop any current slice
+      this.stopPlaybackAt( startTime );
+
+      // If this slice has a duration, calculate stop timestamp.
+      const stopTime = _.isUndefined( sliceRenderInfo.duration ) ? undefined : renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
+
+      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, sliceRenderInfo.event.loop, tempoBpm, renderRange.audioContext.destination );
     } );
   }
 }
