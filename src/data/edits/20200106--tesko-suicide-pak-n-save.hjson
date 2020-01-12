@@ -13,25 +13,22 @@
           start: 0
           // breakdown first 8 - beat
           beat: 324
+          // loop until the glitch fill - 3 times total
           loop: 8
         }
-        # {
-        #   start: 8
-        #   duration: 8    
-        #   // breakdown first 8 - beat
-        #   beat: 324
-        # }
-        # {
-        #   start: 16
-        #   duration: 8    
-        #   // breakdown first 8 - beat
-        #   beat: 324
-        # }
         {
           start: 24
           duration: 8    
           // breakdown last 8 - beat with glitch fill
           beat: 332
+        }
+      ]
+      variation: [
+        { 
+          type: mute
+          every: 2
+          start: -5
+          end: -2
         }
       ]
     }
@@ -44,9 +41,10 @@
       slices: [
         {
           start: 0
-          loop: 32    
           // intro first 32
           beat: 0
+          // loop - entire phrase/section (except for fill variation)
+          loop: 32
         }
       ]
       variation: [
@@ -56,7 +54,8 @@
           // every second pattern repeat
           every: 2
           // starting at -4 beat, i.e mute last bar of end of previous cycle
-          start: -6
+          start: -4
+          end: 0
         }
       ]
     }

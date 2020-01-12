@@ -31,6 +31,8 @@ function getPlayerProps( patternData, buffers, channel ) {
       // We clone this because we may want to fill in missing slice details like duration.
       // If we don't clone it, the object is not extensible.
       slices: _.cloneDeep( patternData.slices ),
+
+      variation: _.cloneDeep( patternData.variation ),
     };
   }
   return null;

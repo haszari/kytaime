@@ -66,6 +66,8 @@ class SampleSlicePlayer {
       this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
     }
 
+    this.sortSlices();
+
     // generate a default duration for each note in case it's not specified
     // (common with looping notes)
     const { slices, sampleDuration } = this.props;
@@ -78,6 +80,70 @@ class SampleSlicePlayer {
 
       curEndBeat = slices[i].start;
     }
+
+    // apply any variation
+    this.props.variation.map( variation => {
+      this.applyVariation( variation, sampleDuration );
+    } );
+  }
+
+  applyMuteToSlices( muteStartBeat, muteEndBeat ) {
+    // start/end beats are mod duration
+    // find slices that play any sound during the mute period
+    // and apply a new stop time to em or delete em
+    const extraSlices = [];
+    _.map( this.props.slices, slice => {
+      const sliceEndBeat = slice.start + slice.duration;
+      const sliceStartsDuringMute = slice.start >= muteStartBeat;
+      const truncateOverlap = sliceEndBeat - muteStartBeat;
+      const startOverlap = muteEndBeat - slice.start;
+
+      // mute is in middle of slice, we need to add another slice for the end bit
+      if ( slice.start < muteStartBeat && sliceEndBeat > muteEndBeat ) {
+        slice.duration -= truncateOverlap;
+        extraSlices.push( {
+          beat: slice.beat + startOverlap,
+          start: muteEndBeat,
+          duration: sliceEndBeat - muteEndBeat,
+        } );
+      }
+
+      // slice end needs to be truncated
+      else if ( truncateOverlap > 0 ) {
+        slice.duration -= truncateOverlap;
+      }
+
+      // slice is completely within the muted period
+      else if ( sliceStartsDuringMute && slice.end <= muteEndBeat ) {
+        // we'll use duration===0 to kill whole slice
+        slice.duration = 0;
+      }
+
+      // slice starts within muted period
+      else if ( sliceStartsDuringMute && startOverlap > 0 ) {
+        slice.duration -= startOverlap;
+        slice.start += startOverlap;
+        slice.beat += startOverlap;
+      }
+    } );
+
+    this.props.slices = this.props.slices.concat( extraSlices );
+    this.sortSlices();
+  }
+
+  applyVariation( variation, totalDuration ) {
+    switch ( variation.type ) {
+      case 'mute':
+        this.applyMuteToSlices(
+          patternSequencer.modulus( variation.start, totalDuration ),
+          patternSequencer.modulus( variation.end, totalDuration )
+        );
+        break;
+    }
+  }
+
+  sortSlices() {
+    _.sortBy( this.props.slices, 'start' );
   }
 
   setTriggered( triggered ) {
@@ -190,6 +256,10 @@ class SampleSlicePlayer {
       // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
       const startTime = renderEventTime( sliceRenderInfo.start );
 
+      if ( sliceRenderInfo.duration === 0 ) {
+        return;
+      }
+
       // stop any current slice
       this.stopCurrentNoteAt( startTime );
 
@@ -218,6 +288,8 @@ SampleSlicePlayer.defaultProps = {
     // beat: 0,
   // }
   ],
+
+  variation: [],
 };
 
 export default SampleSlicePlayer;
