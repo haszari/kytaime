@@ -5,6 +5,19 @@ import audioUtilities from '@kytaime/audio-utilities';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
+function getSliceCuts( startBeats, endBeats, duration ) {
+  // Start and end beats may be negative - wrap to length
+  startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+
+  var cuts = [ 0, startBeats, endBeats, duration ];
+  cuts = _.flatten( cuts );
+  cuts = _.sortBy( cuts );
+  cuts = _.sortedUniq( cuts );
+
+  return cuts;
+}
+
 function autogenerateSlices( startBeats, endBeats, duration ) {
   // We used to generate one slice for whole thing ...
   // this.props.slices = [{
@@ -19,13 +32,7 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
   // to ensure that the slices support the ends/starts they have set :)
   var slices = [];
 
-  // Start and end beats may be negative - wrap to length
-  startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  var cuts = [ 0, startBeats, endBeats, duration ];
-  cuts = _.flatten( cuts );
-  cuts = _.sortBy( cuts );
-  cuts = _.sortedUniq( cuts );
+  const cuts = getSliceCuts( startBeats, endBeats, duration );
 
   for ( var i = 1; i < cuts.length; i++ ) {
     const slice = {
@@ -57,6 +64,19 @@ class SampleSlicePlayer {
 
     if ( !this.props.slices || !this.props.slices.length ) {
       this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
+    }
+
+    // generate a default duration for each note in case it's not specified
+    // (common with looping notes)
+    const { slices, sampleDuration } = this.props;
+    let curEndBeat = sampleDuration;
+    for ( let i = this.props.slices.length; i--; i >= 0 ) {
+      if ( _.isUndefined( slices[i].duration ) ) {
+        const duration = curEndBeat - slices[i].start;
+        slices[i].duration = duration;
+      }
+
+      curEndBeat = slices[i].start;
     }
   }
 
@@ -104,11 +124,7 @@ class SampleSlicePlayer {
 
     player.start( startTimestamp, sliceStart );
 
-    // Stopping is optional - if not specified, note will play until cut by another note
-    // or the pattern/transport stops this player.
-    if ( stopTimestamp ) {
-      player.stop( stopTimestamp );
-    }
+    player.stop( stopTimestamp );
 
     this.player = player;
   }
@@ -178,7 +194,8 @@ class SampleSlicePlayer {
       this.stopCurrentNoteAt( startTime );
 
       // If this slice has a duration, calculate stop timestamp.
-      const stopTime = _.isUndefined( sliceRenderInfo.duration ) ? undefined : renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
+      const stopBeat = sliceRenderInfo.start + sliceRenderInfo.duration;
+      const stopTime = renderEventTime( stopBeat );
 
       this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, sliceRenderInfo.event.loop, tempoBpm, renderRange.audioContext.destination );
     } );
