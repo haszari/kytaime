@@ -19,14 +19,7 @@ function getSliceCuts( startBeats, endBeats, duration ) {
 }
 
 function autogenerateSlices( startBeats, endBeats, duration ) {
-  // We used to generate one slice for whole thing ...
-  // this.props.slices = [{
-  //   start: 0,
-  //   duration: this.props.sampleDuration,
-  //   beat: 0,
-  // }];
-
-  // ...now, we add a slice for each unique start/endbeat across duration.
+  // Add a slice for each unique start/endbeat across duration.
   // We do this so that start/endbeats work correctly for triggering.
   // If this pattern has manually set slices then it's up to the user
   // to ensure that the slices support the ends/starts they have set :)
@@ -57,34 +50,46 @@ class SampleSlicePlayer {
     this.playing = false;
     this.parentTriggered = false;
     this.parentPhraseLength = 4;
+
+    // The slices that are in props are not final:
+    // - we may need to auto generate slices based on start/end beats
+    // - we may need to adjust or add slices for variations
+    // renderedSlices is regenerated as needed (well, every render) and is used for actual playback
+    this.renderedSlices = null;
   }
 
   updateProps( props ) {
     this.props = _.defaults( props, SampleSlicePlayer.defaultProps );
+  }
 
-    if ( !this.props.slices || !this.props.slices.length ) {
-      this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
+  renderVariations() {
+    this.renderedSlices = this.props.slices;
+
+    if ( !this.renderedSlices || !this.renderedSlices.length ) {
+      this.renderedSlices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
     }
 
     this.sortSlices();
 
     // generate a default duration for each note in case it's not specified
     // (common with looping notes)
-    const { slices, sampleDuration } = this.props;
+    const { sampleDuration } = this.props;
     let curEndBeat = sampleDuration;
-    for ( let i = this.props.slices.length; i--; i >= 0 ) {
-      if ( _.isUndefined( slices[i].duration ) ) {
-        const duration = curEndBeat - slices[i].start;
-        slices[i].duration = duration;
+    for ( let i = this.renderedSlices.length; i--; i >= 0 ) {
+      if ( _.isUndefined( this.renderedSlices[i].duration ) ) {
+        const duration = curEndBeat - this.renderedSlices[i].start;
+        this.renderedSlices[i].duration = duration;
       }
 
-      curEndBeat = slices[i].start;
+      curEndBeat = this.renderedSlices[i].start;
     }
 
     // apply any variation
     this.props.variation.map( variation => {
-      this.applyVariation( variation, sampleDuration );
+      this.applyVariation( variation, this.parentPhraseLength );
     } );
+
+    this.sortSlices();
   }
 
   applyMuteToSlices( muteStartBeat, muteEndBeat ) {
@@ -92,7 +97,7 @@ class SampleSlicePlayer {
     // find slices that play any sound during the mute period
     // and apply a new stop time to em or delete em
     const extraSlices = [];
-    _.map( this.props.slices, slice => {
+    _.map( this.renderedSlices, slice => {
       const sliceEndBeat = slice.start + slice.duration;
       const sliceStartsDuringMute = slice.start >= muteStartBeat;
       const truncateOverlap = sliceEndBeat - muteStartBeat;
@@ -127,23 +132,29 @@ class SampleSlicePlayer {
       }
     } );
 
-    this.props.slices = this.props.slices.concat( extraSlices );
+    this.renderedSlices = this.renderedSlices.concat( extraSlices );
     this.sortSlices();
   }
 
   applyVariation( variation, totalDuration ) {
+    const variationStart = patternSequencer.modulus( variation.start, totalDuration );
+    var variationEnd = patternSequencer.modulus( variation.end, totalDuration );
+    if ( variationEnd < variationStart ) {
+      variationEnd += totalDuration;
+    }
+
     switch ( variation.type ) {
       case 'mute':
         this.applyMuteToSlices(
-          patternSequencer.modulus( variation.start, totalDuration ),
-          patternSequencer.modulus( variation.end, totalDuration )
+          variationStart,
+          variationEnd
         );
         break;
     }
   }
 
   sortSlices() {
-    _.sortBy( this.props.slices, 'start' );
+    this.renderedSlices = _.sortBy( this.renderedSlices, 'start' );
   }
 
   setTriggered( triggered ) {
@@ -219,6 +230,8 @@ class SampleSlicePlayer {
 
     var triggered = this.triggered && this.parentTriggered;
 
+    this.renderVariations();
+
     const triggerInfo = patternSequencer.renderPatternTrigger(
       tempoBpm,
       renderRangeBeats,
@@ -231,7 +244,7 @@ class SampleSlicePlayer {
 
     this.playing = triggerInfo.isPlaying;
 
-    const filteredSlices = _.filter( this.props.slices, function( sliceEvent ) {
+    const filteredSlices = _.filter( this.renderedSlices, function( sliceEvent ) {
       return bpmUtilities.valueInWrappedBeatRange(
         sliceEvent.start,
         triggerInfo.startBeat % sampleDuration,
