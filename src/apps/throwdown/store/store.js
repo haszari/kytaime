@@ -1,4 +1,4 @@
-import { configureStore } from 'redux-starter-kit';
+import { configureStore } from '@reduxjs/toolkit';
 
 import transportReducer from '../components/transport/reducer';
 import throwdownReducer from '../components/throwdown/reducer';

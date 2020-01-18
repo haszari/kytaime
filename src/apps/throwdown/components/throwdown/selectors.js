@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createSelector } from 'redux-starter-kit';
+import { createSelector } from '@reduxjs/toolkit';
 
 const getThrowdown = ( state ) => { return _.get( state, 'throwdown' ); };
 

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { createReducer } from 'redux-starter-kit';
+import { createReducer } from '@reduxjs/toolkit';
 
 import actions from './actions';
 
