@@ -57,12 +57,12 @@ const Config = {
     },
     contentBase: path.join( __dirname, '/src/html-routes' ),
     compress: true,
-    port: 8080
+    port: 3876
   }
 };
 
-if (!(process.env['NODE_ENV'] === 'development')) {
-  Config.optimization = { minimizer: [ new UglifyJsPlugin() ] };
-}
+// if (!(process.env['NODE_ENV'] === 'development')) {
+//   Config.optimization = { minimizer: [ new UglifyJsPlugin() ] };
+// }
 
 module.exports = Config;
