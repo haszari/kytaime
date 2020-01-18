@@ -1,4 +1,4 @@
-import { createAction } from 'redux-starter-kit';
+import { createAction } from '@reduxjs/toolkit';
 
 // "drop" infrastructure, kinda transportish
 const setDeferAllTriggers = createAction( 'throwdown/setDeferAllTriggers' );

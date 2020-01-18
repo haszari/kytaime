@@ -115,8 +115,8 @@ deckIndex++;
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
-fileImport.importThrowdownFileToDeck( 'data/edits/20200106--tesko-suicide-pak-n-save.hjson', 'paknsave' );
-// fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'paknsave' );
+// fileImport.importThrowdownFileToDeck( 'data/edits/20200106--tesko-suicide-pak-n-save.hjson', 'paknsave' );
+fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'paknsave' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'A1' );
