@@ -5,6 +5,19 @@ import audioUtilities from '@kytaime/audio-utilities';
 import bpmUtilities from '@kytaime/sequencer/bpm-utilities';
 import patternSequencer from '@kytaime/sequencer/pattern-sequencer';
 
+function getSliceCuts( startBeats, endBeats, duration ) {
+  // Start and end beats may be negative - wrap to length
+  startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
+
+  var cuts = [ 0, startBeats, endBeats, duration ];
+  cuts = _.flatten( cuts );
+  cuts = _.sortBy( cuts );
+  cuts = _.sortedUniq( cuts );
+
+  return cuts;
+}
+
 function autogenerateSlices( startBeats, endBeats, duration ) {
   // We used to generate one slice for whole thing ...
   // this.props.slices = [{
@@ -19,13 +32,7 @@ function autogenerateSlices( startBeats, endBeats, duration ) {
   // to ensure that the slices support the ends/starts they have set :)
   var slices = [];
 
-  // Start and end beats may be negative - wrap to length
-  startBeats = _.map( startBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  endBeats = _.map( endBeats, beatValue => patternSequencer.modulus( beatValue, duration ) );
-  var cuts = [ 0, startBeats, endBeats, duration ];
-  cuts = _.flatten( cuts );
-  cuts = _.sortBy( cuts );
-  cuts = _.sortedUniq( cuts );
+  const cuts = getSliceCuts( startBeats, endBeats, duration );
 
   for ( var i = 1; i < cuts.length; i++ ) {
     const slice = {
@@ -58,6 +65,19 @@ class SampleSlicePlayer {
     if ( !this.props.slices || !this.props.slices.length ) {
       this.props.slices = autogenerateSlices( this.props.startBeats, this.props.endBeats, this.props.sampleDuration );
     }
+
+    // generate a default duration for each note in case it's not specified
+    // (common with looping notes)
+    const { slices, sampleDuration } = this.props;
+    let curEndBeat = sampleDuration;
+    for ( let i = this.props.slices.length; i--; i >= 0 ) {
+      if ( _.isUndefined( slices[i].duration ) ) {
+        const duration = curEndBeat - slices[i].start;
+        slices[i].duration = duration;
+      }
+
+      curEndBeat = slices[i].start;
+    }
   }
 
   setTriggered( triggered ) {
@@ -76,7 +96,7 @@ class SampleSlicePlayer {
     this.playing = playing;
   }
 
-  playSliceAt( startTimestamp, stopTimestamp, startBeat, transportBpm, audioDestinationNode ) {
+  playSliceAt( startTimestamp, stopTimestamp, startBeat, loopBeats, transportBpm, audioDestinationNode ) {
     // console.log(
     //   `-- beat playSliceAt ` +
     //   `start=(${ startBeat }, ${ startTimestamp }) `
@@ -86,20 +106,34 @@ class SampleSlicePlayer {
 
     const secPerBeat = ( 60 / tempoBpm );
     const rate = transportBpm / tempoBpm;
+    const sliceStart = offset + ( startBeat * secPerBeat );
 
     const player = audioDestinationNode.context.createBufferSource();
     player.buffer = this.props.buffer;
     player.playbackRate.value = rate;
 
-    player.loop = false;
+    player.loop = loopBeats;
+
+    if ( player.loop ) {
+      player.loopStart = sliceStart;
+      player.loopEnd = sliceStart + ( loopBeats * secPerBeat );
+    }
 
     if ( audioDestinationNode.channelCount > 2 ) { audioUtilities.connectToStereoOutChannel( audioDestinationNode.context, player, audioDestinationNode, this.props.channel ); }
     else { player.connect( audioDestinationNode ); }
 
-    player.start( startTimestamp, offset + ( startBeat * secPerBeat ) );
+    player.start( startTimestamp, sliceStart );
+
     player.stop( stopTimestamp );
 
     this.player = player;
+  }
+
+  stopCurrentNoteAt( stopTimestamp ) {
+    if ( this.player ) {
+      this.player.stop( stopTimestamp );
+      this.player = null;
+    }
   }
 
   stopPlayback() {
@@ -155,8 +189,15 @@ class SampleSlicePlayer {
     _.map( scheduledSlices, ( sliceRenderInfo ) => {
       // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );
       const startTime = renderEventTime( sliceRenderInfo.start );
-      const stopTime = renderEventTime( sliceRenderInfo.start + sliceRenderInfo.duration );
-      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, tempoBpm, renderRange.audioContext.destination );
+
+      // stop any current slice
+      this.stopCurrentNoteAt( startTime );
+
+      // If this slice has a duration, calculate stop timestamp.
+      const stopBeat = sliceRenderInfo.start + sliceRenderInfo.duration;
+      const stopTime = renderEventTime( stopBeat );
+
+      this.playSliceAt( startTime, stopTime, sliceRenderInfo.event.beat, sliceRenderInfo.event.loop, tempoBpm, renderRange.audioContext.destination );
     } );
   }
 }

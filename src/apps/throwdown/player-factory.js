@@ -27,7 +27,10 @@ function getPlayerProps( patternData, buffers, channel ) {
       sampleDuration: patternData.duration,
       startBeats: patternData.startBeats,
       endBeats: patternData.endBeats,
-      slices: patternData.slices,
+
+      // We clone this because we may want to fill in missing slice details like duration.
+      // If we don't clone it, the object is not extensible.
+      slices: _.cloneDeep( patternData.slices ),
     };
   }
   return null;
