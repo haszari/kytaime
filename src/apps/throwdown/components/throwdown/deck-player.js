@@ -96,6 +96,10 @@ class DeckPlayer {
 
       if ( ! patternPlayer ) {
         patternPlayer = playerFactory.playerFromFilePatternData( pattern, props.buffers, channel );
+        if ( ! patternPlayer ) {
+          // sometimes during file load we have partial state
+          return;
+        }
         patternPlayer.songSlug = pattern.songSlug;
         patternPlayer.patternSlug = pattern.slug;
         this.replacePatternPlayer( pattern.songSlug, pattern.slug, patternPlayer );

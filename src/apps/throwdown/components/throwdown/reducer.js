@@ -137,6 +137,17 @@ const throwdownReducer = createReducer( {
     } );
   },
 
+  [actions.clearDeck]: ( state, action ) => {
+    const deck = getDeck( state, action.payload.deckSlug );
+    if ( ! deck ) return;
+
+    _.remove( deck.sections, () => true );
+
+    _.remove( state.patterns, {
+      deckSlug: action.payload.deckSlug,
+    } );
+  },
+
   [actions.setDeckTriggeredSection]: ( state, action ) => {
     const deck = getDeck( state, action.payload.deckSlug );
     if ( ! deck ) return;

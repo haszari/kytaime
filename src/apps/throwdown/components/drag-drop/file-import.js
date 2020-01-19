@@ -47,8 +47,12 @@ function getUniqueImportSlug( slug, filename ) {
   return uniqueSlug;
 }
 
-function addSectionsToDeck( filename, throwdownData, deckSlug ) {
+function replaceDeckSections( filename, throwdownData, deckSlug ) {
   const songSlug = getUniqueImportSlug( throwdownData.slug, filename );
+
+  store.dispatch( throwdownActions.clearDeck( {
+    deckSlug: deckSlug,
+  } ) );
 
   importPatterns( deckSlug, songSlug, throwdownData.patterns );
 
@@ -69,10 +73,15 @@ function importThrowdownFileToDeck( fileUrl, deckSlug ) {
     .then( response => response.text() )
     .then( text => {
       const songData = Hjson.parse( text );
-      addSectionsToDeck( fileUrl, songData, deckSlug );
+      replaceDeckSections( fileUrl, songData, deckSlug );
     } );
+}
+
+function importThrowdownData( filename, songData, deckSlug ) {
+  replaceDeckSections( filename, songData, deckSlug );
 }
 
 export default {
   importThrowdownFileToDeck,
+  importThrowdownData,
 };
