@@ -8,7 +8,7 @@
     "app": "electron .",
     "start": "NODE_ENV=development webpack-dev-server --port 3876",
     "build": "NODE_ENV=production webpack",
-    "package": "electron-packager . Kytaime --out ./package",
+    "package": "electron-packager . Kytaime --out ./package --icon ./icon/kytaime-throwdown-app-icon.icns --overwrite ",
     "eslint": "eslint --ext .js --ext .jsx src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
