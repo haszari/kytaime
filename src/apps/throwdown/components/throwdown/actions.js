@@ -13,6 +13,7 @@ const setDeckPatternPlaystate = createAction( 'throwdown/setDeckPatternPlaystate
 // deck state
 const addDeck = createAction( 'throwdown/addDeck' );
 const addSection = createAction( 'throwdown/addSection' );
+const clearDeck = createAction( 'throwdown/clearDeck' );
 const setDeckTriggeredSection = createAction( 'throwdown/setDeckTriggeredSection' );
 const setDeckPlayingSection = createAction( 'throwdown/setDeckPlayingSection' );
 const toggleDeckTriggeredSection = createAction( 'throwdown/toggleDeckTriggeredSection' );
@@ -28,6 +29,7 @@ export default {
 
   addDeck,
   addSection,
+  clearDeck,
   setDeckTriggeredSection,
   setDeckPlayingSection,
   toggleDeckTriggeredSection,

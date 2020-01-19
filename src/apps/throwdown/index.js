@@ -103,7 +103,15 @@ routingConfig.audioPartMap = {
 var deckIndex = 0;
 
 store.dispatch( throwdownActions.addDeck( {
-  deckSlug: 'paknsave',
+  deckSlug: 'top',
+  routing: {
+    firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
+    firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
+    ...routingConfig,
+  },
+} ) );
+store.dispatch( throwdownActions.addDeck( {
+  deckSlug: 'bottom',
   routing: {
     firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
     firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
