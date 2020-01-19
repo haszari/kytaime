@@ -50,7 +50,7 @@
   },
   "dependencies": {
     "express": "4.17.1",
-    "hjson": "3.1.2",
+    "hjson": "3.2.1",
     "midievents": "^2.0.0",
     "midifile": "^2.0.0"
   }
