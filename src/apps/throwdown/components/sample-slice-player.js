@@ -183,8 +183,8 @@ class SampleSlicePlayer {
       filteredSlices
     );
 
-    const renderEventTime = ( time ) => ( time + renderRange.audioContextTimeOffsetMsec ) / 1000;
-    // const renderEventTime = (time) => (time) / 1000;
+    // const renderEventTime = ( time ) => ( time + renderRange.audioContextTimeOffsetMsec ) / 1000;
+    const renderEventTime = ( time ) => ( time ) / 1000;
 
     _.map( scheduledSlices, ( sliceRenderInfo ) => {
       // console.log( `playing a slice ${ sliceRenderInfo.event.beat }@${ sliceRenderInfo.start } ${ this.audioFile } ` );

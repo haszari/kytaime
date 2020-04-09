@@ -70,13 +70,16 @@ var state = {
 
 var updateTransport = function() {
   audioContext.resume().then( function() {
-    // get the current time in milliseconds (since page/app began)
-    var now = window.performance.now();
+    // determine difference between midi now and audio now, so midi and audio events line up
+    const perfNow = window.performance.now();
+    const audioNow = audioContext.currentTime;
+    // this delay will be applied to midi notes
+    const audioContextOffsetSec = ( perfNow / 1000.0 ) - audioNow;
 
     // determine the period we need to render
     // start & end, duration in milliseconds
     var renderStart = state.lastRenderEndTime;
-    var renderEnd = now + renderInterval + renderOverlap;
+    var renderEnd = perfNow + renderInterval + renderOverlap;
     var chunkMs = renderEnd - renderStart;
 
     // we're getting ahead of ourselves, chill out
@@ -84,16 +87,14 @@ var updateTransport = function() {
     // into the future
     if ( chunkMs <= 0 ) { return; }
 
-    // determine an approx difference between midi now and audio now, so midi and audio beats line up
-    var audioNow = audioContext.currentTime;
-    var offsetMilliseconds = audioNow * 1000 - now;
-
     // tell the client(s) to do their thing
     _.map( renderCallbacks, ( renderFunc, id ) => {
       renderFunc( {
         audioContext: audioContext,
 
-        audioContextTimeOffsetMsec: offsetMilliseconds,
+        // audioContextTimeOffsetMsec: offsetMilliseconds,
+        // audioContextTimeOffsetMsec: audioContextOffsetSec * 1000,
+        midiEventOffsetMsec: audioContextOffsetSec * 1000,
 
         start: renderStart,
         end: renderEnd,
