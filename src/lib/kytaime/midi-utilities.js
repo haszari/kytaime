@@ -23,24 +23,24 @@ const channelMap = {
   piano: 6,
 };
 
-const renderNote = function( options ) {
+const renderNote = function( options, offsetMs ) {
   // options: port, channel, noteNumber, velocity, duration, timestamp
   options.port.send(
     [ 0x90 + options.channel, options.note, options.velocity ],
-    options.timestamp
+    options.timestamp + offsetMs
   );
   // note off
   options.port.send(
     [ 0x80 + options.channel, options.note, options.velocity ],
-    options.timestamp + options.duration
+    options.timestamp + options.duration + offsetMs
   );
 };
 
-const renderController = function( options ) {
+const renderController = function( options, offsetMs ) {
   // options: port, channel, controller, value, timestamp
   options.port.send(
     [ 0xB0 + options.channel, options.controller, options.value ],
-    options.timestamp
+    options.timestamp + offsetMs
   );
 };
 

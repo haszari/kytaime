@@ -117,7 +117,7 @@ class MidiLoopPlayer {
       };
       // console.log(note.timestamp);
 
-      midiUtilities.renderNote( note );
+      midiUtilities.renderNote( note, renderMsec.midiEventOffsetMsec );
     }, _, patternDuration, channel ) );
   }
 }
