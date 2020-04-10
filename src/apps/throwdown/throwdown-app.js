@@ -145,23 +145,21 @@ class ThrowdownApp {
     this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end;
-
-    // Update playback progress based on real time.
-    const uiProgressBeat = bpmUtilities.msToBeats(
-      this.tempoBpm,
-      renderRange.actualNow - this.sequencerStartMsec
-    );
-    setTimeout( () => {
-      store.dispatch(
-        transportActions.setCurrentBeat( uiProgressBeat )
-      );
-    }, renderRange.midiEventOffset );
   }
 
   sequencerCallback( renderRange ) {
     this.renderIndex++;
 
     this.updateDeckPlayers( store.getState() );
+
+    // Update playback progress based on real time.
+    const uiProgressBeat = bpmUtilities.msToBeats(
+      this.tempoBpm,
+      ( renderRange.actualNow - this.sequencerStartMsec ) - renderRange.midiEventOffset
+    );
+    store.dispatch(
+      transportActions.setCurrentBeat( uiProgressBeat )
+    );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;
