@@ -23,6 +23,7 @@ class ThrowdownApp {
     this.nextTempoBpm = null;
     this.tempoBpm = 120;
     this.lastRenderEndBeat = 0;
+    this.sequencerStartMsec = 0;
     this.midiOutPort = null;
 
     // we DO need to bind this
@@ -145,11 +146,16 @@ class ThrowdownApp {
 
     this.lastRenderEndBeat = renderRangeBeats.end;
 
+    // Update playback progress based on real time.
+    const uiProgressBeat = bpmUtilities.msToBeats(
+      this.tempoBpm,
+      renderRange.actualNow - this.sequencerStartMsec
+    );
     setTimeout( () => {
       store.dispatch(
-        transportActions.setCurrentBeat( this.lastRenderEndBeat )
+        transportActions.setCurrentBeat( uiProgressBeat )
       );
-    }, ( renderRange.end ) / 1000 );
+    }, renderRange.midiEventOffset );
   }
 
   sequencerCallback( renderRange ) {
@@ -240,6 +246,7 @@ class ThrowdownApp {
   // main
 
   startTransport() {
+    this.sequencerStartMsec = window.performance.now();
     sequencer.start();
   }
 

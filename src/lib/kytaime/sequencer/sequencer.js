@@ -102,6 +102,7 @@ var updateTransport = function() {
         actualNow: perfNow,
 
         // An offset to apply to midi events to keep them in sync with audio.
+        // This is the effective latency.
         midiEventOffset: audioContextOffsetSec * 1000,
       } );
     } );
