@@ -215,7 +215,11 @@ class ThrowdownApp {
     renderRangeNext.tempoBpm = this.nextTempoBpm;
 
     var newTempo = this.nextTempoBpm;
+    chunkMs = renderRangeCurrent.end - renderRangeCurrent.start;
     chunkBeats = bpmUtilities.msToBeats( this.tempoBpm, renderRangeCurrent.end - renderRangeCurrent.start );
+
+    // Reset zero beat when the tempo change happens.
+    this.sequencerStartMsec = renderRange.start + chunkMs;
 
     // renderTimePeriod updats this.lastRenderEndBeat ... FYI
     this.renderTimePeriod( renderRangeCurrent, {
