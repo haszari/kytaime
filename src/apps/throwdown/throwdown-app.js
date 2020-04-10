@@ -23,6 +23,7 @@ class ThrowdownApp {
     this.nextTempoBpm = null;
     this.tempoBpm = 120;
     this.lastRenderEndBeat = 0;
+    this.sequencerStartMsec = 0;
     this.midiOutPort = null;
 
     // we DO need to bind this
@@ -144,18 +145,21 @@ class ThrowdownApp {
     this.updateDeckPlayState();
 
     this.lastRenderEndBeat = renderRangeBeats.end;
-
-    setTimeout( () => {
-      store.dispatch(
-        transportActions.setCurrentBeat( this.lastRenderEndBeat )
-      );
-    }, ( renderRange.end ) / 1000 );
   }
 
   sequencerCallback( renderRange ) {
     this.renderIndex++;
 
     this.updateDeckPlayers( store.getState() );
+
+    // Update playback progress based on real time.
+    const uiProgressBeat = bpmUtilities.msToBeats(
+      this.tempoBpm,
+      ( renderRange.actualNow - this.sequencerStartMsec ) - renderRange.midiEventOffset
+    );
+    store.dispatch(
+      transportActions.setCurrentBeat( uiProgressBeat )
+    );
 
     // calculate render range in beats
     var chunkMs = renderRange.end - renderRange.start;
@@ -240,6 +244,7 @@ class ThrowdownApp {
   // main
 
   startTransport() {
+    this.sequencerStartMsec = window.performance.now();
     sequencer.start();
   }
 
