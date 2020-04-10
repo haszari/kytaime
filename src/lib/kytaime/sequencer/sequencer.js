@@ -92,12 +92,17 @@ var updateTransport = function() {
       renderFunc( {
         audioContext: audioContext,
 
-        // audioContextTimeOffsetMsec: offsetMilliseconds,
-        // audioContextTimeOffsetMsec: audioContextOffsetSec * 1000,
-        midiEventOffsetMsec: audioContextOffsetSec * 1000,
+        // All the following values are in msec.
 
+        // The start & end time to render in msec - these are in the future.
         start: renderStart,
         end: renderEnd,
+
+        // The actual current time in msec - used to update UI in sync with scheduled audio/midi.
+        actualNow: perfNow,
+
+        // An offset to apply to midi events to keep them in sync with audio.
+        midiEventOffset: audioContextOffsetSec * 1000,
       } );
     } );
 

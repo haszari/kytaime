@@ -152,7 +152,7 @@ deckIndex++;
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--alex-haszard-bdmt.hjson' );
 
-const initialTempo = 135;
+const initialTempo = 95;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );
