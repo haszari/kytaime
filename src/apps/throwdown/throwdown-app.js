@@ -215,7 +215,11 @@ class ThrowdownApp {
     renderRangeNext.tempoBpm = this.nextTempoBpm;
 
     var newTempo = this.nextTempoBpm;
+    chunkMs = renderRangeCurrent.end - renderRangeCurrent.start;
     chunkBeats = bpmUtilities.msToBeats( this.tempoBpm, renderRangeCurrent.end - renderRangeCurrent.start );
+
+    // Reset zero beat when the tempo change happens.
+    this.sequencerStartMsec = renderRange.start + chunkMs;
 
     // renderTimePeriod updats this.lastRenderEndBeat ... FYI
     this.renderTimePeriod( renderRangeCurrent, {
@@ -244,7 +248,12 @@ class ThrowdownApp {
   // main
 
   startTransport() {
-    this.sequencerStartMsec = window.performance.now();
+    // Start a bit in the past, so there's allowance for the latency when scheduling first audio events.
+    // This is expressed as beats, so at fast tempos might not be enough?
+    // In future may switch this to use a fixed msec amount (& convert to beats).
+    const rewindStart = 1;
+    this.sequencerStartMsec = window.performance.now() + bpmUtilities.beatsToMs( this.tempoBpm, rewindStart );
+    this.lastRenderEndBeat = -rewindStart;
     sequencer.start();
   }
 
