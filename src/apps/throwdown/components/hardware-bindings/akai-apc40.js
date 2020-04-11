@@ -31,6 +31,12 @@ function onMidiMessage( event ) {
         break;
     }
 
+    // 53-57 (ch0) are scene launch buttons
+    if ( message.key >= 82 && message.key <= 86 && message.channel === 0 ) {
+      //
+    }
+
+    // 53-57 are clip launch buttons across ch0-7
     if ( message.key >= 53 && message.key <= 57 ) {
       store.dispatch(
         throwdownActions.toggleDeckTriggeredSection( {
@@ -38,6 +44,11 @@ function onMidiMessage( event ) {
           sectionIndex: message.channel,
         } )
       );
+    }
+
+    // 52 is clip stop buttons across ch0-7
+    if ( message.key === 52 ) {
+      //
     }
   }
 
