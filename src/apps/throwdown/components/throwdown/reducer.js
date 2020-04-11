@@ -160,12 +160,12 @@ const throwdownReducer = createReducer( {
   },
   [actions.toggleDeckTriggeredSection]: ( state, action ) => {
     const deck = state.decks[action.payload.deckIndex];
-    if ( !deck ) return;
+    if ( ! deck ) return;
 
     const section = deck.sections[action.payload.sectionIndex];
     const sectionSlug = section ? section.slug : '';
     const songSlug = section ? section.songSlug : '';
-    if ( ( deck.triggeredSection.section === sectionSlug ) && ( deck.triggeredSection.song === songSlug ) ) {
+    if ( ( deck.triggeredSection?.section === sectionSlug ) && ( deck.triggeredSection?.song === songSlug ) ) {
       deck.triggeredSection = null;
     }
     else {
