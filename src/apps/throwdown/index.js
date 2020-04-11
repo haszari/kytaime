@@ -15,7 +15,7 @@ import Decks from './components/throwdown/decks.jsx';
 import transportActions from './components/transport/actions';
 import throwdownActions from './components/throwdown/actions';
 
-// import fileImport from './components/drag-drop/file-import';
+import fileImport from './components/drag-drop/file-import';
 import importDrop from './components/drag-drop/ghost-deck.jsx';
 
 import './style/style.scss';
@@ -103,21 +103,21 @@ routingConfig.audioPartMap = {
 var deckIndex = 0;
 
 store.dispatch( throwdownActions.addDeck( {
-  deckSlug: 'top',
+  deckSlug: 'deck',
   routing: {
     firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
     firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
     ...routingConfig,
   },
 } ) );
-store.dispatch( throwdownActions.addDeck( {
-  deckSlug: 'bottom',
-  routing: {
-    firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
-    firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
-    ...routingConfig,
-  },
-} ) );
+// store.dispatch( throwdownActions.addDeck( {
+//   deckSlug: 'bottom',
+//   routing: {
+//     firstAudioChannel: routingConfig.numAudioChannels * deckIndex, // aka 0
+//     firstMidiChannel: routingConfig.numMidiChannels * deckIndex, // aka 0
+//     ...routingConfig,
+//   },
+// } ) );
 deckIndex++;
 
 /// -----------------------------------------------------------------------------------------------
@@ -133,7 +133,7 @@ deckIndex++;
 // fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
-// fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'deck' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );

@@ -15,7 +15,7 @@ function getSpread64OffsetValue( value ) {
 
 function onMidiMessage( event ) {
   const message = MIDIMessage( event );
-  console.log( message );
+  console.log( `APC40 ch${ message.channel } ${ message.messageType } number=${ message._data[1] } amount=${ message._data[2] }` );
 
   if ( message.messageType === 'noteon' ) {
     switch ( message.key ) {
@@ -31,13 +31,36 @@ function onMidiMessage( event ) {
         break;
     }
 
-    if ( message.key >= 53 && message.key <= 57 ) {
+    // For now all our hardware mapping will affect first deck.
+    // In future we could have a "focus" deck and up/down navigation.
+    const deckIndex = 0;
+
+    // 53-57 (ch0) are scene launch buttons
+    // we map these to section trigger across first deck
+    if ( message.key >= 82 && message.key <= 86 && message.channel === 0 ) {
       store.dispatch(
         throwdownActions.toggleDeckTriggeredSection( {
-          deckIndex: message.key - 53,
-          sectionIndex: message.channel,
+          deckIndex: deckIndex,
+          sectionIndex: message.key - 82,
         } )
       );
+    }
+
+    // 53-57 are clip launch buttons across ch0-7
+    // we map these to toggle triggered pattern within part
+    if ( message.key >= 53 && message.key <= 57 ) {
+      store.dispatch(
+        throwdownActions.toggleDeckSectionPartTriggeredPattern( {
+          deckIndex: deckIndex,
+          sectionIndex: message.key - 53,
+          partIndex: message.channel,
+        } )
+      );
+    }
+
+    // 52 is clip stop buttons across ch0-7
+    if ( message.key === 52 ) {
+      //
     }
   }
 
