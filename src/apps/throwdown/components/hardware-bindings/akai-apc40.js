@@ -36,8 +36,8 @@ function onMidiMessage( event ) {
     const deckIndex = 0;
 
     // 53-57 (ch0) are scene launch buttons
+    // we map these to section trigger across first deck
     if ( message.key >= 82 && message.key <= 86 && message.channel === 0 ) {
-      // toggleDeckTriggeredSection
       store.dispatch(
         throwdownActions.toggleDeckTriggeredSection( {
           deckIndex: deckIndex,
@@ -47,8 +47,15 @@ function onMidiMessage( event ) {
     }
 
     // 53-57 are clip launch buttons across ch0-7
+    // we map these to toggle triggered pattern within part
     if ( message.key >= 53 && message.key <= 57 ) {
-      //
+      store.dispatch(
+        throwdownActions.toggleDeckSectionPartTriggeredPattern( {
+          deckIndex: deckIndex,
+          sectionIndex: message.key - 53,
+          partIndex: message.channel,
+        } )
+      );
     }
 
     // 52 is clip stop buttons across ch0-7

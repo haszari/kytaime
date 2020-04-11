@@ -41,6 +41,15 @@ function getDeckSectionPart( state, deckSlug, songSlug, sectionSlug, partSlug ) 
 
   return _.find( section.parts, { part: partSlug } );
 }
+function getDeckSectionPartByPosition( state, deckIndex, sectionIndex, partIndex ) {
+  const deck = state.decks[deckIndex];
+  if ( ! deck ) { return; }
+
+  const section = deck.sections[sectionIndex];
+  if ( ! section ) { return; }
+
+  return section.parts[partIndex];
+}
 
 const throwdownReducer = createReducer( {
   patterns: [],
@@ -210,6 +219,25 @@ const throwdownReducer = createReducer( {
     if ( ! part ) return;
 
     part.triggeredPattern = action.payload.patternSlug;
+  },
+
+  // cycle through patterns for the specified part, including toggle off
+  [actions.toggleDeckSectionPartTriggeredPattern]: ( state, action ) => {
+    const part = getDeckSectionPartByPosition(
+      state,
+      action.payload.deckIndex,
+      action.payload.sectionIndex,
+      action.payload.partIndex
+    );
+    if ( ! part ) return;
+
+    const allPatterns = [ ...part.patterns ]; // copy the array!
+    allPatterns.push( null ); // no pattern is an option :)
+    let index = allPatterns.indexOf( part.triggeredPattern );
+    index += 1;
+    index %= allPatterns.length;
+
+    part.triggeredPattern = allPatterns[index];
   },
 
 } );
