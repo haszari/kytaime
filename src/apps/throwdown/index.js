@@ -123,6 +123,7 @@ deckIndex++;
 /// -----------------------------------------------------------------------------------------------
 // load hard-coded test data
 
+fileImport.importThrowdownFileToDeck( 'data/20200411-minimal-techno.hjson', 'deck' );
 // fileImport.importThrowdownFileToDeck( 'data/edits/20200106--tesko-suicide-pak-n-save.hjson', 'paknsave' );
 // fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'paknsave' );
 
@@ -133,7 +134,7 @@ deckIndex++;
 // fileImport.importThrowdownFileToDeck( 'data/20190325--mivova.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
-fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'deck' );
+// fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'deck' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
@@ -152,7 +153,7 @@ fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjs
 // fileImport.importThrowdownFile( 'data/20190422--breakfast.hjson' );
 // fileImport.importThrowdownFile( 'data/20190325--alex-haszard-bdmt.hjson' );
 
-const initialTempo = 95;
+const initialTempo = 123;
 store.dispatch(
   transportActions.setTempo( initialTempo )
 );

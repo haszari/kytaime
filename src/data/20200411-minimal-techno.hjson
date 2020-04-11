@@ -1,0 +1,252 @@
+{
+  version: 1
+  slug: mini
+  key: F#m
+  tempo: 123
+  patterns: {
+    kick: {
+      part: kick
+      duration: 4
+      notes: [
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 0
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 1
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 2
+        },
+        {
+          note: 36,
+          velocity: 100
+          duration: 1
+          start: 3
+        },
+      ]
+    }
+    hat: {
+      part: hat
+      duration: 1
+      notes: [
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.50
+        }
+      ]
+    }
+    hat-alt: {
+      part: hat
+      duration: 4
+      notes: [
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 0.50
+        }
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 1.50
+        }
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 2.50
+        }
+        {
+          note: 42,
+          velocity: 60
+          duration: 0.25
+          start: 3.250
+        }
+        {
+          note: 42,
+          velocity: 100
+          duration: 0.25
+          start: 3.50
+        }
+      ]
+    }
+    clap: {
+      part: clap
+      duration: 4
+      notes: [
+        {
+          note: 39,
+          velocity: 100
+          duration: 0.25
+          start: 1
+        }
+        {
+          note: 39,
+          velocity: 100
+          duration: 0.25
+          start: 1.75
+        }
+        {
+          note: 39,
+          velocity: 50
+          duration: 0.25
+          start: 3.5
+        }
+      ]
+    }
+    bass: {
+      part: bass
+      duration: 4,
+      notes: [
+        {
+          note: 42,
+          velocity: 100,
+          duration: 0.248,
+          start: 1.5
+        }
+        {
+          note: 42,
+          velocity: 100,
+          duration: 0.248,
+          start: 2
+        }
+        {
+          note: 42,
+          velocity: 100,
+          duration: 0.248,
+          start: 2.25
+        }
+      ]
+    }
+    beep: {
+      part: arp
+      duration: 4,
+      notes: [
+        {
+          "note": 54,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 0.5
+        },
+        {
+          "note": 54,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 0.75
+        },
+        {
+          "note": 55,
+          "velocity": 100,
+          "duration": 0.5,
+          "start": 1
+        },
+        {
+          "note": 54,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 2.5
+        },
+        {
+          "note": 54,
+          "velocity": 100,
+          "duration": 0.25,
+          "start": 2.75
+        },
+        {
+          "note": 55,
+          "velocity": 100,
+          "duration": 0.5,
+          "start": 3
+        }
+      ]
+    }
+    texture: {
+      part: texture
+      file: "/media/Haszari/Haszari Renders - Texture Recordings/Amsterdam Centraal Night Techno Ambience.m4a"
+      tempo: 123 
+      duration: 4
+    }
+    vocstab: {
+      part: vocal
+      file: "/media/Haszari/Haszari Renders - TV Samples/20190713--peep-show-jez-rave-mc-sample.wav"
+      tempo: 123 
+      duration: 4
+      slices: [
+        {
+          beat: 72.1
+          start: 3.52
+          duration: 0.3
+        }        
+      ]
+    }
+    strings: {
+      part: strings
+      channel: 3
+      "duration": 8,
+      "notes": [
+        {
+          "note": 74,
+          "velocity": 100,
+          "duration": 0.75,
+          "start": 0.5
+        },
+        {
+          "note": 73,
+          "velocity": 100,
+          "duration": 0.5,
+          "start": 1
+        },
+        {
+          "note": 69,
+          "velocity": 100,
+          "duration": 0.5,
+          "start": 2.5
+        },
+        {
+          "note": 66,
+          "velocity": 100,
+          "duration": 0.5,
+          "start": 4
+        }
+      ]
+    }   
+  }
+  sections: {
+    a: {
+      patterns: [
+        kick
+        hat-alt
+        clap
+        bass
+        beep
+        strings
+        texture
+        vocstab
+      ]
+    }
+    b: {
+      patterns: [
+        kick
+        hat
+        clap
+        bass
+        beep
+        strings
+        texture
+        vocstab
+      ]
+    }
+  } 
+}
