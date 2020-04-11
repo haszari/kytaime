@@ -15,7 +15,7 @@ function getSpread64OffsetValue( value ) {
 
 function onMidiMessage( event ) {
   const message = MIDIMessage( event );
-  console.log( message );
+  console.log( `APC40 ch${ message.channel } ${ message.messageType } number=${ message._data[1] } amount=${ message._data[2] }` );
 
   if ( message.messageType === 'noteon' ) {
     switch ( message.key ) {
