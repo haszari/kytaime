@@ -40,7 +40,7 @@
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-redux": "7.2.1",
-    "sass-loader": "8.0.2",
+    "sass-loader": "9.0.3",
     "style-loader": "1.2.1",
     "uglifyjs-webpack-plugin": "2.2.0",
     "webpack": "4.44.1",
