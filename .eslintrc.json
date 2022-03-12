@@ -1,6 +1,12 @@
 {
    "extends": ["eslint:recommended", "plugin:react/recommended"],
    "parser": "@babel/eslint-parser",
+   "ignorePatterns": [
+      "webpack.config.js", 
+      "src/lib/data/**",
+      "src/electron/**",
+      "src/server/**"
+   ],
    "rules": {
       "no-console": 0,
       "space-in-parens": ["error", "always"],
