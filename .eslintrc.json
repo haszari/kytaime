@@ -3,7 +3,7 @@
    "parser": "@babel/eslint-parser",
    "ignorePatterns": [
       "webpack.config.js", 
-      "src/lib/data/**",
+      "src/lib/kytaime/data/**",
       "src/electron/**",
       "src/server/**"
    ],
