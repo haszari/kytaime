@@ -19,7 +19,7 @@ import DeckPlayer from './components/throwdown/deck-player';
 import './components/hardware-bindings/akai-apc40';
 
 class ThrowdownApp {
-  constructor( props ) {
+  constructor() {
     this.nextTempoBpm = null;
     this.tempoBpm = 120;
     this.lastRenderEndBeat = 0;

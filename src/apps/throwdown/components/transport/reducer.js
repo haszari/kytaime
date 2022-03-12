@@ -17,7 +17,7 @@ const transportReducer = createReducer( {
   [actions.adjustNextTempo]: ( state, action ) => {
     state.nextTempo = state.nextTempo + action.payload;
   },
-  [actions.togglePlayback]: ( state, action ) => {
+  [actions.togglePlayback]: ( state ) => {
     state.isPlaying = !state.isPlaying;
   },
   [actions.setCurrentBeat]: ( state, action ) => {

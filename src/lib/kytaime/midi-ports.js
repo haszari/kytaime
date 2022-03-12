@@ -10,14 +10,14 @@ const midiOutPorts = []; const midiInPorts = [];
 function getMidiPorts() {
   var access = navigator.requestMIDIAccess();
   access.then( function( midiAccess ) {
-    midiAccess.inputs.forEach( ( port, key ) => {
+    midiAccess.inputs.forEach( ( port ) => {
       midiInPorts.push( {
         name: port.name,
         port: port,
       } );
     } );
     console.log( 'MIDI inputs:', midiInPorts );
-    midiAccess.outputs.forEach( ( port, key ) => {
+    midiAccess.outputs.forEach( ( port ) => {
       midiOutPorts.push( {
         name: port.name,
         port: port,
@@ -54,7 +54,7 @@ export default {
 
     var access = navigator.requestMIDIAccess();
     access.then( function( midiAccess ) {
-      midiAccess.inputs.forEach( function( port, key ) {
+      midiAccess.inputs.forEach( function( port ) {
         if ( port.name === requestedDeviceName ) {
           successInfo.port = port;
         }
@@ -81,7 +81,7 @@ export default {
 
     var access = navigator.requestMIDIAccess();
     access.then( function( midiAccess ) {
-      midiAccess.outputs.forEach( function( port, key ) {
+      midiAccess.outputs.forEach( function( port ) {
         if ( port.name === requestedDeviceName ) {
           successInfo.port = port;
         }

@@ -10,7 +10,7 @@ conjunction with pattern-sequencer.
 
 import _ from 'lodash';
 
-var WorkerSetInterval = require( './setInterval.worker' );
+import WorkerSetInterval from './setInterval.worker';
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext;
@@ -88,7 +88,7 @@ var updateTransport = function() {
     if ( chunkMs <= 0 ) { return; }
 
     // tell the client(s) to do their thing
-    _.map( renderCallbacks, ( renderFunc, id ) => {
+    _.map( renderCallbacks, ( renderFunc ) => {
       renderFunc( {
         audioContext: audioContext,
 
