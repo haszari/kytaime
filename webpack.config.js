@@ -15,7 +15,7 @@ const Config = {
    resolve: {
       modules: ["node_modules"],
       alias: aliases,
-      fallback: { "os": require.resolve("os-browserify/browser") },
+      fallback: { os: require.resolve("os-browserify/browser") },
    },
    module: {
       rules: [
@@ -39,21 +39,19 @@ const Config = {
       ],
    },
    devServer: {
-      onBeforeSetupMiddleware: function (devServer) {
-         // serve iTunes library for samples/media
-         devServer.app.use(
-            "/media",
-            express.static(
-               path.join(process.env.HOME, "/Music/iTunes/iTunes Media/Music")
-            )
-         );
-         // serve hjson song data from src
-         devServer.app.use(
-            "/data",
-            express.static(path.join(__dirname, "/src/data"))
-         );
-      },
-      static: path.join(__dirname, "/src/html-routes"),
+      static: [
+         path.join(__dirname, "/src/html-routes"),
+         // Hjson song data files.
+         {
+            directory: path.join(__dirname, "/src/data"),
+            publicPath: "/data",
+         },
+         // iTunes / Apple Music media (stems, audio, samples, loops).
+         {
+            directory: path.join(process.env.HOME, "/Music/Music/Media.localized"),
+            publicPath: "/media",
+         },
+      ],
       compress: true,
       port: 3876,
    },
