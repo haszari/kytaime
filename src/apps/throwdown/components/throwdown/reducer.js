@@ -73,7 +73,7 @@ const throwdownReducer = createReducer( {
   [actions.setDeferAllTriggers]: ( state, action ) => {
     state.deferAllTriggers = action.payload;
   },
-  [actions.toggleDeferAllTriggers]: ( state, action ) => {
+  [actions.toggleDeferAllTriggers]: ( state ) => {
     state.deferAllTriggers = !state.deferAllTriggers;
   },
 
@@ -120,7 +120,7 @@ const throwdownReducer = createReducer( {
 
     // generate state array for patterns x parts (instruments)
     const partsPatterns = _.map( sectionPartSlugs, partSlug => {
-      const patternData = _.filter( state.patterns, ( pattern, slug ) => {
+      const patternData = _.filter( state.patterns, ( pattern ) => {
         const sameDeckSong = ( pattern.songSlug === action.payload.songSlug ) && pattern.deckSlug === action.payload.deckSlug;
         const partMatch = ( pattern.part === partSlug );
         const sectionMatch = _.includes( patternsInSection, pattern.slug );
