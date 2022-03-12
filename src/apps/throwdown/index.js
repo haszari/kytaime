@@ -126,7 +126,7 @@ deckIndex++;
 // fileImport.importThrowdownFileToDeck( 'data/edits/20200106--tesko-suicide-pak-n-save.hjson', 'paknsave' );
 // fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'paknsave' );
 
-// fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'A1' );
+fileImport.importThrowdownFileToDeck( 'data/20191125--janura-crossing.hjson', 'deck' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--maenyb.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'A1' );
@@ -134,7 +134,7 @@ deckIndex++;
 // fileImport.importThrowdownFileToDeck( 'data/20191116--jacket.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--kufca.hjson', 'A1' );
 // fileImport.importThrowdownFileToDeck( 'data/20190306--sweets-from-a-stranger.hjson', 'deck' );
-fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'deck' );
+// fileImport.importThrowdownFileToDeck( 'data/20190217--manas.hjson', 'deck' );
 
 // fileImport.importThrowdownFileToDeck( 'data/20190325--shedout.hjson', 'B2' );
 // fileImport.importThrowdownFileToDeck( 'data/20190325--noyu.hjson', 'B2' );
