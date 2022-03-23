@@ -24,7 +24,7 @@
     "babel-loader": "8.2.4",
     "color": "4.2.1",
     "css-loader": "6.7.1",
-    "electron": "17.1.2",
+    "electron": "17.2.0",
     "electron-packager": "15.4.0",
     "eslint": "8.11.0",
     "eslint-plugin-import": "2.25.4",
