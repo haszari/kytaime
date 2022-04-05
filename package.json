@@ -22,7 +22,7 @@
     "@babel/preset-react": "7.16.7",
     "@reduxjs/toolkit": "1.8.1",
     "babel-loader": "8.2.4",
-    "color": "4.2.1",
+    "color": "4.2.3",
     "css-loader": "6.7.1",
     "electron": "17.3.1",
     "electron-packager": "15.4.0",
