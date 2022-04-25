@@ -48,7 +48,7 @@
     "worker-loader": "3.0.8"
   },
   "dependencies": {
-    "express": "4.17.3",
+    "express": "4.18.0",
     "hjson": "3.2.2",
     "midievents": "2.0.0",
     "midifile": "2.0.0"
