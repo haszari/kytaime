@@ -18,7 +18,7 @@
     "@babel/cli": "7.22.15",
     "@babel/core": "7.22.19",
     "@babel/eslint-parser": "7.22.15",
-    "@babel/preset-env": "7.22.15",
+    "@babel/preset-env": "7.22.20",
     "@babel/preset-react": "7.22.15",
     "@reduxjs/toolkit": "1.9.5",
     "babel-loader": "8.3.0",
