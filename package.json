@@ -23,7 +23,7 @@
     "@reduxjs/toolkit": "1.9.7",
     "babel-loader": "8.4.1",
     "color": "4.2.3",
-    "css-loader": "6.9.0",
+    "css-loader": "6.11.0",
     "electron": "17.4.11",
     "electron-packager": "15.5.2",
     "eslint": "8.56.0",
