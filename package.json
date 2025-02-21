@@ -26,7 +26,7 @@
     "css-loader": "6.11.0",
     "electron": "17.4.11",
     "electron-packager": "15.5.2",
-    "eslint": "8.57.1",
+    "eslint": "9.21.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "6.6.0",
