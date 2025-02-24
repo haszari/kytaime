@@ -20,7 +20,7 @@
     "@babel/eslint-parser": "7.25.9",
     "@babel/preset-env": "7.26.0",
     "@babel/preset-react": "7.26.3",
-    "@reduxjs/toolkit": "1.9.7",
+    "@reduxjs/toolkit": "2.6.0",
     "babel-loader": "8.4.1",
     "color": "4.2.3",
     "css-loader": "6.11.0",
