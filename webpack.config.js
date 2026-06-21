@@ -9,6 +9,7 @@ const Config = {
    entry: {
       main: "./src/apps/throwdown/index.js",
       "import-midi": "./src/apps/import-midi/index.js",
+      "link-click": "./src/apps/link-click/index.js",
    },
    mode: process.env["NODE_ENV"] || "production",
    devtool: process.env["NODE_ENV"] === "development" ? "source-map" : false,
